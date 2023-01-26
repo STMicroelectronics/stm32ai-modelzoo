@@ -1,0 +1,299 @@
+// This file is used to set Model Zoo visibility on Developer Cloud
+[
+	{
+		"name": "./image_classification/models/fdmobilenet/ST_pretrainedmodel_public_dataset/flowers/fdmobilenet_0.25_128/fdmobilenet_0.25_128_int8.tflite",
+		"description": "FdMobileNet 0.25 128 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/fdmobilenet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/fdmobilenet/ST_pretrainedmodel_public_dataset/flowers/fdmobilenet_0.25_224/fdmobilenet_0.25_224_int8.tflite",
+		"description": "FdMobileNet 0.25 224 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/fdmobilenet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/stmnist/ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite",
+		"description": "ST MNIST trained on EMNIST-Byclass with 36 classes",
+		"usecase": "image_classification",
+		"dataset_used": "emnist_byclass",
+		"readme": "./image_classification/models/stmnist/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv1/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224_int8.tflite",
+		"description": "MobileNetv1 0.5 224 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv1/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96/mobilenet_v1_0.25_96_int8.tflite",
+		"description": "MobileNetv1 0.25 96 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv1/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale/mobilenet_v1_0.25_96_grayscale_int8.tflite",
+		"description": "MobileNetv1 0.25 96 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv1/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224_int8.tflite",
+		"description": "MobileNetv1 0.25 224 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128/mobilenet_v2_0.35_128_int8.tflite",
+		"description": "MobileNetv2 0.35 128 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/mobilenetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224/mobilenet_v2_0.35_224_int8.tflite",
+		"description": "MobileNetv2 0.35 224 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/mobilenetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv2/ST_pretrainedmodel_public_dataset/person/mobilenet_v2_0.35_128/mobilenet_v2_0.35_128.h5",
+		"description": "MobileNetv2 0.35 128 trained on Person (derived from COCO-2014) with 2 classes",
+		"usecase": "image_classification",
+		"dataset_used": "person",
+		"readme": "./image_classification/models/mobilenetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/mobilenetv2/ST_pretrainedmodel_public_dataset/person/mobilenet_v2_0.35_128/mobilenet_v2_0.35_128_int8.tflite",
+		"description": "MobileNetv2 0.35 128 trained on Person (derived from COCO-2014) with 2 classes",
+		"usecase": "image_classification",
+		"dataset_used": "person",
+		"readme": "./image_classification/models/mobilenetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32.h5",
+		"description": "ResNetv1 8 32 trained on Cifar10 with 10 classes",
+		"usecase": "image_classification",
+		"dataset_used": "cifar10",
+		"readme": "./image_classification/models/resnetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite",
+		"description": "ResNetv1 8 32 trained on Cifar10 with 10 classes",
+		"usecase": "image_classification",
+		"dataset_used": "cifar10",
+		"readme": "./image_classification/models/resnetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite",
+		"description": "ResNetv1 32 32 trained on Cifar100 with 100 classes",
+		"usecase": "image_classification",
+		"dataset_used": "cifar100",
+		"readme": "./image_classification/models/resnetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/squeezenetv1.0/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.0_128/squeezenet_v1.0_128_int8.tflite",
+		"description": "SqueezeNetv1.0 128 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/squeezenetv1.0/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite",
+		"description": "SqueezeNetv1.1 128 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/squeezenetv1.1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/models/squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite",
+		"description": "SqueezeNetv1.1 224 trained on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/models/squeezenetv1.1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/models/ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite",
+		"description": "SSD Mobilenetv1 0.25 192 trained on COCO (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO",
+		"readme": "./object_detection/models/ssd_mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/models/ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite",
+		"description": "SSD Mobilenetv1 0.25 224 trained on COCO (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO",
+		"readme": "./object_detection/models/ssd_mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/models/ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite",
+		"description": "SSD Mobilenetv1 0.25 256 trained on COCO (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO",
+		"readme": "./object_detection/models/ssd_mobilenetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./audio_event_detection/models/miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_1stacks_64x50/miniresnet_1stacks_64x50_int8.tflite",
+		"description": "MiniResNet 1 stacks 64x50 trained on ESC-10 with 10 classes",
+		"usecase": "audio_event_detection",
+		"dataset_used": "esc10",
+		"readme": "./audio_event_detection/models/miniresnet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./audio_event_detection/models/miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50/miniresnet_2stacks_64x50_int8.tflite",
+		"description": "MiniResNet 2 stacks 64x50 trained on ESC-10 with 10 classes",
+		"usecase": "audio_event_detection",
+		"dataset_used": "esc10",
+		"readme": "./audio_event_detection/models/miniresnet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./audio_event_detection/models/miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite",
+		"description": "MiniResNetv2 1 stacks 64x50 trained on ESC-10 with 10 classes",
+		"usecase": "audio_event_detection",
+		"dataset_used": "esc10",
+		"readme": "./audio_event_detection/models/miniresnetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./audio_event_detection/models/miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite",
+		"description": "MiniResNetv2 2 stacks 64x50 trained on ESC-10 with 10 classes",
+		"usecase": "audio_event_detection",
+		"dataset_used": "esc10",
+		"readme": "./audio_event_detection/models/miniresnetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./audio_event_detection/models/yamnet/ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite",
+		"description": "Yamnet 256 64x96 trained on ESC-10 with 10 classes",
+		"usecase": "audio_event_detection",
+		"dataset_used": "esc10",
+		"readme": "./audio_event_detection/models/yamnet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5",
+		"description": "GMP 24x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/gmp/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite",
+		"description": "GMP 24x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/gmp/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5",
+		"description": "GMP 48x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/gmp/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite",
+		"description": "GMP 48x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/gmp/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5",
+		"description": "IGN 24x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/ign/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite",
+		"description": "IGN 24x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/ign/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5",
+		"description": "IGN 48x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/ign/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite",
+		"description": "IGN 48x3 trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/ign/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx",
+		"description": "SVC 24x3 5% trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/svc/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_10/svc_wl_24_pct_10.onnx",
+		"description": "SVC 24x3 10% trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/svc/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx",
+		"description": "SVC 48x3 5% trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/svc/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_10/svc_wl_48_pct_10.onnx",
+		"description": "SVC 48x3 10% trained on WISDM with 4 classes",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/models/svc/README.md",
+		"visible": true
+	}
+]

@@ -1,0 +1,50 @@
+general:
+  project_name: HAR
+  logs_dir: logs
+  saved_models_dir: saved_models
+
+tf_train_parameters:
+  batch_size: 64
+  dropout: 0.5
+  training_epochs: 1000
+  optimizer: adam
+  initial_learning: 0.001
+  learning_rate_scheduler: ReduceLROnPlateau
+
+svc_train_parameters:
+  opt_data_keep: 0.1
+
+dataset:
+  name: wisdm
+  class_names: [Jogging,Stationary,Stairs,Walking]
+  training_path: C:/stmicroelectronics2022/external_model_zoo/WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt
+
+pre_processing:
+  segment_len: 48
+  segment_step: 48
+  preprocessing: True
+
+model:
+  model_type: {name : gmp}
+  input_shape: [48,3,1]
+  
+quantization:
+  quantize: True
+  evaluate: True
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: float
+  quantization_output_type: float
+  export_dir: quantized_models
+
+stm32ai:
+  path_to_stm32ai: C:/STMicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
+  optimization: balanced # supported options are : balanced, time, ram
+  footprints_on_target: STM32L4R9I-DISCO
+
+mlflow:
+  uri: ./mlruns
+
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}

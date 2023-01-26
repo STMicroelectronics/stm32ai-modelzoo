@@ -1,0 +1,78 @@
+{
+    "Custom model":{
+        "model_type":
+            {
+                "name": "custom"
+            }
+    },
+
+    "MobileNetv1": {
+        "model_type":
+            {
+                "name": "mobilenet",
+                "version": "v1",
+                "alpha": "0.25, 0.5, 0.75, 1.0 for ImageNet pretrained weights and resolutions [224,192,160,128], else int > 0,"
+            },
+
+        "provenance": "https://www.tensorflow.org/api_docs/python/tf/keras/applications/mobilenet",
+        "paper": "https://arxiv.org/abs/1704.04861"
+
+    },
+
+    "MobileNetv2": {
+        "model_type":
+            {
+                "name": "mobilenet",
+                "version": "v2",
+                "alpha": "0.35, 0.5, 0.75, 1.0, 1.3, 1.4 for ImageNet pretrained weights and resolutions [224,192,160,128,96], else int > 0"
+            },
+
+        "provenance": "https://www.tensorflow.org/api_docs/python/tf/keras/applications/mobilenet_v2",
+        "paper": "https://arxiv.org/abs/1801.04381"
+    },
+
+    "FdMobileNet": {
+        "model_type":
+            {
+                "name": "fdmobilenet",
+                "alpha": "0.25, 0.5, 0.75, 1.0"
+            },
+
+        "paper": "https://arxiv.org/pdf/1802.03750.pdf"
+    },
+
+    "ResNet v1": {
+        "model_type":
+            {
+                "name": "resnet",
+                "version": "v1",
+                "depth": "8, 20, 32"
+            },
+
+        "provenance": "https://www.tensorflow.org/api_docs/python/tf/keras/applications/resnet",
+        "paper": "https://arxiv.org/abs/1512.03385"
+    },
+
+    "SqueezeNet v1.0": {
+        "model_type":
+            {
+                "name": "squeezenet",
+                "version": "v10"
+            },
+
+        "provenance": "https://github.com/forresti/SqueezeNet",
+        "paper": "https://arxiv.org/pdf/1602.07360.pdf"
+    },
+
+    "SqueezeNet v1.1": {
+        "model_type":
+            {
+                "name": "squeezenet",
+                "version": "v11"
+            },
+
+        "provenance": "https://github.com/forresti/SqueezeNet",
+        "paper": "https://arxiv.org/pdf/1602.07360.pdf"
+    }
+
+}

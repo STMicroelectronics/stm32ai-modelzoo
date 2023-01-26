@@ -1,0 +1,74 @@
+{
+
+    "STM32H747I-DISCO":{
+        "Core": "Arm Cortex-M7+M4 Dual",
+        "Frequency": "400 MHz",
+        "RAM": "1024 kiB",
+        "External RAM": "8 MB",
+        "Flash": "2048 kiB",
+        "External Flash": "16 MB"
+    },
+
+    "B-U585I-IOT02A":{
+        "Core": "Arm Cortex-M33",
+        "Frequency": "160 MHz",
+        "RAM": "786 kiB",
+        "External RAM": "",
+        "Flash": "2048 kiB",
+        "External Flash": "64 MB"
+    },
+
+    "STM32H735G-DK":{
+        "Core": "Arm Cortex-M7",
+        "Frequency": "550 MHz",
+        "RAM": "564 kiB",
+        "External RAM": "16 MB",
+        "Flash": "1024 kiB",
+        "External Flash": "64 MB"
+    },
+
+    "STM32F769I-DISCO":{
+        "Core": "Arm Cortex-M7",
+        "Frequency": "216 MHz",
+        "RAM": "512 kiB",
+        "External RAM": "1 MB",
+        "Flash": "2048 kiB",
+        "External Flash": "64 MB"
+    },
+
+    "STM32L4R9I-DISCO":{
+        "Core": "Arm Cortex-M4",
+        "Frequency": "120 MHz",
+        "RAM": "640 kiB",
+        "External RAM": "",
+        "Flash": "2048 kiB",
+        "External Flash": "16 MB"
+    },
+
+    "STM32H7B3I-DK":{
+        "Core": "Arm Cortex-M7",
+        "Frequency": "280 MHz",
+        "RAM": "1184 kiB",
+        "External RAM": "16 MB",
+        "Flash": "2048 kiB",
+        "External Flash": "64 MB"
+    },
+
+    "NUCLEO-G474RE":{
+        "Core": "Arm Cortex-M4",
+        "Frequency": "170 MHz",
+        "RAM": "128 kiB",
+        "External RAM": "",
+        "Flash": "512 kiB",
+        "External Flash": ""
+    },
+
+    "STM32F469I-DISCO":{
+        "Core": "Arm Cortex-M4",
+        "Frequency": "180 MHz",
+        "RAM": "384 kiB",
+        "External RAM": "16 MB",
+        "Flash": "2048 kiB",
+        "External Flash": "16 MB"
+    }
+}

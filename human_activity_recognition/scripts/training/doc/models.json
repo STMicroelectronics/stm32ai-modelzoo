@@ -1,0 +1,29 @@
+{
+    "Custom model":{
+        "model_type":
+            { 
+                "name": "custom"
+            }
+    },
+
+    "IGN model": {
+        "model_type":
+            {        
+                "name": "ign",
+            },
+    },
+
+    "GMP model": {
+        "model_type":
+            {  
+                "name": "gmp",
+            },
+    }    
+
+    "SVC model": {
+        "model_type":
+            {        
+                "name": "svc",
+            },
+    },
+}

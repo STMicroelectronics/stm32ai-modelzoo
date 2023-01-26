@@ -1,0 +1,60 @@
+general:
+  project_name: flowers
+  logs_dir: logs
+  saved_models_dir: saved_models
+
+train_parameters:
+  batch_size: 64
+  training_epochs: 1000
+  optimizer: adam
+  initial_learning: 0.001
+  learning_rate_scheduler: reducelronplateau
+
+dataset:
+  name: flowers
+  class_names: [daisy,dandelion,rose,sunflower,tulip]
+  training_path: /datasets/model_zoo_datasets/flower_photos/
+  validation_path:
+  test_path: 
+
+pre_processing:
+  rescaling: {scale : 127.5, offset : -1}
+  resizing: nearest
+  aspect_ratio: False
+  color_mode: rgb
+
+data_augmentation:
+  RandomFlip: horizontal_and_vertical
+  RandomTranslation: [0.4, 0.3]
+  RandomRotation: 0.2
+  RandomZoom: 0.2
+  RandomContrast: 0.2
+  RandomBrightness: 0.2
+  RandomShear: False
+
+model:
+  model_type: {name : squeezenet, version : v11}
+  input_shape: [224, 224, 3]
+  transfer_learning : False
+  dropout: 0.5
+
+quantization:
+  quantize: True
+  evaluate: True
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+stm32ai:
+  optimization: balanced
+  footprints_on_target: STM32H747I-DISCO
+  path_to_stm32ai: /datasets/stm32ai_linux/stm32ai
+  
+mlflow:
+  uri: ./mlruns
+
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}

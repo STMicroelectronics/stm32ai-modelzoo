@@ -1,0 +1,41 @@
+general:
+  project_name: flowers
+
+dataset:
+  name: flowers
+  class_names: [daisy,dandelion,roses,sunflowers,tulips]
+  training_path: 
+  validation_path:
+  test_path:
+
+pre_processing:
+  rescaling: {scale : 127.5, offset : -1}
+  resizing: nearest
+  aspect_ratio: False
+  color_mode: rgb
+
+model:
+  model_type: {name : mobilenet, version : v2, alpha : 0.35}
+  input_shape: [128, 128, 3]
+  model_path: ../../models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128/mobilenet_v2_0.35_128_int8.tflite
+
+quantization:
+  quantize: False
+  evaluate: False
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+stm32ai:
+  optimization: balanced
+  footprints_on_target: STM32H747I-DISCO
+  path_to_stm32ai: C:/en.x-cube-ai-windows_v7.3.0/windows/stm32ai.exe
+
+mlflow:
+  uri: ./mlruns
+
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}

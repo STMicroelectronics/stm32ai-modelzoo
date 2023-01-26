@@ -1,0 +1,44 @@
+general:
+  project_name: HAR
+
+dataset:
+  name: wisdm
+  class_names: [Jogging,Stationary,Stairs,Walking]
+  training_path:
+
+
+pre_processing:
+  segment_len: 24
+  segment_step: 24
+  preprocessing: True
+
+model:
+  model_type: {name : svc}
+  input_shape: [24,3,1]
+  model_path: ../../models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx
+  
+quantization:
+  quantize: False
+  evaluate: False
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: float
+  quantization_output_type: float
+  export_dir: quantized_models
+
+stm32ai:
+  c_project_path: ../../getting_started
+  serie: STM32L4
+  IDE: GCC
+  verbosity: 1
+  optimization: balanced
+  footprints_on_target: STM32L4R9I-DISCO
+  path_to_stm32ai: C:/STMicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.1.0/STM32CubeIDE/stm32cubeidec.exe
+
+mlflow:
+  uri: ./mlruns
+
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}

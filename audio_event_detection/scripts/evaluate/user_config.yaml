@@ -1,0 +1,73 @@
+
+general:
+  project_name: AED_project
+
+dataset:
+  name: esc10
+  class_names: ['dog', 'chainsaw', 'crackling_fire', 'helicopter', 'rain',
+       'crying_baby', 'clock_tick', 'sneezing', 'rooster', 'sea_waves']
+  audio_path: ..\training\datasets\ESC-50\audio
+  csv_path: ..\training\datasets\ESC-50\meta\esc50.csv
+  file_extension: .wav
+  validation_split: 0.1
+  test_split : 0.2
+  test_path: 
+
+pre_processing:
+  min_length: 1
+  max_length : 10
+  target_rate: 44100
+  top_db: 60
+  frame_length: 1102
+  hop_length: 441
+  trim_last_second: False
+  lengthen : 'after'
+
+feature_extraction:
+  patch_length: 96
+  n_mels: 64
+  overlap: 0.25
+  n_fft: 2048
+  hop_length: 441
+  window_length: 1102
+  window: hann
+  center: False
+  pad_mode: constant
+  power: 1.0
+  fmin: 125
+  fmax: 7500
+  norm: None
+  htk : True
+  to_db : False
+  include_last_patch: False
+
+model:
+  model_type: {name : yamnet, embedding_size : 256}
+  # Shape of a single patch.
+  # Input shape must be [mels, frames]
+  input_shape: [64, 50]
+  expand_last_dim: True
+  multi_label: False
+  model_path: ..\..\models\yamnet\ST_pretrainedmodel_public_dataset\esc_10\yamnet_256_64x96\yamnet_256_64x96_int8.tflite
+
+
+quantization:
+  quantize: True
+  evaluate: True
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: int8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+stm32ai:
+  optimization: balanced
+  footprints_on_target: B-U585I-IOT02A
+  path_to_stm32ai: C:\Users\martinlu\work\Xcubeai-7.3.0\windows\stm32ai.exe
+  
+mlflow:
+  uri: ./mlruns
+
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}

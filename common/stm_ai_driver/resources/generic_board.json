@@ -1,0 +1,28 @@
+{
+	"version"        : "0.1",
+	"description"    : "Generic board",
+	"series"         : "x86",
+    "memory_pool" : {
+        "ram" : [ "32MB" ],
+        "flash" : [ "32MB" ]
+    },
+    "configurations" : [
+        {
+            "name" : "default"
+        },
+        {
+            "name" : "tiny",
+            "memory_pool" : {
+                "ram" : [ "256KB" ],
+                "flash" : [ "1MB" ]
+            }
+        },
+        {
+            "name" : "big",
+            "memory_pool" : {
+                "ram" : [ "128MB" ],
+                "flash" : [ "128MB" ]
+            }
+        }
+    ]
+}
