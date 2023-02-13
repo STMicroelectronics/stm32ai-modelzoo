@@ -1,11 +1,11 @@
-# STMicroelectronics Image Classification Model Evaluate
+# Image classification STM32 model evaluate
 
-This tutorial shows how to quantize and evaluate your pre-trained Image Classification model using *STM32Cube.AI*.
+This tutorial shows how to quantize and evaluate your pre-trained image classification model using *STM32Cube.AI*.
 
 ## Table of contents
 
 * <a href='#benchmark'>Benchmark your model using *STM32Cube.AI* </a><br>
-* <a href='#Evaluate'>Quantize and Evaluate the performance of your model</a><br>
+* <a href='#Evaluate'>Quantize and evaluate the performance of your model</a><br>
 
 
 ## Benchmark your model using *STM32Cube.AI*
@@ -37,7 +37,7 @@ where:
 - `input_shape` -  A *list of int* *[H, W, C]* for the input resolution, e.g. *[224, 224, 3]*.
 - `model_path` - *Path* to your model, the model can be in `.h5`, `SavedModel` or `.tflite` format.
 
-**1.4. Model Quantization:**
+**1.4. Model quantization:**
 
 Quantization optimizes your model to be deployed more efficiently on your embedded device by reducing its memory usage(Flash/RAM) and accelerating its inference time, with little degradation in model accuracy.
 
@@ -65,7 +65,7 @@ where:
 
 STM32Cube.AI will allow you to benchmark your model and estimate its footprints for STM32 target devices.
 
-Make Sure to add the path to the stm32ai excutable under **path_to_stm32ai**, else you will need to provide your credentials to use the **Developer Cloud Services**:
+Make sure to add the path to the stm32ai executable under **path_to_stm32ai**, else you will need to provide your credentials to use the **Developer Cloud Services**:
 
 ![plot](./doc/img/cubeai_config.JPG)
 
@@ -83,7 +83,7 @@ Then, run the following command:
 python evaluate.py
 ```
 
-## Quantize and Evaluate the performance of your model
+## Quantize and evaluate the performance of your model
 <a id='Evaluate'></a>
 
 ### **1. Configure the yaml file**
@@ -137,7 +137,7 @@ python evaluate.py
 
 **3.1. Saved results**
 
-All evaluation artificats are saved under the current output simulation directory **"outputs/{run_time}"**.
+All evaluation artifats are saved under the current output simulation directory **"outputs/{run_time}"**.
 
 For example, you can retrieve the confusion matrix generated after evaluating the float/quantized model on the validation/test set as follows:
 

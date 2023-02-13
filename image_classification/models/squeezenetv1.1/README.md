@@ -1,6 +1,6 @@
 # Squeezenet v1.1 quantized
 
-## **Use case** : [Image Classification](../../../image_classification/README.md)
+## **Use case** : [Image classification](../../../image_classification/README.md)
 
 # Model description
 SqueezeNet is a convolutional neural network that employs design strategies to reduce the number of parameters, notably with the use of fire modules that "squeeze" parameters using 1x1 convolutions.
@@ -9,7 +9,7 @@ SqueezeNet 1.1 has 2.4x less computation and slightly fewer parameters than Sque
 The model is quantized in int8 using tensorflow lite converter.
 
 
-## Network Information
+## Network information
 
 
 | Network Information | Value                                  |
@@ -23,7 +23,7 @@ The model is quantized in int8 using tensorflow lite converter.
 The models are quantized using tensorflow lite converter.
 
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 
 For an image resolution of NxM and P classes
@@ -74,8 +74,8 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model                                                                                                                               | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM     | Total Flash |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|--------------|------------|---------------|-------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128    | STM32H7 | 240.25 KiB     | ~18 KiB     | 716.70 KiB   | ~77  KiB   | ~261.13 KiB   | ~792.01 KiB |
-| [SqueezeNet v1.1 ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite)  | Int8   | 224x224    | STM32H7 | 756.25 KiB     | ~ 18 KiB    | 716.71 KiB   | ~ 77 KiB   | ~775  KiB     | ~793 KiB    |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 240.25 KiB     | ~18 KiB     | 716.70 KiB   | ~77  KiB   | ~261.13 KiB   | ~792.01 KiB |
+| [SqueezeNet v1.1 ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 756.25 KiB     | ~ 18 KiB    | 716.71 KiB   | ~ 77 KiB   | ~775  KiB     | ~793 KiB    |
 
 
 ### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
@@ -83,9 +83,9 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model                                                                                                                               | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|------------------|---------------|-----------|---------------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 277.3 ms            |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 977.8 ms            |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224    | STM32MP157F-DK2  | 2 CPU | 800 MHz   | 224.2 ms **         |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 277.3 ms            |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 977.8 ms            |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz   | 224.2 ms **         |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
@@ -96,10 +96,10 @@ Dataset details: [link](http://download.tensorflow.org/example_images/flower_pho
 
 | Model                                                                                                                               | Format | Resolution | Top 1 Accuracy |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|--------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224.h5)          | Float  | 224x224    | 81.06 %      |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224    | 80.93 %      |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128.h5)          | Float  | 128x128    | 79.02  %     |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128    | 77.93 %      |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224.h5)          | Float  | 224x224x3    | 81.06 %      |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | 80.93 %      |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128.h5)          | Float  | 128x128x3    | 79.02  %     |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | 77.93 %      |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=100' and ReduceLROnPlateau 'patience=80'.
@@ -111,10 +111,10 @@ Dataset details: [link](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-1
 
 | Model                                                                                                                                | Format | Resolution | Top 1 Accuracy |
 |--------------------------------------------------------------------------------------------------------------------------------------|--------|------------|----------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_128/squeezenet_v1.1_128.h5)          | Float  | 128x128    |  52.72 % |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128    | 52.18 % |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_224/squeezenet_v1.1_224.h5)          | Float  | 224x224    | 56.9 % |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224    | 56.43 % |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_128/squeezenet_v1.1_128.h5)          | Float  | 128x128x3    |  52.72 % |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | 52.18 % |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_224/squeezenet_v1.1_224.h5)          | Float  | 224x224x3    | 56.9 % |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/food-101/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | 56.43 % |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=100' and ReduceLROnPlateau 'patience=80'.
@@ -127,10 +127,10 @@ Dataset details: [link](https://data.mendeley.com/datasets/tywbtsjrjv/1) , Licen
 
 | Model                                                                                                                                     | Format | Resolution | Top 1 Accuracy |
 |-------------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_224/squeezenet_v1.1_224.h5)          | Float  | 224x224    | 99.48 %       |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224    | 99.32 %       |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_128/squeezenet_v1.1_128.h5)          | Float  | 128x128    | 99.16 %       |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128    | 99.04 %       |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_224/squeezenet_v1.1_224.h5)          | Float  | 224x224x3    | 99.48 %       |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | 99.32 %       |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_128/squeezenet_v1.1_128.h5)          | Float  | 128x128x3    | 99.16 %       |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/plant-village/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | 99.04 %       |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=30' and ReduceLROnPlateau 'patience=20'.
@@ -151,17 +151,11 @@ Please refer to the generic guideline [here](../../scripts/deployment/README.md)
 
 # References
 
-
 <a id="1">[1]</a>
-“Tf_flowers : tensorflow datasets,” TensorFlow. [Online]. Available: https://www.tensorflow.org/datasets/catalog/tf_flowers.
+"Tf_flowers : tensorflow datasets," TensorFlow. [Online]. Available: https://www.tensorflow.org/datasets/catalog/tf_flowers.
 
 <a id="2">[2]</a>
-J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), “Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep Convolutional Neural Network”, Mendeley Data, V1, doi: 10.17632/tywbtsjrjv.1
+J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), "Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep Convolutional Neural Network", Mendeley Data, V1, doi: 10.17632/tywbtsjrjv.1
 
 <a id="3">[3]</a>
-@inproceedings{bossard14,
-  title = {Food-101 -- Mining Discriminative Components with Random Forests},
-  author = {Bossard, Lukas and Guillaumin, Matthieu and Van Gool, Luc},
-  booktitle = {European Conference on Computer Vision},
-  year = {2014}
-}
+L. Bossard, M. Guillaumin, and L. Van Gool, "Food-101 -- Mining Discriminative Components with Random Forests." European Conference on Computer Vision, 2014.

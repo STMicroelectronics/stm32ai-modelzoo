@@ -12,13 +12,13 @@ tf_train_parameters:
   learning_rate_scheduler: ReduceLROnPlateau
 
 svc_train_parameters:
-  opt_data_keep: 0.02
+  opt_data_keep: 0.1
 
 dataset:
-  name: AST
+  name: mobility_v1
   class_names: [Stationary,Walking,Jogging,Biking]
-  training_path: C:/stmicroelectronics2022/external_model_zoo/AST/train.pkl
-  test_path: C:/stmicroelectronics2022/external_model_zoo/AST/test.pkl
+  training_path: C:/stmicroelectronics2022/external_model_zoo/mobility_v1/train.pkl
+  test_path: C:/stmicroelectronics2022/external_model_zoo/mobility_v1/test.pkl
 
 
 pre_processing:
@@ -27,12 +27,12 @@ pre_processing:
   preprocessing: True
 
 model:
-  model_type: {name : svc}
+  model_type: {name : gmp}
   input_shape: [24,3,1]
 
 quantization:
-  quantize: False
-  evaluate: False
+  quantize: True
+  evaluate: True
   quantizer: TFlite_converter
   quantization_type: PTQ
   quantization_input_type: float

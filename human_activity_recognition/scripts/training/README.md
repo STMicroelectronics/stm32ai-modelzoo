@@ -1,15 +1,15 @@
-# ST Human Activity Recognition Training
+# Human activity recognition STM32 model training
 
 This tutorial shows how to train from scratch a human activity recognition model using WISDM dataset.
 As an example we will demonstrating the workflow on the [WISDM](https://www.cis.fordham.edu/wisdm/dataset.php) dataset.
 
 # Table of contents
 
-* <a href='#Data'>Prepare Dataset</a><br>
-* <a href='#training'>Train and Evaluate Model</a><br>
-* <a href='#results'>Visualize Training Results</a><br>
+* <a href='#Data'>Prepare dataset</a><br>
+* <a href='#training'>Train and evaluate model</a><br>
+* <a href='#results'>Visualize training results</a><br>
 
-# Prepare Dataset
+# Prepare dataset
 <a id='Data'></a>
 
 ### **1. DOWNLOAD THE DATASET AND EXTRACT IT**
@@ -89,7 +89,7 @@ pre_processing:
 - `segment_step` - *Integer*, The difference between the start of first sample of the second frame from first. If same value is used for `segment_length` and `segment_step` no overlap is present in the two consecutive frames, if `segment_step < segment_length` the frame is overlapped for the `delta` samples where `delta =  segment_length - segment_step`.
 - `preprocessing` - *Boolean*, if *True* gravity rotation and supression is applied to first rotate the data in a way that the gravity is always pointing through z-axis and then this gravity is removed.
 
-# Train and Evaluate Model
+# Train and evaluate model
 <a id='training'></a>
 
 ### **1. CONFIGURE TRAINING PARAMETERS**
@@ -148,7 +148,7 @@ where:
 
 ### **2. CONFIGURE EVALUATION PARAMETERS**
 
-**2.1. Model Quantization:**
+**2.1. Model quantization:**
 
 Post training quantization is a good way to optimize your neural network models before deploying. This enables the deployment process more efficient on your embedded devices by reducing the required memory usage (Flash/RAM) and reducing the inference time by accelerating the computations, and all this with little-to-no degradation in the model accuracy.
 
@@ -177,7 +177,7 @@ where:
 
 **2.2. Benchmark your model with STM32Cube.AI:**
 
-CubeAI will allow you to benchmark your model and estimate its footprints for STM32 target devices.
+STM32Cube.AI will allow you to benchmark your model and estimate its footprints for STM32 target devices.
 
 Make Sure to add the path to your stm32ai excutable under **path_to_stm32ai**:
 ```python
@@ -203,7 +203,7 @@ python train.py
 ```
 
 
-# Visualize Training Results
+# Visualize training results
 <a id='results'></a>
 
 ### **1. SAVED RESULTS**

@@ -1,6 +1,6 @@
 # Fd-MobileNet quantized
 
-## **Use case** : [Image Classification](../README.md)
+## **Use case** : [Image classification](../README.md)
 
 # Model description
 Fd-MobileNet stands for Fast-downsampling MobileNet. It was initially introduced in this [paper](https://arxiv.org/pdf/1802.03750.pdf).
@@ -14,7 +14,7 @@ The model is quantized in int8 using Tensorflow Lite converter.
 
 Performances of a ST custom model derived from Fd-MobileNet is also proposed below.
 
-## Network Information
+## Network information
 | Network Information     | Value                                |
 |-------------------------|--------------------------------------|
 |  Framework              | TensorFlow Lite                      |
@@ -24,7 +24,7 @@ Performances of a ST custom model derived from Fd-MobileNet is also proposed bel
 
 The models are quantized using tensorflow lite converter.
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 For an image resolution of NxM and P classes and 0.25 alpha parameter :
 
 | Input Shape   | Description                                              |
@@ -59,29 +59,29 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 ### Reference MCU memory footprints based on Flowers dataset (see Accuracy for details on dataset)
-| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash |
-|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-----------|-------------|
-| FdMobileNet 0.25  | Int8   | 224x224    | STM32H7 | 152 KiB        | 16 KiB      | 129 KiB       | 61 KiB     | 168 KiB   | 190 KiB     |
-| ST FdMobileNet v1 | Int8   | 224x224    | STM32H7 | 207 KiB        | 16 KiB      | 145 KiB       | 63 KiB     | 223 KiB   | 208 KiB     |
-| FdMobileNet 0.25  | Int8   | 128x128    | STM32H7 | 51 KiB         | 16 KiB      | 129 KiB       | 61 KiB     | 67 KiB    | 190 KiB     |
-| ST FdMobileNet v1 | Int8   | 128x128    | STM32H7 | 71 KiB         | 16 KiB      | 145 KiB       | 63 KiB     | 87 KiB    | 208 KiB     |
+| Model             | Format | Resolution   | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash |
+|-------------------|--------|--------------|---------|----------------|-------------|---------------|------------|-----------|-------------|
+| FdMobileNet 0.25  | Int8   | 224x224x3    | STM32H7 | 152 KiB        | 16 KiB      | 129 KiB       | 61 KiB     | 168 KiB   | 190 KiB     |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | STM32H7 | 207 KiB        | 16 KiB      | 145 KiB       | 63 KiB     | 223 KiB   | 208 KiB     |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | STM32H7 | 51 KiB         | 16 KiB      | 129 KiB       | 61 KiB     | 67 KiB    | 190 KiB     |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | STM32H7 | 71 KiB         | 16 KiB      | 145 KiB       | 63 KiB     | 87 KiB    | 208 KiB     |
 
 
 ### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
-| Model             | Format | Resolution | Board            | Execution Engine | Frequency     | Inference time (ms) |
-|-------------------|--------|------------|------------------|------------------|---------------|---------------------|
-| FdMobileNet 0.25  | Int8   | 224x224    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 63.19 ms            |
-| ST FdMobileNet v1 | Int8   | 224x224    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 117.3 ms            |
-| FdMobileNet 0.25  | Int8   | 128x128    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 21.97 ms            |
-| ST FdMobileNet v1 | Int8   | 128x128    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 39.5 ms             |
-| FdMobileNet 0.25  | Int8   | 224x224    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 112.4 ms            |
-| ST FdMobileNet v1 | Int8   | 224x224    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 204.3 ms            |
-| FdMobileNet 0.25  | Int8   | 128x128    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 39.47 ms            |
-| ST FdMobileNet v1 | Int8   | 128x128    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 69.49 ms            |
-| FdMobileNet 0.25  | Int8   | 224x224    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 23.55 ms **         |
-| ST FdMobileNet v1 | Int8   | 224x224    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 39.48 ms **         |
-| FdMobileNet 0.25  | Int8   | 128x128    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 8.53 ms **          |
-| ST FdMobileNet v1 | Int8   | 128x128    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 13.42 ms **         |
+| Model             | Format | Resolution   | Board            | Execution Engine | Frequency     | Inference time (ms) |
+|-------------------|--------|--------------|------------------|------------------|---------------|---------------------|
+| FdMobileNet 0.25  | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 63.19 ms            |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 117.3 ms            |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 21.97 ms            |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 39.5 ms             |
+| FdMobileNet 0.25  | Int8   | 224x224x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 112.4 ms            |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 204.3 ms            |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 39.47 ms            |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz       | 69.49 ms            |
+| FdMobileNet 0.25  | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 23.55 ms **         |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 39.48 ms **         |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 8.53 ms **          |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 13.42 ms **         |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
@@ -89,16 +89,16 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 Dataset details: http://download.tensorflow.org/example_images/flower_photos.tgz , License CC - BY 2.0
 Number of classes: 5, 3670 files
 
-| Model             | Format | Resolution | Top 1 Accuracy |
-|-------------------|--------|------------|----------------|
-| FdMobileNet 0.25  | Float  | 224x224    | 0.8719         |
-| FdMobileNet 0.25  | Int8   | 224x224    | 0.8597         |
-| ST FdMobileNet v1 | Float  | 224x224    | 0.8719         |
-| ST FdMobileNet v1 | Int8   | 224x224    | 0.8692         |
-| FdMobileNet 0.25  | Float  | 128x128    | 0.8433         |
-| FdMobileNet 0.25  | Int8   | 128x128    | 0.842          |
-| ST FdMobileNet v1 | Float  | 128x128    | 0.8501         |
-| ST FdMobileNet v1 | Int8   | 128x128    | 0.8474         |
+| Model             | Format | Resolution   | Top 1 Accuracy |
+|-------------------|--------|--------------|----------------|
+| FdMobileNet 0.25  | Float  | 224x224x3    | 0.8719         |
+| FdMobileNet 0.25  | Int8   | 224x224x3    | 0.8597         |
+| ST FdMobileNet v1 | Float  | 224x224x3    | 0.8719         |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | 0.8692         |
+| FdMobileNet 0.25  | Float  | 128x128x3    | 0.8433         |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | 0.842          |
+| ST FdMobileNet v1 | Float  | 128x128x3    | 0.8501         |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | 0.8474         |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=200' and ReduceLROnPlateau 'factor=0.5', 'patience=60'.
@@ -107,16 +107,16 @@ In particular, EarlyStopping 'patience=200' and ReduceLROnPlateau 'factor=0.5', 
 Dataset details: https://data.mendeley.com/datasets/tywbtsjrjv/1 , License CC0 1.0
 Number of classes: 39, number of files: 55448
 
-| Model             | Format | Resolution | Top 1 Accuracy |
-|-------------------|--------|------------|----------------|
-| FdMobileNet 0.25  | Float  | 224x224    | 0.9981         |
-| FdMobileNet 0.25  | Int8   | 224x224    | 0.9959         |
-| ST FdMobileNet v1 | Float  | 224x224    | 0.9983         |
-| ST FdMobileNet v1 | Int8   | 224x224    | 0.9979         |
-| FdMobileNet 0.25  | Float  | 128x128    | 0.9961         |
-| FdMobileNet 0.25  | Int8   | 128x128    | 0.9835         |
-| ST FdMobileNet v1 | Float  | 128x128    | 0.9967         |
-| ST FdMobileNet v1 | Int8   | 128x128    | 0.9608         |
+| Model             | Format | Resolution   | Top 1 Accuracy |
+|-------------------|--------|--------------|----------------|
+| FdMobileNet 0.25  | Float  | 224x224x3    | 0.9981         |
+| FdMobileNet 0.25  | Int8   | 224x224x3    | 0.9959         |
+| ST FdMobileNet v1 | Float  | 224x224x3    | 0.9983         |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | 0.9979         |
+| FdMobileNet 0.25  | Float  | 128x128x3    | 0.9961         |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | 0.9835         |
+| ST FdMobileNet v1 | Float  | 128x128x3    | 0.9967         |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | 0.9608         |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=200' and ReduceLROnPlateau 'factor=0.5', 'patience=40'.
@@ -125,16 +125,16 @@ In particular, EarlyStopping 'patience=200' and ReduceLROnPlateau 'factor=0.5', 
 Dataset details: https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/,
 Number of classes: 101, number of files: 101000
 
-| Model             | Format | Resolution | Top 1 Accuracy |
-|-------------------|--------|------------|----------------|
-| FdMobileNet 0.25  | Float  | 224x224    | 0.5761         |
-| FdMobileNet 0.25  | Int8   | 224x224    | 0.5636         |
-| ST FdMobileNet v1 | Float  | 224x224    | 0.6477         |
-| ST FdMobileNet v1 | Int8   | 224x224    | 0.636          |
-| FdMobileNet 0.25  | Float  | 128x128    | 0.4597         |
-| FdMobileNet 0.25  | Int8   | 128x128    | 0.4476         |
-| ST FdMobileNet v1 | Float  | 128x128    | 0.5318         |
-| ST FdMobileNet v1 | Int8   | 128x128    | 0.5248         |
+| Model             | Format | Resolution   | Top 1 Accuracy |
+|-------------------|--------|--------------|----------------|
+| FdMobileNet 0.25  | Float  | 224x224x3    | 0.5761         |
+| FdMobileNet 0.25  | Int8   | 224x224x3    | 0.5636         |
+| ST FdMobileNet v1 | Float  | 224x224x3    | 0.6477         |
+| ST FdMobileNet v1 | Int8   | 224x224x3    | 0.636          |
+| FdMobileNet 0.25  | Float  | 128x128x3    | 0.4597         |
+| FdMobileNet 0.25  | Int8   | 128x128x3    | 0.4476         |
+| ST FdMobileNet v1 | Float  | 128x128x3    | 0.5318         |
+| ST FdMobileNet v1 | Int8   | 128x128x3    | 0.5248         |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=100' and ReduceLROnPlateau 'factor=0.5', 'patience=20'.
@@ -153,15 +153,10 @@ Please refer to the generic guideline [here](../../scripts/deployment/README.md)
 # References
 
 <a id="1">[1]</a>
-“Tf_flowers : tensorflow datasets,” TensorFlow. [Online]. Available: https://www.tensorflow.org/datasets/catalog/tf_flowers.
+"Tf_flowers : tensorflow datasets," TensorFlow. [Online]. Available: https://www.tensorflow.org/datasets/catalog/tf_flowers.
 
 <a id="2">[2]</a>
-J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), “Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep Convolutional Neural Network”, Mendeley Data, V1, doi: 10.17632/tywbtsjrjv.1
+J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), "Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep Convolutional Neural Network", Mendeley Data, V1, doi: 10.17632/tywbtsjrjv.1
 
 <a id="3">[3]</a>
-@inproceedings{bossard14,
-  title = {Food-101 -- Mining Discriminative Components with Random Forests},
-  author = {Bossard, Lukas and Guillaumin, Matthieu and Van Gool, Luc},
-  booktitle = {European Conference on Computer Vision},
-  year = {2014}
-}
+L. Bossard, M. Guillaumin, and L. Van Gool, "Food-101 -- Mining Discriminative Components with Random Forests." European Conference on Computer Vision, 2014.

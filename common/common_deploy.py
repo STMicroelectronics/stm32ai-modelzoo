@@ -57,7 +57,7 @@ def stm32ai_deploy(cfg, debug=False):
             shutil.move(stm32ai_output, os.path.join(HydraConfig.get().runtime.output_dir, "generated"))
             stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "generated")
 
-            # Checking if cubeai was used locally to add the Lib/Inc generation
+            # Checking if STM32Cube.AI was used locally to add the Lib/Inc generation
             if not os.listdir(stm32ai_output) or ('Lib' or 'Inc') not in os.listdir(stm32ai_output):
                 stmaic_local_call(cfg, session)
         else:

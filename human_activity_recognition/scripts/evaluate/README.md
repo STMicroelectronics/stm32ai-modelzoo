@@ -1,4 +1,4 @@
-# STMicroelectronics Human Activity Recognition Model Evaluate
+# Human activity recognition STM32 model evaluate
 
 This tutorial shows how to quantize and evaluate your pre-trained keras models using *STM32Cube.AI*.
 
@@ -43,7 +43,7 @@ where:
 - `input_shape` -  A *list of int* *[H, W, C]* for the input resolution, e.g. *[24, 3, 1]*.
 - `model_path` - *Path* to your model, the model can be in `.h5`, `.onnx` or `.tflite` format.
 
-**1.4. Model Quantization:**
+**1.4. Model quantization:**
 
 Quantization optimizes your model to be deployed more efficiently on your embedded device by reducing its memory usage(Flash/RAM) and accelerating its inference time, with little-to-no degradation in model accuracy.
 
@@ -132,7 +132,7 @@ dataset:
 
 where:
 
-- `name` - Dataset name. Exception for *Cifar  datasets*, the name should be "*cifar10*" or "*cifar100*".
+- `name` - Dataset name.
 - `class_names` - A list containing the classes name.
 - `training_path` - The directory where the training set is located, or the dataset path.
 

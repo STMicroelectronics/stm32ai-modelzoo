@@ -1,3 +1,3 @@
-# Public Pretrained Models on Public Dataset
+# Public pretrained models on public dataset
 
-This directory contains public Image Classification models trained on public datasets.
+This directory contains public image classification models trained on public datasets.

@@ -1,28 +1,28 @@
-# ST Human Activity Recognition model deployment
+# Human activity recognition STM32 model deployment
 
-This tutorial shows how to deploy your pre-trained keras or sklearn (onnx) models on an STM32 board using *CubeAI*. It will also cover the quantization of the pretrained keras models, to have an even more effecient deployment. 
+This tutorial shows how to deploy your pre-trained keras or sklearn (onnx) models on an STM32 board using *STM32Cube.AI*. It will also cover the quantization of the pretrained keras models, to have an even more effecient deployment. 
 
-In addition, this tutorial will also explain how to deploy a model from **[ST public model zoo](../../models/readme.md)** directly on your *STM32 target board*. In this version only deployment on the [STEVAL-STWINKT1X](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html) is supported.
+In addition, this tutorial will also explain how to deploy a model from **[ST public model zoo](../../models/README.md)** directly on your *STM32 target board*. In this version only deployment on the [STEVAL-STWINKT1X](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html) is supported.
 
 ## Table of contents
- - <a href='#prereqs'>Before You Start</a><br>
+ - <a href='#prereqs'>Before you start</a><br>
 
- - <a href='#deploy'>Deploy a Keras model on STM32 board</a><br>
+ - <a href='#deploy'>Deploy a keras model on STM32 board</a><br>
 
  - <a href='#quantize'>Quantize your model before deployment</a><br>
  - [Deploy a model from ST public model zoo](#Tflite)
 
 <!-- [Validating the performance of the C application](#validation) -->
 
-## Before You Start
+## Before you start
 <a id='prereqs'></a>
 
 
-Please check out [ST model zoo](../../models/README.md) for Human Activity Recognition (HAR).
+Please check out [STM32 model zoo](../../models/README.md) for human activity recognition (HAR).
 
-### **1. Hardware Setup**
+### **1. Hardware setup**
 
-The [Getting Started](../../getting_started/README.md) is running on an STMicroelectronics evaluation kit board called [STEVAL-STWINKT1B](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html). Although this board has many sensors in this version we support only this board, and running an accelerometer ISM330DHCX.
+The [getting started](../../getting_started/README.md) is running on an STMicroelectronics evaluation kit board called [STEVAL-STWINKT1B](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html). Although this board has many sensors in this version we support only this board, and running an accelerometer ISM330DHCX.
 
 
 ### **2. Software requirements**
@@ -44,7 +44,7 @@ You need to download and install the following software:
 
 ### **1. Configure the yaml file**
 
-You can run a demo using a pretrained model from [ST model zoo](../../models/README.md). Please refer to the yaml file provided alongside the tflite model to fill the following parameters in [user_config.yaml](user_config.yaml).
+You can run a demo using a pretrained model from [STM32 model zoo](../../models/README.md). Please refer to the yaml file provided alongside the tflite model to fill the following parameters in [user_config.yaml](user_config.yaml).
 
 As an example, we will show how to deploy the model [ign_wl_24.h5](../../models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5) pretrained on WISDM dataset using the necessary parameters provided in [ign_wl_24_config.yaml](../../models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_config.yaml).
 
@@ -63,7 +63,7 @@ where:
 
 - `project_name` - *String*, name of the project. `HAR` or anyother name of your choice.
 
-**1.2. Dataset Configuration:**
+**1.2. Dataset configuration:**
 
 You need to specify some parameters related to the dataset and the preprocessing of the data in the **[user_config.yaml](user_config.yaml)** which will be parsed into a header file used to run the C application.
 
@@ -78,7 +78,7 @@ Configure the **dataset** section in **[user_config.yaml](user_config.yaml)** as
 
 where:
 
-- `name` - Dataset name. `wisdm` is used here, for models trained on AST specify `ast`.
+- `name` - Dataset name. `wisdm` is used here, for models trained on ST propritery dataset mobility_v1, specify `mobility_v1`.
 - `class_names` - A list containing the classes name. This will be used to show the inference result on the serial terminal, hence providing the right order which was used at the time of training is very important.
 
 **1.2.2. Preprocessing info:**
@@ -101,7 +101,7 @@ pre_processing:
 
 **1.3. Load model:**
 
-You can run a demo using any of the pretrained models provided in [ST HAR model zoo](../../models/README.md) for human activity recognition. These models were trained and quantized on specific datasets (e.g. a public dataset-WISDM, or a custom ST dataset-AST).
+You can run a demo using any of the pretrained models provided in [ST HAR model zoo](../../models/README.md) for human activity recognition. These models were trained and quantized on specific datasets (e.g. a public dataset WISDM, or a custom ST dataset mobility_v1).
 
 Also, you can directly deploy your own pretrained model if quantized using *TFlite Converter* and respecting the specified [intput/output types](#3-specifications), else you can quantize your model before deploying it by following these [steps](#quantize).
 
@@ -118,10 +118,10 @@ where:
 
 - `model_type` - A *dictionary* with keys relative to the model topology (Example for `ign` family *{name : ign}*, else for a custom model use *{name : custom}*.
 - `input_shape` -  A *list of int* *[wl, 3, 1]* for the input resolution, e.g. *[24, 3, 1]*.
-- `model_path` - *Path* to pretained model. Please check out some pretrained models from ST model zoo [here](../../models/README.md).
+- `model_path` - *Path* to pretained model. Please check out some pretrained models from STM32 model zoo [here](../../models/README.md).
 
 
-**1.4. C project Configuration:**
+**1.4. C project configuration:**
 
 To deploy the model in **STEVAL-STWINKT1B** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application and flash the board.
 
@@ -192,7 +192,7 @@ This will generate the C code, show the foot-prints (and inference time), copy t
  - `class_names` - A list containing the classes name.
  - `training_path` - The path to the text file containing the wisdm dataset.
 
- **3.1.2. Model Quantization:**
+ **3.1.2. Model quantization:**
 
  Configure the **quantization** section in **[user_config.yaml](user_config.yaml)** as the following:
 
@@ -212,9 +212,9 @@ This will generate the C code, show the foot-prints (and inference time), copy t
  - `quantize` - *Boolean*, if True model will be quantized, else False.
  - `evaluate` - *Boolean*, if True evaluate float and quantized model on the test sets if path to `dataset.traing_path` are provided, else False.
  - `quantizer` - *String*, only option is "TFlite_converter" which will convert model trained weights from float to integer values. The quantized model will be saved in TensorFlow Lite format.
- - `quantization_type` - *String*, only option is "PTQ",i.e. "Post-Training Quantization".
- - `quantization_input_type` - **float**, only supported options for *Getting Started*.
- - `quantization_output_type` - **float**, only supported option for *Getting Started*.
+ - `quantization_type` - *String*, only option is "PTQ",i.e. "post-training quantization".
+ - `quantization_input_type` - **float**, only supported options for *getting started*.
+ - `quantization_output_type` - **float**, only supported option for *getting started*.
  - `export_dir` - *String*, referres to directory name to save the quantized model.
 
 

@@ -1,6 +1,6 @@
 # ResNet v1  quantized
 
-## **Use case** : [Image Classification](../../../image_classification/README.md)
+## **Use case** : [Image classification](../../../image_classification/README.md)
 
 # Model description
 
@@ -15,10 +15,10 @@ The model is quantized in int8 using tensorflow lite converter.
 In addition, we introduce a new model family inspired from ResNet v1 which takes benefit from hybrid quantization.
 By hybrid quantization, we mean that whenever it is possible, some network layers are quantized for weights and/or activations on less than 8 bits.
 These networks no longer need to be converted with tensorflow lite. They are quantized during training (Quantization Aware Training).
-CubeAI is able to import them directly and to generate the corresponding FW code.  
+STM32Cube.AI is able to import them directly and to generate the corresponding FW code.  
 
 
-## Network Information
+## Network information
 
 | Network Information     | Value                                                                   |
 |-------------------------|-------------------------------------------------------------------------|
@@ -29,7 +29,7 @@ CubeAI is able to import them directly and to generate the corresponding FW code
 
 The models are quantized using tensorflow lite converter.
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 For an image resolution of NxM and P classes
 
@@ -77,20 +77,20 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model                                                                                                          | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash |
 |----------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|---------------|------------|-----------|-------------|
-| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8   | 32x32      | STM32H7 | 55.28 KiB      | ~8 KiB      | 76.9 KiB      | ~46 KiB    | ~64 KiB   | 123 KiB     |
-| ST ResNet 8 Hybrid v1                                                                                          | Hybrid | 32x32      | STM32H7 | 72 KiB         | ~20 KiB     | 66.28 KiB     | ~75 KiB    | ~92 KiB   | 141 KiB     |
-| ST ResNet 8 Hybrid v2                                                                                          | Hybrid | 32x32      | STM32H7 | 72 KiB         | ~20 KiB     | 85.8 KiB      | ~75 KiB    | ~92 KiB   | 161 KiB     |
-| ST ResNet 8 Hybrid v3                                                                                          | Hybrid | 32x32      | STM32H7 | 72 KiB         | ~20 KiB     | 66.28 KiB     | ~75 KiB    | ~92 KiB   | 141 KiB     |
+| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8   | 32x32x3      | STM32H7 | 55.28 KiB      | ~8 KiB      | 76.9 KiB      | ~46 KiB    | ~64 KiB   | 123 KiB     |
+| ST ResNet 8 Hybrid v1                                                                                          | Hybrid | 32x32x3      | STM32H7 | 72 KiB         | ~20 KiB     | 66.28 KiB     | ~75 KiB    | ~92 KiB   | 141 KiB     |
+| ST ResNet 8 Hybrid v2                                                                                          | Hybrid | 32x32x3      | STM32H7 | 72 KiB         | ~20 KiB     | 85.8 KiB      | ~75 KiB    | ~92 KiB   | 161 KiB     |
+| ST ResNet 8 Hybrid v3                                                                                          | Hybrid | 32x32x3      | STM32H7 | 72 KiB         | ~20 KiB     | 66.28 KiB     | ~75 KiB    | ~92 KiB   | 141 KiB     |
 
 ### Reference inference time based on Cifar 10 dataset (see Accuracy for details on dataset)
 
 | Model                                                                                                          | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time (ms) |
 |----------------------------------------------------------------------------------------------------------------|--------|------------|------------------|------------------|--------------|---------------------|
-| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8   | 32x32      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 37.91 ms            |
-| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8   | 32x32      | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 10.97 ms **         |
-| ST ResNet 8 Hybrid v1                                                                                          | Hybrid | 32x32      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 36.48 ms            |
-| ST ResNet 8 Hybrid v2                                                                                          | Hybrid | 32x32      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 32.81 ms            |
-| ST ResNet 8 Hybrid v3                                                                                          | Hybrid | 32x32      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 28.71 ms            |
+| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8   | 32x32x3      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 37.91 ms            |
+| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8   | 32x32x3      | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 10.97 ms **         |
+| ST ResNet 8 Hybrid v1                                                                                          | Hybrid | 32x32x3      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 36.48 ms            |
+| ST ResNet 8 Hybrid v2                                                                                          | Hybrid | 32x32x3      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 32.81 ms            |
+| ST ResNet 8 Hybrid v3                                                                                          | Hybrid | 32x32x3      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 28.71 ms            |
 
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
@@ -99,15 +99,15 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model                                                                                                              | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
 |--------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8   | 32x32      | STM32H7 | 55.28 KiB      | ~28 KiB     | 464.38 KiB    | ~78 KiB    | ~84 KiB     | ~ 542 KiB   |
+| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8   | 32x32x3      | STM32H7 | 55.28 KiB      | ~28 KiB     | 464.38 KiB    | ~78 KiB    | ~84 KiB     | ~ 542 KiB   |
 
 
 ### Reference inference time based on Cifar 100 dataset (see Accuracy for details on dataset)
 
 | Model                                                                                                              | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time (ms) |
 |--------------------------------------------------------------------------------------------------------------------|--------|------------|------------------|------------------|--------------|---------------------|
-| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8   | 32x32      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 192 ms              |
-| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8   | 32x32      | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 55.36 ms **         |
+| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8   | 32x32x3      | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 192 ms              |
+| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8   | 32x32x3      | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 55.36 ms **         |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
@@ -119,11 +119,11 @@ images: 60 000
 
 | Model                                                                                                          | Format   | Resolution | Top 1 Accuracy |
 |----------------------------------------------------------------------------------------------------------------|----------|------------|----------------|
-| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32.h5)          | Float    | 32x32      | 85.63 %        |
-| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8     | 32x32      | 84.95 %        |
-| ST ResNet 8 Hybrid v1                                                                                          | Hybrid   | 32x32      | 85.89 %        |
-| ST ResNet 8 Hybrid v2                                                                                          | Hybrid   | 32x32      | 85.24%         |
-| ST ResNet 8 Hybrid v3                                                                                          | Hybrid   | 32x32      | 84.37%         |
+| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32.h5)          | Float    | 32x32x3      | 85.63 %        |
+| [ResNet v1 8](../resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32/resnet_v1_8_32_int8.tflite) | Int8     | 32x32x3      | 84.95 %        |
+| ST ResNet 8 Hybrid v1                                                                                          | Hybrid   | 32x32x3      | 85.89 %        |
+| ST ResNet 8 Hybrid v2                                                                                          | Hybrid   | 32x32x3      | 85.24%         |
+| ST ResNet 8 Hybrid v3                                                                                          | Hybrid   | 32x32x3      | 84.37%         |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=200' and ReduceLROnPlateau 'factor=0.75', 'patience=50'.
@@ -136,8 +136,8 @@ Number of images:  600 000
 
 | Model                                                                                                             | Format  | Resolution | Top 1 Accuracy |
 |-------------------------------------------------------------------------------------------------------------------|---------|------------|----------------|
-| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32.h5)          | Float   | 32x32      | 66.3%          |
-| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8    | 32x32      | 65.47%         |
+| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32.h5)          | Float   | 32x32x3      | 66.3%          |
+| [ResNet v1 32](../resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32/resnet_v1_32_32_int8.tflite) | Int8    | 32x32x3      | 65.47%         |
 
 Please note that these accuracies are obtained after fine-tuning ReduceLROnPlateau and EarlyStopping parameters in [callbacks.py](../../scripts/utils/callbacks.py).
 In particular, EarlyStopping 'patience=200' and ReduceLROnPlateau 'patience=50'.
@@ -155,17 +155,10 @@ Please refer to the generic guideline [here](../../scripts/deployment/README.md)
 # References
 
 <a id="1">[1]</a>
-“Tf_flowers : tensorflow datasets,” TensorFlow. [Online].
-Available: https://www.tensorflow.org/datasets/catalog/tf_flowers.
+"Tf_flowers : tensorflow datasets," TensorFlow. [Online]. Available: https://www.tensorflow.org/datasets/catalog/tf_flowers.
 
 <a id="2">[2]</a>
-J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), “Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep
-Convolutional Neural Network”, Mendeley Data, V1, doi: 10.17632/tywbtsjrjv.1
+J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), "Data for: Identification of Plant Leaf Diseases Using a 9-layer Deep Convolutional Neural Network", Mendeley Data, V1, doi: 10.17632/tywbtsjrjv.1
 
 <a id="3">[3]</a>
-@inproceedings{bossard14,
-title = {Food-101 -- Mining Discriminative Components with Random Forests},
-author = {Bossard, Lukas and Guillaumin, Matthieu and Van Gool, Luc},
-booktitle = {European Conference on Computer Vision},
-year = {2014}
-}
+L. Bossard, M. Guillaumin, and L. Van Gool, "Food-101 -- Mining Discriminative Components with Random Forests." European Conference on Computer Vision, 2014.

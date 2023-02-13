@@ -100,8 +100,7 @@ class WISDM:
             dataset['Activity_Label'] = ['Stairs' if activity == 'Upstairs' or activity == 'Downstairs' else activity
                                          for activity in dataset['Activity_Label']]
 
-        # removing the columns for time stamp and rearranging remaining
-        # columns to match AST dataset
+        # removing the columns for time stamp and rearranging remaining columns
         dataset = dataset[['x', 'y', 'z', 'Activity_Label']]
         # dataset = dataset[dataset.Activity_Label != 'Stairs']
         datasetTrain, datasetTest = self.split_train_test_data(dataset)

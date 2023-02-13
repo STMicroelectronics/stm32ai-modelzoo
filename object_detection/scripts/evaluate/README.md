@@ -1,6 +1,6 @@
-# STMicroelectronics Object Detection Model Evaluation
+# Object detection STM32 model evaluation
 
-This tutorial shows how to quantize and evaluate your pre-trained Object Detection model using *STM32Cube.AI*.
+This tutorial shows how to quantize and evaluate your pre-trained object detection model using *STM32Cube.AI*.
 
 ## Table of contents
 
@@ -37,7 +37,7 @@ where:
 - `input_shape` -  A *list of int* *[H, W, C]* for the input resolution, currently only *[256, 256, 3]*, *[224, 224, 3]*, *[192, 192, 3]* are supported.
 - `model_path` - *Path* to your model, the model can be in `.h5`, `SavedModel` or `.tflite` format.
 
-**1.4. Model Quantization:**
+**1.4. Model quantization:**
 
 Quantization optimizes your model to be deployed more efficiently on your embedded device by reducing its memory usage(Flash/RAM) and accelerating its inference time, with little degradation in model accuracy.
 

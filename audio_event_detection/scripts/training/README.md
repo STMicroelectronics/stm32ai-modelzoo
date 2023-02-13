@@ -1,4 +1,4 @@
-# STMicroelectronics AED Model Training
+# Audio event detection STM32 model training
 
 This tutorial shows how to train from scratch or apply transfer learning on an AED model using a custom dataset.
 As an example we will demonstrating the workflow on the [ESC-10]("https://github.com/karolpiczak/ESC-50") classification dataset.

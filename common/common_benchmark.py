@@ -126,7 +126,7 @@ def get_credentials():
 
 def Cloud_analyze(cfg, quantized_model_path):
 
-    """ Use Developer Cloud Services to analyze model footprints """
+    """ Use STM32Cube.AI STM32Cube.AI Developer Cloud Services to analyze model footprints """
 
     print("[INFO] : To create an account https://stm32ai-cs.st.com/home. Enter credentials:")
     login_success = 0
@@ -163,7 +163,7 @@ def Cloud_analyze(cfg, quantized_model_path):
 
 def Cloud_benchmark(cfg, quantized_model_path, credentials, c_code=False):
 
-    """ Use Developer Cloud Services to benchmark the model on a board and generate C code. """
+    """ Use STM32Cube.AI Developer Cloud Services to benchmark the model on a board and generate C code. """
 
     stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "stm32ai_files")
     username, password = credentials
@@ -184,7 +184,7 @@ def Cloud_benchmark(cfg, quantized_model_path, credentials, c_code=False):
         boards = ai.get_benchmark_boards()
         board_names = [boards[i].name for i in range(len(boards))]
 
-        # Upload model to Developer Cloud Services
+        # Upload model to STM32Cube.AI Developer Cloud Services
         ai.upload_model(quantized_model_path)
         model_name = os.path.basename(quantized_model_path)
 
@@ -219,7 +219,7 @@ def Cloud_benchmark(cfg, quantized_model_path, credentials, c_code=False):
         if c_code:
             # Generate model using local file
             try:
-                print("[INFO] : Generating the model C code and retrieving CubeAI Lib from Developer Cloud Services...")
+                print("[INFO] : Generating the model C code and retrieving STM32Cube.AI Lib from STM32Cube.AI Developer Cloud Services...")
 
                 ai.generate(CliParameters(model=quantized_model_path, output=stm32ai_output, fromModel=get_model_name(cfg),
                                           includeLibraryForSerie=CliLibrarySerie(cfg.stm32ai.serie.upper()),
@@ -245,7 +245,7 @@ def stm32ai_benchmark(cfg, model_path, c_code):
             credentials = get_credentials()
             output_benchmark = Cloud_benchmark(cfg, model_path, credentials, c_code)
             if output_benchmark == 0:
-                raise Exception("Connection failed, using local cubeai. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+                raise Exception("Connection failed, using local STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
 
         except Exception as e:
             print("[FAIL] :", e)
@@ -260,7 +260,7 @@ def stm32ai_benchmark(cfg, model_path, c_code):
                     if c_code:
                         # Generate model using local file
                         try:
-                            print("[INFO] : Generating the model C code and retrieving CubeAI Lib from Developer Cloud Services...")
+                            print("[INFO] : Generating the model C code and retrieving STM32Cube.AI Lib from STM32Cube.AI Developer Cloud Services...")
                             stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "stm32ai_files")
                             ai.generate(CliParameters(model=model_path, output=stm32ai_output, fromModel=get_model_name(cfg),
                                                       includeLibraryForSerie=CliLibrarySerie(cfg.stm32ai.serie.upper()),

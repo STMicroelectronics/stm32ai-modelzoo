@@ -1,3 +1,3 @@
-# STMicroelectronics Object Detection Model Deployment
+# Object detection STM32 model deployment
 
 Coming soon.

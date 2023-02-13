@@ -1,4 +1,4 @@
-# ST AED Model deployment
+# Audio event detection STM32 model deployment
 
 This tutorial shows how to quantize and deploy your pre-trained keras model on an STM32 board using *STM32Cube.AI*.
 This tutorial will cover also how to deploy a model from **ST public model zoo** directly on your *STM32 board*.

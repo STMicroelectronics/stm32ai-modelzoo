@@ -1,4 +1,4 @@
-# STMicroelectronics AED Model Evaluate
+# Audio event detection STM32 model evaluate
 
 This tutorial shows how to quantize and evaluate your pre-trained keras model using *STM32Cube.AI*.
 

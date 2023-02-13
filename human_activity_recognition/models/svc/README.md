@@ -1,10 +1,10 @@
 # SVC HAR model
 
-## **Use case** : [Human Activity Recognition (HAR)](../../../human_activity_recognition/)
+## **Use case** : [Human activity recognition](../../../human_activity_recognition/)
 
 # Model description
 
-SVC are support vector classifiers for multiclass classification. These models are based on support vector machines and can be made using the sklearn framework. Just like a neural network these models can also do the human activity recognition  on the accelerometer data. In CubeAI we support the generation and deployment of these models saved as .onnx format.
+SVC are support vector classifiers for multiclass classification. These models are based on support vector machines and can be made using the sklearn framework. Just like a neural network these models can also do the human activity recognition  on the accelerometer data. In STM32Cube.AI we support the generation and deployment of these models saved as .onnx format.
 
 For SVC models provided in this model zoo, the input is vectorized window of (wl x 3) matrix, where wl is window lenght and 3 is the number of axes (x, y and z). As a preprocessing we apply rotate and suppress the gravity filter. Then to reduce the foot print of these models we perform the dimensionality reduction using TSVD before fitting the SVC. The reason being SVC saves the representative samples of the data called support vectors which help to seperate the boundries of different classes.
 
@@ -12,9 +12,9 @@ The naming of the models svc_wl_24_pct_10 means that the data is windowed as 24 
 
 The only input required to the model building is the percentage of the optimization data controlled by `svc_train_parameters.opt_data_keep`, `model.model_type.name` and `model.input_shape` in the [user_config.yaml](../../scripts/training/user_config.yaml) file.
 
-In this folder you will find multiple copies of the SVC model pretrained on a public dataset ([WISDM](https://www.cis.fordham.edu/wisdm/dataset.php)) and a custom dataset (AST). The pretrained model saved as `.onnx` format using `skl2onnx` library and can be deployed or benchmarked using CubeAI.
+In this folder you will find multiple copies of the SVC model pretrained on a public dataset ([WISDM](https://www.cis.fordham.edu/wisdm/dataset.php)) and a custom dataset collected by ST (mobility_v1). The pretrained model saved as `.onnx` format using `skl2onnx` library and can be deployed or benchmarked using STM32Cube.AI.
 
-## Network Information
+## Network information
 
 
 | Network Information     |  Value          |
@@ -24,7 +24,7 @@ In this folder you will find multiple copies of the SVC model pretrained on a pu
 The models are quantized using post training quantization with tensorflow lite converter.
 
 
-## Model Inputs / Outputs
+## Model inputs / outputs
 
 
 For an input resolution of wl x 3 x 1 and P classes
@@ -39,7 +39,7 @@ For an input resolution of wl x 3 x 1 and P classes
 | (1,1,1,1) | class index for the selected class in INT32|
 
 
-## Recommended Platforms
+## Recommended platforms
 
 
 | Platform | Supported | Recommended |
@@ -77,30 +77,29 @@ The memory footprints, and the inference times for the various pretrained SVC mo
 | [SVC wl 24 pct 10](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_10/svc_wl_24_pct_10.onnx) | WISDM   | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 7.359 KiB      | 1.886 KiB   | 168.683 KiB   | 17.12 KiB |  9.245 KiB  | 185.803 KiB | 7.348              |
 | [SVC wl 48 pct 5](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx)    | WISDM   | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 2.798 KiB      | 1.742 KiB   | 69.371 KiB    | 16.511 KiB |  4.539 KiB  | 85.882 KiB  | 3.045              |
 | [SVC wl 48 pct 10](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_10/svc_wl_48_pct_10.onnx) | WISDM   | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 4.625 KiB      | 1.742 KiB   | 111.418 KiB   | 16.523 KiB |  6.361 KiB  | 127.9413 KiB| 4.686              |
-| [SVC wl 24 pct 2](./ST_pretrainedmodel_custom_dataset/AST/svc_wl_24_pct_2/svc_wl_24_pct_2.onnx)      | AST     | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 2.289 KiB      | 1.742 KiB   | 60.828 KiB    | 16.511 KiB | 4.031 KiB   | 77.339 KiB  | 2.411              |
-| [SVC wl 24 pct 5](./ST_pretrainedmodel_custom_dataset/AST/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx)      | AST     | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 4.457 KiB      | 1.742 KiB   | 119.367 KiB   | 16.515 KiB | 6.199 KiB   | 135.882 KiB | 4.837              |
-| [SVC wl 48 pct 2](./ST_pretrainedmodel_custom_dataset/AST/svc_wl_48_pct_2/svc_wl_48_pct_2.onnx)      | AST     | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 1.277 KiB      | 1.742 KiB   | 40.261 KiB    | 16.507 KiB | 3.019 KiB   | 56.768 KiB  | 1.502              |
-| [SVC wl 48 pct 5](./ST_pretrainedmodel_custom_dataset/AST/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx)      | AST     | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 2.664 KiB      | 1.742 KiB   | 77.703 KiB    | 16.511 KiB | 4.406 KiB   | 94.214 KiB  | 2.983              |
+| [SVC wl 24 pct 2](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_2/svc_wl_24_pct_2.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 2.289 KiB      | 1.742 KiB   | 60.828 KiB    | 16.511 KiB | 4.031 KiB   | 77.339 KiB  | 2.411              |
+| [SVC wl 24 pct 5](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 4.457 KiB      | 1.742 KiB   | 119.367 KiB   | 16.515 KiB | 6.199 KiB   | 135.882 KiB | 4.837              |
+| [SVC wl 48 pct 2](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_2/svc_wl_48_pct_2.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 1.277 KiB      | 1.742 KiB   | 40.261 KiB    | 16.507 KiB | 3.019 KiB   | 56.768 KiB  | 1.502              |
+| [SVC wl 48 pct 5](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 2.664 KiB      | 1.742 KiB   | 77.703 KiB    | 16.511 KiB | 4.406 KiB   | 94.214 KiB  | 2.983              |
 
 
 
-### Accuracy with AST dataset
+### Accuracy with mobility_v1 dataset
 
 
-Dataset details: A custom dataset and not publically available, Number of classes: 5 **(but we kept only 4, [Stationary, Walking, Jogging, Biking]) and removed Driving**, Number of input frames:  81,151 (for wl = 24), and 40,575 for (wl = 48).
-
+Dataset details: A custom dataset and not publically available, Number of classes: 5 [Stationary, Walking, Jogging, Biking, Driving]. **(We kept only 4, [Stationary, Walking, Jogging, Biking]) and removed Driving**, Number of input frames:  81,151 (for wl = 24), and 40,575 for (wl = 48).
 
 | Model                                                                                         |  Format  | Resolution       |   Accuracy    |
 |:---------------------------------------------------------------------------------------------:|:--------:|:----------------:|:-------------:|
-| [SVC wl 24 pct 2](ST_pretrainedmodel_custom_dataset/AST/svc_wl_24_pct_2/svc_wl_24_pct_2.onnx) | FLOAT32  | 1 x 1 x 1 x 72   | 88.41         |
-| [SVC wl 24 pct 5](ST_pretrainedmodel_custom_dataset/AST/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx) | FLOAT32  | 1 x 1 x 1 x 72   | 89.94         |
-| [SVC wl 48 pct 2](ST_pretrainedmodel_custom_dataset/AST/svc_wl_48_pct_2/svc_wl_48_pct_2.onnx) | FLOAT32  | 1 x 1 x 1 x 144  | 84.28         |
-| [SVC wl 48 pct 5](ST_pretrainedmodel_custom_dataset/AST/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx) | FLOAT32  | 1 x 1 x 1 x 144  | 87.81         |
+| [SVC wl 24 pct 2](ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_2/svc_wl_24_pct_2.onnx) | FLOAT32  | 1 x 1 x 1 x 72   | 88.41         |
+| [SVC wl 24 pct 5](ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx) | FLOAT32  | 1 x 1 x 1 x 72   | 89.94         |
+| [SVC wl 48 pct 2](ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_2/svc_wl_48_pct_2.onnx) | FLOAT32  | 1 x 1 x 1 x 144  | 84.28         |
+| [SVC wl 48 pct 5](ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx) | FLOAT32  | 1 x 1 x 1 x 144  | 87.81         |
 
 
-Confusion matrix for [SVC wl 24 pct 5](ST_pretrainedmodel_custom_dataset/AST/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx) for AST dataset is given below.
+Confusion matrix for [SVC wl 24 pct 5](ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx) for mobility_v1 dataset is given below.
 
-![plot](../../scripts/training/doc/img/AST/svc_wl_24_pct_5_confusion_matrix.png)
+![plot](../../scripts/training/doc/img/mobility_v1/svc_wl_24_pct_5_confusion_matrix.png)
 
 ### Accuracy with WISDM dataset
 

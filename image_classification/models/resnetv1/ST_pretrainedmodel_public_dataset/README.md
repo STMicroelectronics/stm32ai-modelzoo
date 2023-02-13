@@ -1,4 +1,4 @@
-# ST Pretrained Models on Public Dataset
+# ST pretrained models on public dataset
 
-This directory contains different Image Classification models trained on multiple public datasets using the [training section](../../../scripts/training/readme.md) in ST Model Zoo.
+This directory contains different image classification models trained on multiple public datasets using the [training section](../../../scripts/training/README.md) in STM32 model zoo.
 

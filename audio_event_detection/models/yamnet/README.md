@@ -14,7 +14,7 @@ Thus, Yamnet-256 expects mel-spectrogram patches of size 64x96, format (n_mels, 
 
 The model is quantized in int8 using tensorflow lite converter.
 
-## Network Information
+## Network information
 
 
 | Network Information     |  Value          |
@@ -24,7 +24,7 @@ The model is quantized in int8 using tensorflow lite converter.
 |  Quantization           | int8            |
 |  Provenance             | https://tfhub.dev/google/yamnet/1 |
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 
 The network expects spectrogram patches of 96 frames and 64 mels, of shape (64, 96, 1).
@@ -33,7 +33,7 @@ Additionally, the original Yamnet converts waveforms to spectrograms by using an
 It outputs embedding vectors of size 256. If you use the train.py script to perform transfer learning, a classification head with the specified number of classes will automatically be added to the network.
 
 
-## Recommended Platforms
+## Recommended platforms
 
 | Platform | Supported | Recommended |
 |----------|-----------|-----------|
@@ -64,14 +64,14 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 | Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96 | B-U585I-IOT02A    | 109.5               |   8.3        |   135.9           |   52.6     | 117.9 | 188.5 | 
+|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96x1 | B-U585I-IOT02A    | 109.5               |   8.3        |   135.9           |   52.6     | 117.9 | 188.5 | 
 
 ### Reference inference time based on ESC-10 dataset
 
 
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time  |
 |-------------------|--------|------------|------------------|------------------|--------------|-----------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96 | B-U585I-IOT02A | 1 CPU | 160 MHz | 321 ms |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 321 ms |
 
 
 ### Accuracy with ESC-10 dataset
@@ -82,8 +82,8 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96.h5) | float32 | 64x96 | 97.4% |
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96 | 97.4% |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96.h5) | float32 | 64x96x1 | 97.4% |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96x1 | 97.4% |
 
 
 ## Retraining and code generation

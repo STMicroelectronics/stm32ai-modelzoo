@@ -45,7 +45,7 @@ def evaluate_model(cfg, c_header=False, c_code=False):
     """
 
     if (cfg.model.model_path.split(".")[-1] == 'tflite'):
-        # Convert a tflite model using cubeai
+        # Convert a tflite model using STM32Cube.AI
         quantized_model_path = cfg.model.model_path
 
         # Benchmark/Generating C model
@@ -87,7 +87,7 @@ def evaluate_model(cfg, c_header=False, c_code=False):
     else:
         # Load the model
         model = tf.keras.models.load_model(cfg.model.model_path)
-        # Estimate the model footprints, quantize and convert the float model using cubeai
+        # Estimate the model footprints, quantize and convert the float model using STM32Cube.AI
 
         if not cfg.quantization.quantize:
             # Benchmark/Generating C model

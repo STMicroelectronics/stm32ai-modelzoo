@@ -1,6 +1,6 @@
 # IGN HAR model
 
-## **Use case** : [Human Activity Recognition (HAR)](../../../human_activity_recognition/)
+## **Use case** : [Human activity recognition](../../../human_activity_recognition/)
 
 # Model description
 
@@ -10,9 +10,9 @@ This network supports any input size greater than (20 x 3 x 1) but we recommend 
 
 The only input required to the model is the input shape, dropout ratio, and the number of outputs.
 
-In this folder you will find multiple copies of the IGN model pretrained on a public dataset ([WISDM](https://www.cis.fordham.edu/wisdm/dataset.php)) and a custom dataset (AST). The pretrained model is also quantized in INT8 using tensorflow lite converter with FLOAT32 inputs and outputs.
+In this folder you will find multiple copies of the IGN model pretrained on a public dataset ([WISDM](https://www.cis.fordham.edu/wisdm/dataset.php)) and a custom dataset collected by ST (mobility_v1). The pretrained model is also quantized in INT8 using tensorflow lite converter with FLOAT32 inputs and outputs.
 
-## Network Information
+## Network information
 
 
 | Network Information     |  Value          |
@@ -24,7 +24,7 @@ In this folder you will find multiple copies of the IGN model pretrained on a pu
 The models are quantized using post training quantization with tensorflow lite converter.
 
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 
 For an input resolution of wl x 3 x 1 and P classes
@@ -38,7 +38,7 @@ For an input resolution of wl x 3 x 1 and P classes
 | (1, P) | Per-class confidence for P classes in FLOAT32|
 
 
-## Recommended Platforms
+## Recommended platforms
 
 
 | Platform | Supported | Recommended |
@@ -89,22 +89,22 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 | [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | STM32L4R9 | 120 MHz       |     4.972 ms       |
 
 
-### Accuracy with AST dataset
+### Accuracy with mobility_v1 dataset
 
 
-Dataset details: A custom dataset and not publically available, Number of classes: 5 **(but we kept only 4)**, Number of input frames:  81,151 (for wl = 24), and 40,575 for (wl = 48).
+Dataset details: A custom dataset and not publically available, Number of classes: 5 [Stationary, Walking, Jogging, Biking, Vehicle]. **(We kept only 4, [Stationary, Walking, Jogging, Biking]) and removed Driving**, Number of input frames:  81,151 (for wl = 24), and 40,575 for (wl = 48).
 
 
 | Model | Format | Resolution | Accuracy |
 |:-----------------:|:------:|:----------:|:----------------:|
-| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/AST/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | 95.51     |
-| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/AST/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | 95.19 |
-| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/AST/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | 96.06   |
-| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/AST/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | 96.07    |
+| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | 95.51     |
+| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | 95.19 |
+| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | 96.06   |
+| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | 96.07    |
 
-Confusion matrix for IGN wl 24 with Float32 weights for AST dataset is given below.
+Confusion matrix for IGN wl 24 with Float32 weights for mobility_v1 dataset is given below.
 
-![plot](../../scripts/training/doc/img/AST/ign_wl_24_confusion_matrix.png)
+![plot](../../scripts/training/doc/img/mobility_v1/ign_wl_24_confusion_matrix.png)
 
 
 ### Accuracy with WISDM dataset

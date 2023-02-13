@@ -4,7 +4,7 @@ Concerning audio_event_detection:
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|
 | scripts                              | [SLA0044](./audio_event_detection/LICENSE.md)              | STMicroelectronics |
-| yamnet model                         | [Apache-2.0](./audio_event_detection/scripts/utils/models/yamnet/LICENSE)              | Google LLC |
+| yamnet model                         | [Apache-2.0](./audio_event_detection/scripts/utils/models/yamnet/LICENSE.md)              | Google LLC |
 
 
 Concerning common:
@@ -37,26 +37,26 @@ Concerning object_detection:
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|
 | scripts                              | [SLA0044](./object_detection/LICENSE.md)              | STMicroelectronics |
-| scripts  utils  object_det_metrics   | [MIT](./object_detection/scripts/utils/object_det_metrics/LICENSE)                  | Copyright (c) 2018 Rafael Padilla |
+| scripts  utils  object_det_metrics   | [MIT](./object_detection/scripts/utils/object_det_metrics/LICENSE.md)                  | Copyright (c) 2018 Rafael Padilla |
 
 
 Concerning image_classification:
 | Component                                                    | License              | Copyright |
 |:---------                                                    |:-------              |:----------|
 | scripts                                                      | [SLA0044](./image_classification/LICENSE.md)              | STMicroelectronics |
-| models  mobinenetv1  public_pretrainedmodel_public_dataset imagenet | [Apache License 2.0](./image_classification/models/mobilenetv1/Public_pretrainedmodel_public_dataset/ImageNet/License.md)              | Copyright 2022 Google LLC. All rights reserved. |
-| models  mobinenetv1  public_pretrainedmodel_public_dataset VisualWakeWord  | [Apache License 2.0](./image_classification/models/mobilenetv1/Public_pretrainedmodel_public_dataset/VisualWakeWord/License.md)              | Copyright 2022 Google LLC. All rights reserved. |
-| models  mobinenetv2  public_pretrainedmodel_public_dataset imagenet  | [Apache License 2.0](./image_classification/models/mobilenetv2/Public_pretrainedmodel_public_dataset/ImageNet/License.md)              | MLCOMMONS ASSOCIATION |
+| models  mobinenetv1  public_pretrainedmodel_public_dataset imagenet | [Apache License 2.0](./image_classification/models/mobilenetv1/Public_pretrainedmodel_public_dataset/ImageNet/LICENSE.md)              | Copyright 2022 Google LLC. All rights reserved. |
+| models  mobinenetv1  public_pretrainedmodel_public_dataset VisualWakeWord  | [Apache License 2.0](./image_classification/models/mobilenetv1/Public_pretrainedmodel_public_dataset/VisualWakeWord/LICENSE.md)              | Copyright 2022 Google LLC. All rights reserved. |
+| models  mobinenetv2  public_pretrainedmodel_public_dataset imagenet  | [Apache License 2.0](./image_classification/models/mobilenetv2/Public_pretrainedmodel_public_dataset/ImageNet/LICENSE.md)              | MLCOMMONS ASSOCIATION |
 
 Concerning image_classification getting started:
 | Component                       | License              | Copyright |
 |:---------                       |:-------              |:----------|
 | CMSIS                           | [Apache License 2.0](./image_classification/getting_started/Drivers/CMSIS/LICENSE.md)   | STMicroelectronics - Copyright (c) 2009-2017 ARM Limited. All rights reserved. |
-| STM32H7xx_HAL_Driver            | [BSD-3-Clause](./image_classification/getting_started/Drivers/STM32H7xx_HAL_Driver/License.md)         | STMicroelectronics |
-| BSP STM32H747I-Discovery        | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/STM32H747I-Discovery/License.md)         | STMicroelectronics |
-| BSP Components                  | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/Components/License.md)         | STMicroelectronics |
+| STM32H7xx_HAL_Driver            | [BSD-3-Clause](./image_classification/getting_started/Drivers/STM32H7xx_HAL_Driver/LICENSE.md)         | STMicroelectronics |
+| BSP STM32H747I-Discovery        | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/STM32H747I-Discovery/LICENSE.md)         | STMicroelectronics |
+| BSP Components                  | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/Components/LICENSE.md)         | STMicroelectronics |
 | STM32_AI_Runtime                | [SLA0044](./image_classification/getting_started/Middlewares/ST/STM32_AI_Runtime/LICENSE.md)              | STMicroelectronics |
 | STM32_ImageProcessing_Library   | [SLA0044](./image_classification/getting_started/Middlewares/ST/STM32_ImageProcessing_Library/LICENSE.md)              | STMicroelectronics |
 | Application                     | [SLA0044](./image_classification/getting_started/Application/LICENSE.md)              | STMicroelectronics |
-| Utilities                       | [BSD-3-Clause](./image_classification/getting_started/Utilities/License.md)         | STMicroelectronics |
+| Utilities                       | [BSD-3-Clause](./image_classification/getting_started/Utilities/LICENSE.md)         | STMicroelectronics |
 

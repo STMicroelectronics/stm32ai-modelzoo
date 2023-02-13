@@ -1,6 +1,6 @@
 # SSD MobileNet v1 quantized
 
-## **Use case** : [Object Detection](../../)
+## **Use case** : [Object detection](../../)
 
 # Model description
 
@@ -13,10 +13,10 @@ the number of multiply-adds and thereby reduce inference cost on mobile devices.
 
 The model is quantized in int8 using tensorflow lite converter.
 
-## Network Information
+## Network information
 
 
-| Network Information     |  Value          |
+| Network information     |  Value          |
 |-------------------------|-----------------|
 |  Framework              | TensorFlow Lite |
 |  Quantization           | int8            |
@@ -26,7 +26,7 @@ The model is quantized in int8 using tensorflow lite converter.
 The models are quantized using tensorflow lite converter.
 
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 
 For an image resolution of NxM and NC classes
@@ -77,9 +77,9 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192    | STM32H7 | 195.6 KiB     | ~38 KiB      | 438.28 KiB    | ~113 KiB       | 234 KiB   | 551 KiB  |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224    | STM32H7 | 333.25 KiB     | ~43 KiB       | 595.66 KiB    | ~127 KiB    | 378 KiB   | 723 KiB  |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256   | STM32H7 | 347.3 KiB     | ~43 KiB       | 595.66 KiB    | ~125 KiB    | 391 KiB   | 721 KiB  |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32H7 | 195.6 KiB     | ~38 KiB      | 438.28 KiB    | ~113 KiB       | 234 KiB   | 551 KiB  |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32H7 | 333.25 KiB     | ~43 KiB       | 595.66 KiB    | ~127 KiB    | 378 KiB   | 723 KiB  |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3   | STM32H7 | 347.3 KiB     | ~43 KiB       | 595.66 KiB    | ~125 KiB    | 391 KiB   | 721 KiB  |
 
 
 ### Reference inference time based on COCO Person dataset (see Accuracy for details on dataset)
@@ -87,12 +87,12 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) |
 |-------------------|--------|------------|------------------|------------------|-------------|---------------------|
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 173.1 ms       |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 254.9 ms       |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 310 ms           |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 69.8 ms **     |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 99.9 ms **     |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 163.8 ms **    |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 173.1 ms       |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 254.9 ms       |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 310 ms           |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 69.8 ms **     |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 99.9 ms **     |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 163.8 ms **    |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
@@ -103,9 +103,9 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 
 | Model | Format | Resolution |       AP*       |
 |-------|--------|------------|----------------|
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8 | 192x192   | 33.84 % |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8 | 224x224   | 43.86 % |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8 | 256x256   | 47.03 % |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8 | 192x192x3   | 33.84 % |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8 | 224x224x3   | 43.86 % |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8 | 256x256x3   | 47.03 % |
 
 \* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
 
@@ -127,26 +127,4 @@ coming soon.
 
 
 <a id="1">[1]</a>
-“Microsoft COCO: Common Objects in Context”. [Online]. Available: https://cocodataset.org/#download.
-@article{DBLP:journals/corr/LinMBHPRDZ14,
-  author    = {Tsung{-}Yi Lin and
-               Michael Maire and
-               Serge J. Belongie and
-               Lubomir D. Bourdev and
-               Ross B. Girshick and
-               James Hays and
-               Pietro Perona and
-               Deva Ramanan and
-               Piotr Doll{'{a} }r and
-               C. Lawrence Zitnick},
-  title     = {Microsoft {COCO:} Common Objects in Context},
-  journal   = {CoRR},
-  volume    = {abs/1405.0312},
-  year      = {2014},
-  url       = {http://arxiv.org/abs/1405.0312},
-  archivePrefix = {arXiv},
-  eprint    = {1405.0312},
-  timestamp = {Mon, 13 Aug 2018 16:48:13 +0200},
-  biburl    = {https://dblp.org/rec/bib/journals/corr/LinMBHPRDZ14},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
+Lin, T.Y., Maire, M., Belongie, S., Hays, J., Perona, P., Ramanan, D., Dollár, P. and Zitnick, C.L., 2014. "Microsoft coco: Common objects in context". In Computer Vision–ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceedings, Part V 13 (pp. 740-755). Springer International Publishing. [Online]. Available: https://cocodataset.org/#download.

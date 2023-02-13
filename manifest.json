@@ -1,4 +1,4 @@
-// This file is used to set Model Zoo visibility on Developer Cloud
+// This file is used to set model zoo visibility on STM32Cube.AI Developer Cloud
 [
 	{
 		"name": "./image_classification/models/fdmobilenet/ST_pretrainedmodel_public_dataset/flowers/fdmobilenet_0.25_128/fdmobilenet_0.25_128_int8.tflite",
@@ -42,7 +42,7 @@
 	},
 	{
 		"name": "./image_classification/models/mobilenetv1/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale/mobilenet_v1_0.25_96_grayscale_int8.tflite",
-		"description": "MobileNetv1 0.25 96 trained on flowers with 5 classes",
+		"description": "MobileNetv1 0.25 96 grayscale trained on flowers with 5 classes",
 		"usecase": "image_classification",
 		"dataset_used": "flowers",
 		"readme": "./image_classification/models/mobilenetv1/README.md",

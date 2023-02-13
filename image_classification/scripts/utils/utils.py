@@ -136,14 +136,14 @@ def train(cfg):
                                   "{}/{}".format(cfg.general.saved_models_dir, "best_model.h5"))
         model.save(model_path)
 
-    # Evaluate model footprints with cubeai
+    # Evaluate model footprints with STM32Cube.AI
     if cfg.stm32ai.footprints_on_target:
-        print("[INFO] : Establishing a connection to the Developer Cloud to launch the model benchmark on STM32 target...")
+        print("[INFO] : Establishing a connection to STM32Cube.AI Developer Cloud to launch the model benchmark on STM32 target...")
         try:
             output_analyze = Cloud_analyze(cfg, model_path)
             if output_analyze == 0:
                 raise Exception(
-                    "Connection failed, using local cubeai. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+                    "Connection failed, using local STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
         except Exception as e:
             output_analyze = 0
             print("[FAIL] :", e)
@@ -193,10 +193,10 @@ def train(cfg):
                         output_benchmark = Cloud_benchmark(cfg, quantized_model_path, output_analyze)
                         if output_benchmark == 0:
                             raise Exception(
-                                "Connection failed, using local cubeai. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+                                "Connection failed, using local STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
                     else:
                         raise Exception(
-                            "Connection failed, using local cubeai. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+                            "Connection failed, using local STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
                 except Exception as e:
                     print("[FAIL] :", e)
                     print("[INFO] : Offline benchmark launched...")

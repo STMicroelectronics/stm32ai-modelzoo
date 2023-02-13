@@ -1,8 +1,8 @@
-# STMicroelectronics Image Classification ZOO
+# Image classification STM32 model zoo
 
 
-## Directory Components:
+## Directory components:
 
-* [Getting Started](getting_started/README.md) contains the necessary files to run and demonstrate the usage of an Image Classification model on STM32 board.
-* [models](models/README.md) a collection of optimized pretrained models for different Image Classification use-cases.
+* [getting_started](getting_started/README.md) contains the necessary files to run and demonstrate the usage of an image classification model on STM32 board.
+* [models](models/README.md) a collection of optimized pretrained models for different image classification use-cases.
 * [scripts](scripts/README.md) contains tools to train, evaluate and deploy your model on your STM32 target.

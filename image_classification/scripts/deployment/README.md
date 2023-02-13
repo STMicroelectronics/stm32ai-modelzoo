@@ -1,21 +1,21 @@
-# STMicroelectronics Image Classification Model Deployment
+# Image classification STM32 model deployment
 
-This tutorial shows how to quantize and deploy a pre-trained Image Classification model on an *STM32 board* using *STM32Cube.AI*.
+This tutorial shows how to quantize and deploy a pre-trained image classification model on an *STM32 board* using *STM32Cube.AI*.
 
 
 ## Table of contents
 
-* <a href='#prereqs'>Before You Start</a><br>
+* <a href='#prereqs'>Before you start</a><br>
 * <a href='#deploy'>Deploy pretrained tflite model on STM32 board</a><br>
 * <a href='#quantize'>Quantize your model before deployment</a><br>
 
-## Before You Start
+## Before you start
 <a id='prereqs'></a>
 
 
-Please check out [ST model zoo](../../models/README.md) for Image Classification.
+Please check out [STM32 model zoo](../../models/README.md) for image classification.
 
-### **1. Hardware Setup**
+### **1. Hardware setup**
 
 The [Getting Started](../../getting_started/README.md) is running on a hardware setup made up of an STM32 microcontroller board connected to a camera module board. This version supports the following boards only:
 
@@ -44,7 +44,7 @@ You need to download and install the following software:
 
 ### **1. Configure the yaml file**
 
-You can run a demo using a pretrained model from [ST model zoo](../../models/README.md). Please refer to the YAML file provided alongside the TFlite model to fill the following sections in [user_config.yaml](user_config.yaml) (namely `Dataset Configuration` and `Load model`).
+You can run a demo using a pretrained model from [STM32 model zoo](../../models/README.md). Please refer to the YAML file provided alongside the TFlite model to fill the following sections in [user_config.yaml](user_config.yaml) (namely `Dataset Configuration` and `Load model`).
 
 As an example, we will show how to deploy the model [mobilenet_v2_0.35_128_int8.tflite](../../models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128/mobilenet_v2_0.35_128_int8.tflite) pretrained on Flowers dataset using the necessary parameters provided in [mobilenet_v2_0.35_128_config.yaml](../../models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128/mobilenet_v2_0.35_128_config.yaml).
 
@@ -59,7 +59,7 @@ where:
 
 - `project_name` - *String*, name of the project.
 
-**1.2. Dataset Configuration:**
+**1.2. Dataset configuration:**
 
 You need to specify some parameters related to the dataset and the preprocessing of the data in the **[user_config.yaml](user_config.yaml)** which will be parsed into a header file used to run the C application.
 
@@ -90,7 +90,7 @@ To do so, you need to specify the **preprocessing** configuration in **[user_con
 
 **1.3. Load model:**
 
-You can run a demo using a pretrained model provided in [ST model zoo](../../models/README.md) for Image Classification. These models were trained and quantized on specific datasets (e.g. Flowers, Plant-village...).
+You can run a demo using a pretrained model provided in [STM32 model zoo](../../models/README.md) for image classification. These models were trained and quantized on specific datasets (e.g. Flowers, Plant-village...).
 
 Also, you can directly deploy your own pretrained model if quantized using *TFlite Converter* and respecting the specified [intput/output types](#3-specifications), else you can quantize your model before deploying it by following these [steps](#quantize).
 
@@ -102,10 +102,10 @@ where:
 
 - `model_type` - A *dictionary* with keys relative to the model topology (see [more](../training/doc/models.json)). Example for mobilenet family *{name : mobilenet, version : v2, alpha : 0.35}*, else for a custom model use *{name : custom}*.
 - `input_shape` -  A *list of int* *[H, W, C]* for the input resolution, e.g. *[224, 224, 3]*.
-- `model_path` - *Path* to pretained model. Please check out pretrained models from ST model zoo [here](../../models/README.md).
+- `model_path` - *Path* to pretained model. Please check out pretrained models from STM32 model zoo [here](../../models/README.md).
 
 
-**1.4. C project Configuration:**
+**1.4. C project configuration:**
 
 To deploy the model in **STM32H747I-DISCO** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application and flash the board.
 
@@ -172,7 +172,7 @@ where:
 - `validation_path` - Path to the validation set, needs to be provided to evaluate the model accuracy.
 - `test_path` - Path to the test_set, if not provided the validation set will be used for evaluation.
 
-**1.2. Model Quantization:**
+**1.2. Model quantization:**
 
 Configure the **quantization** section in **[user_config.yaml](user_config.yaml)** as the following:
 
@@ -184,6 +184,6 @@ where:
 - `evaluate` - *Boolean*, if True evaluate quantized model if validation or test sets are provided, else False.
 - `quantizer` - *String*, only option is "TFlite_converter" which will convert model trained weights from float to integer values. The quantized model will be saved in TensorFlow Lite format.
 - `quantization_type` - *String*, only option is "PTQ",i.e. "Post-Training Quantization".
-- `quantization_input_type` - **int8** or **uint8**, only supported options for *Getting Started*.
-- `quantization_output_type` - **float**, only supported option for *Getting Started*.
+- `quantization_input_type` - **int8** or **uint8**, only supported options for *getting started*.
+- `quantization_output_type` - **float**, only supported option for *getting started*.
 - `export_dir` - *String*, referres to directory name to save the quantized model.

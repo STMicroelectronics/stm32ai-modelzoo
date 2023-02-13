@@ -17,7 +17,7 @@ Source implementation : https://keras.io/api/applications/resnet/
 Papers : [ResNet](https://arxiv.org/abs/1512.03385)
          [ResNetv2](https://arxiv.org/abs/1603.05027)
 
-## Network Information
+## Network information
 
 
 | Network Information     |  Value          |
@@ -28,14 +28,14 @@ Papers : [ResNet](https://arxiv.org/abs/1512.03385)
 |  Quantization           | int8            |
 |  Provenance             | https://keras.io/api/applications/resnet/ |
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 The pre-trained networks expects patches of shape (64, 50, 1), with 64 mels and 50 frames per patch.
 
 When training from scratch, you can specify whichever input shape you desire.
 
 It outputs embedding vectors of size 2048 for the 2 stacks version, and 3548 for the 1 stack version. If you use the train.py script to perform transfer learning or training from scratch, a classification head with the specified number of classes will automatically be added to the network.
 
-## Recommended Platforms
+## Recommended platforms
 
 | Platform | Supported | Recommended |
 |----------|-----------|-----------|
@@ -63,8 +63,8 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 | Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50 | B-U585I-IOT02A    | 59.6               |   7.4       |   123.9            |   53.6      | 67.1 | 177.5 | 
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50 | B-U585I-IOT02A    | 59.6                |   11.9        |   432.0            |   63.2      | 71.5 | 495.2 | 
+| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.6               |   7.4       |   123.9            |   53.6      | 67.1 | 177.5 | 
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.6                |   11.9        |   432.0            |   63.2      | 71.5 | 495.2 | 
 
 
 ### Reference inference time based on ESC-10 dataset
@@ -72,8 +72,8 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 | Model             | Format | Resolution | Board            | Execution Engine |  Frequency   | Inference time (ms) |
 |-------------------|--------|------------|------------------|------------------|--------------|-------|
-| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50 | B-U585I-IOT02A |  1 CPU | 160 | 186 |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50 | B-U585I-IOT02A |  1 CPU | 160 | 315 |
+| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 186 |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 315 |
 
 
 ### Accuracy with ESC-10 dataset
@@ -84,10 +84,10 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50.h5) | float32 | 64x50 | 91.1% |
-| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50 | 91.1% |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50.h5) | float32 | 64x50 | 96.2% |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50 | 94.9% |
+| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50.h5) | float32 | 64x50x1 | 91.1% |
+| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50x1 | 91.1% |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50.h5) | float32 | 64x50x1 | 96.2% |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | 94.9% |
 
 
 

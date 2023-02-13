@@ -1,6 +1,6 @@
 # ST MNIST v1 quantized
 
-## **Use case** : [Image Classification](../../../image_classification/README.md)
+## **Use case** : [Image classification](../../../image_classification/README.md)
 
 # Model description
 
@@ -10,7 +10,7 @@ This folder contains a custom model ST-MNIST for MNIST type datasets. ST-MNIST m
 
 ST-MNIST model accepts an input shape of 28 x 28, which is standard for MNIST type datasets.  The pretrained model is also quantized in int8 using tensorflow lite converter.
 
-## Network Information
+## Network information
 
 
 | Network Information     |  Value          |
@@ -19,7 +19,7 @@ ST-MNIST model accepts an input shape of 28 x 28, which is standard for MNIST ty
 |  Quantization           | int8            |
 
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 
 For an image resolution of 28x28 and 36 classes : 10 integers (from 0-9) and 26 alphabets (upper-case A-Z) 
@@ -69,8 +69,8 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28    | STM32H7 | 30.25 KiB     | ~3 KiB      | 38.02 KiB    | ~18 KiB       | ~ 34 KiB   | ~56 KiB  |
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28    | STM32H7 | 14.13 KiB     | ~5 KiB       | 10.08 KiB    | ~46 KiB    | ~19 KiB   | ~56 KiB  |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28x1    | STM32H7 | 30.25 KiB     | ~3 KiB      | 38.02 KiB    | ~18 KiB       | ~ 34 KiB   | ~56 KiB  |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28x1    | STM32H7 | 14.13 KiB     | ~5 KiB       | 10.08 KiB    | ~46 KiB    | ~19 KiB   | ~56 KiB  |
 
 
 ### Reference inference time based on EMNIST-Byclass dataset (see Accuracy for details on dataset)
@@ -78,8 +78,8 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) |
 |-------------------|--------|------------|------------------|---------------|---------------------|
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28   | STM32H747I-DISCO | 400 MHz       |     14.63 ms       |
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28    | STM32H747I-DISCO | 400 MHz       |      4.718 ms       |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28x1   | STM32H747I-DISCO | 400 MHz       |     14.63 ms       |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28x1    | STM32H747I-DISCO | 400 MHz       |      4.718 ms       |
 
 
 ### Accuracy with EMNIST-Byclass dataset
@@ -89,8 +89,8 @@ Dataset details: [link](https://www.nist.gov/itl/products-and-services/emnist-da
 
 | Model | Format | Resolution | Top 1 Accuracy |
 |-------|--------|------------|----------------|
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float | 28x28     | 93.48 % |
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8 | 28x28    | 93.38 % |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float | 28x28x1     | 93.48 % |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8 | 28x28x1    | 93.38 % |
 
 Following we provide the confusion matrix for the model with Float32 weights.
 
@@ -120,7 +120,7 @@ Please refer to the generic guideline [here](../../scripts/deployment/README.md)
 
 
 <a id="1">[1]</a>
-“EMNIST : NIST Special Dataset,” [Online]. Available: https://www.nist.gov/itl/products-and-services/emnist-dataset.
+"EMNIST : NIST Special Dataset," [Online]. Available: https://www.nist.gov/itl/products-and-services/emnist-dataset.
 
 <a id="2">[2]</a>
-“EMNIST: an extension of MNIST to handwritten letters”. https://arxiv.org/abs/1702.05373
+"EMNIST: an extension of MNIST to handwritten letters". https://arxiv.org/abs/1702.05373

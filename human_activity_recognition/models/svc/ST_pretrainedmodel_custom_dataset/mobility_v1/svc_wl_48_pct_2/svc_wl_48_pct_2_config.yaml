@@ -15,10 +15,10 @@ svc_train_parameters:
   opt_data_keep: 0.02
 
 dataset:
-  name: AST
+  name: mobility_v1
   class_names: [Stationary,Walking,Jogging,Biking]
-  training_path: C:/stmicroelectronics2022/external_model_zoo/AST/train.pkl
-  test_path: C:/stmicroelectronics2022/external_model_zoo/AST/test.pkl
+  training_path: C:/stmicroelectronics2022/external_model_zoo/mobility_v1/train.pkl
+  test_path: C:/stmicroelectronics2022/external_model_zoo/mobility_v1/test.pkl
 
 
 pre_processing:

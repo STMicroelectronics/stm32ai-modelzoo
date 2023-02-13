@@ -1,4 +1,4 @@
-# STMicroelectronics Image Classification Model Training
+# Image classification STM32 model training
 
 This tutorial shows how to train from scratch or apply transfer learning on an image classification model using a custom dataset.
 As an example we will demonstrate the workflow on the [tf_flowers](https://storage.googleapis.com/download.tensorflow.org/example_images/flower_photos.tgz) classification dataset.
@@ -7,9 +7,9 @@ As an example we will demonstrate the workflow on the [tf_flowers](https://stora
 
 ## Table of contents
 
-* <a href='#Data'>Prepare Dataset</a><br>
-* <a href='#training'>Train and Evaluate Model</a><br>
-* <a href='#results'>Visualize Training Results</a><br>
+* <a href='#Data'>Prepare dataset</a><br>
+* <a href='#training'>Train and evaluate model</a><br>
+* <a href='#results'>Visualize training results</a><br>
 
 ## Prepare Dataset
 <a id='Data'></a>
@@ -92,10 +92,10 @@ If you don't want to use a specific data augmentation technique set it to **Fals
 - `RandomRotation` - A *float* represented as fraction of *2Pi*, a positive values means rotating counter clock-wise, while a negative value means clock-wise, e.g. 0.2 results in an output rotating by a random amount in the range [-20% * 2pi, 20% * 2pi].
 - `RandomZoom` - A *float* between -1.0 and 1.0, a positive value means zooming out while a negative value means zooming in.
 - `RandomContrast` - A *float* between -1.0 and 1.0 used to generate a random factor to apply contrast. Contrast is adjusted independently for each channel of each image during training.
-- `RandomBrightness` - A *float* between -1.0 and 1.0, when -1.0 is chosen, the output image will be black, and when 1.0 is chosen, the image will be fully white. A float value will be chosen randomly between the limits and different brightness adjustment factors will be applied to each images in the batch.
+- `RandomBrightness` - A positive *float* represented as fraction of value, or a tuple of size 2 representing lower and upper bound. When represented as a single float, lower = upper. The brightness factor will be randomly picked between [1.0 - lower, 1.0 + upper], and adjusted independently for each channel of each image during training.
 - `RandomShear` - A *float* factor used to randomly shears images during training, the range is interpreted as (0, factor). Values represent a percentage of the image to shear over. For example, 0.3 shears pixels up to 30% of the way across the image. All provided values should be positive.
 
-## Train and Evaluate Model
+## Train and evaluate model
 <a id='training'></a>
 
 ### **1. Configure training parameters**
@@ -141,7 +141,7 @@ where:
 
 ### **2. Configure evaluation parameters**
 
-**2.1. Model Quantization:**
+**2.1. Model quantization:**
 
 Quantization optimizes your model to be deployed more efficiently on your embedded device by reducing its memory usage(Flash/RAM) and accelerating its inference time, with little degradation in model accuracy.
 
@@ -184,7 +184,7 @@ python train.py
 ```
 
 
-## Visualize Training Results
+## Visualize training results
 <a id='results'></a>
 
 ### **1. Saved results**
@@ -198,7 +198,7 @@ For example, you can retrieve the plots of the accuracy/loss curves, as well as 
 ![plot](./doc/img/quantized_model_confusion_matrix.JPG)
 
 
-### **2. Run Tensorboard**
+### **2. Run tensorboard**
 
 To visualize the training curves logged by tensorboard, go to **"outputs/{run_time}"** and run the following command:
 

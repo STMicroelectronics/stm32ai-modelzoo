@@ -1,15 +1,15 @@
-# STMicroelectronics Object Detection Training
+# Object detection STM32 model training
 
 This tutorial shows how to train a MobileNet SSD v1 model from scratch or with transfer learning on a specific dataset.
 As an example we will be demonstrating the workflow on the [Pascal VOC 2012 ](https://public.roboflow.com/object-detection/pascal-voc-2012/1/download/darknet) object detection dataset.
 
 ## Table of contents
 
-* <a href='#Data'>Prepare Dataset</a><br>
-* <a href='#training'>Train and Evaluate Model</a><br>
-* <a href='#results'>Visualize Training Results</a><br>
+* <a href='#Data'>Prepare dataset</a><br>
+* <a href='#training'>Train and evaluate model</a><br>
+* <a href='#results'>Visualize training results</a><br>
 
-## Prepare Dataset
+## Prepare dataset
 <a id='Data'></a>
 
 ### **1. Download the dataset and extract it**
@@ -99,7 +99,7 @@ If you don't want to use data augmentation set `augment` to **False**, else set 
 - `gaussian_blur` - A *float* value, for example a value of 3.0 will blur each image with a gaussian kernel with a sigma of 3.0.
 - `linear_contrast` - A *float* interval, Adjust contrast by scaling each pixel to 127 + alpha x (pixel_value-127), where alpha is sampled uniformly from the interval.
 
-## Train and Evaluate Model
+## Train and evaluate model
 <a id='training'></a>
 
 ### **1. Configure training parameters**
@@ -134,7 +134,7 @@ where:
 
 ### **2. Configure evaluation parameters**
 
-**2.1. Model Quantization:**
+**2.1. Model quantization:**
 
 Quantization optimizes your model to be deployed more efficiently on your embedded device by reducing its memory usage(Flash/RAM) and accelerating its inference time, with little degradation in model accuracy.
 
@@ -177,7 +177,7 @@ python train.py
 ```
 
 
-## Visualize Training Results
+## Visualize training results
 <a id='results'></a>
 
 ### **1. Saved results**

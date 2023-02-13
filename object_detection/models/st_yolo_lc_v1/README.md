@@ -1,6 +1,6 @@
 # ST Yolo LC v1 quantized
 
-## **Use case** : [Object Detection](../../../object_detection/README.md)
+## **Use case** : [Object detection](../../../object_detection/README.md)
 
 # Model description
 
@@ -9,10 +9,10 @@ ST Yolo LC v1 is a real-time object detection model targeted for real-time proce
 
 The model is quantized in int8 format using tensorflow lite converter.
 
-## Network Information
+## Network information
 
 
-| Network Information     |  Value          |
+| Network information     |  Value          |
 |-------------------------|-----------------|
 |  Framework              | TensorFlow Lite |
 |  Quantization           | int8            |
@@ -22,7 +22,7 @@ The model is quantized in int8 format using tensorflow lite converter.
 The models are quantized using tensorflow lite converter.
 
 
-## Network Inputs / Outputs
+## Network inputs / outputs
 
 
 For an image resolution of NxM and NC classes
@@ -72,9 +72,9 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| ST Yolo LC v1 | Int8   | 192x192    | STM32H7 | 157.44 KiB     | ~9 KiB      | 276.73 KiB    | ~55 KiB       | ~167 KiB   | ~332 KiB  |
-| ST Yolo LC v1 | Int8   | 224x224    | STM32H7 | 210.69 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~220 KiB   | ~332 KiB  |
-| ST Yolo LC v1 | Int8   | 256x256   | STM32H7 | 271.94 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~281 KiB   | ~332 KiB  |
+| ST Yolo LC v1 | Int8   | 192x192x3    | STM32H7 | 157.44 KiB     | ~9 KiB      | 276.73 KiB    | ~55 KiB       | ~167 KiB   | ~332 KiB  |
+| ST Yolo LC v1 | Int8   | 224x224x3    | STM32H7 | 210.69 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~220 KiB   | ~332 KiB  |
+| ST Yolo LC v1 | Int8   | 256x256x3   | STM32H7 | 271.94 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~281 KiB   | ~332 KiB  |
 
 
 ### Reference inference time based on COCO Person dataset (see Accuracy for details on dataset)
@@ -82,12 +82,12 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) |
 |-------------------|--------|------------|------------------|------------------|-------------|---------------------|
-| ST Yolo LC v1     | Int8   | 192x192    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 192.8 ms            |
-| ST Yolo LC v1     | Int8   | 224x224    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 263.1 ms            |
-| ST Yolo LC v1     | Int8   | 256x256    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 343.4 ms            |
-| ST Yolo LC v1     | Int8   | 192x192    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 50.9 ms **          |
-| ST Yolo LC v1     | Int8   | 224x224    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 69.7 ms **          |
-| ST Yolo LC v1     | Int8   | 256x256    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 88.1 ms **          |
+| ST Yolo LC v1     | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 192.8 ms            |
+| ST Yolo LC v1     | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 263.1 ms            |
+| ST Yolo LC v1     | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 343.4 ms            |
+| ST Yolo LC v1     | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 50.9 ms **          |
+| ST Yolo LC v1     | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 69.7 ms **          |
+| ST Yolo LC v1     | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 88.1 ms **          |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
@@ -98,9 +98,9 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 
 | Model | Format | Resolution |       AP       |
 |-------|--------|------------|----------------|
-| ST Yolo LC v1 | Int8 | 192x192   | 39.92 % |
-| ST Yolo LC v1 | Int8 | 224x224   | 42.75 % |
-| ST Yolo LC v1 | Int8 | 256x256   | 45.09 % |
+| ST Yolo LC v1 | Int8 | 192x192x3   | 39.92 % |
+| ST Yolo LC v1 | Int8 | 224x224x3   | 42.75 % |
+| ST Yolo LC v1 | Int8 | 256x256x3   | 45.09 % |
 
 
 ## Retraining and code generation

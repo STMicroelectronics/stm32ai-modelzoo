@@ -106,9 +106,9 @@ def train(cfg):
         model_path = os.path.join(HydraConfig.get().runtime.output_dir, "{}/{}".format(cfg.general.saved_models_dir, "best_model.h5"))
         model.save(model_path)
 
-    # Evaluate model footprints with cubeai
+    # Evaluate model footprints with STM32Cube.AI
     if cfg.stm32ai.footprints_on_target:
-        print("[INFO] : Establishing a connection to the Developer Cloud to launch the model benchmark on STM32 target...")
+        print("[INFO] : Establishing a connection to STM32Cube.AI Developer Cloud to launch the model benchmark on STM32 target...")
         try:
             output_analyze = Cloud_analyze(cfg, model_path)
             if output_analyze == 0:
@@ -187,9 +187,9 @@ def train(cfg):
                     if output_analyze != 0:
                         output_benchmark = Cloud_benchmark(cfg, quantized_model_path, output_analyze)
                         if output_benchmark == 0:
-                            raise Exception("Connection failed, generating C model using local cubeai.")
+                            raise Exception("Connection failed, generating C model using local STM32Cube.AI.")
                     else:
-                        raise Exception("Connection failed, generating C model using local cubeai.")
+                        raise Exception("Connection failed, generating C model using local STM32Cube.AI.")
                 except Exception as e:
                     print("[FAIL] :", e)
                     print("[INFO] : Offline C code generation launched...")
