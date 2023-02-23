@@ -52,12 +52,12 @@ def get_main_route_api_version(main_route_url: str) -> float:
 
 def _get_env_proxy():
     proxy_config = {}
-    if 'http_proxy' in os.environ:
-        proxy_config['http_proxy'] = os.environ.get('http_proxy')
-        proxy_config['http'] = os.environ.get('http_proxy')
-    if 'https_proxy' in os.environ:
-        proxy_config['https_proxy'] = os.environ.get('https_proxy')
-        proxy_config['https'] = os.environ.get('https_proxy')
+    http_proxy = os.environ.get('http_proxy') or os.environ.get('HTTP_PROXY')
+    https_proxy = os.environ.get('https_proxy') or os.environ.get('HTTPS_PROXY')
+    if http_proxy != None:
+        proxy_config['http_proxy'] = http_proxy
+    if https_proxy != None:
+        proxy_config['https_proxy'] = https_proxy
     proxy_config = proxy_config if len(proxy_config) else None
     return proxy_config
 
