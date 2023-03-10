@@ -103,7 +103,7 @@ def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str],
     for cdt_dir in u_dirs:
         if cdt_dir.name == 'generated':
             nu_files, nu_dirs = _get_file_and_subdirectory(cdt_dir)
-            u_dirs.remove(cdt_dir)
+            u_dirs.remove(cdt_dir)  # pylint: disable=modified-iterating-list
             u_files.extend(nu_files)
             u_dirs.extend(nu_dirs)
             break
@@ -246,7 +246,7 @@ def _makefile_builder(session: STMAiSession, conf: Any,
                       no_templates: bool, serial_number: str, no_flash: bool):
     """Makefile builder engine"""
 
-    logger.debug(' cwd={}'.format(conf.cwd))
+    logger.debug(' cwd=%s', str(conf.cwd))
 
     if hasattr(conf, 'clean_cmd'):
         logger.info(f'cleaning.. {conf.name}')
@@ -276,32 +276,46 @@ def _cube_ide_builder(cube_ide_exe: str, session: STMAiSession, conf: Any,
                       no_templates: bool, serial_number: str, no_flash: bool):
     """STM32 Cube IDE builder engine"""
 
-    logger.debug(' cwd={}'.format(conf.cwd))
+    logger.debug(' cwd=%s', str(conf.cwd))
 
     prj_dir = os.path.abspath(conf.cproject_location)
 
+    class ParserErrorCubeIde():
+        """Parser error Cube IDE"""
+
+        def __init__(self):
+            self._line_error = ''
+
+        @property
+        def error(self):
+            """Return info"""
+            return self._line_error
+
+        def __call__(self, line):
+            if line and 'no config matched' in line.lower():
+                self._line_error = line
+
     with tempfile.TemporaryDirectory() as tmpdirname:
         ws_dir = tmpdirname
-        logger.info(f'creating workspace.. {conf.name}')
-        cmd = [cube_ide_exe]
-        cmd.extend(['-nosplash', '-application org.eclipse.cdt.managedbuilder.core.headlessbuild'])
-        cmd.extend(['-data', f'{ws_dir}', '-import', f'{prj_dir}'])
-        run_shell_cmd(cmd,
-                      cwd=conf.cwd,
-                      logger=logger)
 
         update_c_files = not no_templates and not conf.no_templates
         if update_c_files:
             logger.info(f'updating.. {conf.name}')
             _update_source_tree(session, user_files)
 
+        parser = ParserErrorCubeIde()
         logger.info(f'building.. {conf.name}')
         cmd = [cube_ide_exe]
-        cmd.extend(['-nosplash', '-application org.eclipse.cdt.managedbuilder.core.headlessbuild'])
-        cmd.extend(['-data', f'{ws_dir}', '-build', f'"{conf.cproject_name}/{conf.cproject_config}"'])
+        cmd.extend(['--launcher.suppressErrors', '-nosplash'])
+        cmd.extend(['-application org.eclipse.cdt.managedbuilder.core.headlessbuild'])
+        cmd.extend(['-import', f'{prj_dir}'])
+        cmd.extend(['-data', f'{ws_dir}', '-cleanBuild', f'"{conf.cproject_name}/{conf.cproject_config}"'])
         run_shell_cmd(cmd,
                       cwd=conf.cwd,
-                      logger=logger)
+                      logger=logger,
+                      parser=parser)
+        if parser and parser.error:
+            logger.error(f'STM32CubeIDE build failed: "{parser.error}"')
 
         if hasattr(conf, 'flash_cmd') and not no_flash:
             _programm_dev_board(conf, serial_number=serial_number)
@@ -335,7 +349,7 @@ def cmd_build(
         logger.warning(f'  STM.AI version are differents.. {session.stm_ai_version} != {board.stm_ai_version}')
         return
 
-    logger.info('deploying the c-project.. {}'.format(board))
+    logger.info('deploying the c-project.. %s', str(board))
 
     # logger.info('checking series.. NOT YET IMPLEMENTED')
     # logger.info('checking memory... NOT YET IMPLEMENTED')

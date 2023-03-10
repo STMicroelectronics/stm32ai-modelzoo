@@ -39,7 +39,7 @@ Only this hardware is supported for now
 This getting started needs [STM32CubeIDE](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide.html) as well as [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) `v7.3.0`
 
 
-You can find the info to install the tools in the parents [README](../scripts/deployment/README.md) of the deployment part and the general [README](../scripts/deployment/README.md) of the model zoo. 
+You can find the info to install the tools in the parents [README](../scripts/deployment/README.md) of the deployment part and the general [README](../../README.md) of the model zoo. 
 
 
 ## __Deployment__

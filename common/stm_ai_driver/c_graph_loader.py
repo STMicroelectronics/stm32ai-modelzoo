@@ -8,8 +8,11 @@
 """
 STM AI driver - C graph loader
 """
+import logging
 
-from .utils import load_json_safe, STMAiMetrics, STMAiTensorInfo, STMAiVersion
+from .utils import load_json_safe, STMAiMetrics, STMAiTensorInfo, STMAiVersion, _LOGGER_NAME_
+
+logger = logging.getLogger(_LOGGER_NAME_)
 
 
 class NetworkCGraphReader:
@@ -25,7 +28,7 @@ class NetworkCGraphReader:
         if ver_ != '1.2':
             raise IOError(f'Network C graph JSON file version is invalid "{ver_}" instead "1.2"')
 
-        self._parse(series)
+        self._parse(series.lower())
 
     def __getattr__(self, attr):
         return self._dict[attr]
@@ -126,19 +129,32 @@ class NetworkCGraphReader:
             'type': self._dict.get('type', ''),
         }
 
+        memory_footprint = self._dict.get('memory_footprint', None)
+        if memory_footprint and 'stm32' in memory_footprint['series']:
+            rt_layout = {
+                'detailed': memory_footprint,
+                'rt_ram': memory_footprint['kernel_ram'],
+                'rt_flash': memory_footprint['kernel_flash']
+            }
+            self._dict['summary']['rt_layout'] = rt_layout
+            self._dict['summary']['series'] = memory_footprint['series']
+            if memory_footprint['series'] != series:
+                logger.warning('"series" value is not coherent.. %s != %s', series,
+                               memory_footprint['series'])
+
     def info(self):
         """Return a dict with the main data"""
         results = self._dict['summary']
         return results
 
-    def add_memory_footprint(self, desc, series):
+    def add_rt_layout(self, desc, series):
         """Update summary with runtime memory footprint"""
 
         val_ = desc['filtered']
         rt_flash = val_['text'] + val_['rodata'] + val_['data']
         rt_flash -= self._dict['summary']['weights']
         rt_layout = {
-            'detailled': desc,
+            'detailed': desc,
             'rt_ram': val_['data'] + val_['bss'],
             'rt_flash': rt_flash,
         }

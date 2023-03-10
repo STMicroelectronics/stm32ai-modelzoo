@@ -39,7 +39,7 @@ class STMAiSession():
             model_path: Union[str, List[str], None],
             tools: Union[STMAiTools, None] = None,
             session_name: Optional[str] = None,
-            workspace_dir: str = None
+            workspace_dir: Optional[str] = None
     ):
         """Create a working session"""
 
@@ -183,7 +183,7 @@ class STMAiSession():
     def summary(self, pr_f=None):
         """Display a summary of the session"""
         info_ = self.info
-        pr_f = pr_f if pr_f else print  # noqa:T002
+        pr_f = pr_f if pr_f else print  # noqa:T202
         title = f'Session "{self.name}"'
         pr_f(f'\n{title}')
         pr_f('-' * len(title))
@@ -274,8 +274,8 @@ class STMAiSession():
         template = Template(filename=tpl_file)
         res = template.render(**render_params)
 
-        with open(dst_file, 'w') as f:
-            f.write(res.replace("\n", ""))
+        with open(dst_file, 'w', newline='\n') as f:
+            f.write(res)
 
     def results(self, mode='list', sep=' '):
         """Return results"""

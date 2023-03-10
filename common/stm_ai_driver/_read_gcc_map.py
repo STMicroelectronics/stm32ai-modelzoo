@@ -10,15 +10,18 @@ Utility to parse a map file (GCC-based)
 """
 
 import logging
-from os import path, environ
+from os import path
 import argparse
 import re
+import sys
 
 from typing import Optional, List, Union
 
+from stm_ai_driver.utils import TableWriter
+
 
 __title__ = 'Utility - Extract info from a GCC-map file'
-__version__ = '1.5'
+__version__ = '1.6'
 __author__ = 'STMicroelectronics'
 
 
@@ -31,6 +34,7 @@ __author__ = 'STMicroelectronics'
 #   v1.3 - add new tflm pattern to consider the eIQ map file
 #   v1.4 - fix lib/module path with blank
 #   v1.5 - create CReadAndParseGccMap object to use the script as a lib
+#   v1.6 - improve parsing of the loaded modules
 #
 #   v2.x - TODO - add c++ support / demangling of symbol names
 #
@@ -72,6 +76,7 @@ _TFLM_SRC_PATH = ['eiq/tensorflow-lite', 'Middlewares/tensorflow']
 
 class FileReader():
     """Helper class to read a txt file"""
+
     def __init__(self, f_name):
         self.f_name = f_name
         self.file = None
@@ -105,17 +110,23 @@ class FileReader():
         self.pos += 1
         if self.line is not None:
             return self.line
-        else:
-            self.file.close()
-            self.file = None
-            raise StopIteration
+        self.file.close()
+        self.file = None
+        raise StopIteration
 
     def readline(self):
-        """."""
+        """."""  # noqa: DAR101,DAR201
         self.line = self.file.readline()
         self.line = self.line.rstrip() if self.line else None
         self.pos += 1
         return self.line
+
+    def reset(self):
+        """."""  # noqa: DAR101,DAR201
+        if self.file is not None:
+            self.file.close()
+            self.pos = 0
+            self.file = open(self.f_name, 'r')
 
     def close(self):
         """."""
@@ -123,7 +134,7 @@ class FileReader():
 
 
 def _skip_line(line):
-    """Return True is the line can be skipped"""
+    """Return True is the line can be skipped"""  # noqa: DAR101,DAR201
 
     if not line:
         return True
@@ -141,7 +152,7 @@ def _skip_line(line):
 
 
 def _get_memory(memories, addr):
-    """Return name of the associated memory descriptor"""
+    """Return name of the associated memory descriptor"""  # noqa: DAR101,DAR201
 
     if isinstance(addr, str) and addr.startswith('0x'):
         addr = int(addr, 0)
@@ -157,7 +168,7 @@ def _get_memory(memories, addr):
 
 
 def _addr_to_str_32b(addr):
-    """Return readable address (hex 32b format)"""
+    """Return readable address (hex 32b format)"""  # noqa: DAR101,DAR201,DAR401
 
     if isinstance(addr, str):
         if addr.startswith('0x'):
@@ -172,7 +183,7 @@ def _addr_to_str_32b(addr):
 
 
 def _split_full_path(item, tflm_mode=False):
-    """Split file path - path and file name"""
+    """Split file path - path and file name"""  # noqa: DAR101,DAR201
 
     f_path = item.replace('\\', '/')
     if '(' in f_path:
@@ -185,17 +196,17 @@ def _split_full_path(item, tflm_mode=False):
 
 
 def _to_std_section(name_sec, sym=None):
-    """Return std section name -> text, rodata, data and bss"""
+    """Return std section name -> text, rodata, data and bss"""  # noqa: DAR101,DAR201
 
     # if available symbol name is used
     if sym:
         if sym['raw'][0].startswith('.rodata'):
             return 'rodata'
-        elif sym['raw'][0].startswith('.bss'):
+        if sym['raw'][0].startswith('.bss'):
             return 'bss'
-        elif sym['raw'][0].startswith('.text'):
+        if sym['raw'][0].startswith('.text'):
             return 'text'
-        elif sym['raw'][0].startswith('.data'):
+        if sym['raw'][0].startswith('.data'):
             return 'data'
 
     # else sec name is used
@@ -210,7 +221,7 @@ def _to_std_section(name_sec, sym=None):
 
 
 def _get_std_section_size(module_name, all_sections):
-    """Compute the size of each std section for a given module"""
+    """Compute the size of each std section for a given module"""  # noqa: DAR101,DAR201
 
     results = {'nb_syms': 0, 'data': 0, 'rodata': 0, 'bss': 0, 'text': 0}
 
@@ -251,7 +262,7 @@ def _get_symbol_name(n_items):
 
 
 def _parse_symbol(reader, section, modules, commons, logger, tflm):
-    """Parse the symbol description"""
+    """Parse the symbol description"""  # noqa: DAR101,DAR201,DAR401
 
     # Expected patterns:
     #
@@ -353,9 +364,10 @@ def _parse_symbol(reader, section, modules, commons, logger, tflm):
 
 
 class CReadAndParseGccMap():
-    """Main class to parse a GCC-map file"""
+    """Main class to parse a GCC-map file"""  # noqa: DAR101,DAR201,DAR401
 
-    def __init__(self, map_file: str, tflm: bool = False, logger: Optional[Union[logging.Logger, None]] = None):
+    def __init__(self, map_file: str, debug: bool = False,
+                 tflm: bool = False, logger: Optional[Union[logging.Logger, None]] = None):
 
         if not logger:
             logger = logging.getLogger('PARSE-GCC-MAP')
@@ -365,7 +377,8 @@ class CReadAndParseGccMap():
         self._tflm = tflm
         self._map_file = map_file
 
-        self._logger.info(f'parsing the map file: "{map_file}"')
+        self._logger.debug('')
+        self._logger.debug('Parsing the map file: "%s"', map_file)
 
         self._commons = {}  # type: dict
         self._memories = {}  # type: dict
@@ -376,20 +389,10 @@ class CReadAndParseGccMap():
         if not path.exists(map_file):
             raise RuntimeError(f'Invalid filepath {map_file}')
 
-        self._parse()
+        self._parse(debug=debug)
 
-    def summary(self):
-        """Display summary of the parsed file"""
-
-        self._show_memories()
-        self._show_sections()
-        self.summary_modules()
-
-        # self._show_modules([r'network[_R]*', r'libm'])  # , 'NetworkRuntime'])
-        # self._show_modules([r'lib', r'nano'], debug=False)
-
-    def _parse(self):
-        """Parse the map file"""
+    def _parse(self, debug: bool = False):
+        """Parse the map file"""  # noqa: DAR101,DAR201,DAR401
 
         parsers = [
             self._parser_init,
@@ -400,7 +403,7 @@ class CReadAndParseGccMap():
         ]
 
         cur_lvl = self._logger.getEffectiveLevel()
-        if cur_lvl >= logging.DEBUG and not environ.get('_DEBUG', ''):
+        if cur_lvl >= logging.DEBUG and not debug:
             self._logger.setLevel(logging.INFO)
 
         pars_idx = 0
@@ -429,31 +432,32 @@ class CReadAndParseGccMap():
                 extra[ref]['nb_syms'] += 1
 
         # ordered the modules
-        self._ordered_modules = {k: v for k, v in sorted(self._modules.items(),
-                                                         key=lambda item: item[1].get('text') + item[1].get('rodata'),
-                                                         reverse=True)}
+        ordered_mod_ = sorted(self._modules.items(),
+                              key=lambda item: item[1].get('text') + item[1].get('rodata'),
+                              reverse=True)
+        self._ordered_modules = dict(ordered_mod_)  # {k: v for k, v in ordered_mod_}
         self._ordered_modules.update(extra)
 
         self._logger.setLevel(cur_lvl)
 
     def _parser_init(self, reader):
-        """Initial step to find the expected first line"""
+        """Initial step to find the expected first line"""  # noqa: DAR101,DAR201,DAR401
 
         if reader.line.startswith('Archive member included to satisfy reference by file (symbol)'):
             return 1
         else:
-            self._logger.error('{}: {}'.format(reader.pos, reader.line))
+            self._logger.error('%d: %s', reader.pos, reader.line)
             raise RuntimeError("Expected first line not found")
 
     def _parser_final(self, reader):
-        """Final step to close the parser"""
+        """Final step to close the parser"""  # noqa: DAR101,DAR201,DAR401
 
-        self._logger.debug('parsing done... {}'.format(reader.pos))
+        self._logger.debug('parsing done... %d', reader.pos)
         reader.close()
         return 0
 
     def _parser_common(self, reader):
-        """Parser to analyze the common symbols"""
+        """Parser to analyze the common symbols"""  # noqa: DAR101,DAR201,DAR401
 
         if not reader.line.startswith('Allocating common symbols'):
             if reader.line.startswith('Discarded input sections'):
@@ -461,7 +465,7 @@ class CReadAndParseGccMap():
                 return 1
             return 0
 
-        self._logger.debug(f'parsing "Allocating common symbols" section... {reader.pos}')
+        self._logger.debug('parsing "Allocating common symbols" section... %d', reader.pos)
 
         next(reader)
         if 'Common symbol' not in reader.line or 'size' not in reader.line:
@@ -476,7 +480,8 @@ class CReadAndParseGccMap():
                 next(reader)
                 n_items = reader.line.split()
                 items.extend(n_items)
-            self._logger.debug(f'{r_pos}: common - {items}')
+            msg_ = f'{r_pos}: common - {items}'
+            self._logger.debug(msg_)
             _, short_name = _split_full_path(' '.join(items[2]), self._tflm)
             if items[0] in self._commons:
                 raise ValueError('Common symbol already registered')
@@ -487,16 +492,16 @@ class CReadAndParseGccMap():
                 }
             next(reader)
 
-        self._logger.debug(' found {} common symbols'.format(len(self._commons)))
+        self._logger.debug(' found %d common symbols', len(self._commons))
         return 1
 
     def _parser_memory_configuration(self, reader):
-        """Parser to read the memory configuration section"""
+        """Parser to read the memory configuration section"""  # noqa: DAR101,DAR201,DAR401
 
         if not reader.line.startswith('Memory Configuration'):
             return 0
 
-        self._logger.debug(f'parsing "Memory Configuration" section... {reader.pos}')
+        self._logger.debug('parsing "Memory Configuration" section... %d', reader.pos)
 
         next(reader)  # remove empty line
 
@@ -506,7 +511,7 @@ class CReadAndParseGccMap():
 
         next(reader)
         while reader.line:
-            self._logger.debug('{}: {}'.format(reader.pos, reader.line))
+            self._logger.debug('%d: %s', reader.pos, reader.line)
             items = reader.line.split()
             self._memories[items[0]] = {
                 'origin': items[1],
@@ -516,7 +521,7 @@ class CReadAndParseGccMap():
             }
             next(reader)
 
-        self._logger.debug(' found {} memory descriptions'.format(len(self._memories)))
+        self._logger.debug(' found %d memory descriptions', len(self._memories))
 
         if '*default*' not in self._memories:
             self._memories['*default*'] = {
@@ -528,26 +533,18 @@ class CReadAndParseGccMap():
 
         return 1
 
-    def _parser_linker_and_memory_map(self, reader):
-        """Parser to read the Linker script and memory map section"""
+    def _parse_loaded_modules(self, reader, in_file):
+        """Parse loaded modules"""  # noqa: DAR101,DAR201,DAR401
 
-        if not reader.line.startswith('Linker script and memory map'):
-            return 0
-
-        self._logger.debug(f'parsing "Linker script and memory map" section... {reader.pos}')
-
-        next(reader)  # remove empty line
-
-        # Parsing loaded modules
+        cur_line = reader.pos
+        if in_file:
+            while not reader.line.startswith('LOAD'):
+                next(reader)
 
         def is_valid_module_line(line):
             if line.startswith('LOAD') or line.startswith('START GROUP') or line.startswith('END GROUP'):
                 return True
             return False
-
-        next(reader)
-        if not reader.line.startswith('LOAD'):
-            raise RuntimeError("Invalid syntax %r" % reader.line)
 
         while is_valid_module_line(reader.line):
             if reader.line.startswith('LOAD'):
@@ -559,21 +556,41 @@ class CReadAndParseGccMap():
                     f_type = 'lib toolchain'
                 elif '.a' in short_name:
                     f_type = 'lib'
-                self._logger.debug('{}: [module] {} (type={})'.format(reader.pos, short_name, f_type))
+                msg_ = '{}: [module] {} (type={})'.format(reader.pos, short_name, f_type)
+                self._logger.debug(msg_)
                 if short_name in self._modules and 'toolchain' not in f_type:
-                    self._logger.warning("module already registered {} {}".format(short_name,
-                                                                                  self._modules[short_name]))
+                    self._logger.warning("module already registered %s %s", short_name, self._modules[short_name])
                 self._modules[short_name] = {'full_path': full_path, 'type': f_type}
             next(reader)
 
-        self._logger.debug(' found {} modules  '.format(len(self._modules)))
+        self._logger.debug(' found %d modules  ', len(self._modules))
+
+        if in_file:
+            reader.reset()
+            while reader.pos != cur_line:
+                next(reader)
+
+    def _parser_linker_and_memory_map(self, reader):
+        """Parser to read the Linker script and memory map section"""  # noqa: DAR101,DAR201,DAR401
+
+        if not reader.line.startswith('Linker script and memory map'):
+            return 0
+
+        self._logger.debug('parsing "Linker script and memory map" section... %d', reader.pos)
+
+        next(reader)  # remove empty line
+
+        # Parsing loaded modules?
+
+        next(reader)
+        self._parse_loaded_modules(reader, not reader.line.startswith('LOAD'))
 
         # Parsing sections and symbols
 
         cur_section = None
         while not reader.line.startswith('/DISCARD/') and not reader.line.startswith('OUTPUT('):
             if _skip_line(reader.line):
-                self._logger.debug('{}: -> line is skipped "{}"'.format(reader.pos, reader.line))
+                self._logger.debug('%d: -> line is skipped "%s"', reader.pos, reader.line)
                 next(reader)
                 continue
             if reader.line.startswith('.'):
@@ -584,10 +601,10 @@ class CReadAndParseGccMap():
                     if reader.line.strip().startswith('0x'):
                         items.extend(reader.line.split())
                     else:
-                        self._logger.warning('{}: sub-section "{}" has been skipped'.format(r_pos, items[0]))
+                        self._logger.warning('%d: sub-section "%s" has been skipped', r_pos, str(items[0]))
                         cur_section = None
                         continue
-                self._logger.debug('{}: [section] {}'.format(r_pos, items))
+                self._logger.debug('%d: [section] %s', r_pos, items)
                 load_addr = ''
                 if len(items) > 5 and items[3] == 'load':
                     # if 'bss' not in items[0] and 'stack' not in items[0] and 'heap' not in items[0]:
@@ -610,80 +627,112 @@ class CReadAndParseGccMap():
                         self._memories[_get_memory(self._memories, load_addr)]['used'] += int(items[2], 0)
             elif cur_section is None:
                 if reader.line:
-                    self._logger.debug('{}: -> no section is defined "{}"'.format(reader.pos, reader.line))
+                    self._logger.debug('%d: -> no section is defined "%s"', reader.pos, reader.line)
             else:
                 if not reader.line.startswith(' '):
-                    self._logger.warning('{}: line is invalid - {}'.format(reader.pos, reader.line))
+                    if not reader.line.startswith('LOAD') and ' GROUP' not in reader.line:
+                        self._logger.warning('%d: line is invalid - %s', reader.pos, reader.line)
                 else:
                     if _parse_symbol(reader, cur_section, self._modules, self._commons, self._logger, self._tflm):
                         continue
 
             next(reader)
 
-        self._logger.debug(' found {} sections  '.format(len(self._sections)))
+        self._logger.debug(' found %d sections  ', len(self._sections))
         nb_symbols = 0
         for sec in self._sections:
             nb_symbols += len(sec['symbols'])
-        self._logger.debug(' found {} symbols  '.format(nb_symbols))
+        self._logger.debug(' found %d symbols  ', nb_symbols)
 
         return 1
 
-    def _show_memories(self):
-        """Display the memories"""
+    def _show_memories(self, indent: int = 1):
+        """Display the physical memories"""  # noqa: DAR101,DAR201,DAR401
 
-        self._logger.info('')
-        self._logger.info('-' * 88)
-        self._logger.info('{:30s} {:>10s} {:>10s} {:>10s}   {:>10s}'.format(
-            'memory', 'size', 'org', 'used', 'usage (%)'))
-        self._logger.info('-' * 88)
+        table = TableWriter(indent=indent, csep='-')
+        # table.set_title('Memory definition')
+        table.set_header(['memory', 'size', 'org', 'used', 'usage (%)'])
 
         for key, mem in self._memories.items():
             if key != '*default*':
-                self._logger.info('{:30s} {:>10} {:>10s} {:>10}   {:>.02f}%'.format(
-                    key, mem['size'], _addr_to_str_32b(mem['origin']),
-                    mem['used'],
-                    mem['used'] * 100 / mem['size']))
-            elif mem['used']:
-                self._logger.info('{:30s} {:>10s} {:>10s} {:>10}'.format(
-                    key, '', '', mem['used']))
-        self._logger.info('-' * 88)
+                row = [key]
+                row.append('{:,d}'.format(mem['size']))
+                row.append(_addr_to_str_32b(mem['origin']))
+                row.append('{:,d}'.format(mem['used']))
+                row.append('{:.2f}%'.format(mem['used'] * 100 / mem['size']))
+                table.add_row(row)
 
-    def _show_sections(self):
-        """Display the sections"""
+        res = table.getvalue(fmt=' >>>>', endline=True)
+        for line in res.splitlines():
+            self._logger.info(line)
+        table.close()
 
-        self._logger.info('')
-        self._logger.info('-' * 88)
-        self._logger.info('{:30s} {:>10s} {:>10s} {:>10s} {:>10s} {:>10s}'.format(
-            'section', 'size', 'addr', '*fill*', 'diff', 'memory'))
-        self._logger.info('-' * 88)
+    def _show_sections(self, indent: int = 1):
+        """Display the sections"""  # noqa: DAR101,DAR201,DAR401
 
-        # calculate arm-none-eabi-size.exe output
-        text_ = 0
-        data_ = 0
-        bss_ = 0
-        total_ = 0
+        table = TableWriter(indent=indent)
+        # table.set_title('Memory sections')
+        table.set_header(['section', 'size', 'addr', '*fill*', 'diff', 'memory'])
 
+        text_ = data_ = bss_ = total_ = 0
         for sec in self._sections:
-            self._logger.info('{:30s} {:>10d} {:>10s} {:>10d} {:>10d} {:>10s} {}'.format(
-                sec['name'], sec['size'], _addr_to_str_32b(sec['addr']),
-                sec['fill'],
-                sec['size'] - (sec['c_size'] + sec['fill']),
-                sec['memory'],
-                _addr_to_str_32b(sec['load address'])))
+            row = [sec['name']]
+            row.append('{:,d}'.format(sec['size']))
+            row.append('{:s}'.format(_addr_to_str_32b(sec['addr'])))
+            row.append('{}'.format(sec['fill']))
+            row.append('{:,d}'.format(sec['size'] - (sec['c_size'] + sec['fill'])))
+            row.append('{}'.format(sec['memory']))
+            table.add_row(row)
             total_ += sec['size']
-
             if sec['name'] == '.data' or sec['name'] == '.ARM' or sec['name'] == '.fini_array':
                 data_ += sec['size']
             elif sec['name'] == '.bss' or 'heap' in sec['name'] or 'stack' in sec['name'] or sec['name'] == '._sdram':
                 bss_ += sec['size']
             else:
                 text_ += sec['size']
+        table.add_note('text={} data={} bss={} total={}'.format(text_, data_, bss_, total_))
 
-        self._logger.info('-' * 88)
-        self._logger.info(' text={} data={} bss={} total={}'.format(text_, data_, bss_, total_))
+        res = table.getvalue(fmt=' >>>>>', endline=True)
+        for line in res.splitlines():
+            self._logger.info(line)
+        table.close()
 
-    def get_info_modules(self, filters=None):
-        """Return text/rodata/data/bss section size"""
+    def _show_modules(self, indent: int = 1):
+        """Display the modules"""  # noqa: DAR101,DAR201,DAR401
+
+        table = TableWriter(indent=indent)
+        # table.set_title('Modules')
+        table.set_header(['module', 'text', 'rodata', 'data', 'bss'])
+
+        res = self.get_info_modules()
+
+        for module in res['modules']:
+            row = [module['name']]
+            row.append('{:,d}'.format(module['text']))
+            row.append('{:,d}'.format(module['rodata']))
+            row.append('{:,d}'.format(module['data']))
+            row.append('{:,d}'.format(module['bss']))
+            table.add_row(row)
+
+        table.add_separator()
+        val_ = res['all']
+        text, rodata, data, bss = val_['text'], val_['rodata'], val_['data'], val_['bss']
+        table.add_row(['total', f'{text:,d}', f'{rodata:,d}', f'{data:,d}', f'{bss:,d}'])
+        table.add_note('text={} data={} bss={}'.format(text + rodata, data, bss))
+
+        res = table.getvalue(fmt=' >>>>', endline=True)
+        for line in res.splitlines():
+            self._logger.info(line)
+        table.close()
+
+    def summary(self, indent: int = 1):
+        """Display summary of the parsed file"""  # noqa: DAR101,DAR201,DAR401
+        self._show_memories(indent)
+        self._show_sections(indent)
+        self._show_modules(indent)
+
+    def get_info_modules(self, filters=None, excludes=None):
+        """Return text/rodata/data/bss section size"""  # noqa: DAR101,DAR201,DAR401
 
         res = {'modules': []}
 
@@ -707,6 +756,9 @@ class CReadAndParseGccMap():
             bss_ += module['bss']
 
             if filters is None or _is_module(filters, key):
+                if excludes and _is_module(excludes, key):
+                    continue
+
                 item = {
                     'name': key,
                     'text': module['text'],
@@ -730,70 +782,95 @@ class CReadAndParseGccMap():
 
         return res
 
-    def summary_modules(self, filters=None, debug=False, pr_f=None):
-        """Display the modules"""
+    def summary_modules(self, filtered=None, indent: int = 1):
+        """Display the modules"""  # noqa: DAR101,DAR201,DAR401
 
-        pr_f = pr_f if pr_f else self._logger.info
+        if not filtered:
+            self._show_modules()
+            return
 
-        header = '{:30s} {:>10s} {:>10s} {:>10s} {:>10s}'.format(
-            'module', 'text', 'rodata', 'data', 'bss')
-        pr_f('')
+        if not isinstance(filtered, dict) or 'modules' not in filtered:
+            return
 
-        if not isinstance(filters, dict):
-            res = self.get_info_modules(filters)
-            filters_ = filters
+        table = TableWriter(indent=indent)
+        table.set_title('filters = {}'.format(filtered['filters']))
+        table.set_header(['module', 'text', 'rodata', 'data', 'bss'])
+
+        for module in filtered['modules']:
+            sizes = [module['text'], module['rodata'], module['data'], module['bss']]
+            fields = [module['name'], *['{:,d}'.format(val) for val in sizes]]
+            table.add_row(fields)
+        table.add_separator()
+
+        if filtered['filters']:
+            module = filtered['filtered']
         else:
-            res = filters
-            filters_ = res['filters']
+            module = filtered['all']
+        rt_total = [module['text'], module['rodata'], module['data'], module['bss']]
+        fields = ['total', *['{:,d}'.format(val) for val in rt_total]]
+        table.add_row(fields)
 
-        if filters_:
-            pr_f('Filtered module{} : {}'.format('s' if len(filters_) > 1 else '', filters_))
+        res = table.getvalue(fmt=' >>>>', endline=False)
+        for line in res.splitlines():
+            self._logger.info(line)
+        table.close()
 
-        pr_f('-' * 80)
-        pr_f(header)
-        pr_f('-' * 80)
+    def show_symbols_by_module(self, filters=None, indent: int = 1):
+        """Display symbol by modules"""  # noqa: DAR101,DAR201,DAR401
+        if filters is None:
+            return
 
-        for module in res['modules']:
-            ext = '       {1:4d}  {0}'.format(module['file_path'], module['nb_syms']) if debug else ' '
-            pr_f('{:30s} {:>10} {:>10} {:>10} {:>10} {}'.format(module['name'], module['text'],
-                                                                module['rodata'], module['data'],
-                                                                module['bss'], ext))
+        def _is_module(filters, key):
+            for fil_ in filters:
+                pcomp_ = re.compile(fil_, re.IGNORECASE)
+                if pcomp_.search(key):
+                    return True
+            return False
 
-        pr_f('-' * 80)
+        table = TableWriter(indent=indent, csep='-')
+        table.set_title('Symbol size - filters = {}'.format(filters))
+        table.set_header(['module', 'section', 'symbol', 'size'])
 
-        if filters_:
-            val_ = res['filtered']
-            pr_f(' text={} data={} bss={} (filtered)'.format(val_['text'] + val_['rodata'],
-                                                             val_['data'], val_['bss']))
-        if debug or not filters:
-            val_ = res['all']
-            pr_f(' text={} data={} bss={}'.format(val_['text'] + val_['rodata'],
-                                                  val_['data'], val_['bss']))
-        pr_f('')
+        for sec in self._sections:
+            for key, sym in sec['symbols'].items():
+                if _is_module(filters, sym['module']):
+                    fields_ = [sym['module'], sec['name'], key, sym['size']]
+                    table.add_row(fields_)
+
+        res = table.getvalue(fmt='..>>', endline=False)
+        for line in res.splitlines():
+            self._logger.info(line)
+        table.close()
 
 
 def read_map_file(
         map_file: str,
+        logger: logging.Logger,
         filters: Optional[List[str]] = None,
+        symbols: bool = False,
         tflm: bool = False,
-        logger: Optional[Union[logging.Logger, None]] = None):
-    """."""
+        debug: bool = False):
+    """."""  # noqa: DAR101,DAR201,DAR401
 
     res = {}
 
-    parser = CReadAndParseGccMap(map_file, tflm=tflm, logger=logger)
+    msg_ = f'Options: tflm={tflm} filters={filters}'
+    logger.info(msg_)
+
+    parser = CReadAndParseGccMap(map_file, debug=debug, tflm=tflm, logger=logger)
     parser.summary()
 
     if filters:
         res = parser.get_info_modules(filters=filters)
-        parser.summary_modules(filters=res)
+        parser.summary_modules(filtered=res)
+        if symbols:
+            parser.show_symbols_by_module(filters)
 
     return res
 
 
 def main():
-    """Script entry point."""
-    import sys
+    """Script entry point."""  # noqa: DAR101,DAR201,DAR401
 
     class CustomFormatter(logging.Formatter):
         """Custom Formatter"""
@@ -802,7 +879,8 @@ def main():
             if record.levelno == logging.INFO:
                 log_fmt = '%(message)s'
             else:
-                log_fmt = '%(name)s:%(levelname)-7s %(message)s (%(filename)s:%(lineno)d)'
+                # log_fmt = '%(name)s:%(levelname)s:%(filename)s:%(lineno)d - %(message)s'
+                log_fmt = '%(name)s:%(levelname)s:%(lineno)d - %(message)s'
             formatter = logging.Formatter(log_fmt)
             return formatter.format(record)
 
@@ -841,7 +919,7 @@ def main():
     console.setFormatter(formatter)
     logger.addHandler(console)
 
-    logger.info(f'parsing the file {args.map} {args.module}')
+    logger.info('Parsing the file %s %s', args.map, args.module)
 
     if not path.exists(args.map):
         raise RuntimeError(f'Invalid filepath {args.map}')
@@ -851,9 +929,9 @@ def main():
         modules = args.module
         args.module = args.module[0]
 
-    # parse_map_file(args, logger)
-
-    read_map_file(args.map, tflm=args.tflm, filters=modules, logger=logger)
+    read_map_file(args.map, debug=args.debug, tflm=args.tflm,
+                  filters=modules, logger=logger,
+                  symbols=args.symbols)
 
 
 if __name__ == '__main__':

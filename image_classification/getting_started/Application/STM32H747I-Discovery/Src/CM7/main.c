@@ -194,7 +194,7 @@ int main(void)
     Camera_GetNextReadyFrame(&App_Config);
     
     /**************************************************************************/
-    /********************Dispaly camera frame into LCD display*****************/
+    /********************Display camera frame into LCD display*****************/
     /**************************************************************************/ 
     Display_CameraPreview(&App_Config);
     

@@ -21,14 +21,14 @@ from .board_config import STMAiBoardConfig
 from .utils import STMAICException
 from .c_graph_loader import NetworkCGraphReader
 
-from .utils import run_shell_cmd
+from .utils import run_shell_cmd, _LOGGER_NAME_
 from .options import STMAiCompileOptions
 from ._stm32_app import stm32app_build
 from ._read_gcc_map import CReadAndParseGccMap
 from .stm32_tools import STM32_TOOLS as STM32Tools
 
 
-logger = logging.getLogger('STMAIC')
+logger = logging.getLogger(_LOGGER_NAME_)
 
 
 def _move_generated_files(session: STMAiSession):
@@ -38,10 +38,11 @@ def _move_generated_files(session: STMAiSession):
     dst_dir = session.generated_dir
     c_name = session.c_name
 
-    logger.debug(f' moving files to session storage location.. {dst_dir}')
+    logger.debug(' moving files to session storage location.. %s', dst_dir)
 
     if not c_name or not os.path.isdir(src_dir):
-        logger.error(f'c_name or/and workspace dir are not valid: {c_name} {src_dir}')
+        msg_ = f'c_name or/and workspace dir are not valid: {c_name} {src_dir}'
+        logger.error(msg_)
         return
 
     os.makedirs(dst_dir, exist_ok=True)
@@ -153,8 +154,8 @@ def cmd_compile(
     series = session.series
     output_dir = session.workspace
 
-    logger.info('compiling.. "{}" session'.format(session.name))
-    logger.info(' model_path  : {}'.format(session.model_path))
+    logger.info('compiling.. "%s" session', session.name)
+    logger.info(' model_path  : %s', session.model_path)
 
     if session.is_empty:
         logger.error('no model file(s) is available')
@@ -180,9 +181,9 @@ def cmd_compile(
 
     cmd_line.extend([session.options.to_cli_args(str(session.tools))])
 
-    logger.info(' tools       : {}'.format(session.tools))
-    logger.info(' target      : {}'.format(session.board))
-    logger.info(' options     : {}'.format(cmd_line[-1]))
+    logger.info(' tools       : %s', str(session.tools))
+    logger.info(' target      : %s', str(session.board))
+    logger.info(' options     : %s', str(cmd_line[-1]))
 
     # call the command line
     err, _ = run_shell_cmd(cmd_line, logger=logger)
@@ -195,19 +196,22 @@ def cmd_compile(
         _move_generated_files(session)
         _copy_ai_runtime_files(session)
 
-        # this part of code will be integrated in CLI in the future release
-        stm32_gcc = STM32Tools().get_compiler()
-        if series not in ('x86', 'default') and stm32_gcc:
-            logger.info(f'building dummy stm32 app.. series={series} tools={session.tools}')
-            map_file = stm32app_build(session, stm32_gcc[0])
-            gcc_map = CReadAndParseGccMap(map_file, logger=logger)
-            if logger.getEffectiveLevel() <= logging.DEBUG:
-                gcc_map.summary()
-            res = gcc_map.get_info_modules(filters=[f'{session.c_name}', 'NetworkR', 'network_runtime', 'libm'])
-            gcc_map.summary_modules(filters=res, pr_f=logger.info)
-            session.c_graph().add_memory_footprint(res, series)
-        # end-of-code
+        if 'rt_layout' not in session.c_graph().info():
+            # this part of code will be integrated in CLI in the future release
+            stm32_gcc = STM32Tools().get_compiler()
+            if series not in ('x86', 'default', 'generic') and stm32_gcc:
+                msg_ = f'building dummy stm32 app.. series={series} tools={session.tools}'
+                logger.info(msg_)
+                map_file = stm32app_build(session, stm32_gcc[0])
+                gcc_map = CReadAndParseGccMap(map_file, logger=logger)
+                if logger.getEffectiveLevel() <= logging.DEBUG:
+                    gcc_map.summary()
+                res = gcc_map.get_info_modules(filters=[f'{session.c_name}', 'NetworkR', 'network_runtime',
+                                                        'libm', 'libgcc'])
+                gcc_map.summary_modules(filtered=res)
+                session.c_graph().add_rt_layout(res, series)
+            # end-of-code
 
-        logger.info(' results -> {}'.format(session))
+        logger.info(' results -> %s', str(session))
 
     return err

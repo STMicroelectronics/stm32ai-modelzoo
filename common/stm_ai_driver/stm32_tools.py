@@ -16,7 +16,7 @@ import sys
 from pathlib import Path
 from typing import Union, Tuple, List
 
-from .utils import _LOGGER_NAME_, run_shell_cmd
+from .utils import _LOGGER_NAME_, STMAIC_DEBUG_ENV, run_shell_cmd
 
 logger = logging.getLogger(_LOGGER_NAME_)
 
@@ -199,6 +199,11 @@ class STM32ProgListCommandParser():
         self._uart = None
         self._st_links = []
         self._uarts = []
+        self._no_st_link_detected = False
+
+    def no_st_link_detected(self):
+        """Indicates if no st-link has been detected normaly"""
+        return self._no_st_link_detected
 
     def st_links(self):
         """List of connected board through ST-link"""
@@ -237,6 +242,8 @@ class STM32ProgListCommandParser():
                 self._uart['description'] = line.split(':')[-1].strip()
                 self._uarts.append(self._uart)
             self._uart = dict()
+        if 'Error: No ST-Link detected!' in line:
+            self._no_st_link_detected = True
         return
 
 
@@ -277,8 +284,8 @@ def _stm32_get_info(app, serial_number=None):
     if serial_number:
         cmd_line.append(f'sn={serial_number}')
     parser = STM32ProgConnectCommandParser()
-    cur_logger = logger if os.environ.get('_DEBUG', None) else None
-    run_shell_cmd(cmd_line, logger=cur_logger, parser=parser)
+    cur_logger = logger if os.environ.get(STMAIC_DEBUG_ENV, None) else None
+    run_shell_cmd(cmd_line, logger=cur_logger, parser=parser, assert_on_error=True)
     return parser.desc
 
 
@@ -289,8 +296,12 @@ def get_stm32_board_interfaces() -> Tuple[List[dict], List[dict]]:
     if app:
         parser = STM32ProgListCommandParser()
         cmd_line = [app[0], '--list']
-        cur_logger = logger if os.environ.get('_DEBUG', None) else None
-        run_shell_cmd(cmd_line, logger=cur_logger, parser=parser)
+        cur_logger = logger if os.environ.get(STMAIC_DEBUG_ENV, None) else None
+        err, lines = run_shell_cmd(cmd_line, logger=cur_logger, parser=parser)
+        if err != 0 and not parser.no_st_link_detected():
+            if not cur_logger and logger.getEffectiveLevel() > logging.DEBUG:
+                for line in lines:
+                    logger.error(line)
         st_links = parser.st_links()
         uarts = parser.uarts()
         for idx, st_link in enumerate(st_links):
@@ -308,5 +319,5 @@ def reset_stm32_board(serial_number=None):
         cmd_line = [app[0], '--connect', 'port=SWD', 'mode=UR', 'reset=HWrst']
         if serial_number:
             cmd_line.append(f'sn={serial_number}')
-        cur_logger = logger if os.environ.get('_DEBUG', None) else None
+        cur_logger = logger if os.environ.get(STMAIC_DEBUG_ENV, None) else None
         run_shell_cmd(cmd_line, logger=cur_logger)

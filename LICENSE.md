@@ -60,3 +60,17 @@ Concerning image_classification getting started:
 | Application                     | [SLA0044](./image_classification/getting_started/Application/LICENSE.md)              | STMicroelectronics |
 | Utilities                       | [BSD-3-Clause](./image_classification/getting_started/Utilities/LICENSE.md)         | STMicroelectronics |
 
+
+Concerning hand posture:
+| Component                            | License              | Copyright |
+|:---------                            |:-------              |:----------|
+| scripts                              | [SLA0044](./hand_posture/LICENSE.md)              | STMicroelectronics |
+
+Concerning hand posture getting started:
+| Component                       | License              | Copyright |
+|:---------                       |:-------              |:----------|
+| CMSIS                           | [Apache License 2.0](./hand_posture/getting_started/Drivers/CMSIS/LICENSE.md)   | STMicroelectronics - Copyright (c) 2009-2017 ARM Limited. All rights reserved. |
+| STM32F4xx_HAL_Driver            | [BSD-3-Clause](./hand_posture/getting_started/Drivers/STM32F4xx_HAL_Driver/LICENSE.md)         | STMicroelectronics |
+| BSP                             | [SLA0081](./hand_posture/getting_started/Drivers/BSP/LICENSE.md)         | STMicroelectronics |
+| STM32_AI_Runtime                | [SLA0044](./hand_posture/getting_started/Middlewares/ST/STM32_AI_Runtime/LICENSE.md)              | STMicroelectronics |
+| Application                     | [SLA0044](./hand_posture/getting_started/Application/LICENSE.md)              | STMicroelectronics |

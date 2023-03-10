@@ -10,6 +10,7 @@ STM AI driver - Utilities
 """
 
 import logging
+from io import StringIO
 import sys
 import subprocess
 import os
@@ -23,6 +24,7 @@ from colorama import init, Fore, Style
 
 _LOGGER_NAME_ = 'STMAIC'
 STMAIC_LOGGER_NAME = _LOGGER_NAME_
+STMAIC_DEBUG_ENV = 'STMAIC_DEBUG'
 
 
 class STMAICException(Exception):
@@ -42,9 +44,9 @@ class STMAICException(Exception):
         """Return formatted error description"""  # noqa: DAR101,DAR201,DAR401
         _mess = ''
         if self.mess is not None:
-            _mess = '{}'.format(self.mess)
+            _mess = f'{self.mess}'
         else:
-            _mess = type(self).__doc__.split('\n')[0]
+            _mess = type(self).__doc__.split('\n', maxsplit=1)[0]
             _mess = '{}: {}'.format(type(self).__name__, _mess)
         _msg = 'E{}: {}'.format(self.code(), _mess)
         return _msg
@@ -206,7 +208,7 @@ def get_logger(name=_LOGGER_NAME_, level=logging.WARNING, color=True):
     console = logging.StreamHandler(sys.stdout)
     console.setLevel(level)
     if color:
-        color_formatter = ColorFormatter("%(levelname)s %(message)s")
+        color_formatter = ColorFormatter(fmt="%(levelname)s %(message)s")
         console.setFormatter(color_formatter)
     else:
         formatter = logging.Formatter(fmt='%(message)s')
@@ -220,6 +222,9 @@ def get_logger(name=_LOGGER_NAME_, level=logging.WARNING, color=True):
 def set_log_level(level: Union[str, int] = logging.DEBUG):
     """Set the log level of the module"""
 
+    if os.environ.get(STMAIC_DEBUG_ENV, None):
+        level = logging.DEBUG
+
     if isinstance(level, str):
         level = level.upper()
     level = logging.getLevelName(level)
@@ -231,10 +236,11 @@ def set_log_level(level: Union[str, int] = logging.DEBUG):
 
 def run_shell_cmd(
         cmd_line: Union[str, List[str]],
-        logger: logging.Logger = None,
-        env: dict = None,
-        cwd: str = None,
-        parser=None) -> Tuple[int, List[str]]:
+        logger: Optional[logging.Logger] = None,
+        env: Optional[dict] = None,
+        cwd: Optional[str] = None,
+        parser=None,
+        assert_on_error: bool = False) -> Tuple[int, List[str]]:
     """Execute a command in a shell and return the output"""
 
     startupinfo = None
@@ -284,25 +290,25 @@ def run_shell_cmd(
         if process.stdout is not None:
             process.stdout.close()
 
-        if logger:
-            msg = '[returned code {} - {}]'.format(return_code, 'SUCCESS' if not return_code else 'FAILED')
+        if logger is not None:
+            msg = '[returned code = {} - {}]'.format(return_code, 'SUCCESS' if not return_code else 'FAILED')
             if return_code:
-                logger.critical(msg)
+                logger.warning(msg)
             else:
                 logger.debug(msg)
+
         if return_code:
-            if logger and logger.getEffectiveLevel() > logging.DEBUG and lines:
-                msg = '\n'.join(lines)
-                logger.critical('-->\n$ ' + str_args + '\n' + msg + '')
-                logger.critical('<--')
-            raise RuntimeError(f'return code = {return_code}')
+            lines.insert(0, '$ args: {}'.format(str_args))
+            lines.insert(0, '$ cwd:  {}'.format(str(cwd)))
+            if assert_on_error:
+                raise RuntimeError('invalid command ' + '\"{}\"'.format(str_args))
 
         return return_code, lines
 
-    except (OSError, RuntimeError) as _exc:
-        if logger and not isinstance(_exc, RuntimeError):
-            msg = 'Unable to execute the command "{}"\n{}'.format(cmd_line, _exc)
-            logger.error(msg)
+    except (OSError, ValueError, FileNotFoundError, RuntimeError) as excep_:
+        process.kill()
+        if isinstance(excep_, RuntimeError) and assert_on_error:
+            raise excep_
         return -1, lines
 
 
@@ -339,6 +345,115 @@ class DictToObj:
     def __str__(self):
         msg = ', '.join([f'{key}={val}' for key, val in self.__dict__.items() if key != '_obj_name'])
         return f'{self._obj_name}({msg})'
+
+
+class TableWriter(StringIO):
+    """Pretty-print tabular data (table form)"""
+
+    N_SPACE = 2
+
+    def __init__(self, indent: int = 0, csep: str = ' '):
+        """Create the Table instance"""  # noqa: DAR101,DAR201
+        self._header = []  # type: List[str]
+        self._notes = []  # type: List[str]
+        self._datas = []  # type: List[Union[List[str], str]]
+        self._title = ''  # type: str
+        self._fmt = ''  # type: str
+        self._sizes = []  # type: List[int]
+        self._indent = int(max(indent, 0))
+        self._csep = csep
+        super(TableWriter, self).__init__()
+
+    def set_header(self, items: Union[List[str], str]):
+        """Set the name of the columns"""  # noqa: DAR101,DAR201
+        items = self._update_sizes(items)
+        self._header = items
+
+    def set_title(self, title: str):
+        """Set the title (optional)"""  # noqa: DAR101,DAR201
+        self._title = title
+
+    def set_fmt(self, fmt: str):
+        """Set format description (optional)"""  # noqa: DAR101,DAR201
+        self._fmt = fmt
+
+    def add_note(self, note: str):
+        """Add a note (footer position)"""  # noqa: DAR101,DAR201
+        self._notes.append(note)
+
+    def add_row(self, items: Union[List[str], str]):
+        """Add a row (list of item)"""  # noqa: DAR101,DAR201
+        items = self._update_sizes(items)
+        self._datas.append(items)
+
+    def add_separator(self, value: str = '-'):
+        """Add a separtor (line)"""  # noqa: DAR101,DAR201
+        self._datas.append(value)
+
+    def _update_sizes(self, items: Union[List[str], str]) -> List[str]:
+        """Update the column sizes"""  # noqa: DAR101,DAR201,DAR401
+        items = [items] if isinstance(items, str) else items
+        if not self._sizes:
+            self._sizes = [len(str(item)) + TableWriter.N_SPACE for item in items]
+        else:
+            if len(items) > len(self._sizes):
+                raise ValueError('Size of the provided row is invalid')
+            for i, item in enumerate(items):
+                self._sizes[i] = max(len(str(item)) + TableWriter.N_SPACE, self._sizes[i])
+        return items
+
+    def _write_row(self, items: List[str], fmt):
+        """Create a formated row"""  # noqa: DAR101,DAR201
+        nfmt = ['.'] * len(self._sizes)
+        for i, val in enumerate(fmt):
+            if i < len(nfmt):
+                nfmt[i] = val
+        row = ''
+        for i, item in enumerate(items):
+            sup = self._sizes[i] - len(str(item))
+            if nfmt[i] == '>':
+                row += ' ' * sup + str(item) + ' ' * len(self._csep)
+            else:
+                row += str(item) + ' ' * sup + ' ' * len(self._csep)
+        self.write(row)
+
+    def _write_separator(self, val: str):
+        """Create a formatted separator"""  # noqa: DAR101,DAR201
+        row = ''
+        for size in self._sizes:
+            row += val * size + self._csep
+        self.write(row)
+
+    def write(self, msg: str, newline: str = '\n'):
+        """Write fct"""  # noqa: DAR101,DAR201
+        super(TableWriter, self).write(' ' * self._indent + msg + newline)
+
+    def getvalue(self, fmt: str = '', endline: bool = False):
+        """Buid and return the formatted table"""  # noqa: DAR101,DAR201
+
+        fmt = fmt if fmt else self._fmt
+
+        self.write('')
+        if self._title:
+            self.write(self._title)
+            self._write_separator('-')
+        if self._header:
+            self._write_row(self._header, fmt)
+            self._write_separator('-')
+        for data in self._datas:
+            if isinstance(data, str):
+                self._write_separator(data)
+            else:
+                self._write_row(data, fmt)
+        if endline or self._notes:
+            self._write_separator('-')
+        for note in self._notes:
+            self.write(note)
+        buff = super(TableWriter, self).getvalue()
+        return buff
+
+    def __str__(self):
+        return self.getvalue()
 
 
 class STMAiMetrics(NamedTuple):

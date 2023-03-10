@@ -15,7 +15,7 @@ import os
 
 from .__version__ import __author__, __copyright__, __license__, __version__
 
-from .utils import set_log_level, STMAiVersion, STMAIC_LOGGER_NAME  # noqa:F401
+from .utils import set_log_level, STMAiVersion, STMAIC_LOGGER_NAME, STMAIC_DEBUG_ENV  # noqa:F401
 from .stm_ai_tools import STMAiTools  # noqa:F401
 from .stm32_tools import STM32_TOOLS as STM32Tools  # noqa:F401
 from .stm32_tools import get_stm32_board_interfaces  # noqa:F401
@@ -25,12 +25,12 @@ from .board_config import STMAiBoardConfig
 from .utils import STMAICException, get_logger  # noqa:F401
 
 from .session import cmd_load as load  # noqa:F401
-from .compile import cmd_compile as compile
+from .compile import cmd_compile as compile  # pylint: disable=redefined-builtin
 from .build import cmd_build as build
 from .run import cmd_run as run
 
 
-set_log_level(logging.DEBUG if os.environ.get('STMAIC_DEBUG', None) else logging.WARNING)
+set_log_level(logging.DEBUG if os.environ.get(STMAIC_DEBUG_ENV, None) else logging.WARNING)
 
 
 __all__ = (

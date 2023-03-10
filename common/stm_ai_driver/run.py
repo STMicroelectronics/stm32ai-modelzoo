@@ -19,9 +19,10 @@ from statistics import mean
 from .session import STMAiSession
 from .stm_ai_tools import STMAiTools
 from .stm32_tools import get_stm32_board_interfaces, STM32_TOOLS, reset_stm32_board
+from .utils import _LOGGER_NAME_
 
 
-logger = logging.getLogger('STMAIC')
+logger = logging.getLogger(_LOGGER_NAME_)
 
 
 def cmd_run(
@@ -50,7 +51,7 @@ def cmd_run(
 
     ai_runner = AiRunner(logger=logger)
 
-    if (not desc or desc.lower() == 'serial') and STM32_TOOLS.get_cube_programmer():
+    if (not desc or 'serial' in desc.lower()) and STM32_TOOLS.get_cube_programmer():
         _, uarts = get_stm32_board_interfaces()
         com_ports = [uart['port'] for uart in uarts]
         if not com_ports:
@@ -69,10 +70,13 @@ def cmd_run(
     # display the network/run-time information
     ai_runner.summary(print_fn=logger.debug)
 
+    mode = AiRunner.Mode.IO_ONLY
     if inputs is None:
+        if int(ai_runner_version.split('.')[0]) > 2:
+            mode |= AiRunner.Mode.PERF_ONLY
         inputs = ai_runner.generate_rnd_inputs(batch_size=2)
 
-    outputs, profile = ai_runner.invoke(inputs)
+    outputs, profile = ai_runner.invoke(inputs, mode=mode)
 
     ai_runner.disconnect()
 

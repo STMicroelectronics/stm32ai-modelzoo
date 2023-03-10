@@ -195,8 +195,6 @@ class Stm32AiService:
                             return result.get('result', {})
                         elif state.lower() == 'error':
                             return result
-                    else:
-                        print("Error no 'state' key received from server")
                 else:
                     print("Error: Message received from server is not \
                         an object: ", result)

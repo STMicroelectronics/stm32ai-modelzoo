@@ -14,13 +14,14 @@ This project is organized by application, for each application you will have a s
 * [Object detection](object_detection/README.md)
 * [Human activity recognition (HAR)](human_activity_recognition/README.md)
 * [Audio event detection (AED)](audio_event_detection/README.md)
+* [Hand posture recognition](hand_posture/README.md)
 
 
 ## Before you start
 
 - Create an account on myST and then sign in to [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) to be able access the service.
 - Or, Download latest version of [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) for your OS, extract the package and get the path to `stm32ai` executable.
-- If you don't have python already installed, you can download and install it from [here](https://www.python.org/downloads/), a **Python Version <= 3.10** is required to be able to use TensorFlow later on. (For Windows systems make sure to check the **Add python.exe to PATH** option during the installation process).
+- If you don't have python already installed, you can download and install it from [here](https://www.python.org/downloads/), a **Python Version <= 3.10** is required to be able to use TensorFlow later on, we recommand using **Python v3.9 or v3.10**. (For Windows systems make sure to check the **Add python.exe to PATH** option during the installation process).
 - Clone this repository using the following command:
 ```
 git clone https://github.com/STMicroelectronics/stm32ai-modelzoo.git

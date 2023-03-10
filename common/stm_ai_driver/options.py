@@ -15,10 +15,10 @@ from typing import Optional, List, Union, Any
 from dataclasses import dataclass
 
 
-from stm_ai_driver.utils import STMAiVersion
+from .utils import STMAiVersion, _LOGGER_NAME_
 
 
-logger = logging.getLogger('STMAIC')
+logger = logging.getLogger(_LOGGER_NAME_)
 
 
 def _to_cli_arg(key: str, val: Any, vers: Union[str, STMAiVersion, None] = None, name='Options'):

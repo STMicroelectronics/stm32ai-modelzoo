@@ -17,17 +17,18 @@ import logging
 import glob
 import os
 import shutil
+from typing import Optional
 
 
 from stm_ai_driver.session import STMAiSession
-from stm_ai_driver.utils import run_shell_cmd
+from stm_ai_driver.utils import run_shell_cmd, _LOGGER_NAME_
 from stm_ai_driver.stm_ai_tools import STMAiTools
 
 
-logger = logging.getLogger('STMAIC')
+logger = logging.getLogger(_LOGGER_NAME_)
 
 
-def _get_compile_options(session: STMAiSession, tools: STMAiTools, ld_script: str, series: str = None):
+def _get_compile_options(session: STMAiSession, tools: STMAiTools, ld_script: str, series: Optional[str] = None):
 
     c_flags_core = tools.ai_runtime_compiler_options(series) + ' '
     #  -std=gnu11 -Os
@@ -64,7 +65,7 @@ def _link(arm_non_eabi_gcc, o_files, ld_flags, build_dir):
 
 def stm32app_build(
         session: STMAiSession,
-        arm_none_eabi_gcc: str = None
+        arm_none_eabi_gcc: Optional[str] = None
 ):
     """Build the stma32 application"""
 

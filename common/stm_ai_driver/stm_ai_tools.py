@@ -69,18 +69,26 @@ def _is_stm_ai_repo_path(path: str) -> Tuple[str, STMAiVersion]:
 def _get_stm32ai_cli(root_path: Union[str, Path], host_os: str) -> List[Tuple[STMAiVersion, Path, Path]]:
     """Return a list a tuple with the version and the path of the stm ai executable"""
     results = []
+    cdts = []
     root_path = Path(root_path)
-    if not root_path.is_dir():
+    exe_name = 'stm32ai.exe' if host_os == 'windows' else 'stm32ai'
+    if root_path.is_file():  # valid file is passed
         root_path = root_path.parent
-    # cdts = sorted(Path(root_path).glob(f'**/Utilities/{host_os}/stm32ai.*'))
-    # if not cdts:
-    cdts = sorted(Path(root_path).glob(f'**/{host_os}/stm32ai.*'))
+        cdts = [root_path / exe_name]
+    elif root_path.stem in ['stm32ai', 'stm32ai.exe']:
+        root_path = root_path.parent
+    elif not root_path.exists():  # valid path?
+        logger.error(' \"%s\" path is not valid..', root_path)
+        return []
     if not cdts:
-        cdts = sorted(Path(root_path).glob('*/stm32ai.*'))
-    if not cdts:
-        cdts = sorted(Path(root_path).glob('stm32ai.*'))
+        cdts = sorted(Path(root_path).glob(f'**/{host_os}/{exe_name}'))
+        if not cdts:
+            cdts = sorted(Path(root_path).glob(f'*/{exe_name}'))
+        if not cdts:
+            cdts = sorted(Path(root_path).glob(f'{exe_name}'))
     for cdt in cdts:
         if cdt.suffix in ('.exe', '') and host_os in str(cdt):
+            logger.debug(' checking if \"%s\" is valid..', cdt)
             idx = 2
             cube_mx = cdt.parent / '..' / '..' / 'CubeMX'
             middelwares = cdt.parent / '..' / '..' / 'Middlewares'
@@ -88,6 +96,10 @@ def _get_stm32ai_cli(root_path: Union[str, Path], host_os: str) -> List[Tuple[ST
                 idx = 1
                 cube_mx = cdt.parent / '..' / 'CubeMX'
                 middelwares = cdt.parent / '..' / 'Middlewares'
+            if not cube_mx.is_dir():
+                idx = 0
+                cube_mx = cdt.parent / 'CubeMX'
+                middelwares = cdt.parent / 'Middlewares'
             if cube_mx.is_dir() and middelwares.is_dir():
                 pattern = re.compile(r'STMicroelectronics.X-CUBE-AI.(\d+)\.(\d+)\.(\d+)_')
                 res = []
@@ -99,6 +111,15 @@ def _get_stm32ai_cli(root_path: Union[str, Path], host_os: str) -> List[Tuple[ST
                 if res:
                     ver = STMAiVersion(res[0], '{} pack'.format(_X_CUBE_AI_PACK_TAG))
                     results.append((ver, cdt.parents[idx], cdt))
+                    logger.debug(' found %s (v=%s)', cdt, ver)
+            else:
+                logger.debug(' unable to find the \"%s\" folder', cube_mx)
+    if not results:
+        logger.warning(' No valid STM AI installation has been found from \"%s\"', root_path)
+
+    for exec_ in results:
+        if not os.access(exec_[2], os.X_OK):
+            raise STMAICToolsError(' \"{}\" is not an executable'.format(exec_[2]))
 
     return sorted(results, reverse=True)
 

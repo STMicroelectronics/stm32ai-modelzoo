@@ -15,11 +15,11 @@ import logging
 from typing import Optional, Union, List, Any
 
 from .utils import load_json_safe
-from .utils import DictToObj, STMAiVersion
+from .utils import DictToObj, STMAiVersion, _LOGGER_NAME_
 from .utils import STMAICFileError, STMAICJsonSyntaxError
 from .stm32_tools import STM32_TOOLS as STM32Tools
 
-logger = logging.getLogger('STMAIC')
+logger = logging.getLogger(_LOGGER_NAME_)
 
 
 class CProjectDescReader:
@@ -230,13 +230,13 @@ class STMAiBoardConfig:
     def summary(self, pr_f=None):
         """Display a summary of the selected configuration"""
         conf_ = self.config
-        pr_f = pr_f if pr_f else print  # noqa:T002
+        pr_f = pr_f if pr_f else print  # noqa:T202
         title = f'Configuration "{conf_.name}" / {self.description}'
         pr_f(f'\n{title}')
         pr_f('-' * len(title))
-        pr_f(f' series             : {conf_.series} ({conf_.board})')
-        pr_f(f' stm_ai_version     : {conf_.stm_ai_version} ({conf_.toolchain})')
-        pr_f(f' builder            : {conf_.builder}')
+        pr_f(f' series             : {conf_.series} (board="{conf_.board}")')
+        pr_f(f' stm_ai_version     : {conf_.stm_ai_version}')
+        pr_f(f' builder            : {conf_.builder} (toolchain="{conf_.toolchain}")')
         pr_f(f'  cwd               : {conf_.cwd}')
         if conf_.builder == 'stm32_cube_ide':
             pr_f(f'  cproject_name     : {conf_.cproject_name}')
