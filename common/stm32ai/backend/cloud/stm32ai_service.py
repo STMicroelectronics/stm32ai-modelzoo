@@ -26,12 +26,13 @@ STM32AI_SERVICE_MIN_VERSION = 0.0
 
 
 class Stm32AiService:
-    def __init__(self, auth_token) -> None:
+    def __init__(self, auth_token, version: typing.Union[str, None]) -> None:
         self.auth_token = auth_token
+        self.version = version
         if auth_token is None:
             raise Exception("Authentication token can't be None")
 
-        self.main_route = get_stm32ai_service_ep()
+        self.main_route = get_stm32ai_service_ep(version)
 
         # if get_main_route_api_version(self.main_route) \
         #         < STM32AI_SERVICE_MIN_VERSION:
@@ -40,9 +41,9 @@ class Stm32AiService:
         #              required version ({STM32AI_SERVICE_MIN_VERSION}). API may\
         #                  not work as expected.")
 
-        self.analyze_route = get_stm32ai_analyze_ep()
-        self.generate_route = get_stm32ai_generate_ep()
-        self.validate_route = get_stm32ai_validate_ep()
+        self.analyze_route = get_stm32ai_analyze_ep(version)
+        self.generate_route = get_stm32ai_generate_ep(version)
+        self.validate_route = get_stm32ai_validate_ep(version)
         self.file_service = FileService(self.auth_token)
 
     def trigger_analyze(self, options: CliParameters):
@@ -158,10 +159,10 @@ class Stm32AiService:
                 HTTP code: '{resp.reason}', '{resp.text}'")
             return None
 
-    def _get_run(self, runtimeId: str):
+    def _get_run(self, runtime_id: str):
         headers = {'Authorization': 'Bearer '+self.auth_token}
         resp = requests.get(
-            get_stm32ai_run(runtimeId), headers=headers,
+            get_stm32ai_run(self.version, runtime_id), headers=headers,
             verify=get_ssl_verify_status(), proxies=_get_env_proxy())
 
         if resp.status_code == 200:
@@ -173,12 +174,12 @@ class Stm32AiService:
                 {resp.status_code}")
         return None
 
-    def wait_for_run(self, runtimeId: str, timeout=300, pooling_delay=2):
+    def wait_for_run(self, runtime_id: typing.Union[str, None], timeout=300, pooling_delay=2):
         """
         Wait for a run to give results.
         If no result have been fetched before timeout, it returns None
         """
-        if not runtimeId:
+        if not runtime_id:
             return None
         start_time = time.time()
         is_over = False
@@ -186,7 +187,7 @@ class Stm32AiService:
             if (time.time() - start_time) > timeout:
                 is_over = True
 
-            result = self._get_run(runtimeId)
+            result = self._get_run(runtime_id)
             if result:
                 if isinstance(result, object):
                     state = result.get('state', None)

@@ -133,7 +133,7 @@ def Cloud_analyze(cfg, quantized_model_path):
     username, password = get_credentials()
     for attempt in range(3):
         try:
-            ai = Stm32Ai(CloudBackend(str(username), str(password)))
+            ai = Stm32Ai(CloudBackend(str(username), str(password), version="7.3.0"))
             login_success = 1
         except Exception as e:
             login_success = 0
@@ -168,7 +168,7 @@ def Cloud_benchmark(cfg, quantized_model_path, credentials, c_code=False):
     stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "stm32ai_files")
     username, password = credentials
     try:
-        ai = Stm32Ai(CloudBackend(str(username), str(password)))
+        ai = Stm32Ai(CloudBackend(str(username), str(password), version="7.3.0"))
         login_success = 1
     except Exception as e:
         login_success = 0
@@ -253,7 +253,7 @@ def stm32ai_benchmark(cfg, model_path, c_code):
                 try:
                     print("[INFO] : Cloud model analyze launched...")
                     # Benchmarking model using local file
-                    ai = Stm32Ai(CloudBackend(str(credentials[0]), str(credentials[1])))
+                    ai = Stm32Ai(CloudBackend(str(credentials[0]), str(credentials[1]), version="7.3.0"))
                     res = ai.analyze(CliParameters(model=model_path))
                     analyze_footprints(offline=False, cloud_results=res)
 

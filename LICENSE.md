@@ -1,5 +1,17 @@
 # License
 
+Concerning common folder:
+| Component                            | License              | Copyright |
+|:---------                            |:-------              |:----------|
+| stm32ai                              | [SLA0044](./common/stm32ai/LICENSE.md)              | STMicroelectronics |
+
+
+Concerning utilities folder:
+| Component                            | License              | Copyright |
+|:---------                            |:-------              |:----------|
+| utilities                              | [BSD-3-Clause](./utilities/LICENSE.md)              | STMicroelectronics |
+
+
 Concerning audio_event_detection:
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|

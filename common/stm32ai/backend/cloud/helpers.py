@@ -10,6 +10,7 @@ import os
 import typing
 import requests
 from requests.structures import CaseInsensitiveDict
+from stm32ai.backend.cloud.endpoints import get_supported_versions_ep
 from stm32ai.errors import ServerRouteNotFound
 
 
@@ -108,3 +109,10 @@ def send_post(
         json=usingJson,
         proxies=_get_env_proxy())
     return resp
+
+def get_supported_versions():
+    resp = requests.get(
+        get_supported_versions_ep(),
+        verify=get_ssl_verify_status(),
+        proxies=_get_env_proxy())
+    return resp.json()

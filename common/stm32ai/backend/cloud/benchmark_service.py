@@ -63,7 +63,7 @@ class BenchmarkService:
     def _get_cloud_models(self) -> typing.List[str]:
         return list(map(lambda x: x['name'], self.file_service.list_models()))
 
-    def trigger_benchmark(self, options: CliParameters, boardName: str):
+    def trigger_benchmark(self, options: CliParameters, boardName: str, version: str = None):
         if type(options) != CliParameters:
             raise WrongTypeError(options, CliParameters)
 
@@ -73,9 +73,8 @@ class BenchmarkService:
                 current_value = getattr(options, field)
                 if field in ['model', 'output'] or current_value is None:
                     continue
-                # if isinstance(current_value, bool):
-                #     if current_value:
-                #         data[field] = ''
+                if version:
+                    data['version'] = version
                 if isinstance(current_value, CliParameterCompression):
                     data[field] = current_value.value
                 elif isinstance(current_value, CliParameterType):

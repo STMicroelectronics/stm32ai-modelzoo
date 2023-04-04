@@ -11,6 +11,7 @@ import functools
 import typing
 from stm32ai.backend.cloud.benchmark_service import BenchmarkService
 from stm32ai.backend.cloud.file_service import FileService
+from stm32ai.backend.cloud.helpers import get_supported_versions
 from stm32ai.backend.cloud.login_service import LoginService
 from stm32ai.backend.cloud.user_service import UserService
 from stm32ai.backend.cloud.stm32ai_service import Stm32AiService
@@ -25,10 +26,21 @@ from stm32ai.types import ValidateResult, ValidateResultMetrics
 
 
 class CloudBackend(Stm32AiBackend):
-    def __init__(self, username: str, password: str) -> None:
+    def __init__(self, username: str, password: str, version: typing.Union[str, None] = None) -> None:
         self.username = username
         self.password = password
+        self.version = version
+        self.supportedVersions = get_supported_versions()
         self.login_service = LoginService()
+        if version != None and version not in list(map(lambda x: x['version'], self.supportedVersions)):
+            print(f'[WARN] Version {version} is not supported by Developer Cloud.')
+            for v in self.supportedVersions:
+                if (v.get('isLatest', False) == True):
+                    latest = v            
+            if (latest):
+                self.version = latest.get('version', None)
+                print(f"[WARN] It will use the latest version by default ({latest['version']})")
+
 
         if username is None or password is None:
             # Try to use previous tokens saved in home directory
@@ -50,7 +62,7 @@ class CloudBackend(Stm32AiBackend):
                 details='Please check your credentials')
 
         self.user_service = UserService(self.auth_token)
-        self.stm32ai_service = Stm32AiService(self.auth_token)
+        self.stm32ai_service = Stm32AiService(self.auth_token, version)
         self.file_service = FileService(self.auth_token)
         self.benchmark_service = BenchmarkService(self.auth_token)
 
@@ -172,7 +184,7 @@ class CloudBackend(Stm32AiBackend):
         if os.path.exists(options.model):
             raise ParameterError("options.model should be a file name that is \
                 already uploaded on the cloud")
-        bid = self.benchmark_service.trigger_benchmark(options, board_name)
+        bid = self.benchmark_service.trigger_benchmark(options, board_name, self.version)
         result = self.benchmark_service.wait_for_run(bid, timeout=timeout)
 
         if result:
