@@ -168,6 +168,9 @@ class BenchmarkService:
                         raise BenchmarkFailure(result.get('board', 'ND'),
                                                result.get('message', 'no info')
                                                )
+                    elif result.get('state', '').lower() == 'waiting_for_build':
+                        logger.debug(f'Benchmark({benchmarkId}) status: Project \
+                            is waiting for build')
                     elif result.get('state', '').lower() == 'in_queue':
                         logger.debug(f'Benchmark({benchmarkId}) status: Model \
                             is in queue')
