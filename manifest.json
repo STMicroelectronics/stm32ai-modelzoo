@@ -295,5 +295,13 @@
 		"dataset_used": "WISDM",
 		"readme": "./human_activity_recognition/models/svc/README.md",
 		"visible": true
+	},
+	{
+		"name": "./hand_posture/models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5",
+		"description": "CNN2D_ST_HandPosture 8 postures trained on ST_VL53L5CX_handposture_dataset with 8 classes",
+		"usecase": "hand_posture",
+		"dataset_used": "ST_VL53L5CX_handposture_dataset",
+		"readme": "./hand_posture/models/CNN2D_ST_HandPosture/README.md",
+		"visible": true
 	}
 ]
