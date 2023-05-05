@@ -47,6 +47,7 @@ CLASSES_TABLE;
 #else
  #error Unknown compiler
 #endif
+/*Needs to be 32 bytes aligned for the cache maintenances functions*/
 uint8_t CapturedImage_Buffer[CAM_FRAME_BUFFER_SIZE + 32 - (CAM_FRAME_BUFFER_SIZE%32)];
 
 /***Buffer to store the rescaled frame***/
@@ -267,10 +268,12 @@ static void Software_Init(AppConfig_TypeDef *App_Config_Ptr)
   App_Config_Ptr->nn_input_buffer = NN_InputImage_Buffer; 
   App_Config_Ptr->nn_output_buffer=NN_OutputData_Buffer;
   App_Config_Ptr->camera_capture_buffer = CapturedImage_Buffer;
+  App_Config_Ptr->camera_capture_buffer_no_borders = App_Config_Ptr->camera_capture_buffer+((CAM_RES_WIDTH - CAM_RES_HEIGHT)/2)*CAM_RES_WIDTH*RGB_565_BPP;
   App_Config_Ptr->rescaled_image_buffer = RescaledImage_Buffer;
   App_Config_Ptr->activation_buffer = NN_Activation_Buffer;
   App_Config_Ptr->lcd_frame_read_buff=lcd_display_global_memory;
   App_Config_Ptr->lcd_frame_write_buff=lcd_display_global_memory + SDRAM_BANK_SIZE;
+  memset(App_Config_Ptr->camera_capture_buffer, 0x00, CAM_FRAME_BUFFER_SIZE + 32 - (CAM_FRAME_BUFFER_SIZE%32));
 }
 
 /**

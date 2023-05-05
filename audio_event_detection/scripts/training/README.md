@@ -117,21 +117,22 @@ WARNING : Setting this option to True will cause errors when using models with a
 **1.1. Transfer learning : choose a model with pre-trained weights:**
 
 We provide pre-trained models which you can use for transfer learning.
-As an example, we will pick a *MiniResnet* model, which has been pretrained by ST, and perform transfer learning on ESC-10.
+As an example, we will pick a *Yamnet* model, and perform transfer learning on ESC-10.
 
 To do so we will need to configure the **model** section in **[user_config.yaml](user_config.yaml)** in the following way : 
 
 ![plot](./doc/img/model_config.JPG)
 where:
 
-- `model_type` - A *dictonary* with keys relative to the model topology (see [more](./doc/models.json)). Example for Miniresnets *{name : miniresnet, n_stacks=2}*, else for a custom model use *{name : custom}*.
-- `input_shape` -  A *list of int* *[n_mels, patch_length]* for the input resolution, e.g. *[64, 50]*.
+- `model_type` - A *dictonary* with keys relative to the model topology (see [more](./doc/models.json)). Example for Yamnet :  *{name : yamnet, embedding_size=256}*, else for a custom model use *{name : custom}*.
+- `input_shape` -  A *list of int* *[n_mels, patch_length]* for the input resolution, e.g. *[64, 96]*.
 - `expand_last_dim` - *Boolean* Some models expect input of the shape *[n_mels, patch_length, 1]*, often because they are repurposed image classification architectures. Set this to True if that is the case.
 If using a MiniResnet, MiniResnetv2 or Yamnet, set this to True.
 - `transfer_learning` - *Boolean*, if True, a pretrained model is loaded, its layers are frozen, a classification head is added and trained. If False, the entire network is trained from scratch.
 Note that Yamnet can only be used with `transfer_learning=True`
 - `multi_label` - *Boolean*. Set to True if you want to perform multilabel classification, i.e. if each sample can belong to more than 1 class at a time. 
 This is not the case in ESC-10.
+NOTE : Currently unsupported, but will be in an upcoming version.
 
 **1.2. Choose a custom model:**
 
@@ -149,12 +150,38 @@ To choose the right hyperparameters for training your model, simply modify the *
 
 where:
 
-- `batch_size` - *Integer*. Size of the batches of data, e.g. 64.
-- `training_epochs` - *Integer*. Number of epochs to train the model. You will want to set this to a larger number when training from scratch.
+- `batch_size` - *int*. Size of the batches of data, e.g. 64.
+- `training_epochs` - *int*. Number of epochs to train the model. You will want to set this to a larger number when training from scratch.
 - `optimizer` - One of "Adam", "SGD" or "RMSprop".
 - `initial_learning` - A *float* value, e.g. 0.001.
+- `patience` - *int*, Number of epochs where the validation accuracy can plateau without early stopping. Specifically, if the validation accuracy has not reached a new maximum in this number of epochs, then training will be stopped.
 - `learning_rate_scheduler` - One of "Constant", "ReduceLROnPlateau", "Exponential" or "Cosine".
+- `restore_best_weights` - *bool*, set to True to restore the weights with the best validation accuracy at the end of training. If set to False, weights from the last epoch will be kept instead.
 
+**1.4 Configure data augmentation:**
+If you want your model's performance to transfer well to real world, real-time inference, it is important to apply data augmentation during training, in order to make your model robust to various perturbations.
+
+To change data augmentation parameters, configure the **data_augmentation** section in **[user_config.yaml](user_config.yaml)** in the following way :
+
+![plot](./doc/img/data_augmentation_config.JPG)
+
+where :
+
+- `GaussianNoise`: *Float or None or False* : Amplitude of Gaussian noise to add to spectrograms. Set to False or None to disable Gaussian noise addition.
+Be careful, as the amplitude of values in your spectrograms can change greatly depending on normalization and whether or not decibel scale is used. Make sure to set this parameter in accordance.
+
+- `VolumeAugment`: *bool*, set to True to enable random volume scaling on spectrograms. Set to False to disable. The random scale is picked for each batch uniformly between min_scale and max_scale
+
+- `min_scale`: *float*, minimum scale for random volume scaling
+- `max_scale`: *float*, maximum scale for random volume scaling
+  
+- `SpecAug`: *bool*, set to True to enable SpecAugment (https://arxiv.org/abs/1904.08779). SpecAugment randomly masks contiguous columns or rows in a spectrogram. Implementation by MichaelisTrofficus, taken from https://github.com/MichaelisTrofficus/spec_augment
+Warning : This can really degrade your model performance if used improperly. When in doubt, set to False.
+- `freq_mask_param`: *int*, number of rows to mask in each contiguous block
+- `time_mask_param`: *int* , number of columns to mask in each contiguous block
+- `n_freq_mask`: *int*, number of contiguous blocks to mask on the frequency axis
+- `n_time_mask`: *int*, number of contiguous blocks to mask on the time axis
+- `mask_value` : *float*, value to replace masked values with. Be sure to set this properly relative to the scale of values in your spectrogram, unless you want to get terrible performance.
 
 ### **2. Configure evaluation parameters**
 
@@ -186,7 +213,8 @@ Make Sure to add the path to the stm32ai excutable under **path_to_stm32ai**, el
 
 where:
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
-- `footprints_on_target` - Specify board name to evaluate the model inference time on real stm32 target, e.g. **'STM32H747I-DISCO'** (see [more](./doc/boards.json)), else keep **False**.
+- `footprints_on_target` - Specify board name to evaluate the model inference time on real stm32 target, e.g. **'B-U585I-IOT02A'** (see [more](./doc/boards.json)), else keep **False**.
+For example, specify **'B-U585I-IOT02A'** to use **Developer Cloud Services** to benchmark model and generate C code, else keep **False** (i.e. only local download of **STM32Cube.AI** will be used to get model footprints and C code w/o inference time)
 - `path_to_stm32ai` - *Path* to stm32ai executable file.
 
 

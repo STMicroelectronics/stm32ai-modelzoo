@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for Digital Processing Unit FW module</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<center>
+<h1 id="release-notes-for-digital-processing-unit-fw-module">Release Notes for <mark>Digital Processing Unit FW module</mark></h1>
+<p>Copyright © 2022 STMicroelectronics<br />
+</p>
+<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+</center>
+<h1 id="purpose">Purpose</h1>
+<p>The <strong>Digital Processing Unit FW module</strong> is an eLooM-based application-level FW module.</p>
+<p>It implements an Abstract Data Processing Unit​, a Generic Processing Unit class​ that simplifies integration of the following Data processing libraries:</p>
+<ul>
+<li>Cube.AI</li>
+<li>FFT</li>
+<li>NanoEdge AI</li>
+<li>MFCC</li>
+<li>AiUSC</li>
+</ul>
+</div>
+<div class="col-sm-12 col-lg-8">
+<h1 id="update-history">Update History</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section4" checked aria-hidden="true"> <label for="collapse-section4" aria-hidden="true">v2.0.0 / 2-Dec-2022</label>
+<div>
+<h2 id="main-changes">Main Changes</h2>
+<h3 id="product-update">Product update</h3>
+<ul>
+<li>Compatibility break: complete code redesign</li>
+<li>New DPU interfaces, virtual tables and DataBuilder data format protocol</li>
+<li>Updated to DPU v2:
+<ul>
+<li>AiDPU (specialized in AI_HAR_DPU and AiUSC_DPU)</li>
+<li>Dummy_DPU</li>
+<li>FFT_DPU</li>
+<li>MfccDPU</li>
+<li>NeaiDPU</li>
+</ul></li>
+<li>Removed DPU v1 only libraries (not compatible with DPU v2):
+<ul>
+<li>AnomalyThreshold_DPU</li>
+<li>Motion_DPU</li>
+</ul></li>
+<li>Moved CircularBuffer in EMData component</li>
+<li>Removed Process events, substituted by events available in EMData component</li>
+<li>Code cleaning and typo fixed</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section3" aria-hidden="true"> <label for="collapse-section3" aria-hidden="true">v1.1.0 / 18-Mar-2022</label>
+<div>
+<h2 id="main-changes-1">Main Changes</h2>
+<h3 id="maintenance-release-and-product-update">Maintenance release and product update</h3>
+<ul>
+<li>Added new libraries:
+<ul>
+<li>MFCC</li>
+<li>AiUSC</li>
+</ul></li>
+<li>Updated NeaiDPU: aligned Classification part to latest NanoEdgeAI Studio</li>
+<li>Updated AiDPU: added SetSensitivity function and updated Init and Process</li>
+<li>Updated Release Notes and License</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2"  aria-hidden="true"> <label for="collapse-section2" aria-hidden="true">v1.0.1 / 10-Dec-2021</label>
+<div>
+<h2 id="main-changes-2">Main Changes</h2>
+<h3 id="patch-release">Patch release</h3>
+<ul>
+<li>NanoEdge AI Studio v3.x API break:
+<ul>
+<li>Aligned NanoEdgeAI DPU to new APIs</li>
+<li>Only anomaly detection use case is supported</li>
+<li>Libraries generated from previous versions of NanoEdgeAI Studio are not compatible anymore</li>
+</ul></li>
+<li>Minor optimization in AiDPU.c</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true">v1.0.0 / 6-Sep-2021</label>
+<div>
+<h2 id="main-changes-3">Main Changes</h2>
+<h3 id="first-official-release">First official release</h3>
+<p>It contains specific implementations for the following signal processing units:</p>
+<ul>
+<li>Cube.AI</li>
+<li>Anomaly threshold</li>
+<li>FFT</li>
+<li>Motion Time Domain</li>
+<li>NanoEdge AI</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<footer class="sticky">
+<div class="columns">
+<div class="column" style="width:95%;">
+<p>For complete documentation on <strong>STM32</strong> microcontrollers please visit: <a href="https://www.st.com/en/microcontrollers-microprocessors.html">www.st.com</a></p>
+</div><div class="column" style="width:5%;">
+<p><abbr title="Based on template cx566953 version 2.0">Info</abbr></p>
+</div>
+</div>
+</footer>
+</body>
+</html>

@@ -3,6 +3,18 @@
   * @file    stm32h7xx_ll_system.h
   * @author  MCD Application Team
   * @brief   Header file of SYSTEM LL module.
+  *
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
   @verbatim
   ==============================================================================
                      ##### How to use this driver #####
@@ -15,17 +27,6 @@
       (+) Access to SYSCFG registers
 
   @endverbatim
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
   ******************************************************************************
   */
 
@@ -135,7 +136,7 @@ extern "C" {
 * @{
 */
 #define LL_SYSCFG_ETH_MII               0x00000000U                           /*!< ETH Media MII interface */
-#define LL_SYSCFG_ETH_RMII              SYSCFG_PMCR_EPIS_SEL                   /*!< ETH Media RMII interface */
+#define LL_SYSCFG_ETH_RMII              SYSCFG_PMCR_EPIS_SEL_2                /*!< ETH Media RMII interface */
 /**
   * @}
   */
@@ -541,8 +542,8 @@ __STATIC_INLINE void LL_SYSCFG_DisableAnalogBooster(void)
   *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C1
   *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C2 (*)
   *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C3
-  *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C4(*)
-  *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C5(*)
+  *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C4 (*)
+  *         @arg @ref LL_SYSCFG_I2C_FASTMODEPLUS_I2C5 (*)
   *
   *         (*) value not defined in all devices
   * @retval None
@@ -770,7 +771,7 @@ __STATIC_INLINE uint32_t LL_SYSCFG_GetTIMBreakInputs(void)
   * @brief  Enable the Compensation Cell
   * @rmtoll CCCSR   EN    LL_SYSCFG_EnableCompensationCell
   * @note   The I/O compensation cell can be used only when the device supply
-  *         voltage ranges from 2.4 to 3.6 V
+  *         voltage ranges from 1.62 to 2.0 V and from 2.7 to 3.6 V.
   * @retval None
   */
 __STATIC_INLINE void LL_SYSCFG_EnableCompensationCell(void)
@@ -782,7 +783,7 @@ __STATIC_INLINE void LL_SYSCFG_EnableCompensationCell(void)
   * @brief  Disable the Compensation Cell
   * @rmtoll CCCSR   EN    LL_SYSCFG_DisableCompensationCell
   * @note   The I/O compensation cell can be used only when the device supply
-  *         voltage ranges from 2.4 to 3.6 V
+  *         voltage ranges from 1.62 to 2.0 V and from 2.7 to 3.6 V.
   * @retval None
   */
 __STATIC_INLINE void LL_SYSCFG_DisableCompensationCell(void)
@@ -1917,6 +1918,7 @@ __STATIC_INLINE void LL_DBGMCU_DisableD2DebugInStandbyMode(void)
 #endif /* DUAL_CORE */
 
 
+#if defined(DBGMCU_CR_DBG_STOPD3)
 /**
   * @brief  Enable D3 Domain/SRDomain debug during STOP mode
   * @rmtoll DBGMCU_CR    DBGSTOP_D3/DBGSTOP_SRD    LL_DBGMCU_EnableD3DebugInStopMode
@@ -1936,7 +1938,9 @@ __STATIC_INLINE void LL_DBGMCU_DisableD3DebugInStopMode(void)
 {
   CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STOPD3);
 }
+#endif /*DBGMCU_CR_DBG_STOPD3*/
 
+#if defined(DBGMCU_CR_DBG_STANDBYD3)
 /**
   * @brief  Enable D3 Domain/SRDomain debug during STANDBY mode
   * @rmtoll DBGMCU_CR    DBGSTBY_D3/DBGSTBY_SRD     LL_DBGMCU_EnableD3DebugInStandbyMode
@@ -1956,6 +1960,7 @@ __STATIC_INLINE void LL_DBGMCU_DisableD3DebugInStandbyMode(void)
 {
   CLEAR_BIT(DBGMCU->CR, DBGMCU_CR_DBG_STANDBYD3);
 }
+#endif /*DBGMCU_CR_DBG_STANDBYD3*/
 
 /**
   * @brief  Enable the trace port clock
@@ -2435,4 +2440,3 @@ __STATIC_INLINE uint32_t LL_ART_GetBaseAddress(void)
 
 #endif /* __STM32H7xx_LL_SYSTEM_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

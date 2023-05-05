@@ -1,4 +1,3 @@
-
 general:
   project_name: AED_project
 
@@ -16,10 +15,10 @@ dataset:
 pre_processing:
   min_length: 1
   max_length : 10
-  target_rate: 44100
+  target_rate: 16000
   top_db: 60
-  frame_length: 1102
-  hop_length: 441
+  frame_length: 3200
+  hop_length: 3200
   trim_last_second: False
   lengthen : 'after'
 
@@ -27,9 +26,9 @@ feature_extraction:
   patch_length: 96
   n_mels: 64
   overlap: 0.25
-  n_fft: 2048
-  hop_length: 441
-  window_length: 1102
+  n_fft: 512
+  hop_length: 160
+  window_length: 400
   window: hann
   center: False
   pad_mode: constant
@@ -45,11 +44,10 @@ model:
   model_type: {name : yamnet, embedding_size : 256}
   # Shape of a single patch.
   # Input shape must be [mels, frames]
-  input_shape: [64, 50]
+  input_shape: [64, 96]
   expand_last_dim: True
-  multi_label: False
+  multi_label : False
   model_path: ..\..\models\yamnet\ST_pretrainedmodel_public_dataset\esc_10\yamnet_256_64x96\yamnet_256_64x96_int8.tflite
-
 
 quantization:
   quantize: True
@@ -62,7 +60,7 @@ quantization:
 
 stm32ai:
   optimization: balanced
-  footprints_on_target: B-U585I-IOT02A
+  footprints_on_target: False
   path_to_stm32ai: C:\Users\martinlu\work\Xcubeai-7.3.0\windows\stm32ai.exe
   
 mlflow:

@@ -12,6 +12,11 @@ ResNetv2 changes the order of the skip-connections and ReLU activations in the o
 
 miniresnetv2v2 is based on the ResNetv2 implementation found in tensorflow, and is a resized version of a ResNet18v2 with a custom block function. These blocks are then assembled in stacks, and the user can specify the number of stacks desired, with more stacks resulting in a larger network.
 
+A note on pooling : In some of our pretrained models, we do not use a pooling function at the end of the convolutional backbone, as is traditionally done. Because of the small number of convolutional blocks, the number of filters is low even for larger model sizes, leading to a low embedding size after pooling.
+We found that in many cases we obtain a better performance / model size / inference time tradeoff by not performing any pooling. This makes the linear classification layer larger, but in cases with a relatively low number of classes, this remains cheaper than adding more convolutional blocks.
+
+Naturally, you are able to set the type of pooling you wish to use when training a model from scratch.
+
 Source implementation : https://keras.io/api/applications/resnet/
 
 Papers : [ResNet](https://arxiv.org/abs/1512.03385)
@@ -84,10 +89,10 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50.h5) | float32 | 64x50x1 | 91.1% |
+| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50.h5) | float32 | 64x50x1 | 89.9% |
 | [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50/miniresnetv2_1stacks_64x50_int8.tflite) | int8 | 64x50x1 | 91.1% |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50.h5) | float32 | 64x50x1 | 96.2% |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | 94.9% |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50.h5) | float32 | 64x50x1 | 93.6% |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50/miniresnetv2_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | 93.6% |
 
 
 

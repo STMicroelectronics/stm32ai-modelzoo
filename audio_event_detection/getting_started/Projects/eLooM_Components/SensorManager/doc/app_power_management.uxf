@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>330</x>
+      <y>410</y>
+      <w>110</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>*STATE1*
+(MCU in RUN)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>290</x>
+      <y>360</y>
+      <w>20</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>type=final</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>360</y>
+      <w>80</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>320</x>
+      <y>540</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>*SLEEP_1*
+(MCU in STOP)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>410</y>
+      <w>270</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+ (1)</panel_attributes>
+    <additional_attributes>10.0;20.0;250.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLState</id>
+    <coordinates>
+      <x>680</x>
+      <y>410</y>
+      <w>150</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>*SENSORS_ACTIVE*
+(MCU in RUN)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>430</x>
+      <y>430</y>
+      <w>270</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+
+ (2)</panel_attributes>
+    <additional_attributes>250.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>350</x>
+      <y>460</y>
+      <w>40</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+(3)</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>490</x>
+      <y>650</y>
+      <w>220</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>halign=left
+State change triggered by:
+(1) - SW START_SENSORS, PB
+(2) - SW STOP_SENSORS, PB
+(3) - SW Enter LP, PB
+(4) - SW Exit LP, PB
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>460</y>
+      <w>40</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+(4)</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>730</x>
+      <y>310</y>
+      <w>540</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Note..
+- I can Start (enable) and Stop (disable) each sensor
+- I can change a sensor configuration only if the sensor is disabled
+bg=yellow</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>370</y>
+      <w>110</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=..</panel_attributes>
+    <additional_attributes>10.0;40.0;90.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>390</x>
+      <y>820</y>
+      <w>200</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>*SLEEP 1*
+--
+MCU:  Stop
+Sensors: low power
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>590</x>
+      <y>820</y>
+      <w>170</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>*SENSORS_ACTIVE*
+--
+MCU:  Active
+Sensors: Active according
+    to configuration
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>820</y>
+      <w>170</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>*STATE1*
+--
+MCU:  Active
+Sensors: Idle
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

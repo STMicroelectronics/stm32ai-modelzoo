@@ -34,9 +34,11 @@ from quantization import TFLite_PTQ_quantizer
 from utils import get_config, mlflow_ini, setup_seed
 from visualize import _compute_confusion_matrix, _plot_confusion_matrix
 from evaluation import _aggregate_predictions, compute_accuracy_score
+from header_file_generator import gen_h_user_file
+from lookup_tables_generator import generate_mel_LUT_files
 
 
-def evaluate_model(cfg, c_header=False, c_code=False):
+def evaluate_model(cfg, c_header=True, c_code=True):
 
     """
     Quantize, evaluate and benchmark model.
@@ -166,9 +168,14 @@ def evaluate_model(cfg, c_header=False, c_code=False):
                     raise TypeError("Quantizer not supported yet!")
 
     if c_header:
-        print("[INFO] C header file generation not implemented in v1 of the model zoo for AED")
         # Generate Config.h for C embedded application
-        # gen_h_user_file(cfg, quantized_model_path)
+        print("Generating C header file for Getting Started...")
+        gen_h_user_file(cfg)
+        print("Done")
+        # Generate LUT files
+        print("Generating C look-up tables files for Getting Started...")
+        generate_mel_LUT_files(cfg)
+        print("Done")
 
 
 @hydra.main(version_base=None, config_path="", config_name="user_config")

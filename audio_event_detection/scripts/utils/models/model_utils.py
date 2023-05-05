@@ -12,7 +12,7 @@ import tensorflow as tf
 
 
 def add_head(n_classes, backbone, add_flatten=True, trainable_backbone=True, activation=None,
-             kernel_regularizer=None, bias_regularizer=None, functional=True):
+             kernel_regularizer=None, bias_regularizer=None, activity_regularizer=None, functional=True):
 
     if functional:
         if not trainable_backbone:
@@ -24,11 +24,13 @@ def add_head(n_classes, backbone, add_flatten=True, trainable_backbone=True, act
         if activation is None:
             out = tf.keras.layers.Dense(units=n_classes,
                         kernel_regularizer=kernel_regularizer,
-                        bias_regularizer=bias_regularizer, name='new_head')(x)
+                        bias_regularizer=bias_regularizer,
+                        activity_regularizer=activity_regularizer, name='new_head')(x)
         else:
             out = tf.keras.layers.Dense(units=n_classes, activation=activation,
                             kernel_regularizer=kernel_regularizer,
-                            bias_regularizer=bias_regularizer, name='new_head')(x)
+                            bias_regularizer=bias_regularizer,
+                            activity_regularizer=activity_regularizer, name='new_head')(x)
         func_model = tf.keras.models.Model(inputs=backbone.input, outputs=out)
         return func_model
         
@@ -44,10 +46,12 @@ def add_head(n_classes, backbone, add_flatten=True, trainable_backbone=True, act
         if activation is None:
             seq_model.add(tf.keras.layers.Dense(units=n_classes,
                         kernel_regularizer=kernel_regularizer,
-                        bias_regularizer=bias_regularizer))
+                        bias_regularizer=bias_regularizer,
+                        activity_regularizer=activity_regularizer))
         else:
             seq_model.add(tf.keras.layers.Dense(units=n_classes, activation=activation,
                             kernel_regularizer=kernel_regularizer,
-                            bias_regularizer=bias_regularizer))
+                            bias_regularizer=bias_regularizer,
+                            activity_regularizer=activity_regularizer))
 
         return seq_model

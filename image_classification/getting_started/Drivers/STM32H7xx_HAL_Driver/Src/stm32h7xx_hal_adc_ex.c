@@ -3,39 +3,29 @@
   * @file    stm32h7xx_hal_adc_ex.c
   * @author  MCD Application Team
   * @brief   This file provides firmware functions to manage the following
-  *          functionalities of the Analog to Digital Convertor (ADC)
+  *          functionalities of the Analog to Digital Converter (ADC)
   *          peripheral:
-  *           + Operation functions
-  *             ++ Start, stop, get result of conversions of ADC group injected,
-  *                using 2 possible modes: polling, interruption.
-  *             ++ Calibration
-  *               +++ ADC automatic self-calibration
-  *               +++ Calibration factors get or set
-  *             ++ Multimode feature when available
-  *           + Control functions
-  *             ++ Channels configuration on ADC group injected
-  *           + State functions
-  *             ++ ADC group injected contexts queue management
+  *           + Peripheral Control functions
   *          Other functions (generic functions) are available in file
   *          "stm32h7xx_hal_adc.c".
   *
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
   @verbatim
   [..]
   (@) Sections "ADC peripheral features" and "How to use this driver" are
       available in file of generic functions "stm32h7xx_hal_adc.c".
   [..]
   @endverbatim
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
-  *
   ******************************************************************************
   */
 
@@ -349,7 +339,7 @@ HAL_StatusTypeDef HAL_ADCEx_LinearCalibration_SetValue(ADC_HandleTypeDef *hadc, 
     /* Wait loop initialization and execution                                 */
     /* Note: Variable divided by 2 to compensate partially                    */
     /*       CPU processing cycles.                                           */
-    wait_loop_index = (ADC_STAB_DELAY_US * (SystemCoreClock / (1000000UL * 2UL)));
+    wait_loop_index = ((ADC_STAB_DELAY_US / 10UL) * ((SystemCoreClock / (100000UL * 2UL)) + 1UL));
     while (wait_loop_index != 0UL)
     {
       wait_loop_index--;
@@ -682,13 +672,16 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedPollForConversion(ADC_HandleTypeDef *hadc, u
     {
       if (((HAL_GetTick() - tickstart) > Timeout) || (Timeout == 0UL))
       {
-        /* Update ADC state machine to timeout */
-        SET_BIT(hadc->State, HAL_ADC_STATE_TIMEOUT);
+        if((hadc->Instance->ISR & tmp_Flag_End) == 0UL)
+        {
+          /* Update ADC state machine to timeout */
+          SET_BIT(hadc->State, HAL_ADC_STATE_TIMEOUT);
 
-        /* Process unlocked */
-        __HAL_UNLOCK(hadc);
+          /* Process unlocked */
+          __HAL_UNLOCK(hadc);
 
-        return HAL_TIMEOUT;
+          return HAL_TIMEOUT;
+        }
       }
     }
   }
@@ -1026,6 +1019,8 @@ HAL_StatusTypeDef HAL_ADCEx_MultiModeStart_DMA(ADC_HandleTypeDef *hadc, uint32_t
     /* Process locked */
     __HAL_LOCK(hadc);
 
+    tmphadcSlave.State = HAL_ADC_STATE_RESET;
+    tmphadcSlave.ErrorCode = HAL_ADC_ERROR_NONE;
     /* Set a temporary handle of the ADC slave associated to the ADC master   */
     ADC_MULTI_SLAVE(hadc, &tmphadcSlave);
 
@@ -1141,6 +1136,9 @@ HAL_StatusTypeDef HAL_ADCEx_MultiModeStop_DMA(ADC_HandleTypeDef *hadc)
   /* Disable ADC peripheral if conversions are effectively stopped */
   if (tmp_hal_status == HAL_OK)
   {
+    tmphadcSlave.State = HAL_ADC_STATE_RESET;
+    tmphadcSlave.ErrorCode = HAL_ADC_ERROR_NONE;
+
     /* Set a temporary handle of the ADC slave associated to the ADC master   */
     ADC_MULTI_SLAVE(hadc, &tmphadcSlave);
 
@@ -1168,13 +1166,21 @@ HAL_StatusTypeDef HAL_ADCEx_MultiModeStop_DMA(ADC_HandleTypeDef *hadc)
     {
       if ((HAL_GetTick() - tickstart) > ADC_STOP_CONVERSION_TIMEOUT)
       {
-        /* Update ADC state machine to error */
-        SET_BIT(hadc->State, HAL_ADC_STATE_ERROR_INTERNAL);
+        /* New check to avoid false timeout detection in case of preemption */
+        tmphadcSlave_conversion_on_going = LL_ADC_REG_IsConversionOngoing((&tmphadcSlave)->Instance);
 
-        /* Process unlocked */
-        __HAL_UNLOCK(hadc);
+        if((LL_ADC_REG_IsConversionOngoing(hadc->Instance) == 1UL)
+           || (tmphadcSlave_conversion_on_going == 1UL)
+          )
+        {
+          /* Update ADC state machine to error */
+          SET_BIT(hadc->State, HAL_ADC_STATE_ERROR_INTERNAL);
 
-        return HAL_ERROR;
+          /* Process unlocked */
+          __HAL_UNLOCK(hadc);
+
+          return HAL_ERROR;
+        }
       }
 
       tmphadcSlave_conversion_on_going = LL_ADC_REG_IsConversionOngoing((&tmphadcSlave)->Instance);
@@ -1623,6 +1629,9 @@ HAL_StatusTypeDef HAL_ADCEx_RegularMultiModeStop_DMA(ADC_HandleTypeDef *hadc)
     /* Clear HAL_ADC_STATE_REG_BUSY bit */
     CLEAR_BIT(hadc->State, HAL_ADC_STATE_REG_BUSY);
 
+    tmphadcSlave.State = HAL_ADC_STATE_RESET;
+    tmphadcSlave.ErrorCode = HAL_ADC_ERROR_NONE;
+
     /* Set a temporary handle of the ADC slave associated to the ADC master   */
     ADC_MULTI_SLAVE(hadc, &tmphadcSlave);
 
@@ -1650,13 +1659,21 @@ HAL_StatusTypeDef HAL_ADCEx_RegularMultiModeStop_DMA(ADC_HandleTypeDef *hadc)
     {
       if ((HAL_GetTick() - tickstart) > ADC_STOP_CONVERSION_TIMEOUT)
       {
-        /* Update ADC state machine to error */
-        SET_BIT(hadc->State, HAL_ADC_STATE_ERROR_INTERNAL);
+        /* New check to avoid false timeout detection in case of preemption */
+        tmphadcSlave_conversion_on_going = LL_ADC_REG_IsConversionOngoing((&tmphadcSlave)->Instance);
 
-        /* Process unlocked */
-        __HAL_UNLOCK(hadc);
+        if((LL_ADC_REG_IsConversionOngoing(hadc->Instance) == 1UL)
+           || (tmphadcSlave_conversion_on_going == 1UL)
+          )
+        {
+          /* Update ADC state machine to error */
+          SET_BIT(hadc->State, HAL_ADC_STATE_ERROR_INTERNAL);
 
-        return HAL_ERROR;
+          /* Process unlocked */
+          __HAL_UNLOCK(hadc);
+
+          return HAL_ERROR;
+        }
       }
 
       tmphadcSlave_conversion_on_going = LL_ADC_REG_IsConversionOngoing((&tmphadcSlave)->Instance);
@@ -2075,7 +2092,18 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef *hadc, ADC_I
 
     if (sConfigInjected->InjecOversamplingMode == ENABLE)
     {
+#if defined(ADC_VER_V5_V90)
+      if (hadc->Instance == ADC3)
+      {
+        assert_param(IS_ADC_OVERSAMPLING_RATIO_ADC3(sConfigInjected->InjecOversampling.Ratio));
+      }
+      else
+      {
+        assert_param(IS_ADC_OVERSAMPLING_RATIO(sConfigInjected->InjecOversampling.Ratio));
+      }
+#else
       assert_param(IS_ADC_OVERSAMPLING_RATIO(sConfigInjected->InjecOversampling.Ratio));
+#endif
       assert_param(IS_ADC_RIGHT_BIT_SHIFT(sConfigInjected->InjecOversampling.RightBitShift));
 
       /*  JOVSE must be reset in case of triggered regular mode  */
@@ -2086,14 +2114,39 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef *hadc, ADC_I
       /*  - Right bit shift                                                     */
 
       /* Enable OverSampling mode */
+#if defined(ADC_VER_V5_V90)
+      if (hadc->Instance != ADC3)
+      {
+        MODIFY_REG(hadc->Instance->CFGR2,
+                   ADC_CFGR2_JOVSE |
+                   ADC_CFGR2_OVSR  |
+                   ADC_CFGR2_OVSS,
+                   ADC_CFGR2_JOVSE                                  |
+                  ((sConfigInjected->InjecOversampling.Ratio - 1UL) << ADC_CFGR2_OVSR_Pos) |
+                   sConfigInjected->InjecOversampling.RightBitShift
+                  );
+      }
+      else
+      {
+        MODIFY_REG(hadc->Instance->CFGR2,
+                   ADC_CFGR2_JOVSE |
+                   ADC3_CFGR2_OVSR  |
+                   ADC_CFGR2_OVSS,
+                   ADC_CFGR2_JOVSE                                  |
+                  (sConfigInjected->InjecOversampling.Ratio)        |
+                   sConfigInjected->InjecOversampling.RightBitShift
+                  );
+      }
+#else
       MODIFY_REG(hadc->Instance->CFGR2,
-                 ADC_CFGR2_JOVSE |
-                 ADC_CFGR2_OVSR  |
-                 ADC_CFGR2_OVSS,
-                 ADC_CFGR2_JOVSE                                  |
-                ((sConfigInjected->InjecOversampling.Ratio - 1UL) << ADC_CFGR2_OVSR_Pos) |
-                 sConfigInjected->InjecOversampling.RightBitShift
-                );
+           ADC_CFGR2_JOVSE |
+           ADC_CFGR2_OVSR  |
+           ADC_CFGR2_OVSS,
+           ADC_CFGR2_JOVSE                                  |
+          ((sConfigInjected->InjecOversampling.Ratio - 1UL) << ADC_CFGR2_OVSR_Pos) |
+           sConfigInjected->InjecOversampling.RightBitShift
+          );
+#endif
     }
     else
     {
@@ -2118,7 +2171,7 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef *hadc, ADC_I
     {
       tmpOffsetShifted = ADC_OFFSET_SHIFT_RESOLUTION(hadc, sConfigInjected->InjectedOffset);
     }
-    
+
     if (sConfigInjected->InjectedOffsetNumber != ADC_OFFSET_NONE)
     {
       /* Set ADC selected offset number */
@@ -2234,7 +2287,7 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef *hadc, ADC_I
             /* Note: Variable divided by 2 to compensate partially              */
             /*       CPU processing cycles, scaling in us split to not          */
             /*       exceed 32 bits register capacity and handle low frequency. */
-            wait_loop_index = ((LL_ADC_DELAY_TEMPSENSOR_STAB_US / 10UL) * (SystemCoreClock / (100000UL * 2UL)));
+            wait_loop_index = ((LL_ADC_DELAY_TEMPSENSOR_STAB_US / 10UL) * ((SystemCoreClock / (100000UL * 2UL)) + 1UL));
             while (wait_loop_index != 0UL)
             {
               wait_loop_index--;
@@ -2315,6 +2368,9 @@ HAL_StatusTypeDef HAL_ADCEx_MultiModeConfigChannel(ADC_HandleTypeDef *hadc, ADC_
 
   /* Process locked */
   __HAL_LOCK(hadc);
+
+  tmphadcSlave.State = HAL_ADC_STATE_RESET;
+  tmphadcSlave.ErrorCode = HAL_ADC_ERROR_NONE;
 
   ADC_MULTI_SLAVE(hadc, &tmphadcSlave);
 
@@ -2560,4 +2616,3 @@ HAL_StatusTypeDef HAL_ADCEx_EnterADCDeepPowerDownMode(ADC_HandleTypeDef *hadc)
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -85,16 +85,22 @@ def gen_h_user_file(config, quantized_model_path):
         f.write("#define PP_OFFSET       ({}f)\n".format(float(params.pre_processing.rescaling.offset)))
         f.write("#define PP_SCALE       ({}f)\n".format(float(params.pre_processing.rescaling.scale)))
         f.write("\n")
-        if params.pre_processing.aspect_ratio:
-            f.write("/* Cropping configuration */\n")
-            f.write("#define PP_KEEP_ASPECT_RATIO     \n")
-            f.write("\n")
+        f.write("/* Cropping configuration */\n")
+        yaml_opt = [False, "crop", "padding"]
+        opt = ["KEEP_ASPECT_RATIO_DISABLE", "KEEP_ASPECT_RATIO_CROP", "KEEP_ASPECT_RATIO_PADDING"]
+        f.write("#define KEEP_ASPECT_RATIO_DISABLE 0\n")
+        f.write("#define KEEP_ASPECT_RATIO_CROP    1\n")
+        f.write("#define KEEP_ASPECT_RATIO_PADDING 2\n")
+        f.write("\n")
+        f.write("#define ASPECT_RATIO_MODE    {}\n".format(opt[yaml_opt.index(params.pre_processing.aspect_ratio)]))
+        f.write("\n\n")
         f.write("/* Input color format configuration */\n")
         yaml_opt = ["rgb", "bgr", "grayscale"]
         opt = ["RGB_FORMAT", "BGR_FORMAT", "GRAYSCALE_FORMAT"]
         f.write("#define RGB_FORMAT    (1)\n")
         f.write("#define BGR_FORMAT    (2)\n")
         f.write("#define GRAYSCALE_FORMAT    (3)\n")
+        f.write("\n")
         f.write("#define PP_COLOR_MODE    {}\n".format(opt[yaml_opt.index(params.pre_processing.color_mode)]))
         f.write("\n")
         f.write("/* Input/Output quantization configuration */\n")

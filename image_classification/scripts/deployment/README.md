@@ -85,7 +85,7 @@ To do so, you need to specify the **preprocessing** configuration in **[user_con
 
 - `rescaling` - A *dictonary* with keys *(scale, offset)* to rescale input values to a new range. To scale input image **[0:255]** in the range **[-1:1]** you should pass **{scale = 127.5, offset = -1}**, else in the range **[0:1]** you should pass **{scale = 255, offset = 0}**.
 - `resizing` - **nearest**, only supported option for *Getting Started*.
-- `aspect_ratio` - *Boolean*, if *True* resize the images without aspect ratio distortion, else aspect ratio may not be preserved.
+- `aspect_ratio` - One of *False*, *crop* or *padding*. If *crop* resize the images without aspect ratio distortion by cropping the image as a square, if *padding* add black borders above and below the image to make it as square, otherwise *False* aspect ratio may not be preserved.
 - `color_mode` - One of "*grayscale*", "*rgb*" or "*bgr*".
 
 **1.3. Load model:**

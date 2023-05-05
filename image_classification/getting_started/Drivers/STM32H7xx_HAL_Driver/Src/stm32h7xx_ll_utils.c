@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file in
+  * the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -272,7 +271,7 @@ static ErrorStatus UTILS_IsPLLsReady(void);
   * @note   CPU_Frequency can be calculated thanks to RCC helper macro or function
   *         @ref LL_RCC_GetSystemClocksFreq
   *         LL_RCC_GetSystemClocksFreq() is used to calculate the CM7 clock frequency
-  *         and __LL_RCC_CALC_HCLK_FREQ is used to caluclate the CM4 clock frequency.
+  *         and __LL_RCC_CALC_HCLK_FREQ is used to calculate the CM4 clock frequency.
   * @retval None
   */
 #else
@@ -458,7 +457,7 @@ void LL_mDelay(uint32_t Delay)
   * @note   CPU_Frequency can be calculated thanks to RCC helper macro or function
   *         @ref LL_RCC_GetSystemClocksFreq
   *         LL_RCC_GetSystemClocksFreq() is used to calculate the CM7 clock frequency
-  *         and __LL_RCC_CALC_HCLK_FREQ is used to caluclate the CM4 clock frequency.
+  *         and __LL_RCC_CALC_HCLK_FREQ is used to calculate the CM4 clock frequency.
   * @retval None
   */
 #else
@@ -1071,4 +1070,3 @@ static ErrorStatus UTILS_EnablePLLAndSwitchSystem(uint32_t SYSCLK_Frequency, LL_
   * @}
   */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

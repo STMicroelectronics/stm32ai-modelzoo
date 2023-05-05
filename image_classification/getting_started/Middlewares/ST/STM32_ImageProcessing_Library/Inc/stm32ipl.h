@@ -482,6 +482,7 @@ stm32ipl_err_t STM32Ipl_RectMerge(array_t **rects);
 stm32ipl_err_t STM32Ipl_Crop(const image_t *src, image_t *dst, uint32_t x, uint32_t y);
 stm32ipl_err_t STM32Ipl_Resize(const image_t *src, image_t *dst, const rectangle_t *roi);
 stm32ipl_err_t STM32Ipl_Downscale(const image_t *src, image_t *dst, bool reversed);
+stm32ipl_err_t STM32Ipl_Downscale_bilinear(const image_t *src, image_t *dst);
 /** @} */
 
 /**

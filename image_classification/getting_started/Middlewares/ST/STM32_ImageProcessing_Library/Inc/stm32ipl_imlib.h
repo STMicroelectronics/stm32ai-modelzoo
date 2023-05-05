@@ -402,6 +402,7 @@ typedef enum image_bpp
 	IMAGE_BPP_RGB565,       /* BPP = 2 */			/**< Color image. Each pixel is represented with 16 bits; R and B channels are described with 5 bits, G with 6 bits. */
 	IMAGE_BPP_BAYER,        /* BPP = 3 */			/**< Not used by STM32IPL. */
 	IMAGE_BPP_RGB888,       /* BPP = 4 STM32IPL */	/**< Color image. Each pixel is represented with 24 bits, 8 bits for each EGB channel. */
+	IMAGE_BPP_BGR888,       /* BPP = 4 STM32IPL */	/**< Color image. Each pixel is represented with 24 bits, 8 bits for each EGB channel. */
 	IMAGE_BPP_JPEG          /* BPP > 4 */			/**< Not used by STM32IPL. */
 } image_bpp_t;
 

@@ -16,6 +16,15 @@
         "Flash": "2048 kiB",
         "External Flash": ""
     },
+    
+    "B-U585I-IOT02A":{
+        "Core": "Arm Cortex-M33",
+        "Frequency": "160 MHz",
+        "RAM": "786 kiB",
+        "External RAM": "",
+        "Flash": "2048 kiB",
+        "External Flash": "64 MB"
+    },
 
     "NUCLEO-L452RE-P":{
         "Core": "Arm Cortex-M4",

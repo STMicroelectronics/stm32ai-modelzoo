@@ -11,6 +11,12 @@ However, they are also widely used in AED and Audio classification, by convertin
 
 MiniResNet is based on the ResNetv2 implementation found in tensorflow, and is a resized version of a ResNet18 with a custom block function. These blocks are then assembled in stacks, and the user can specify the number of stacks desired, with more stacks resulting in a larger network.
 
+A note on pooling : In some of our pretrained models, we do not use a pooling function at the end of the convolutional backbone, as is traditionally done. Because of the small number of convolutional blocks, the number of filters is low even for larger model sizes, leading to a low embedding size after pooling.
+We found that in many cases we obtain a better performance / model size / inference time tradeoff by not performing any pooling. This makes the linear classification layer larger, but in cases with a relatively low number of classes, this remains cheaper than adding more convolutional blocks.
+
+Naturally, you are able to set the type of pooling you wish to use when training a model from scratch.
+
+
 Source implementation : https://keras.io/api/applications/resnet/
 
 Papers : [ResNet](https://arxiv.org/abs/1512.03385)
@@ -51,6 +57,7 @@ To train a miniresnet model with pretrained weights or from scratch on your own 
 
 As an example, [miniresnet_2stacks_64x50_config.yaml](ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50/miniresnet_2stacks_64x50_config.yaml) file is used to train the 2 stacks variant of this model on the ESC10 dataset. You can copy its content in the [user_config.yaml](../../scripts/training/user_config.yaml) file provided under the training section to reproduce the results presented below. 
 
+
 ## Metrics
 
 
@@ -85,8 +92,8 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 |-------|--------|------------|----------------|
 | [MiniResNet 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnet_1stacks_64x50/miniresnet_1stacks_64x50.h5) | float32 | 64x50x1 | 91.1% |
 | [MiniResNet 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnet_1stacks_64x50/miniresnet_1stacks_64x50_int8.tflite) | int8 | 64x50x1 | 91.1% |
-| [MiniResNet 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50/miniresnet_2stacks_64x50.h5) | float32 | 64x50x1 | 96.2% |
-| [MiniResNet 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50/miniresnet_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | 94.9% |
+| [MiniResNet 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50/miniresnet_2stacks_64x50.h5) | float32 | 64x50x1 | 93.6% |
+| [MiniResNet 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50/miniresnet_2stacks_64x50_int8.tflite) | int8 | 64x50x1 | 93.6% |
 
 
 ## Retraining and code generation

@@ -345,6 +345,108 @@ stm32ipl_err_t STM32Ipl_Downscale(const image_t *src, image_t *dst, bool reverse
 	return stm32ipl_err_Ok;
 }
 
+/**
+ * @brief Resizes (downscale only) the source image to the destination image with Nearest Neighbor method.
+ * The two images must have the same format. The destination image data buffer must be already allocated
+ * by the user and its size must be large enough to contain the resized pixels.
+ * The supported format is RGB888 and BGR888. Binary, Grayscale, RGB565 not tested yet
+ * Use this function for downscale cases only.
+ * @param src 		Source image; it must be valid, otherwise an error is returned;
+ * @param dst 		Destination image; its width and height must be greater than zero; it must be valid, otherwise an error is returned;
+ * true to resize in decrementing order, from end to start of the image.
+ * @return		stm32ipl_err_Ok on success, error otherwise.
+ */
+stm32ipl_err_t STM32Ipl_Downscale_bilinear(const image_t *src, image_t *dst)
+{
+	STM32IPL_CHECK_VALID_IMAGE(src)
+	STM32IPL_CHECK_VALID_IMAGE(dst)
+	STM32IPL_CHECK_FORMAT(src, STM32IPL_IF_ALL)
+	STM32IPL_CHECK_SAME_FORMAT(src, dst)
+
+
+  uint8_t *dstImage = dst->pixels;
+  uint32_t pixelSize;
+  int32_t srcStride;
+  float widthRatio;
+  float heightRatio;
+
+  int32_t maxWidth;
+  int32_t maxHeight;
+
+  float srcX, srcY, dX1, dY1, dX2, dY2;
+  int32_t dstX1, srcY1, dstX2, srcY2;
+
+  uint8_t *tmp1, *tmp2;
+  uint8_t *p1, *p2, *p3, *p4;
+
+  int32_t offset1;
+  int32_t offset2;
+
+	switch (src->bpp)
+	{
+		case IMAGE_BPP_GRAYSCALE:
+			pixelSize = 1;
+			break;
+		case IMAGE_BPP_RGB565:
+			pixelSize = 2;
+			break;
+		case IMAGE_BPP_RGB888:
+			pixelSize = 3;
+			break;
+		default:
+			break;
+	}
+  srcStride = pixelSize * src->w;
+
+  widthRatio =  (float) src->w / (float) dst->w;
+  heightRatio =  (float) src->h / (float) dst->h;
+
+  /* Get horizontal and vertical limits. */
+  maxWidth = src->w - 1;
+  maxHeight = src->h - 1;
+
+	for (int32_t y = 0; y < dst->h; y++)
+  {
+    /* Get Y from source. */
+    srcY = (float) y * heightRatio;
+    srcY1 = (int32_t) srcY;
+    srcY2 = (srcY1 == maxHeight) ? srcY1 : srcY1 + 1;
+    dY1 = srcY - (float) srcY1;
+    dY2 = 1.0f - dY1;
+
+    /* Calculates the pointers to the two needed lines of the source. */
+    tmp1 = src->pixels + srcY1 * srcStride;
+    tmp2 = src->pixels + srcY2 * srcStride;
+
+    for (int32_t x = 0; x < dst->w; x++)
+    {
+      /* Get X from source. */
+      srcX = x * widthRatio;
+      dstX1 = (int32_t) srcX;
+      dstX2 = (dstX1 == maxWidth) ? dstX1 : dstX1 + 1;
+      dX1 = srcX - /*(float32)*/dstX1;
+      dX2 = 1.0f - dX1;
+
+      /* Calculates the four points (p1,p2, p3, p4) of the source. */
+      offset1 = dstX1 * pixelSize;
+      offset2 = dstX2 * pixelSize;
+      p1 = tmp1 + offset1;
+      p2 = tmp1 + offset2;
+      p3 = tmp2 + offset1;
+      p4 = tmp2 + offset2;
+      /* For each channel, interpolate the four points. */
+      for (int32_t ch = 0; ch < pixelSize; ch++, dstImage++, p1++, p2++, p3++, p4++)
+      {
+        *dstImage = (uint8_t)(dY2 * (dX2 * (*p1) + dX1 * (*p2)) + dY1 * (dX2 * (*p3) + dX1 * (*p4)));
+      }
+    }
+  }
+
+	return stm32ipl_err_Ok;
+}
+
+
+
 #ifdef __cplusplus
 }
 #endif

@@ -84,7 +84,7 @@ def _load_audio_sample(filepath,
 
 def _esc10_csv_to_tf_dataset(cfg, esc_csv, audio_path,string_lookup_layer,
                              to_cache=True, return_clip_labels=False,
-                             return_arrays=False):
+                             return_arrays=False, data_augmentation=False):
     # Determine if we need to add file extension to file names
     add_file_extension = str(cfg.dataset.file_extension) not in esc_csv['filename'].iloc[0]
 
@@ -148,7 +148,6 @@ def _esc10_csv_to_tf_dataset(cfg, esc_csv, audio_path,string_lookup_layer,
     ds = ds.batch(cfg.train_parameters.batch_size)
     if to_cache:
         ds = ds.cache()
-
     ds = ds.prefetch(buffer_size=tf.data.AUTOTUNE)
     
     if return_arrays:
@@ -228,7 +227,8 @@ def load_ESC_10(cfg, to_cache=True):
                                         esc_csv=train_esc_csv,
                                         audio_path=audio_path,
                                         string_lookup_layer=string_lookup_layer,
-                                        to_cache=to_cache)
+                                        to_cache=to_cache,
+                                        data_augmentation=True)
 
 
 

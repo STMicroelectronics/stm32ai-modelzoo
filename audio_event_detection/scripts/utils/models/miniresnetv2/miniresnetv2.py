@@ -49,7 +49,6 @@ def block2_custom(x, filters, kernel_size=3, stride=1, conv_shortcut=False, name
         filters,
         kernel_size,
         strides=stride,
-        use_bias=False,
         name=name + '_2_conv')(x)
     x = layers.Add(name=name + '_out')([shortcut, x])
     return x
@@ -98,6 +97,7 @@ def get_scratch_model(cfg):
     input_shape=(cfg.model.input_shape[0], cfg.model.input_shape[1], 1)
     n_classes = len(cfg.dataset.class_names)
     n_stacks = cfg.model.model_type.n_stacks
+    pooling=cfg.model.model_type.pooling
     if cfg.model.multi_label:
         activation = 'sigmoïd'
     else:
@@ -106,12 +106,13 @@ def get_scratch_model(cfg):
     backbone = MiniResNetV2(n_stacks=n_stacks,
                           input_shape=input_shape,
                           classes=n_classes,
+                          pooling=pooling,
                           classifier_activation=None)
 
     miniresnetv2 = add_head(backbone=backbone,
                           n_classes=n_classes,
                           trainable_backbone=True,
-                          add_flatten=True,
+                          add_flatten=False,
                           functional=True,
                           activation=activation)
     return miniresnetv2

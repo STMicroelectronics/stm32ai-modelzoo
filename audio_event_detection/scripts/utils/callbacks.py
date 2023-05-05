@@ -76,7 +76,11 @@ def get_callbacks(cfg):
 
 
     # EarlyStopping callback
-    callbacks.append(tf.keras.callbacks.EarlyStopping(monitor='val_accuracy', mode='max', patience=25, restore_best_weights=True, verbose=2))
+    callbacks.append(tf.keras.callbacks.EarlyStopping(monitor='val_accuracy',
+                                                      mode='max',
+                                                      patience=cfg.train_parameters.patience,
+                                                      restore_best_weights=cfg.train_parameters.restore_best_weights,
+                                                      verbose=2))
 
     # Checkpoints callback
     checkpoint_filepath = os.path.join(HydraConfig.get().runtime.output_dir,cfg.general.saved_models_dir+'/'+"best_model.h5")

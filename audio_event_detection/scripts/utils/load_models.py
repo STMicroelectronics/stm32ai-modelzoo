@@ -38,7 +38,8 @@ def check_yamnet_config(cfg):
         print("[INFO] Pre-processing and feature extraction parameters valid for Yamnet, continuing...")
 
 def get_model(cfg):
-
+    if cfg.model.multi_label:
+        raise NotImplementedError("Multi-label classification is not implemented yet, but will be in a future update. \n Please set model.multi_label to False.")
     if cfg.model.model_type.name.lower() == "miniresnet":
         if cfg.model.transfer_learning == True:
             return miniresnet.get_pretrained_model(cfg)

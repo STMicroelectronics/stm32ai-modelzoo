@@ -24,10 +24,6 @@ Here you can define the model path to load and benchmark the model, also other p
 
 To do so we will need to configure the **model** section in **[user_config.yaml](user_config.yaml)** in the following way : 
 
-![plot](./doc/img/model_config.JPG)
-
-where:
-
 ![plot](./doc/img/model_config_evaluate.JPG)
 
 where:
@@ -102,6 +98,9 @@ You can fine-tune the behaviour of spectrogram computation and patch extraction 
 - `power` - Exponent for the magnitude spectrogram. Set to 1.0 for energy spectrogram, and 2.0 for power spectrogram.
 - `fmin` - Minimum frequency used when computing mel filter bins
 - `fmax` - Maximum frequency used when computing mel filter bins
+- `norm` - Mel filter weights normalization. Set to "slaney" if you are unsure. Some models, like Yamnet, expect no normalization
+- `htk` - If true, use the [HTK](https://htk.eng.cam.ac.uk/) formula to compute mel filter weights. Set to "False" if you are unsure. Some models, like Yamnet, expect this to be True.
+- `to_db` - If set to True, logmelspectrograms are expressed in dB units.  Set to "True" if you are unsure. Some models, like Yamnet expect this to be False.
 - `include_last_patch` - If set to False, discards the last patch if it does not contain `patch_length` frames. If true, this patch is returned.
 WARNING : Setting this option to True will cause errors when using models with a fixed input size !
 
@@ -176,9 +175,9 @@ All evaluation artificats are saved under the current output simulation director
 
 For example, you can retrieve the confusion matrix generated after evaluating the float/quantized model on the validation/test set as follows:
 
-![plot](./doc/img/miniresnet_clip_level_cm.png)
+![plot](./doc/img/clip_level_confusion_matrix.JPG)
 
-![plot](./doc/img/quantized_miniresnet_clip_level_cm.png)
+![plot](./doc/img/quantized_clip_level_cm.png)
 
 **3.2. Run MLFlow**
 

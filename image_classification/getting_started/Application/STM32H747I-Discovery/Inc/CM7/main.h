@@ -86,12 +86,16 @@
 #define RGB_888_BPP 3
 
 /*QVGA capture*/
-#ifdef PP_KEEP_ASPECT_RATIO
- #define CAM_RES_WIDTH  QVGA_RES_HEIGHT
- #define CAM_RES_HEIGHT QVGA_RES_HEIGHT
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_CROP
+  #define CAM_RES_WIDTH  QVGA_RES_HEIGHT
+  #define CAM_RES_HEIGHT QVGA_RES_HEIGHT
 #else
- #define CAM_RES_WIDTH  QVGA_RES_WIDTH
- #define CAM_RES_HEIGHT QVGA_RES_HEIGHT
+  #define CAM_RES_WIDTH  QVGA_RES_WIDTH
+  #define CAM_RES_HEIGHT QVGA_RES_HEIGHT
+#endif
+
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_PADDING
+  #define RES_WITH_BORDERS  QVGA_RES_WIDTH
 #endif
 
 #define CAM_LINE_SIZE  (CAM_RES_WIDTH * 2U) /* 16-bit per px in RGB565 */
@@ -114,7 +118,11 @@
 /******************************/
 /****Buffers size definition***/
 /******************************/
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_PADDING
+#define CAM_FRAME_BUFFER_SIZE (RES_WITH_BORDERS * RES_WITH_BORDERS * RGB_565_BPP)
+#else
 #define CAM_FRAME_BUFFER_SIZE (CAM_RES_WIDTH * CAM_RES_HEIGHT * RGB_565_BPP)
+#endif
 #define RESCALED_FRAME_BUFFER_SIZE (AI_NETWORK_WIDTH *AI_NETWORK_HEIGHT * RGB_565_BPP)
 #define AI_INPUT_BUFFER_SIZE AI_NET_INPUT_SIZE_BYTES
 #define AI_OUTPUT_BUFFER_SIZE AI_NET_OUTPUT_SIZE_BYTES 
@@ -190,6 +198,7 @@ typedef struct
   void* activation_buffer;
   uint8_t* rescaled_image_buffer;
   uint8_t* camera_capture_buffer;
+  uint8_t* camera_capture_buffer_no_borders;
   uint8_t *lcd_frame_read_buff;
   uint8_t *lcd_frame_write_buff;
   

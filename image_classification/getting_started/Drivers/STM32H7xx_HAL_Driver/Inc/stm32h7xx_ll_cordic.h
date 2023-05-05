@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -95,15 +94,21 @@ extern "C" {
 #define LL_CORDIC_PRECISION_4CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_2))
 #define LL_CORDIC_PRECISION_5CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_0))
 #define LL_CORDIC_PRECISION_6CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_1))
-#define LL_CORDIC_PRECISION_7CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_1 | CORDIC_CSR_PRECISION_0))
+#define LL_CORDIC_PRECISION_7CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_2\
+                                                       | CORDIC_CSR_PRECISION_1 | CORDIC_CSR_PRECISION_0))
 #define LL_CORDIC_PRECISION_8CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_3))
 #define LL_CORDIC_PRECISION_9CYCLES        ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_0))
 #define LL_CORDIC_PRECISION_10CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_1))
-#define LL_CORDIC_PRECISION_11CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_1 | CORDIC_CSR_PRECISION_0))
+#define LL_CORDIC_PRECISION_11CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3\
+                                                       | CORDIC_CSR_PRECISION_1 | CORDIC_CSR_PRECISION_0))
 #define LL_CORDIC_PRECISION_12CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_2))
-#define LL_CORDIC_PRECISION_13CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_0))
-#define LL_CORDIC_PRECISION_14CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_1))
-#define LL_CORDIC_PRECISION_15CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3 | CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_1 | CORDIC_CSR_PRECISION_0))
+#define LL_CORDIC_PRECISION_13CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3\
+                                                       | CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_0))
+#define LL_CORDIC_PRECISION_14CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3\
+                                                       | CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_1))
+#define LL_CORDIC_PRECISION_15CYCLES       ((uint32_t)(CORDIC_CSR_PRECISION_3\
+                                                       | CORDIC_CSR_PRECISION_2 | CORDIC_CSR_PRECISION_1\
+                                                       | CORDIC_CSR_PRECISION_0))
 /**
   * @}
   */
@@ -127,8 +132,9 @@ extern "C" {
   * @{
   */
 #define LL_CORDIC_NBWRITE_1                (0x00000000U)             /*!< One 32-bits write containing either only one
-                                                                          32-bit data input (Q1.31 format), or two 16-bit
-                                                                          data input (Q1.15 format) packed in one 32 bits Data */
+                                                                          32-bit data input (Q1.31 format), or two
+                                                                          16-bit data input (Q1.15 format) packed
+                                                                          in one 32 bits Data */
 #define LL_CORDIC_NBWRITE_2                CORDIC_CSR_NARGS          /*!< Two 32-bit write containing two 32-bits data input
                                                                           (Q1.31 format) */
 /**
@@ -139,8 +145,9 @@ extern "C" {
   * @{
   */
 #define LL_CORDIC_NBREAD_1                 (0x00000000U)             /*!< One 32-bits read containing either only one
-                                                                          32-bit data ouput (Q1.31 format), or two 16-bit
-                                                                          data output (Q1.15 format) packed in one 32 bits Data */
+                                                                          32-bit data output (Q1.31 format), or two
+                                                                          16-bit data output (Q1.15 format) packed
+                                                                          in one 32 bits Data */
 #define LL_CORDIC_NBREAD_2                 CORDIC_CSR_NRES           /*!< Two 32-bit Data containing two 32-bits data output
                                                                           (Q1.31 format) */
 /**
@@ -234,13 +241,13 @@ extern "C" {
   *         - @ref LL_CORDIC_SetNbRead()
   *         - @ref LL_CORDIC_SetInSize()
   *         - @ref LL_CORDIC_SetOutSize()
-  * @rmtoll CSR          FUNC          LL_CORDIC_Configure\n
-  *         CSR          PRECISION     LL_CORDIC_Configure\n
-  *         CSR          SCALE         LL_CORDIC_Configure\n
-  *         CSR          NARGS         LL_CORDIC_Configure\n
-  *         CSR          NRES          LL_CORDIC_Configure\n
-  *         CSR          ARGSIZE       LL_CORDIC_Configure\n
-  *         CSR          RESSIZE       LL_CORDIC_Configure
+  * @rmtoll CSR          FUNC          LL_CORDIC_Config\n
+  *         CSR          PRECISION     LL_CORDIC_Config\n
+  *         CSR          SCALE         LL_CORDIC_Config\n
+  *         CSR          NARGS         LL_CORDIC_Config\n
+  *         CSR          NRES          LL_CORDIC_Config\n
+  *         CSR          ARGSIZE       LL_CORDIC_Config\n
+  *         CSR          RESIZE        LL_CORDIC_Config
   * @param  CORDICx CORDIC instance
   * @param  Function parameter can be one of the following values:
   *         @arg @ref LL_CORDIC_FUNCTION_COSINE
@@ -292,7 +299,8 @@ extern "C" {
   *         @arg @ref LL_CORDIC_OUTSIZE_16BITS
   * @retval None
   */
-__STATIC_INLINE void LL_CORDIC_Config(CORDIC_TypeDef *CORDICx, uint32_t Function, uint32_t Precision, uint32_t Scale, uint32_t NbWrite, uint32_t NbRead, uint32_t InSize, uint32_t OutSize)
+__STATIC_INLINE void LL_CORDIC_Config(CORDIC_TypeDef *CORDICx, uint32_t Function, uint32_t Precision, uint32_t Scale,
+                                      uint32_t NbWrite, uint32_t NbRead, uint32_t InSize, uint32_t OutSize)
 {
   MODIFY_REG(CORDICx->CSR,
              CORDIC_CSR_FUNC | CORDIC_CSR_PRECISION | CORDIC_CSR_SCALE |
@@ -339,7 +347,7 @@ __STATIC_INLINE void LL_CORDIC_SetFunction(CORDIC_TypeDef *CORDICx, uint32_t Fun
   *         @arg @ref LL_CORDIC_FUNCTION_NATURALLOG
   *         @arg @ref LL_CORDIC_FUNCTION_SQUAREROOT
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetFunction(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetFunction(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_FUNC));
 }
@@ -392,7 +400,7 @@ __STATIC_INLINE void LL_CORDIC_SetPrecision(CORDIC_TypeDef *CORDICx, uint32_t Pr
   *         @arg @ref LL_CORDIC_PRECISION_14CYCLES
   *         @arg @ref LL_CORDIC_PRECISION_15CYCLES
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetPrecision(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetPrecision(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_PRECISION));
 }
@@ -431,7 +439,7 @@ __STATIC_INLINE void LL_CORDIC_SetScale(CORDIC_TypeDef *CORDICx, uint32_t Scale)
   *         @arg @ref LL_CORDIC_SCALE_6
   *         @arg @ref LL_CORDIC_SCALE_7
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetScale(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetScale(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_SCALE));
 }
@@ -458,7 +466,7 @@ __STATIC_INLINE void LL_CORDIC_SetNbWrite(CORDIC_TypeDef *CORDICx, uint32_t NbWr
   *         @arg @ref LL_CORDIC_NBWRITE_1
   *         @arg @ref LL_CORDIC_NBWRITE_2
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetNbWrite(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetNbWrite(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_NARGS));
 }
@@ -485,7 +493,7 @@ __STATIC_INLINE void LL_CORDIC_SetNbRead(CORDIC_TypeDef *CORDICx, uint32_t NbRea
   *         @arg @ref LL_CORDIC_NBREAD_1
   *         @arg @ref LL_CORDIC_NBREAD_2
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetNbRead(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetNbRead(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_NRES));
 }
@@ -512,14 +520,14 @@ __STATIC_INLINE void LL_CORDIC_SetInSize(CORDIC_TypeDef *CORDICx, uint32_t InSiz
   *         @arg @ref LL_CORDIC_INSIZE_32BITS
   *         @arg @ref LL_CORDIC_INSIZE_16BITS
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetInSize(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetInSize(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_ARGSIZE));
 }
 
 /**
   * @brief  Configure width of output data.
-  * @rmtoll CSR          RESSIZE       LL_CORDIC_SetOutSize
+  * @rmtoll CSR          RESIZE       LL_CORDIC_SetOutSize
   * @param  CORDICx CORDIC Instance
   * @param  OutSize parameter can be one of the following values:
   *         @arg @ref LL_CORDIC_OUTSIZE_32BITS
@@ -533,13 +541,13 @@ __STATIC_INLINE void LL_CORDIC_SetOutSize(CORDIC_TypeDef *CORDICx, uint32_t OutS
 
 /**
   * @brief  Return width of output data.
-  * @rmtoll CSR          RESSIZE       LL_CORDIC_GetOutSize
+  * @rmtoll CSR          RESIZE       LL_CORDIC_GetOutSize
   * @param  CORDICx CORDIC Instance
   * @retval Returned value can be one of the following values:
   *         @arg @ref LL_CORDIC_OUTSIZE_32BITS
   *         @arg @ref LL_CORDIC_OUTSIZE_16BITS
   */
-__STATIC_INLINE uint32_t LL_CORDIC_GetOutSize(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_GetOutSize(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_BIT(CORDICx->CSR, CORDIC_CSR_RESSIZE));
 }
@@ -580,7 +588,7 @@ __STATIC_INLINE void LL_CORDIC_DisableIT(CORDIC_TypeDef *CORDICx)
   * @param  CORDICx CORDIC Instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_CORDIC_IsEnabledIT(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_IsEnabledIT(const CORDIC_TypeDef *CORDICx)
 {
   return ((READ_BIT(CORDICx->CSR, CORDIC_CSR_IEN) == (CORDIC_CSR_IEN)) ? 1U : 0U);
 }
@@ -621,7 +629,7 @@ __STATIC_INLINE void LL_CORDIC_DisableDMAReq_RD(CORDIC_TypeDef *CORDICx)
   * @param  CORDICx CORDIC Instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_CORDIC_IsEnabledDMAReq_RD(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_IsEnabledDMAReq_RD(const CORDIC_TypeDef *CORDICx)
 {
   return ((READ_BIT(CORDICx->CSR, CORDIC_CSR_DMAREN) == (CORDIC_CSR_DMAREN)) ? 1U : 0U);
 }
@@ -654,7 +662,7 @@ __STATIC_INLINE void LL_CORDIC_DisableDMAReq_WR(CORDIC_TypeDef *CORDICx)
   * @param  CORDICx CORDIC Instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_CORDIC_IsEnabledDMAReq_WR(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_IsEnabledDMAReq_WR(const CORDIC_TypeDef *CORDICx)
 {
   return ((READ_BIT(CORDICx->CSR, CORDIC_CSR_DMAWEN) == (CORDIC_CSR_DMAWEN)) ? 1U : 0U);
 }
@@ -669,19 +677,19 @@ __STATIC_INLINE uint32_t LL_CORDIC_IsEnabledDMAReq_WR(CORDIC_TypeDef *CORDICx)
   *         @arg @ref LL_CORDIC_DMA_REG_DATA_OUT
   * @retval Address of data register
   */
-__STATIC_INLINE uint32_t LL_CORDIC_DMA_GetRegAddr(CORDIC_TypeDef *CORDICx, uint32_t Direction)
+__STATIC_INLINE uint32_t LL_CORDIC_DMA_GetRegAddr(const CORDIC_TypeDef *CORDICx, uint32_t Direction)
 {
   uint32_t data_reg_addr;
 
   if (Direction == LL_CORDIC_DMA_REG_DATA_OUT)
   {
     /* return address of RDATA register */
-    data_reg_addr = (uint32_t) & (CORDICx->RDATA);
+    data_reg_addr = (uint32_t) &(CORDICx->RDATA);
   }
   else
   {
     /* return address of WDATA register */
-    data_reg_addr = (uint32_t) & (CORDICx->WDATA);
+    data_reg_addr = (uint32_t) &(CORDICx->WDATA);
   }
 
   return data_reg_addr;
@@ -701,7 +709,7 @@ __STATIC_INLINE uint32_t LL_CORDIC_DMA_GetRegAddr(CORDIC_TypeDef *CORDICx, uint3
   * @param  CORDICx CORDIC Instance
   * @retval State of bit (1 or 0).
   */
-__STATIC_INLINE uint32_t LL_CORDIC_IsActiveFlag_RRDY(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_IsActiveFlag_RRDY(const CORDIC_TypeDef *CORDICx)
 {
   return ((READ_BIT(CORDICx->CSR, CORDIC_CSR_RRDY) == (CORDIC_CSR_RRDY)) ? 1U : 0U);
 }
@@ -732,7 +740,7 @@ __STATIC_INLINE void LL_CORDIC_WriteData(CORDIC_TypeDef *CORDICx, uint32_t InDat
   * @param  CORDICx CORDIC Instance
   * @retval 32-bit output data of CORDIC processing.
   */
-__STATIC_INLINE uint32_t LL_CORDIC_ReadData(CORDIC_TypeDef *CORDICx)
+__STATIC_INLINE uint32_t LL_CORDIC_ReadData(const CORDIC_TypeDef *CORDICx)
 {
   return (uint32_t)(READ_REG(CORDICx->RDATA));
 }
@@ -747,7 +755,7 @@ __STATIC_INLINE uint32_t LL_CORDIC_ReadData(CORDIC_TypeDef *CORDICx)
 /** @defgroup CORDIC_LL_EF_Init Initialization and de-initialization functions
   * @{
   */
-ErrorStatus LL_CORDIC_DeInit(CORDIC_TypeDef *CORDICx);
+ErrorStatus LL_CORDIC_DeInit(const CORDIC_TypeDef *CORDICx);
 
 /**
   * @}
@@ -773,5 +781,3 @@ ErrorStatus LL_CORDIC_DeInit(CORDIC_TypeDef *CORDICx);
 #endif
 
 #endif /* STM32H7xx_LL_CORDIC_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

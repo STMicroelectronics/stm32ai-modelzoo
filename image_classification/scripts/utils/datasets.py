@@ -31,7 +31,7 @@ def get_train_val_ds(cfg, validation_split=0.2, to_cache=False):
         image_size=cfg.model.input_shape[:2],
         interpolation=cfg.pre_processing.resizing,
         color_mode=("rgb" if cfg.pre_processing.color_mode == "bgr" else cfg.pre_processing.color_mode),
-        crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio,
+        crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio),
         batch_size=cfg.train_parameters.batch_size)
 
     train_ds = train_ds.shuffle(len(list(train_ds)), reshuffle_each_iteration=True, seed=133)
@@ -48,7 +48,7 @@ def get_train_val_ds(cfg, validation_split=0.2, to_cache=False):
         image_size=cfg.model.input_shape[:2],
         interpolation=cfg.pre_processing.resizing,
         color_mode=("rgb" if cfg.pre_processing.color_mode == "bgr" else cfg.pre_processing.color_mode),
-        crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio,
+        crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio),
         batch_size=cfg.train_parameters.batch_size)
     if to_cache:
         valid_ds = valid_ds.cache()
@@ -67,7 +67,7 @@ def get_ds(datapath, cfg, shuffle=False, to_cache=False):
         image_size=cfg.model.input_shape[:2],
         interpolation=cfg.pre_processing.resizing,
         color_mode=("rgb" if cfg.pre_processing.color_mode == "bgr" else cfg.pre_processing.color_mode),
-        crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio,
+        crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio),
         batch_size=cfg.train_parameters.batch_size)
     if shuffle:
         ds = ds.shuffle(len(list(ds)), reshuffle_each_iteration=True, seed=133)
@@ -144,10 +144,10 @@ def load_CIFAR_10(cfg, to_cache=False):
     if cfg.model.input_shape[:2] != [32, 32]:
         train_ds = train_ds.map(lambda x, y: (tf.keras.layers.Resizing(
             cfg.model.input_shape[0], cfg.model.input_shape[1], interpolation=cfg.pre_processing.resizing,
-            crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio, )(x), y))
+            crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio), )(x), y))
         valid_ds = valid_ds.map(lambda x, y: (tf.keras.layers.Resizing(
             cfg.model.input_shape[0], cfg.model.input_shape[1], interpolation=cfg.pre_processing.resizing,
-            crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio, )(x), y))
+            crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio), )(x), y))
 
     return train_ds, valid_ds
 
@@ -198,10 +198,10 @@ def load_CIFAR_100(cfg, to_cache=False):
     if cfg.model.input_shape[:2] != [32, 32]:
         train_ds = train_ds.map(lambda x, y: (tf.keras.layers.Resizing(
             cfg.model.input_shape[0], cfg.model.input_shape[1], interpolation=cfg.pre_processing.resizing,
-            crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio, )(x), y))
+            crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio), )(x), y))
         valid_ds = valid_ds.map(lambda x, y: (tf.keras.layers.Resizing(
             cfg.model.input_shape[0], cfg.model.input_shape[1], interpolation=cfg.pre_processing.resizing,
-            crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio, )(x), y))
+            crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio), )(x), y))
 
     return train_ds, valid_ds
 
@@ -259,9 +259,9 @@ def load_EMNIST_Byclass(cfg, to_cache=False):
     if cfg.model.input_shape[:2] != [28, 28]:
         train_ds = train_ds.map(lambda x, y: (tf.keras.layers.Resizing(
             cfg.model.input_shape[0], cfg.model.input_shape[1], interpolation=cfg.pre_processing.resizing,
-            crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio, )(x), y))
+            crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio), )(x), y))
         valid_ds = valid_ds.map(lambda x, y: (tf.keras.layers.Resizing(
             cfg.model.input_shape[0], cfg.model.input_shape[1], interpolation=cfg.pre_processing.resizing,
-            crop_to_aspect_ratio=cfg.pre_processing.aspect_ratio, )(x), y))
+            crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio), )(x), y))
 
     return train_ds, valid_ds

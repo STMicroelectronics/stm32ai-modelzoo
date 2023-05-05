@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -33,7 +32,7 @@ extern "C" {
   * @{
   */
 
-/** @addtogroup HCD
+/** @addtogroup HCD HCD
   * @{
   */
 
@@ -111,7 +110,16 @@ typedef struct
 #define HCD_SPEED_HIGH               USBH_HS_SPEED
 #define HCD_SPEED_FULL               USBH_FSLS_SPEED
 #define HCD_SPEED_LOW                USBH_FSLS_SPEED
+/**
+  * @}
+  */
 
+/** @defgroup HCD_Device_Speed HCD Device Speed
+  * @{
+  */
+#define HCD_DEVICE_SPEED_HIGH               0U
+#define HCD_DEVICE_SPEED_FULL               1U
+#define HCD_DEVICE_SPEED_LOW                2U
 /**
   * @}
   */
@@ -143,13 +151,18 @@ typedef struct
 
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup HCD_Exported_Macros HCD Exported Macros
- *  @brief macros to handle interrupts and specific clock configurations
- * @{
- */
+  *  @brief macros to handle interrupts and specific clock configurations
+  * @{
+  */
 #define __HAL_HCD_ENABLE(__HANDLE__)                   (void)USB_EnableGlobalInt ((__HANDLE__)->Instance)
 #define __HAL_HCD_DISABLE(__HANDLE__)                  (void)USB_DisableGlobalInt ((__HANDLE__)->Instance)
 
-#define __HAL_HCD_GET_FLAG(__HANDLE__, __INTERRUPT__)      ((USB_ReadInterrupts((__HANDLE__)->Instance) & (__INTERRUPT__)) == (__INTERRUPT__))
+#define __HAL_HCD_GET_FLAG(__HANDLE__, __INTERRUPT__)      ((USB_ReadInterrupts((__HANDLE__)->Instance)\
+                                                             & (__INTERRUPT__)) == (__INTERRUPT__))
+
+#define __HAL_HCD_GET_CH_FLAG(__HANDLE__, __chnum__, __INTERRUPT__) \
+  ((USB_ReadChInterrupts((__HANDLE__)->Instance, (__chnum__)) & (__INTERRUPT__)) == (__INTERRUPT__))
+
 #define __HAL_HCD_CLEAR_FLAG(__HANDLE__, __INTERRUPT__)    (((__HANDLE__)->Instance->GINTSTS) = (__INTERRUPT__))
 #define __HAL_HCD_IS_INVALID_INTERRUPT(__HANDLE__)         (USB_ReadInterrupts((__HANDLE__)->Instance) == 0U)
 
@@ -214,10 +227,16 @@ typedef void (*pHCD_HC_NotifyURBChangeCallbackTypeDef)(HCD_HandleTypeDef *hhcd,
   * @}
   */
 
-HAL_StatusTypeDef HAL_HCD_RegisterCallback(HCD_HandleTypeDef *hhcd, HAL_HCD_CallbackIDTypeDef CallbackID, pHCD_CallbackTypeDef pCallback);
-HAL_StatusTypeDef HAL_HCD_UnRegisterCallback(HCD_HandleTypeDef *hhcd, HAL_HCD_CallbackIDTypeDef CallbackID);
+HAL_StatusTypeDef HAL_HCD_RegisterCallback(HCD_HandleTypeDef *hhcd,
+                                           HAL_HCD_CallbackIDTypeDef CallbackID,
+                                           pHCD_CallbackTypeDef pCallback);
 
-HAL_StatusTypeDef HAL_HCD_RegisterHC_NotifyURBChangeCallback(HCD_HandleTypeDef *hhcd, pHCD_HC_NotifyURBChangeCallbackTypeDef pCallback);
+HAL_StatusTypeDef HAL_HCD_UnRegisterCallback(HCD_HandleTypeDef *hhcd,
+                                             HAL_HCD_CallbackIDTypeDef CallbackID);
+
+HAL_StatusTypeDef HAL_HCD_RegisterHC_NotifyURBChangeCallback(HCD_HandleTypeDef *hhcd,
+                                                             pHCD_HC_NotifyURBChangeCallbackTypeDef pCallback);
+
 HAL_StatusTypeDef HAL_HCD_UnRegisterHC_NotifyURBChangeCallback(HCD_HandleTypeDef *hhcd);
 #endif /* USE_HAL_HCD_REGISTER_CALLBACKS */
 /**
@@ -267,9 +286,7 @@ HCD_HCStateTypeDef      HAL_HCD_HC_GetState(HCD_HandleTypeDef *hhcd, uint8_t chn
 uint32_t                HAL_HCD_HC_GetXferCount(HCD_HandleTypeDef *hhcd, uint8_t chnum);
 uint32_t                HAL_HCD_GetCurrentFrame(HCD_HandleTypeDef *hhcd);
 uint32_t                HAL_HCD_GetCurrentSpeed(HCD_HandleTypeDef *hhcd);
-/**
-  * @}
-  */
+
 
 /**
   * @}
@@ -277,35 +294,19 @@ uint32_t                HAL_HCD_GetCurrentSpeed(HCD_HandleTypeDef *hhcd);
 
 /* Private macros ------------------------------------------------------------*/
 /** @defgroup HCD_Private_Macros HCD Private Macros
- * @{
- */
-
+  * @{
+  */
 /**
   * @}
   */
-
 /* Private functions prototypes ----------------------------------------------*/
-/** @defgroup HCD_Private_Functions_Prototypes HCD Private Functions Prototypes
-  * @{
-  */
 
 /**
   * @}
   */
-
-/* Private functions ---------------------------------------------------------*/
-/** @defgroup HCD_Private_Functions HCD Private Functions
-  * @{
-  */
-
 /**
   * @}
   */
-
-/**
-  * @}
-  */
-
 /**
   * @}
   */
@@ -316,5 +317,3 @@ uint32_t                HAL_HCD_GetCurrentSpeed(HCD_HandleTypeDef *hhcd);
 #endif
 
 #endif /* STM32H7xx_HAL_HCD_H */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

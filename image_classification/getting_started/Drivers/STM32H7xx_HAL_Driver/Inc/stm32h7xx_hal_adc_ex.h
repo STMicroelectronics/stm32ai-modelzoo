@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -113,8 +112,8 @@ typedef struct
 
   uint32_t InjectedOffset;                /*!< Defines the offset to be subtracted from the raw converted data.
                                                Offset value must be a positive number.
-                                               Depending of ADC resolution selected (12, 10, 8 or 6 bits), this parameter must be a number
-                                               between Min_Data = 0x000 and Max_Data = 0xFFF,  0x3FF, 0xFF or 0x3F respectively.
+                                               Maximum value depends on ADC resolution and oversampling ratio (in case of oversampling used).
+                                               This parameter must be a number between Min_Data = 0x0000 and Max_Data = 0x3FFFC00 (corresponding to resolution 16 bit and oversampling ratio 1024).
                                                Note: This parameter must be modified when no conversion is on going on both regular and injected groups (ADC disabled, or ADC enabled
                                                without continuous mode or external trigger that could launch a conversion). */
 
@@ -122,7 +121,7 @@ typedef struct
                                                 This parameter is applied only for 16-bit or 8-bit resolution.
                                                 This parameter can be set to ENABLE or DISABLE. */
 #if defined(ADC_VER_V5_V90)
-  uint32_t InjectedOffsetSign;                /*!< Define if the offset should be substracted (negative sign) or added (positive sign) from or to the raw converted data.
+  uint32_t InjectedOffsetSign;                /*!< Define if the offset should be subtracted (negative sign) or added (positive sign) from or to the raw converted data.
                                                This parameter can be a value of @ref ADCEx_OffsetSign.
                                                Note: 
                                                      - This parameter must be modified when no conversion is on going on both regular and injected groups (ADC disabled, or ADC enabled without continuous mode or external trigger that could launch a conversion). 
@@ -250,8 +249,10 @@ typedef struct
 #define ADC_EXTERNALTRIGINJEC_T3_CC1       (LL_ADC_INJ_TRIG_EXT_TIM3_CH1)        /*!< ADC group injected conversion trigger from external peripheral: TIM3 channel 1 event (capture compare: input capture or output capture). Trigger edge set to rising edge (default setting). */
 #define ADC_EXTERNALTRIGINJEC_T6_TRGO      (LL_ADC_INJ_TRIG_EXT_TIM6_TRGO)       /*!< ADC group injected conversion trigger from external peripheral: TIM6 TRGO event. Trigger edge set to rising edge (default setting). */
 #define ADC_EXTERNALTRIGINJEC_T15_TRGO     (LL_ADC_INJ_TRIG_EXT_TIM15_TRGO)      /*!< ADC group injected conversion trigger from external peripheral: TIM15 TRGO event. Trigger edge set to rising edge (default setting). */
+#if defined(HRTIM1)
 #define ADC_EXTERNALTRIGINJEC_HR1_ADCTRG2  (LL_ADC_INJ_TRIG_EXT_HRTIM_TRG2)      /*!< ADC group injected conversion trigger from external peripheral: HRTIM1 TRG2 event. Trigger edge set to rising edge (default setting). */
 #define ADC_EXTERNALTRIGINJEC_HR1_ADCTRG4  (LL_ADC_INJ_TRIG_EXT_HRTIM_TRG4)      /*!< ADC group injected conversion trigger from external peripheral: HRTIM1 TRG4 event. Trigger edge set to rising edge (default setting). */
+#endif /* HRTIM1 */
 #define ADC_EXTERNALTRIGINJEC_LPTIM1_OUT   (LL_ADC_INJ_TRIG_EXT_LPTIM1_OUT)      /*!< ADC group injected conversion trigger from external peripheral: LPTIM1 OUT event. Trigger edge set to rising edge (default setting). */
 #define ADC_EXTERNALTRIGINJEC_LPTIM2_OUT   (LL_ADC_INJ_TRIG_EXT_LPTIM2_OUT)      /*!< ADC group injected conversion trigger from external peripheral: LPTIM2 OUT event. Trigger edge set to rising edge (default setting). */
 #define ADC_EXTERNALTRIGINJEC_LPTIM3_OUT   (LL_ADC_INJ_TRIG_EXT_LPTIM3_OUT)      /*!< ADC group injected conversion trigger from external peripheral: LPTIM3 OUT event. Trigger edge set to rising edge (default setting). */
@@ -295,7 +296,7 @@ typedef struct
 /** @defgroup ADCEx_OffsetSign ADC Extended Offset Sign
   * @{
   */
-#define ADC3_OFFSET_SIGN_NEGATIVE      (0x00000000UL)          /*!< Offset sign negative, offset is substracted */
+#define ADC3_OFFSET_SIGN_NEGATIVE      (0x00000000UL)          /*!< Offset sign negative, offset is subtracted */
 #define ADC3_OFFSET_SIGN_POSITIVE      (ADC3_OFR1_OFFSETPOS)   /*!< Offset sign positive, offset is added  */
 /**
   * @}
@@ -415,7 +416,7 @@ typedef struct
   * @{
   */
 #define ADC_DFSDM_MODE_DISABLE     (0x00000000UL)                     /*!< ADC conversions are not transferred by DFSDM. */
-#define ADC_DFSDM_MODE_ENABLE      (LL_ADC_REG_DFSDM_TRANSFER_ENABLE) /*!< ADC conversion data are transfered to DFSDM for post processing. The ADC conversion data format must be 16-bit signed and right aligned, refer to reference manual. DFSDM transfer cannot be used if DMA transfer is enabled. */
+#define ADC_DFSDM_MODE_ENABLE      (LL_ADC_REG_DFSDM_TRANSFER_ENABLE) /*!< ADC conversion data are transferred to DFSDM for post processing. The ADC conversion data format must be 16-bit signed and right aligned, refer to reference manual. DFSDM transfer cannot be used if DMA transfer is enabled. */
 /**
   * @}
   */
@@ -441,7 +442,7 @@ typedef struct
   *         Usage of this macro is not the Standard way of multimode
   *         configuration and can lead to have HAL ADC handles status
   *         misaligned. Usage of this macro must be limited to cases
-  *         mentionned above.
+  *         mentioned above.
   * @param __HANDLE__ ADC handle.
   * @retval None
   */
@@ -1044,6 +1045,7 @@ typedef struct
   * @param __INJTRIG__ programmed ADC injected conversions external trigger.
   * @retval SET (__INJTRIG__ is a valid value) or RESET (__INJTRIG__ is invalid)
   */
+#if defined (HRTIM1)
 #define IS_ADC_EXTTRIGINJEC(__INJTRIG__) (((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T1_TRGO)     || \
                                           ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T1_CC4)      || \
                                           ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T2_TRGO)     || \
@@ -1060,9 +1062,36 @@ typedef struct
                                           ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T3_CC1)      || \
                                           ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T6_TRGO)     || \
                                           ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T15_TRGO)    || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_HR1_ADCTRG2) || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_HR1_ADCTRG4) || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_LPTIM1_OUT)  || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_LPTIM2_OUT)  || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_LPTIM3_OUT)  || \
                                                                                           \
                                            ((__INJTRIG__) == ADC_SOFTWARE_START)                   )
-
+#else
+#define IS_ADC_EXTTRIGINJEC(__INJTRIG__) (((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T1_TRGO)     || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T1_CC4)      || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T2_TRGO)     || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T2_CC1)      || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T3_CC4)      || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T4_TRGO)     || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_EXT_IT15)    || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T8_CC4)      || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T1_TRGO2)    || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T8_TRGO)     || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T8_TRGO2)    || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T3_CC3)      || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T3_TRGO)     || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T3_CC1)      || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T6_TRGO)     || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_T15_TRGO)    || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_LPTIM1_OUT)  || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_LPTIM2_OUT)  || \
+                                          ((__INJTRIG__) == ADC_EXTERNALTRIGINJEC_LPTIM3_OUT)  || \
+                                                                                          \
+                                           ((__INJTRIG__) == ADC_SOFTWARE_START)                   )
+#endif /* HRTIM */
 /**
   * @brief Verify the ADC edge trigger setting for injected group.
   * @param __EDGE__ programmed ADC edge trigger setting.
@@ -1207,7 +1236,10 @@ typedef struct
                                                   ((__SHIFT__) == ADC_RIGHTBITSHIFT_5   ) || \
                                                   ((__SHIFT__) == ADC_RIGHTBITSHIFT_6   ) || \
                                                   ((__SHIFT__) == ADC_RIGHTBITSHIFT_7   ) || \
-                                                  ((__SHIFT__) == ADC_RIGHTBITSHIFT_8   ))
+                                                  ((__SHIFT__) == ADC_RIGHTBITSHIFT_8   ) || \
+                                                  ((__SHIFT__) == ADC_RIGHTBITSHIFT_9   ) || \
+                                                  ((__SHIFT__) == ADC_RIGHTBITSHIFT_10  ) || \
+                                                  ((__SHIFT__) == ADC_RIGHTBITSHIFT_11  ))
 
 /**
   * @brief Verify the ADC oversampling triggered mode.
@@ -1346,4 +1378,3 @@ HAL_StatusTypeDef       HAL_ADCEx_EnterADCDeepPowerDownMode(ADC_HandleTypeDef *h
 #endif /* STM32H7xx_HAL_ADC_EX_H */
 
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

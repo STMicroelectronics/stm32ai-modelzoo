@@ -16,9 +16,9 @@ from subprocess import Popen
 
 import mlflow
 from hydra.core.hydra_config import HydraConfig
-from stm32ai import (CliLibraryIde, CliLibrarySerie, CliParameters,
+from stm32ai_dc import (CliLibraryIde, CliLibrarySerie, CliParameters,
                      CloudBackend, Stm32Ai)
-from stm32ai.errors import BenchmarkServerError
+from stm32ai_dc.errors import BenchmarkServerError
 
 
 def analyze_footprints(offline=True, cloud_results=None, inference_res=False):

@@ -317,32 +317,32 @@
 		<link>
 			<name>Drivers/BSP/STM32H747I_DISCO/stm32h747i_discovery.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-Discovery/stm32h747i_discovery.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-DISCO/stm32h747i_discovery.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/STM32H747I_DISCO/stm32h747i_discovery_bus.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-Discovery/stm32h747i_discovery_bus.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-DISCO/stm32h747i_discovery_bus.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/STM32H747I_DISCO/stm32h747i_discovery_camera.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-Discovery/stm32h747i_discovery_camera.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-DISCO/stm32h747i_discovery_camera.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/STM32H747I_DISCO/stm32h747i_discovery_lcd.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-Discovery/stm32h747i_discovery_lcd.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-DISCO/stm32h747i_discovery_lcd.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/STM32H747I_DISCO/stm32h747i_discovery_sd.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-Discovery/stm32h747i_discovery_sd.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-DISCO/stm32h747i_discovery_sd.c</locationURI>
 		</link>
 		<link>
 			<name>Drivers/BSP/STM32H747I_DISCO/stm32h747i_discovery_sdram.c</name>
 			<type>1</type>
-			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-Discovery/stm32h747i_discovery_sdram.c</locationURI>
+			<locationURI>PARENT-4-PROJECT_LOC/Drivers/BSP/STM32H747I-DISCO/stm32h747i_discovery_sdram.c</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>

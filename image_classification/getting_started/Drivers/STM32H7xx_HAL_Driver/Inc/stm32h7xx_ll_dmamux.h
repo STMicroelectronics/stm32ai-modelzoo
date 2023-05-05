@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -249,11 +248,11 @@ extern "C" {
 #define LL_DMAMUX1_REQ_SPDIF_RX_CS      94U  /*!< DMAMUX1 SPDIF RXCS request      */
 #if defined (HRTIM1)
 #define LL_DMAMUX1_REQ_HRTIM_MASTER     95U  /*!< DMAMUX1 HRTIM1 Master request 1 */
-#define LL_DMAMUX1_REQ_HRTIM_TIMER_A    96U  /*!< DMAMUX1 HRTIM1 TimerA request 2 */
-#define LL_DMAMUX1_REQ_HRTIM_TIMER_B    97U  /*!< DMAMUX1 HRTIM1 TimerB request 3 */
-#define LL_DMAMUX1_REQ_HRTIM_TIMER_C    98U  /*!< DMAMUX1 HRTIM1 TimerC request 4 */
-#define LL_DMAMUX1_REQ_HRTIM_TIMER_D    99U  /*!< DMAMUX1 HRTIM1 TimerD request 5 */
-#define LL_DMAMUX1_REQ_HRTIM_TIMER_E   100U  /*!< DMAMUX1 HRTIM1 TimerE request 6 */
+#define LL_DMAMUX1_REQ_HRTIM_TIMER_A    96U  /*!< DMAMUX1 HRTIM1 Timer A request 2 */
+#define LL_DMAMUX1_REQ_HRTIM_TIMER_B    97U  /*!< DMAMUX1 HRTIM1 Timer B request 3 */
+#define LL_DMAMUX1_REQ_HRTIM_TIMER_C    98U  /*!< DMAMUX1 HRTIM1 Timer C request 4 */
+#define LL_DMAMUX1_REQ_HRTIM_TIMER_D    99U  /*!< DMAMUX1 HRTIM1 Timer D request 5 */
+#define LL_DMAMUX1_REQ_HRTIM_TIMER_E   100U  /*!< DMAMUX1 HRTIM1 Timer E request 6 */
 #endif /* HRTIM1 */
 #define LL_DMAMUX1_REQ_DFSDM1_FLT0     101U  /*!< DMAMUX1 DFSDM1 Filter0 request  */
 #define LL_DMAMUX1_REQ_DFSDM1_FLT1     102U  /*!< DMAMUX1 DFSDM1 Filter1 request  */
@@ -2435,4 +2434,3 @@ __STATIC_INLINE uint32_t LL_DMAMUX_IsEnabledIT_RGO(DMAMUX_Channel_TypeDef *DMAMU
 
 #endif /* __STM32H7xx_LL_DMAMUX_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

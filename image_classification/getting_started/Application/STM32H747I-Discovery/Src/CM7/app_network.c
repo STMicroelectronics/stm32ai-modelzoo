@@ -50,8 +50,13 @@ void Network_Preprocess(AppConfig_TypeDef *App_Config_Ptr)
   App_Config_Ptr->Tfps_start =Utility_GetTimeStamp();
   
   src_img.data=App_Config_Ptr->camera_capture_buffer;
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_PADDING
+  src_img.w=RES_WITH_BORDERS;
+  src_img.h=RES_WITH_BORDERS;
+#else
   src_img.w=CAM_RES_WIDTH;
   src_img.h=CAM_RES_HEIGHT;
+#endif
   src_img.bpp=IMAGE_BPP_RGB565;
   dst_img.data=App_Config_Ptr->rescaled_image_buffer;
   dst_img.w=AI_NETWORK_WIDTH;

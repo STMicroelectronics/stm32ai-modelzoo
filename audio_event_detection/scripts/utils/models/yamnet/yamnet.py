@@ -11,6 +11,7 @@ import tensorflow as tf
 from pathlib import Path
 from ..model_utils import add_head
 from keras import layers
+from keras import regularizers
 
 def get_pretrained_model(cfg):
     # Load model
@@ -36,6 +37,8 @@ def get_pretrained_model(cfg):
                          trainable_backbone=False,
                          add_flatten=False,
                          functional=True,
-                         activation=activation)
+                         activation=activation,
+                         kernel_regularizer=regularizers.L2(0),
+                         activity_regularizer=regularizers.L1(0))
                          
     return yamnet

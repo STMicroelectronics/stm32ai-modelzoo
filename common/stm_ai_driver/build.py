@@ -28,6 +28,7 @@ logger = logging.getLogger(_LOGGER_NAME_)
 
 
 _EXT_FILE = ('.c', '.h', '.txt')
+_STM_AI_LIB_PATTERN = r'NetworkRuntime[0-9]{3,}_[A-Za-z0-9]{3,}_[A-Z]{3,}.a'
 
 
 def _get_file_and_subdirectory(root_dir: Union[str, Path]):
@@ -68,7 +69,25 @@ def _copy_tree(src, dst):
             shutil.copy2(str(src_d), str(dest_d))
 
 
-def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str], Path, List[Path]]):
+def _remove_tree(dst):
+    """Remove current directory and sub_directories"""
+    shutil.rmtree(dst, ignore_errors=True)
+
+
+def _update_cube_ide_cproject(prj_dir: str, stm_ai_lib: str):
+    """Update the cube.ide cproject file"""
+    c_project = os.path.join(prj_dir, '.cproject')
+    if os.path.isfile(c_project):
+        with open(c_project, 'r+', encoding='utf-8') as c_prj_file:
+            file_data = c_prj_file.read()
+            if re.search(_STM_AI_LIB_PATTERN, file_data):
+                n_file_data = re.sub(_STM_AI_LIB_PATTERN, stm_ai_lib, file_data)
+                c_prj_file.truncate(0)
+                c_prj_file.seek(0)
+                c_prj_file.write(n_file_data)
+
+
+def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str], Path, List[Path]]) -> str:
     """Update the source tree"""
 
     conf = session.board.config
@@ -76,7 +95,7 @@ def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str],
     if not conf.templates:
         if session.renderer_params() or user_files:
             logger.warning('"templates" property is empty, src tree is not updated!')
-        return
+        return ''
 
     # build the list of updating operations
     operations = {}
@@ -114,6 +133,19 @@ def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str],
     u_files.extend(s_files)
     u_dirs.extend(s_dirs)
 
+    # check if a STM.AI lib is provided
+    stm_ai_lib = ''
+    for cdt_dir in u_dirs:
+        logger.debug(f' -> searching stm.ai lib in \"{cdt_dir}\"')
+        cdt_dir = Path(cdt_dir)
+        for entry in cdt_dir.iterdir():
+            if re.search(_STM_AI_LIB_PATTERN, str(entry)):
+                stm_ai_lib = Path(entry).name
+                logger.debug(f' found \"{stm_ai_lib}\"')
+                break
+        if stm_ai_lib:
+            break
+
     # execute the operations
     count = 0
     not_updated = []
@@ -135,10 +167,14 @@ def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str],
                 logger.debug(f'    src="{src}"')
                 session.render(str(src), str(dest))
                 count += 1
-        elif mode in 'copy-dir':
+        elif 'copy-dir' in mode:
             for idx, cdt_dir in enumerate(u_dirs):
                 if key == cdt_dir.name:
                     tag = 'u' if idx < s_dirs_idx else 's'
+                    if 'no-delete' not in mode:
+                        if os.path.isdir(dest) and os.listdir(dest):
+                            logger.info(f' -> {tag}:removing dir.. {dest}')
+                            _remove_tree(dest)
                     logger.info(f' -> {tag}:copying dir.. "{key}" to {dest}')
                     logger.debug(f'    src="{cdt_dir}"')
                     _copy_tree(cdt_dir, dest)
@@ -150,8 +186,10 @@ def _update_source_tree(session: STMAiSession, user_files: Union[str, List[str],
             not_updated.append(key)
 
     if count != len(conf.templates):
-        logger.warning(f'all the files have not be updated, {count}/{len(conf.templates)}!')
+        logger.warning(f'all the files are not be updated, {count}/{len(conf.templates)}!')
         logger.warning(f' -> {not_updated}')
+
+    return stm_ai_lib
 
 
 def _programm_dev_board(config, serial_number=None):
@@ -301,7 +339,10 @@ def _cube_ide_builder(cube_ide_exe: str, session: STMAiSession, conf: Any,
         update_c_files = not no_templates and not conf.no_templates
         if update_c_files:
             logger.info(f'updating.. {conf.name}')
-            _update_source_tree(session, user_files)
+            stm_ai_lib = _update_source_tree(session, user_files)
+        if stm_ai_lib and not session.board.stm_ai_version.is_valid():
+            logger.info(f' -> updating cproject file \"{prj_dir}\" with \"{stm_ai_lib}\"')
+            _update_cube_ide_cproject(prj_dir, stm_ai_lib)
 
         parser = ParserErrorCubeIde()
         logger.info(f'building.. {conf.name}')

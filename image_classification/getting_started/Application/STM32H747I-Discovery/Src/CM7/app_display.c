@@ -109,10 +109,14 @@ void Display_WelcomeScreen(AppConfig_TypeDef *App_Config_Ptr)
  */
 void Display_CameraPreview(AppConfig_TypeDef *App_Config_Ptr)
 {
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_PADDING
+  uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer_no_borders;
+#else
   uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer;
-  
+#endif
+
   /*Coherency purpose: invalidate the camera_capture_buffer area in L1 D-Cache before CPU reading*/
-  Utility_DCache_Coherency_Maintenance((void*)App_Config_Ptr->camera_capture_buffer, 
+  Utility_DCache_Coherency_Maintenance((void*)camera_capture_buffer, 
                                      CAM_FRAME_BUFFER_SIZE, INVALIDATE);
   
   /*Clear LCD display*/

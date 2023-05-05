@@ -6,13 +6,12 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; Copyright (c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -191,10 +190,10 @@ typedef struct
   */
 #define LL_OPAMP_INPUT_NONINVERT_IO0         0x00000000U           /*!< OPAMP non inverting input connected to I/O VINP0
                                                                         (PB0  for OPAMP1, PE9  for OPAMP2)
-                                                                        Note: On this STM32 serie, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
+                                                                        Note: On this STM32 series, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
 #define LL_OPAMP_INPUT_NONINVERT_DAC         OPAMP_CSR_VPSEL_0     /*!< OPAMP non inverting input connected internally to DAC channel
                                                                         (DAC1_CH1 for OPAMP1, DAC1_CH2  for OPAMP2)
-                                                                        Note: On this STM32 serie, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
+                                                                        Note: On this STM32 series, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
 #if defined(DAC2)
 #define LL_OPAMP_INPUT_NONINVERT_DAC2        OPAMP_CSR_VPSEL_1     /*!< OPAMP non inverting input connected internally to DAC2 channel
                                                                         (DAC3 only for OPAMP2)*/
@@ -211,12 +210,12 @@ typedef struct
   */
 #define LL_OPAMP_INPUT_INVERT_IO0         0x00000000U              /*!< OPAMP inverting input connected to I/O VINM0
                                                                         (PC5  for OPAMP1, PE8  for OPAMP2)
-                                                                        Note: On this STM32 serie, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
+                                                                        Note: On this STM32 series, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
 #define LL_OPAMP_INPUT_INVERT_IO1         OPAMP_CSR_VMSEL_0        /*!< OPAMP inverting input connected to I/0 VINM1
                                                                         (PA7  for OPAMP1, PG1  for OPAMP2)
-                                                                        Note: On this STM32 serie, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
+                                                                        Note: On this STM32 series, all OPAMPx are not available on all devices. Refer to device datasheet for more details */
 #define LL_OPAMP_INPUT_INVERT_CONNECT_NO  OPAMP_CSR_VMSEL_1        /*!< OPAMP inverting input not externally connected (intended for OPAMP in mode follower or PGA with positive gain without bias).
-                                                                        Note: On this STM32 serie, this literal include cases of value 0x11 for mode follower and value 0x10 for mode PGA. */
+                                                                        Note: On this STM32 series, this literal include cases of value 0x11 for mode follower and value 0x10 for mode PGA. */
 /**
   * @}
   */
@@ -255,7 +254,7 @@ typedef struct
   */
 
 /** @defgroup OPAMP_LL_EC_HW_DELAYS  Definitions of OPAMP hardware constraints delays
-  * @note   Only OPAMP IP HW delays are defined in OPAMP LL driver driver,
+  * @note   Only OPAMP peripheral HW delays are defined in OPAMP LL driver driver,
   *         not timeout values.
   *         For details on delays values, refer to descriptions in source code
   *         above each literal definition.
@@ -751,7 +750,7 @@ __STATIC_INLINE uint32_t LL_OPAMP_GetTrimmingValue(OPAMP_TypeDef* OPAMPx, uint32
 /**
   * @brief  Enable OPAMP instance.
   * @note   After enable from off state, OPAMP requires a delay
-  *         to fullfill wake up time specification.
+  *         to fulfill wake up time specification.
   *         Refer to device datasheet, parameter "tWAKEUP".
   * @rmtoll CSR      OPAMPXEN       LL_OPAMP_Enable
   * @param  OPAMPx OPAMP instance
@@ -822,4 +821,4 @@ void        LL_OPAMP_StructInit(LL_OPAMP_InitTypeDef *OPAMP_InitStruct);
 
 #endif /* __STM32H7xx_LL_OPAMP_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

@@ -82,6 +82,12 @@ void Camera_Init(AppConfig_TypeDef *App_Config_Ptr)
   hmdma.Init.BufferTransferLength     = 128;
   hmdma.Init.SourceBlockAddressOffset = 0;
   hmdma.Init.DestBlockAddressOffset   = 0;
+
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_PADDING
+ uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer_no_borders;
+#else
+  uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer;
+#endif
   if (HAL_MDMA_Init(&hmdma) != HAL_OK)
   {
     Error_Handler();
@@ -123,8 +129,8 @@ void Camera_Init(AppConfig_TypeDef *App_Config_Ptr)
   Camera_Set_MirrorFlip(App_Config_Ptr->mirror_flip);
   
   HAL_Delay(100);
-  
-#ifdef PP_KEEP_ASPECT_RATIO
+
+#if ASPECT_RATIO_MODE == KEEP_ASPECT_RATIO_CROP
   /* Center-crop the 320x240 frame to 240x240 */
   const uint32_t x0 = (QVGA_RES_WIDTH - QVGA_RES_HEIGHT) / 2;
   const uint32_t y0 = 0;
@@ -146,7 +152,7 @@ void Camera_Init(AppConfig_TypeDef *App_Config_Ptr)
   * Using intermediate line buffer in D2-AHB domain to support high pixel clocks.
   */
   if (HAL_DCMIEx_Start_DMA_MDMA(&hcamera_dcmi, CAMERA_MODE_CONTINUOUS,
-                                (uint8_t *)App_Config_Ptr->camera_capture_buffer,
+                                camera_capture_buffer,
                                 CAM_LINE_SIZE, CAM_RES_HEIGHT) != HAL_OK)
   {
     while(1);

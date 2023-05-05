@@ -43,17 +43,14 @@
 									<listOptionValue builtIn="false" value="DATA_IN_ExtSDRAM"/>
 									<listOptionValue builtIn="false" value="STM32_IPL"/>
 									<listOptionValue builtIn="false" value="ARM_MATH_CM7"/>
-									<listOptionValue builtIn="false" value="__FPU_PRESENT=1"/>
+									<listOptionValue builtIn="false" value="__FPU_PRESENT=1U"/>
 									<listOptionValue builtIn="false" value="STM32IPL"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths.1488775981" name="Include paths (-I)" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.option.includepaths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="../../../Inc/CM7"/>
 									<listOptionValue builtIn="false" value="../../../../Network/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../Drivers/CMSIS/Device/ST/STM32H7xx/Include"/>
-									<listOptionValue builtIn="false" value="../../../../../Drivers/CMSIS/Include"/>
-									<listOptionValue builtIn="false" value="../../../../../Drivers/CMSIS/DSP/Include"/>
 									<listOptionValue builtIn="false" value="../../../../../Drivers/STM32H7xx_HAL_Driver/Inc"/>
-									<listOptionValue builtIn="false" value="../../../../../Drivers/BSP/STM32H747I-Discovery"/>
 									<listOptionValue builtIn="false" value="../../../../../Drivers/BSP/Components/Common"/>
 									<listOptionValue builtIn="false" value="../../../../../Drivers/BSP/Components/ov9655"/>
 									<listOptionValue builtIn="false" value="../../../../../Drivers/BSP/Components/otm8009a"/>
@@ -61,6 +58,10 @@
 									<listOptionValue builtIn="false" value="../../../../../Utilities/lcd"/>
 									<listOptionValue builtIn="false" value="../../../../../Middlewares/ST/STM32_AI_Runtime/Inc"/>
 									<listOptionValue builtIn="false" value="../../../../../Middlewares/ST/STM32_ImageProcessing_Library/Inc"/>
+									<listOptionValue builtIn="false" value="../../../../../Middlewares/Third_Party/FatFs/src"/>
+									<listOptionValue builtIn="false" value="../../../../../Drivers/CMSIS/Core/Include"/>
+									<listOptionValue builtIn="false" value="../../../../../Drivers/CMSIS/Core/DSP/Include"/>
+									<listOptionValue builtIn="false" value="../../../../../Drivers/BSP/STM32H747I-DISCO"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1325484184" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
@@ -114,10 +115,10 @@
 		<configuration configurationName="Quantize_Int_Fps"/>
 		<configuration configurationName="Quantize_Int_Mem"/>
 		<configuration configurationName="Quantized_Ext"/>
-		<configuration configurationName="Release">
+		<configuration configurationName="Debug">
 			<resource resourceType="PROJECT" workspacePath="/STM32H747I_DISCO_FoodReco_Quantized_CM7"/>
 		</configuration>
-		<configuration configurationName="Debug">
+		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/STM32H747I_DISCO_FoodReco_Quantized_CM7"/>
 		</configuration>
 		<configuration configurationName="Quantize_Split"/>

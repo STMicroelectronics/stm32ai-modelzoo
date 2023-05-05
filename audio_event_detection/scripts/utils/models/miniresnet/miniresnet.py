@@ -69,10 +69,9 @@ def MiniResNet(n_stacks=1,
 
     def custom_stack(x, filters, blocks, stride1=2, name=None):
         # TODO : actually customize
-        x = block1_custom(x, filters, conv_shortcut=True, name=name + '_block1')
-        for i in range(2, blocks):
-            x = block1_custom(x, filters, name=name + '_block' + str(i))
-        x = block1_custom(x, filters, stride=stride1, name=name + '_block' + str(blocks))
+        x = block1_custom(x, filters, stride=stride1, conv_shortcut=True, name=name + '_block1')
+        for i in range(2, blocks+1):
+            x = block1_custom(x, filters, conv_shortcut=False, name=name + '_block' + str(i))
         return x
 
     def stack_fn(x):
@@ -101,6 +100,7 @@ def get_scratch_model(cfg):
     input_shape=(cfg.model.input_shape[0], cfg.model.input_shape[1], 1)
     n_classes = len(cfg.dataset.class_names)
     n_stacks = cfg.model.model_type.n_stacks
+    pooling=cfg.model.model_type.pooling
     if cfg.model.multi_label:
         activation = 'sigmoïd'
     else:
@@ -109,11 +109,12 @@ def get_scratch_model(cfg):
     backbone = MiniResNet(n_stacks=n_stacks,
                           input_shape=input_shape,
                           classes=n_classes,
+                          pooling=pooling,
                           classifier_activation=None)
     miniresnet = add_head(backbone=backbone,
                           n_classes=n_classes,
                           trainable_backbone=True,
-                          add_flatten=True,
+                          add_flatten=False,
                           functional=True,
                           activation=activation)
     return miniresnet

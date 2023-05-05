@@ -82,8 +82,8 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96.h5) | float32 | 64x96x1 | 97.4% |
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96x1 | 97.4% |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96.h5) | float32 | 64x96x1 | 94.6% |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc_10/yamnet_256_64x96/yamnet_256_64x96_int8.tflite) | int8 | 64x96x1 | 94.6% |
 
 
 ## Retraining and code generation

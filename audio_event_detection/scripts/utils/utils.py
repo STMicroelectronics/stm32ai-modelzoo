@@ -13,24 +13,25 @@ from munch import DefaultMunch
 import mlflow
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
-import os,sys
+import os
 import numpy as np
-from quantization import *
+from quantization import TFLite_PTQ_quantizer
 from benchmark import evaluate_TFlite_quantized_model
-from data_augment import *
+from data_augment import get_data_augmentation
 from datasets import _esc10_csv_to_tf_dataset, load_ESC_10, load_custom_esc_like_multiclass
 from visualize import _compute_confusion_matrix, _plot_confusion_matrix
 from common_visualize import vis_training_curves
-from callbacks import *
-from preprocessing import *
+from callbacks import get_callbacks
+from preprocessing import preprocessing
 from hydra.core.hydra_config import HydraConfig
 import load_models
-from header_file_generator import *
+from header_file_generator import gen_h_user_file
 from evaluation import _aggregate_predictions, compute_accuracy_score
 import random
 from sklearn.metrics import accuracy_score
-import warnings
 from common_benchmark import analyze_footprints, Cloud_analyze, Cloud_benchmark, benchmark_model
+from header_file_generator import gen_h_user_file
+from lookup_tables_generator import generate_mel_LUT_files
 
 
 # Set seeds
@@ -69,7 +70,9 @@ def get_optimizer(cfg):
 
 def get_loss(cfg):
     num_classes = len(cfg.dataset.class_names)
-    if num_classes > 2:
+    if cfg.model.multi_label:
+        raise NotImplementedError("Multi-label classification not implemented yet, but will be in a future update.")
+    elif num_classes > 2:
         loss = tf.keras.losses.CategoricalCrossentropy(from_logits=False)
     else:
         loss = tf.keras.losses.BinaryCrossentropy(from_logits=False)
@@ -79,6 +82,7 @@ def get_loss(cfg):
 def train(cfg):
     #get model
     model = load_models.get_model(cfg)
+    print("[INFO] Model summary")
     model.summary()
 
     #get loss
@@ -91,8 +95,7 @@ def train(cfg):
     callbacks = get_callbacks(cfg)
 
     #get data augmentation
-    #data_augmentation,augment = get_data_augmentation(cfg)
-    get_data_augmentation(cfg)
+    data_augmentation,augment = get_data_augmentation(cfg)
 
     #get pre_processing
     #pre_process = preprocessing(cfg)
@@ -110,9 +113,25 @@ def train(cfg):
     else:
         raise NotImplementedError("Please choose a valid dataset ('esc10' or 'custom')")
 
+    # Apply Data aug
+    if augment:
+        augmented_model = tf.keras.models.Sequential([data_augmentation, model])
+        augmented_model._name = "Augmented_model"
+    else:
+        augmented_model = model
+        augmented_model._name = "Model"
 
-    #compile the model
-    model.compile(optimizer=optimizer,loss=loss,metrics=['accuracy'])
+    if cfg.model.expand_last_dim:
+        augmented_model.build((None, cfg.model.input_shape[0], cfg.model.input_shape[1], 1))
+    else:
+        augmented_model.build((None, cfg.model.input_shape[0], cfg.model.input_shape[1]))
+    
+    print("[INFO] Augmented model summary")
+    augmented_model.summary()
+
+    # Compile the model
+    augmented_model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
+    
     print("[INFO] Model sucessfully compiled")
 
 
@@ -146,7 +165,7 @@ def train(cfg):
     
     #train the model
     print("[INFO] : Starting training...")
-    history = model.fit(train_ds, validation_data=valid_ds, callbacks = callbacks, 
+    history = augmented_model.fit(train_ds, validation_data=valid_ds, callbacks = callbacks, 
     epochs=cfg.train_parameters.training_epochs)
 
     # Visualize training curves
@@ -155,7 +174,13 @@ def train(cfg):
     
     #evaluate the float model on test set
 
-    best_model = tf.keras.models.load_model(os.path.join(HydraConfig.get().runtime.output_dir,cfg.general.saved_models_dir+'/'+"best_model.h5"))
+    
+    # Load best trained model w/o data augmentation layers
+    best_model = augmented_model.layers[-1]
+    best_model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
+    best_model.save(
+        os.path.join(HydraConfig.get().runtime.output_dir, cfg.general.saved_models_dir + '/' + "best_model.h5"))
+
     X_test, y_test = test_ds[0], test_ds[1]
 
     test_preds = best_model.predict(X_test)
@@ -202,6 +227,11 @@ def train(cfg):
     if cfg.quantization.quantize:
         print("[INFO] : Quantizing the model ... This might take few minutes ...")
 
+        if cfg.data_augmentation.VolumeAugment:
+            print("Applying Volume augmentation to quantization dataset")
+            map_fn = lambda x, y : (data_augmentation(x), y)
+            train_ds = train_ds.map(map_fn)
+
         if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
             TFLite_PTQ_quantizer(cfg, best_model, train_ds, fake=False)
             quantized_model_path = os.path.join(HydraConfig.get(
@@ -233,8 +263,14 @@ def train(cfg):
             raise TypeError("Quantizer and quantization type not supported yet!")
 
         # Generate Config.h for C embedded application
-        print("Skipping config.h file generation, not implemented for AED in v1")
-        # gen_h_user_file(cfg, quantized_model_path)
+        print("Generating C header file for Getting Started...")
+        gen_h_user_file(cfg)
+        print("Done")
+        # Generate LUT files
+        print("Generating C look-up tables files for Getting Started...")
+        generate_mel_LUT_files(cfg)
+        print("Done")
+
 
     #record the whole hydra working directory to get all infos
     mlflow.log_artifact(HydraConfig.get().runtime.output_dir)

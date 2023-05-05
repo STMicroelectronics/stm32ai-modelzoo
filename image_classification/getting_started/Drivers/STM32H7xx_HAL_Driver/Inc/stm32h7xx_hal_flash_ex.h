@@ -1,19 +1,17 @@
 /**
   ******************************************************************************
-  * @file    stm32H7xx_hal_flash_ex.h
+  * @file    stm32h7xx_hal_flash_ex.h
   * @author  MCD Application Team
   * @brief   Header file of FLASH HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2017 STMicroelectronics.
-  * All rights reserved.</center></h2>
+  * Copyright (c) 2017 STMicroelectronics.
+  * All rights reserved.
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                       opensource.org/licenses/BSD-3-Clause
-  *
+  * This software is licensed under terms that can be found in the LICENSE file in
+  * the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   ******************************************************************************
   */
 
@@ -276,16 +274,6 @@ typedef struct
   * @}
   */
 
-/** @defgroup FLASHEx_Option_Bytes_WWatchdog FLASH Option Bytes WWatchdog
-  * @{
-  */
-#define OB_WWDG_SW           0x10U  /*!< Software WWDG selected */
-#define OB_WWDG_HW           0x00U  /*!< Hardware WWDG selected */
-/**
-  * @}
-  */
-
-
 /** @defgroup FLASHEx_Option_Bytes_IWatchdog FLASH Option Bytes IWatchdog
   * @{
   */
@@ -369,6 +357,8 @@ typedef struct
 #define FLASH_LATENCY_5          FLASH_ACR_LATENCY_5WS   /*!< FLASH Five Latency cycles     */
 #define FLASH_LATENCY_6          FLASH_ACR_LATENCY_6WS   /*!< FLASH Six Latency cycles      */
 #define FLASH_LATENCY_7          FLASH_ACR_LATENCY_7WS   /*!< FLASH Seven Latency cycles    */
+
+/* Unused FLASH Latency defines */
 #define FLASH_LATENCY_8          FLASH_ACR_LATENCY_8WS   /*!< FLASH Eight Latency cycle     */
 #define FLASH_LATENCY_9          FLASH_ACR_LATENCY_9WS   /*!< FLASH Nine Latency cycle      */
 #define FLASH_LATENCY_10         FLASH_ACR_LATENCY_10WS  /*!< FLASH Ten Latency cycles      */
@@ -556,6 +546,7 @@ typedef struct
   */
 #endif /* FLASH_OPTSR_NRST_STOP_D2 */
 
+#if defined (DUAL_BANK)
 /** @defgroup FLASHEx_OB_SWAP_BANK  FLASHEx OB SWAP BANK
   * @{
   */
@@ -564,6 +555,7 @@ typedef struct
 /**
   * @}
   */
+#endif /* DUAL_BANK */
 
 /** @defgroup FLASHEx_OB_IOHSLV FLASHEx OB IOHSLV
   * @{
@@ -643,19 +635,32 @@ typedef struct
                      OB_USER_IWDG2_SW     | OB_USER_BCM4         | OB_USER_BCM7          |\
                      OB_USER_NRST_STOP_D2 | OB_USER_NRST_STDBY_D2)
 #elif defined (FLASH_OPTSR_VDDMMC_HSLV)
+#if defined (DUAL_BANK)
 #define OB_USER_ALL (OB_USER_IWDG1_SW     | OB_USER_NRST_STOP_D1 | OB_USER_NRST_STDBY_D1 |\
                      OB_USER_IWDG_STOP    | OB_USER_IWDG_STDBY   | OB_USER_ST_RAM_SIZE   |\
                      OB_USER_SECURITY     | OB_USER_IOHSLV       | OB_USER_SWAP_BANK     |\
                      OB_USER_VDDMMC_HSLV)
+#else
+#define OB_USER_ALL (OB_USER_IWDG1_SW     | OB_USER_NRST_STOP_D1 | OB_USER_NRST_STDBY_D1 |\
+                     OB_USER_IWDG_STOP    | OB_USER_IWDG_STDBY   | OB_USER_ST_RAM_SIZE   |\
+                     OB_USER_SECURITY     | OB_USER_IOHSLV                               |\
+                     OB_USER_VDDMMC_HSLV)
+#endif /* DUAL_BANK */
 #elif defined (FLASH_OPTSR2_TCM_AXI_SHARED)
 #define OB_USER_ALL (OB_USER_IWDG1_SW     | OB_USER_NRST_STOP_D1 | OB_USER_NRST_STDBY_D1 |\
                      OB_USER_IWDG_STOP    | OB_USER_IWDG_STDBY   | OB_USER_ST_RAM_SIZE   |\
                      OB_USER_SECURITY     | OB_USER_IOHSLV                               |\
                      OB_USER_NRST_STOP_D2 | OB_USER_NRST_STDBY_D2)
-#else
+#else /* Single core */
+#if defined (DUAL_BANK)
 #define OB_USER_ALL (OB_USER_IWDG1_SW     | OB_USER_NRST_STOP_D1 | OB_USER_NRST_STDBY_D1 |\
                      OB_USER_IWDG_STOP    | OB_USER_IWDG_STDBY   | OB_USER_ST_RAM_SIZE   |\
                      OB_USER_SECURITY     | OB_USER_IOHSLV       | OB_USER_SWAP_BANK     )
+#else
+#define OB_USER_ALL (OB_USER_IWDG1_SW     | OB_USER_NRST_STOP_D1 | OB_USER_NRST_STDBY_D1 |\
+                     OB_USER_IWDG_STOP    | OB_USER_IWDG_STDBY   | OB_USER_ST_RAM_SIZE   |\
+                     OB_USER_SECURITY     | OB_USER_IOHSLV                               )
+#endif /* DUAL_BANK */
 #endif /* DUAL_CORE */
 /**
   * @}
@@ -739,21 +744,21 @@ typedef struct
   * @}
   */
 #endif /* FLASH_OTPBL_LOCKBL */
+/**
+  * @}
+  */
 
 /* Exported macro ------------------------------------------------------------*/
 /** @defgroup FLASHEx_Exported_Macros FLASH Exported Macros
   * @{
   */
 /**
-  * @brief  Calculate the FLASH Boot Base Adress (BOOT_ADD0 or BOOT_ADD1)
+  * @brief  Calculate the FLASH Boot Base Address (BOOT_ADD0 or BOOT_ADD1)
   * @note   Returned value BOOT_ADDx[15:0] corresponds to boot address [29:14].
   * @param  __ADDRESS__: FLASH Boot Address (in the range 0x0000 0000 to 0x2004 FFFF with a granularity of 16KB)
-  * @retval The FLASH Boot Base Adress
+  * @retval The FLASH Boot Base Address
   */
 #define __HAL_FLASH_CALC_BOOT_BASE_ADR(__ADDRESS__) ((__ADDRESS__) >> 14U)
- /**
-  * @}
-  */
 
 #if defined (FLASH_CR_PSIZE)
 /**
@@ -801,6 +806,9 @@ typedef struct
   *         This return value can be a value of @ref FLASHEx_Programming_Delay
   */
 #define __HAL_FLASH_GET_PROGRAM_DELAY()     READ_BIT(FLASH->ACR, FLASH_ACR_WRHIGHFREQ)
+ /**
+  * @}
+  */
 
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup FLASHEx_Exported_Functions
@@ -866,8 +874,6 @@ HAL_StatusTypeDef HAL_FLASHEx_ComputeCRC(FLASH_CRCInitTypeDef *pCRCInit, uint32_
                                           ((LEVEL) == OB_RDP_LEVEL_1)   ||\
                                           ((LEVEL) == OB_RDP_LEVEL_2))
 
-#define IS_OB_WWDG_SOURCE(SOURCE)        (((SOURCE) == OB_WWDG_SW) || ((SOURCE) == OB_WWDG_HW))
-
 #define IS_OB_IWDG_SOURCE(SOURCE)        (((SOURCE) == OB_IWDG_SW) || ((SOURCE) == OB_IWDG_HW))
 
 #define IS_OB_STOP_SOURCE(SOURCE)        (((SOURCE) == OB_STOP_NO_RST) || ((SOURCE) == OB_STOP_RST))
@@ -912,7 +918,9 @@ HAL_StatusTypeDef HAL_FLASHEx_ComputeCRC(FLASH_CRCInitTypeDef *pCRCInit, uint32_
 #define IS_OB_SECURE_RDP(CONFIG)         (((CONFIG) == OB_SECURE_RDP_NOT_ERASE) || \
                                           ((CONFIG) == OB_SECURE_RDP_ERASE))
 
+#if defined (DUAL_BANK)
 #define IS_OB_USER_SWAP_BANK(VALUE)      (((VALUE) == OB_SWAP_BANK_DISABLE) || ((VALUE) == OB_SWAP_BANK_ENABLE))
+#endif /* DUAL_BANK */
 
 #define IS_OB_USER_IOHSLV(VALUE)         (((VALUE) == OB_IOHSLV_DISABLE) || ((VALUE) == OB_IOHSLV_ENABLE))
 
@@ -997,14 +1005,9 @@ void FLASH_Erase_Sector(uint32_t Sector, uint32_t Banks, uint32_t VoltageRange);
   * @}
   */
 
-/**
-  * @}
-  */
-
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* STM32H7xx_HAL_FLASH_EX_H */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

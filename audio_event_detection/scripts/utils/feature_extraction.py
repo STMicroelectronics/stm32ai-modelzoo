@@ -174,6 +174,8 @@ def get_patches(wave,
 
     overlap_frames = int(np.floor(patch_length * overlap))
     if num_frames < patch_length:
+        print("NOT ENOUGH FRAMES", num_frames)
+        print("WAVE HAD {} SAMPLES".format(len(wave)))
         warnings.warn("WARNING : Not enough frames to form a full patch")
         num_patches = 0
     else:

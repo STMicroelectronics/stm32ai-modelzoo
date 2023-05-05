@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 ## Jump start with Colab
 
-In [utilities/notebooks](utilities/notebooks/README.md) you will find a jupyter notebook that can be easily deployed on Colab to exercise STM32 model zoo training scripts.
+In [tutorials/notebooks](tutorials/notebooks/README.md) you will find a jupyter notebook that can be easily deployed on Colab to exercise STM32 model zoo training scripts.
 
 ## Notes
 

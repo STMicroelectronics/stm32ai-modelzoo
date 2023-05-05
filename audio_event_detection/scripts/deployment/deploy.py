@@ -16,7 +16,7 @@ import hydra
 import mlflow
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
-
+from temp_scripts.tmp import stm32ai_deploy
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
@@ -43,9 +43,8 @@ def main(cfg: DictConfig) -> None:
     setup_seed(42)
 
     # Evaluate model performance / footprints
-    print("[INFO] C header file not implemented for AED in v1, setting c_header and c_code to False...")
-    print("[INFO] This will just rerun evaluate.py")
-    evaluate_model(cfg, c_header=False, c_code=False)
+    evaluate_model(cfg, c_header=True, c_code=True)
+    stm32ai_deploy(cfg, debug=False)
 
     # Record the whole hydra working directory to get all infos
     mlflow.log_artifact(HydraConfig.get().runtime.output_dir)

@@ -1,0 +1,1577 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>945</x>
+      <y>216</y>
+      <w>432</w>
+      <h>441</h>
+    </coordinates>
+    <panel_attributes>/ADPU/
+--
+- attached_sensors: uint16_t
+- is_adpu_attached: uint8_t
+- notify_callback: DPU_ReadyToProcessCallback_t
+- p_callback_param: void*
+- active: bool
+--
++ GetEventListenerIF(): IEventListener*
++ GetEventSrcIF(): IEventSrc*
++ SetTag(tag:uint32_t): sys_error_code_t
++ GetTag(): uint32_t
++ Reset(): sys_error_code_t
++ Suspend(): sys_error_code_t
++ Resume(): sys_error_code_t
++ SetDataBuffer(p_buffer:uint8_t*, buffer_size_uin32_t): sys_error_code_t
++ ProcessAndDispatch(): sys_error_code_t
++ GetInDataInfo(): EMData_t
++ GetInDataOutfo(): EMData_t
++ GetInDataPayloadSize(): size_t
++ IsAttachedToDataSource(): bool
++ IsAttachedToDPU(): bool
++ GetNextDPU(): ADPU2_t*
+--
+Responsibilities
+-- Process data form a data source
+-- A Process unit can be:
+--- simple data buffering
+--- to execute an op on the data 
+--- re-sampling
+-- To link with another ADPU
+-- To notify the registered actors when a new data processed is ready</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>882</x>
+      <y>0</y>
+      <w>594</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>/IDPU/
+--
+/+ Init(): sys_error_code/
+/+ AttachToSensor(buffer:void*): sys_error_code/
+/+ DetachFromSensor(s:ISourceObservable*): sys_error_code/
+/+ AttachInputDPU(in_adpu:IDPU*, buffer:void*): sys_error_code/
+/+ DetachFromDPU(): sys_error_code/
+/+ DispatchEvents(pxEvt:ProcessEvent*): sys_error_code/
+/+ RegisterNotifyCallback(callback:DPU_ReadyToProcessCallback_t, p_param void*): sys_error_code/
+/+ Process(): sys_error_code/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1287</x>
+      <y>432</y>
+      <w>207</w>
+      <h>306</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..1
+next_adpu</panel_attributes>
+    <additional_attributes>100.0;10.0;150.0;10.0;150.0;320.0;10.0;320.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1368</x>
+      <y>252</y>
+      <w>189</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=IEventSrc
+process_event_src
+</panel_attributes>
+    <additional_attributes>10.0;20.0;190.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1368</x>
+      <y>306</y>
+      <w>198</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+fg=0xE6007E
+m2=ISensorEventListener
+sensor_listener
+</panel_attributes>
+    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>279</y>
+      <w>333</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+&lt; attached to </panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>711</x>
+      <y>360</y>
+      <w>162</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>SensorObs_t
+--
++ cb_handle:CBHandle_t
++ sensor_id:uint8_t</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>288</y>
+      <w>27</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>936</y>
+      <w>153</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>CBHandle_t
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>873</y>
+      <w>333</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>CircularBuffer
+--
++ Alloc()
++ Free()
++ Init(pItemsBuffer:void*, nItemSize:uint16_t): uint32_t
++ IsEmpty(): uint8_t
++ IsFull(): uint8_t
++ GetUsedItemsCount(): uint32_t
++ GetItemsCount(): uint32_t
++ GetItemSize(): uint16_t
++ GetFreeItemFromHead(pItem:CBItem**): uint32_t
++ GetReadyItemFromTail(pItem:CBItem**): uint32_t
++ ReleaseItem(pItem:CBItem*): uint32_t
++ SetItemReady(pItem:CBItem*): uint32_t
++ GetItemData(pItem:CBItem*): void*
++ GetItemsBuffer(): void*
++ PeekNextItem(pItem:CBItem*): CBItem*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>747</x>
+      <y>972</y>
+      <w>144</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>CBItem
+--
++ pData: void*
++ status:CBItemStatus</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>882</x>
+      <y>999</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1314</x>
+      <y>963</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>828</y>
+      <w>675</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+producer_data_buff</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;20.0;730.0;20.0;730.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>999</y>
+      <w>675</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+consumer_data_buff</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;170.0;730.0;170.0;730.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1161</x>
+      <y>144</y>
+      <w>27</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1413</x>
+      <y>477</y>
+      <w>162</w>
+      <h>522</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;10.0;160.0;560.0;140.0;560.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>459</y>
+      <w>126</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>AI_SP_Stream_t
+bg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>621</x>
+      <y>459</y>
+      <w>342</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=3
+source/working/out stream</panel_attributes>
+    <additional_attributes>360.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>234</y>
+      <w>432</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>bg=0x3CB4E6
+/ISourceObservable/
+--
+/+ ISourceGetId(): uint8_t/
+/+ ISourceGetEventSrcIF(): IEventSrc */
+/+ ISourceGetODR(float *p_measured, float *p_nominal): sys_error_code_t/
+/+ ISourceGetFS(): float/
+/+ ISourceGetSensitivity(): float/
+/+ ISourceGetDataType(): uint8_t/
+/+ ISourceGetDimensions(): uint16_t/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>675</x>
+      <y>648</y>
+      <w>243</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>ProcessEventSrc
+--
+- tag: uint32_t
+--
++ Alloc()
++ SetTag(tag:uint33_t):sys_error_code_t
++ GeTag():uint32_t</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>585</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>bg=0x3CB4E6
+/AEventSrc/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>792</x>
+      <y>603</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>315</x>
+      <y>675</y>
+      <w>117</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>ProcessEvent
+--
++ tag:uint32_t
+--
++ Init(...)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>324</x>
+      <y>585</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>bg=0x3CB4E6
+/IEvent/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>306</x>
+      <y>459</y>
+      <w>144</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>ai_logging_packet_t
+bg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>441</x>
+      <y>468</y>
+      <w>81</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>603</y>
+      <w>27</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>468</y>
+      <w>72</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;270.0;60.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>468</x>
+      <y>675</y>
+      <w>126</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>SensorEvent
+--
++ timestamp: double
++ sensor_id: uint16_t
+bg=0xE6007E</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>603</y>
+      <w>189</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;190.0;50.0;190.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>405</x>
+      <y>477</y>
+      <w>171</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0;170.0;70.0;170.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>243</x>
+      <y>882</y>
+      <w>378</w>
+      <h>189</h>
+    </coordinates>
+    <panel_attributes>Note..
+bg=yellow
+style=wordwrap
+
+1. What are the implications of multiple data sources each one with buffer capability?
+
+2. What about the previous point if the DPU has only one input data format?
+
+3. If we assume multiple buffered data sources the Process() function has to find the correct buffer!
+
+4. There is no API to navigate the DPU chain. Does it matter?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>1341</y>
+      <w>2088</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=2.5
+fg=GRAY</panel_attributes>
+    <additional_attributes>10.0;10.0;2300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>945</x>
+      <y>1404</y>
+      <w>90</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>New Proposal
+style=wordwrap
+valign=center
+halign=center</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>936</x>
+      <y>1728</y>
+      <w>441</w>
+      <h>504</h>
+    </coordinates>
+    <panel_attributes>/ADPU2_t/
+--
+- tag: uint32_t
+- data_builder_to_complete: uint16_t
+- notify_callback: DPU_ReadyToProcessCallback_t
+- p_callback_param: void*
+- active: bool
+- is_chained_as_next: bool
+--
++ Init(in_data:EMData_t, out_data:EMData_t): sys_error_code_t
++ GetEventListenerIF(): IEventListener*
++ GetEventSrcIF(): IEventSrc*
++ SetTag(tag:uint32_t): sys_error_code_t
++ GetTag(): uint32_t
++ Reset(): sys_error_code_t
++ Suspend(): sys_error_code_t
++ Resume(): sys_error_code_t
++ SetInDataBuffer(p_buffer:uint8_t*, buffer_size_uin32_t): sys_error_code_t
++ SetOutDataBuffer(p_buffer:uint8_t*, buffer_size_uin32_t): sys_error_code_t
++ ProcessAndDispatch(): sys_error_code_t
++ GetInDataInfo(): EMData_t
++ GetOutDatainfo(): EMData_t
++ GetInDataPayloadSize(): size_t
++ GetOutDataPayloadSize(): size_t
++ IsAttachedToDataSource(): bool
++ IsAttachedToDPU(): bool
++ GetNextDPU(): ADPU2_t*
+--
+Responsibilities
+-- Process data form a data source
+-- A Process unit can be:
+--- simple data buffering
+--- to execute an op on the data 
+--- re-sampling
+-- To link with another ADPU
+-- To notify the registered actors when a new data processed is ready</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>837</x>
+      <y>1530</y>
+      <w>630</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>/IDPU2_t/
+--
+/+ AttachToDataSource(p_data_source:ISourceObservable*, p_reshaper:IDataBuilder_t*): sys_error_code/
+/+ DetachFromDataSource(data_src:ISourceObservable*): sys_error_code/
+/+ AttachToDPU(p_next_dpu:IDPU_t*, p_reshaper:IDataBuilder_t*): sys_error_code/
+/+ DetachFromDPU(): sys_error_code/
+/+ DispatchEvents(p_evt:ProcessEvent*): sys_error_code/
+/+ RegisterNotifyCallback(callback:DPU_ReadyToProcessCallback_t, p_param void*): sys_error_code/
+/+ Process(in_data:EMData_t, out_data:EMData_t): sys_error_code/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1278</x>
+      <y>2025</y>
+      <w>225</w>
+      <h>252</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..1
+next_adpu</panel_attributes>
+    <additional_attributes>110.0;10.0;170.0;10.0;170.0;260.0;10.0;260.0;10.0;230.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1368</x>
+      <y>1845</y>
+      <w>171</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=IDataEventSrc
+data_event_src
+
+fg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1368</x>
+      <y>1899</y>
+      <w>171</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=IDataEventListener
+data_listener
+
+fg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>621</x>
+      <y>1872</y>
+      <w>333</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+&lt; attached to </panel_attributes>
+    <additional_attributes>10.0;20.0;350.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>675</x>
+      <y>1989</y>
+      <w>207</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>AttachedSourceObservableItem
+--
+- build_strategy:
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>783</x>
+      <y>1881</y>
+      <w>27</w>
+      <h>126</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1377</x>
+      <y>2529</y>
+      <w>153</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>CBHandle_t
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>981</x>
+      <y>2466</y>
+      <w>333</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>bg=LIGHT_GRAY
+CircularBuffer
+--
++ Alloc()
++ Free()
++ Init(pItemsBuffer:void*, nItemSize:uint16_t): uint32_t
++ IsEmpty(): uint8_t
++ IsFull(): uint8_t
++ GetUsedItemsCount(): uint32_t
++ GetItemsCount(): uint32_t
++ GetItemSize(): uint16_t
++ GetFreeItemFromHead(pItem:CBItem**): uint32_t
++ GetReadyItemFromTail(pItem:CBItem**): uint32_t
++ ReleaseItem(pItem:CBItem*): uint32_t
++ SetItemReady(pItem:CBItem*): uint32_t
++ GetItemData(pItem:CBItem*): void*
++ GetItemsBuffer(): void*
++ PeekNextItem(pItem:CBItem*): CBItem*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>738</x>
+      <y>2565</y>
+      <w>144</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>bg=LIGHT_GRAY
+CBItem
+--
++ pData: void*
++ status:CBItemStatus</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>873</x>
+      <y>2592</y>
+      <w>126</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m2=0..n</panel_attributes>
+    <additional_attributes>120.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1305</x>
+      <y>2556</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>2421</y>
+      <w>675</w>
+      <h>162</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+producer_data_buff</panel_attributes>
+    <additional_attributes>10.0;160.0;10.0;20.0;730.0;20.0;730.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1152</x>
+      <y>1674</y>
+      <w>27</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1422</x>
+      <y>2070</y>
+      <w>144</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;10.0;140.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>810</x>
+      <y>2097</y>
+      <w>144</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=2
+IN/OUT data</panel_attributes>
+    <additional_attributes>140.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>198</x>
+      <y>1809</y>
+      <w>432</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>bg=LIGHT_GRAY
+/ISourceObservable/
+--
+/+ ISourceGetId(): uint8_t/
+/+ ISourceGetEventSrcIF(): IEventSrc */
+/+ ISourceGetODR(float *p_measured, float *p_nominal): sys_error_code_t/
+/+ ISourceGetFS(): float/
+/+ ISourceGetSensitivity(): float/
+/+ ISourceGetDataType(): uint8_t // for compatibility  /
+/+ ISourceGetDimensions(): uint16_t // for compatibility /
+/+ ISourceGetDataInfo(): EMData_t/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>702</x>
+      <y>2241</y>
+      <w>180</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>DataEventSrc
+--
++ Alloc()
++ StaticAlloc()
+bg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>747</x>
+      <y>2178</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>bg=0x3CB4E6
+/AEventSrc/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>783</x>
+      <y>2196</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>315</x>
+      <y>2178</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>bg=0x3CB4E6
+/IEvent/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>351</x>
+      <y>2196</y>
+      <w>27</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>234</x>
+      <y>2439</y>
+      <w>378</w>
+      <h>234</h>
+    </coordinates>
+    <panel_attributes>Note..
+bg=yellow
+style=wordwrap
+
+1. What are the implication of multiple data sources each one with buffer capability?
+
+2. What about the previous point if the DPU has only one input data format?
+
+3. If we assume multiple buffered data sources the Process() function has to find the correct buffer!
+
+4. There is no API to navigate the DPU chain. Does it matter?
+
+5. How to provide the data type information in ISourceObservable?</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>675</x>
+      <y>2097</y>
+      <w>144</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>EMData_t
+bg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>846</x>
+      <y>2034</y>
+      <w>81</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+next</panel_attributes>
+    <additional_attributes>40.0;10.0;70.0;10.0;70.0;40.0;10.0;40.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>2007</y>
+      <w>117</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+</panel_attributes>
+    <additional_attributes>110.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>27</x>
+      <y>1980</y>
+      <w>558</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>/IDataBuilder_t/
+--
+/+ Reset(p_data_build_context:void*): sys_error_code_t/
+/+ OnNewInData(p_target_data:EMData_t, p_new_in_data:const EMData_t*,/
+/       build_strategy:IDB_BuildStrategy_e, data_buff_alloc:DataBuffAllocator_f):  sys_error_code_t/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>981</x>
+      <y>3159</y>
+      <w>234</w>
+      <h>261</h>
+    </coordinates>
+    <panel_attributes>ADPU
+halign=left</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>720</x>
+      <y>3069</y>
+      <w>126</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>ISourceObservable</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1044</x>
+      <y>3213</y>
+      <w>108</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Receive
+Input Data</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>3096</y>
+      <w>270</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;280.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>720</x>
+      <y>3186</y>
+      <w>126</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>ISourceObservable</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>3222</y>
+      <w>261</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;270.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>756</x>
+      <y>3294</y>
+      <w>54</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>IDPU</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>801</x>
+      <y>3231</y>
+      <w>270</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;110.0;280.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1044</x>
+      <y>3294</y>
+      <w>108</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>Process
+Data</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLUseCase</id>
+    <coordinates>
+      <x>1026</x>
+      <y>3357</y>
+      <w>144</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>Dispatch
+Processed Data</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>1287</x>
+      <y>3267</y>
+      <w>90</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Chained DPU</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1161</x>
+      <y>3303</y>
+      <w>162</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;80.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLActor</id>
+    <coordinates>
+      <x>1278</x>
+      <y>3393</y>
+      <w>108</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>Process Listener</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1161</x>
+      <y>3375</y>
+      <w>162</w>
+      <h>81</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1089</x>
+      <y>3240</y>
+      <w>90</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1089</x>
+      <y>3321</y>
+      <w>90</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;includes&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>297</x>
+      <y>2268</y>
+      <w>126</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>DataEvent
+--
++ timestamp: double
++ tag: uint32_t
++ src_id: uint16_t
+bg=LIGHT_GRAY</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1062</x>
+      <y>2268</y>
+      <w>135</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>MyDPU
+--
++ Init(param1, param2)
+/+ Process()/
+bg=YELLOW</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1107</x>
+      <y>2223</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>414</x>
+      <y>2097</y>
+      <w>279</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;230.0;100.0;230.0;100.0;10.0;290.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>423</x>
+      <y>477</y>
+      <w>270</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;210.0;50.0;210.0;220.0;280.0;220.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1485</x>
+      <y>2232</y>
+      <w>459</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>/IDataBuilder_t/
+--
+/+ Reset(p_data_build_context): sys_error_code_t/
+/+ OnNewData(p_target_data:EMData_t*, p_new_in_data:const EMData_t*,/
+/             build_strategy:IDB_BuildStrategy_e,/
+/             data_buff_alloc:DataBuffAllocator_f): sys_error_code_t/
+bg=RED</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1233</x>
+      <y>2223</y>
+      <w>279</w>
+      <h>324</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0;290.0;170.0;290.0;340.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>837</x>
+      <y>4050</y>
+      <w>144</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>_:ADPU2_
+--
+work on
+*Target data*
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>621</x>
+      <y>3924</y>
+      <w>153</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>_:ISourceObservable1_
+--
+Produce
+*Input data*
+IN1_1, IN1_2, ... ,IN1_n</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1035</x>
+      <y>3924</y>
+      <w>153</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>_:ISourceObservable2_
+--
+Produce
+*Input data*
+IN2_1, IN2_2, ... ,IN2_n</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>693</x>
+      <y>3987</y>
+      <w>162</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>160.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>972</x>
+      <y>3987</y>
+      <w>162</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;90.0;160.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>756</x>
+      <y>4023</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1053</x>
+      <y>4023</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>639</x>
+      <y>4122</y>
+      <w>207</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>_:IDataBuilder1_
+--
+Use the IN1_x to build Target data</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>954</x>
+      <y>4122</y>
+      <w>207</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>_:IDataBuilder2_
+--
+Use the IN2_x to build Target data</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>18</x>
+      <y>3537</y>
+      <w>2088</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=.
+lw=2.5
+fg=GRAY</panel_attributes>
+    <additional_attributes>10.0;10.0;2300.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>963</x>
+      <y>3600</y>
+      <w>90</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>Use case analysis
+style=wordwrap
+valign=center
+halign=center</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1152</x>
+      <y>4302</y>
+      <w>144</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+Target
+data
+group=group-7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>972</x>
+      <y>4329</y>
+      <w>72</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+Input
+data
+group=group-7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>954</x>
+      <y>4257</y>
+      <w>360</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=.
+Use case 2: Input data &lt; Target data
+group=group-7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>738</x>
+      <y>4338</y>
+      <w>72</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+Target
+data
+group=group-8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>486</x>
+      <y>4257</y>
+      <w>360</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=.
+Use case 1: Input data &gt; Target data
+group=group-8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>504</x>
+      <y>4302</y>
+      <w>144</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+Input
+data
+group=group-8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>486</x>
+      <y>4428</y>
+      <w>360</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>style=wordwrap
+1 input data can be used to build multiple Target data
+group=group-8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>954</x>
+      <y>4428</y>
+      <w>360</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>style=wordwrap
+Multiple input data are needed to build 1 Target data
+group=group-7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>747</x>
+      <y>4329</y>
+      <w>72</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+
+fg=LIGHT_GRAY
+group=group-8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>756</x>
+      <y>4320</y>
+      <w>72</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+
+fg=LIGHT_GRAY
+group=group-8</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>981</x>
+      <y>4320</y>
+      <w>72</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+
+fg=LIGHT_GRAY
+group=group-7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>4311</y>
+      <w>72</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+
+fg=LIGHT_GRAY
+group=group-7</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates>
+      <x>810</x>
+      <y>4500</y>
+      <w>270</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>Build strategy:
+- NO_DATA_LOSS
+- SKIP_DATA
+- REPALCE_OLD_DATA
+
+Open point:
+- Shared build strategy for all the builders? Or
+- Each builder has its own build strategy?
+
+bg=YELLOW</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>648</x>
+      <y>4356</y>
+      <w>90</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+group=group-8</panel_attributes>
+    <additional_attributes>80.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1062</x>
+      <y>4356</y>
+      <w>99</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+group=group-7</panel_attributes>
+    <additional_attributes>90.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

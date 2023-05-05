@@ -121,7 +121,7 @@ Apply preprocessing by modifiying the **preprocessing** parameters in **[user_co
 
 - `rescaling` - A *dictonary* with keys *(scale, offset)* to rescale input values to a new range. To scale input image **[0:255]** in the range **[-1:1]** you should pass **{scale = 127.5, offset = -1}**, else in the range **[0:1]** you should pass **{scale = 255, offset = 0}**.
 - `resizing` - *String*, the interpolation method used when resizing images, e.g. *bilinear*, *nearest*, *bicubic*, *area*, *gaussian*.
-- `aspect_ratio` - *Boolean*, if *True* resize the images without aspect ratio distortion, else aspect ratio may not be preserved.
+- `aspect_ratio` - One of *False* or *crop*. If *crop* resize the images without aspect ratio distortion, otherwise *False* aspect ratio may not be preserved.
 - `color_mode` - One of "*grayscale*", "*rgb*" or "*bgr*".
 
 

@@ -42,6 +42,14 @@
 #define PP_OFFSET       (-1.0f)
 #define PP_SCALE       (127.5f)
 
+/* Aspect Ratio configuration */
+#define KEEP_ASPECT_RATIO_DISABLE  0
+#define KEEP_ASPECT_RATIO_CROP     1
+#define KEEP_ASPECT_RATIO_PADDING  2
+
+#define ASPECT_RATIO_MODE KEEP_ASPECT_RATIO_PADDING
+
+
 /* Input color format configuration */
 #define RGB_FORMAT    (1)
 #define BGR_FORMAT    (2)

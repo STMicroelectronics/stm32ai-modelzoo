@@ -4,11 +4,13 @@ general:
   saved_models_dir: saved_models
 
 train_parameters:
-  batch_size: 64
-  training_epochs: 100
+  batch_size: 16
+  training_epochs: 50
   optimizer: adam
-  initial_learning: 0.01
+  initial_learning: 0.001
+  patience: 100
   learning_rate_scheduler: reducelronplateau
+  restore_best_weights: True
 
 dataset:
   name: esc10
@@ -24,10 +26,10 @@ dataset:
 pre_processing:
   min_length: 1
   max_length : 10
-  target_rate: 44100
+  target_rate: 16000
   top_db: 60
-  frame_length: 1102
-  hop_length: 441
+  frame_length: 3200
+  hop_length: 3200
   trim_last_second: False
   lengthen : 'after'
 
@@ -35,9 +37,9 @@ feature_extraction:
   patch_length: 96
   n_mels: 64
   overlap: 0.25
-  n_fft: 2048
-  hop_length: 441
-  window_length: 1102
+  n_fft: 512
+  hop_length: 160
+  window_length: 400
   window: hann
   center: False
   pad_mode: constant
@@ -50,10 +52,19 @@ feature_extraction:
   include_last_patch: False
 
 data_augmentation:
-  placeholder: 0
+  GaussianNoise: 0.1
+  VolumeAugment: True
+  min_scale: 0.8
+  max_scale: 1.2
+  SpecAug: False
+  freq_mask_param: 1
+  time_mask_param: 1
+  n_freq_mask: 3
+  n_time_mask: 4
+  mask_value : 0
 
 model:
-  model_type: {name : yamnet, embedding_size : 256}
+  model_type: {name : yamnet, embedding_size: 256}
   # Shape of a single patch.
   # Input shape must be [mels, frames]
   input_shape: [64, 96]
