@@ -38,7 +38,6 @@ from header_file_generator import *
 from loss import ssd_focal_loss
 from metrics_utils import calculate_float_map, calculate_quantized_map, relu6
 from quantization import *
-from stm32ai import CliParameters, CloudBackend, Stm32Ai
 from utils import get_config, mlflow_ini, setup_seed
 
 logger = tf.get_logger()
