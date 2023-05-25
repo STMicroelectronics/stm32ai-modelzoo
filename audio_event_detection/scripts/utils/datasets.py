@@ -85,6 +85,8 @@ def _load_audio_sample(filepath,
 def _esc10_csv_to_tf_dataset(cfg, esc_csv, audio_path,string_lookup_layer,
                              to_cache=True, return_clip_labels=False,
                              return_arrays=False, data_augmentation=False):
+    
+    esc_csv['filename'] = esc_csv['filename'].astype('str')
     # Determine if we need to add file extension to file names
     add_file_extension = str(cfg.dataset.file_extension) not in esc_csv['filename'].iloc[0]
 
@@ -267,7 +269,7 @@ def load_custom_esc_like_multiclass(cfg, to_cache=True):
     # Keep only user-provided classes
     csv = csv[csv['category'].isin(used_classes)]
     print('[INFO] Loading Custom dataset using ESC-like format. \n \
-    Using {} classes out of 10. Classes used : {}'.format(len(used_classes), used_classes))
+    Using {} classes. Classes used : {}'.format(len(used_classes), used_classes))
     print('[INFO] Loading {} samples.'.format(len(csv)))
 
     if cfg.dataset.test_split is not None:

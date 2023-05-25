@@ -6,15 +6,19 @@
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
 
-from tensorflow import keras
-import tensorflow as tf
-from omegaconf import OmegaConf
-from munch import DefaultMunch
-import mlflow
+
+
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
+import tensorflow as tf
+import mlflow
+import random
 import os
 import numpy as np
+import load_models
+from omegaconf import OmegaConf
+from munch import DefaultMunch
+from tensorflow import keras
 from quantization import TFLite_PTQ_quantizer
 from benchmark import evaluate_TFlite_quantized_model
 from data_augment import get_data_augmentation
@@ -24,13 +28,11 @@ from common_visualize import vis_training_curves
 from callbacks import get_callbacks
 from preprocessing import preprocessing
 from hydra.core.hydra_config import HydraConfig
-import load_models
 from header_file_generator import gen_h_user_file
 from evaluation import _aggregate_predictions, compute_accuracy_score
-import random
+
 from sklearn.metrics import accuracy_score
 from common_benchmark import analyze_footprints, Cloud_analyze, Cloud_benchmark, benchmark_model
-from header_file_generator import gen_h_user_file
 from lookup_tables_generator import generate_mel_LUT_files
 
 

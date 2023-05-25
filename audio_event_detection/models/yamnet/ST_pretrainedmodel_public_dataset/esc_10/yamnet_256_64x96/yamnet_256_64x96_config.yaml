@@ -70,6 +70,7 @@ model:
   input_shape: [64, 96]
   expand_last_dim: True
   transfer_learning : True
+  dropout: 0
   multi_label : False
 
 

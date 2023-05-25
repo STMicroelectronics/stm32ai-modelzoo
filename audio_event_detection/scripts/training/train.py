@@ -18,7 +18,7 @@ from omegaconf import DictConfig
 sys.path.append(os.path.abspath('../utils'))
 sys.path.append(os.path.abspath('../utils/models'))
 sys.path.append(os.path.abspath('../../../common'))
-from utils import *
+from utils import get_config, mlflow_ini, setup_seed, train
 
 @hydra.main(version_base=None, config_path="", config_name="user_config")
 def main(cfg : DictConfig) -> None:

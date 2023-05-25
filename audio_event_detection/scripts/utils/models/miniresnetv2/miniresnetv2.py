@@ -114,7 +114,8 @@ def get_scratch_model(cfg):
                           trainable_backbone=True,
                           add_flatten=False,
                           functional=True,
-                          activation=activation)
+                          activation=activation,
+                          dropout=cfg.model.dropout)
     return miniresnetv2
 
 def get_pretrained_model(cfg):
@@ -134,6 +135,7 @@ def get_pretrained_model(cfg):
                            trainable_backbone=False,
                            add_flatten=False,
                            functional=True,
-                           activation=activation)
+                           activation=activation,
+                           dropout=cfg.model.dropout)
 
     return miniresnetv2

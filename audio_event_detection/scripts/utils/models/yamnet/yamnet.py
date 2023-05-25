@@ -39,6 +39,7 @@ def get_pretrained_model(cfg):
                          functional=True,
                          activation=activation,
                          kernel_regularizer=regularizers.L2(0),
-                         activity_regularizer=regularizers.L1(0))
+                         activity_regularizer=regularizers.L1(0),
+                         dropout=cfg.model.dropout)
                          
     return yamnet
