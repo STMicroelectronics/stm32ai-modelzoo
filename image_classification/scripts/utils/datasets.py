@@ -26,6 +26,7 @@ def get_train_val_ds(cfg, validation_split=0.2, to_cache=False):
         cfg.dataset.training_path,
         validation_split=validation_split,
         label_mode="int",
+        class_names=cfg.dataset.class_names,
         seed=133,
         subset="training",
         image_size=cfg.model.input_shape[:2],
@@ -43,6 +44,7 @@ def get_train_val_ds(cfg, validation_split=0.2, to_cache=False):
         cfg.dataset.training_path,
         validation_split=validation_split,
         label_mode="int",
+        class_names=cfg.dataset.class_names,
         seed=133,
         subset="validation",
         image_size=cfg.model.input_shape[:2],
@@ -63,6 +65,7 @@ def get_ds(datapath, cfg, shuffle=False, to_cache=False):
     ds = tf.keras.utils.image_dataset_from_directory(
         datapath,
         label_mode="int",
+        class_names=cfg.dataset.class_names,
         seed=133,
         image_size=cfg.model.input_shape[:2],
         interpolation=cfg.pre_processing.resizing,
