@@ -9,6 +9,7 @@
 import os
 import typing
 import requests
+from requests.adapters import HTTPAdapter, Retry
 from requests.structures import CaseInsensitiveDict
 from stm32ai_dc.backend.cloud.endpoints import get_supported_versions_ep
 from stm32ai_dc.errors import ServerRouteNotFound
@@ -78,12 +79,20 @@ def send_get(
     headers["Accept"] = "application/json"
     headers["Authorization"] = f"Bearer {withToken}"
 
-    resp = requests.get(
+
+    s = requests.Session()
+    retries = Retry(total=5,
+                backoff_factor=0.5)
+
+    s.mount(toUrl, HTTPAdapter(max_retries=retries))
+
+    resp = s.get(
         toUrl,
         headers=headers,
         verify=get_ssl_verify_status(),
         params=usingParams,
-        proxies=_get_env_proxy())
+        proxies=_get_env_proxy(),
+    )
 
     if resp.status_code == 404:
         raise ServerRouteNotFound(f"Trying to reach: {toUrl}")
