@@ -4,8 +4,8 @@ Concerning common folder:
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|
 | stm32ai_dc                           | [BSD-3-Clause](./common/stm32ai_dc/LICENSE.md) | STMicroelectronics |
-| stm_ai_driver                        | [SLA0044](./common/LICENSE.md)                 | STMicroelectronics |
-| common/common_*.py                   | [SLA0044](./common/LICENSE.md)                 | STMicroelectronics |
+| stm_ai_driver                        | [BSD-3-Clause](./common/LICENSE.md)                 | STMicroelectronics |
+| common/common_*.py                   | [BSD-3-Clause](./common/LICENSE.md)                 | STMicroelectronics |
 
 
 Concerning tutorials folder:
@@ -19,25 +19,41 @@ Concerning tutorials folder:
 Concerning audio_event_detection:
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|
-| scripts                              | [SLA0044](./audio_event_detection/LICENSE.md)              | STMicroelectronics |
+| scripts                              | [BSD-3-Clause](./audio_event_detection/LICENSE.md)              | STMicroelectronics |
 | yamnet model                         | [Apache-2.0](./audio_event_detection/scripts/utils/models/yamnet/LICENSE.md)              | Google LLC |
 
 
-Concerning audio_event_detection getting started:
+Concerning audio_event_detection getting started/threadx:
 | Component                            | License                 | Copyright      |
 |:---------                            |:-------                 |:-------------|
-| Azure RTOS ThreadX	               | [Microsoft Software License for Azure RTOS](./audio_event_detection/getting_started/Middlewares/ST/threadx/LICENSE.txt)    | Microsoft |
-| Cortex-M CMSIS                       | [Apache-2.0](./audio_event_detection/getting_started/Drivers/CMSIS/LICENSE.txt)              | ARM Limited   |
-| STM32U5xx                            | [Apache-2.0](./audio_event_detection/getting_started/Drivers/CMSIS/Device/ST/STM32U5xx/LICENSE.md)              | ARM Limited - STMicroelectronics    |
-| STM32U5xx HAL                        | [BSD-3-Clause](./audio_event_detection/getting_started/Drivers/STM32U5xx_HAL_Driver/LICENSE.md)            | STMicroelectronics |
-| BSP ism330dhcx                       | [BSD-3-Clause](./audio_event_detection/getting_started/Drivers/BSP/Components/ism330dhcx/LICENSE.md)            | STMicroelectronics |
+| Azure RTOS ThreadX	               | [Microsoft Software License for Azure RTOS](./audio_event_detection/getting_started/threadx/Middlewares/ST/threadx/LICENSE.txt)    | Microsoft |
+| Cortex-M CMSIS                       | [Apache-2.0](./audio_event_detection/getting_started/threadx/Drivers/CMSIS/LICENSE.txt)              | ARM Limited   |
+| STM32U5xx                            | [Apache-2.0](./audio_event_detection/getting_started/threadx/Drivers/CMSIS/Device/ST/STM32U5xx/LICENSE.md)              | ARM Limited - STMicroelectronics    |
+| STM32U5xx HAL                        | [BSD-3-Clause](./audio_event_detection/getting_started/threadx/Drivers/STM32U5xx_HAL_Driver/LICENSE.md)            | STMicroelectronics |
+| BSP ism330dhcx                       | [BSD-3-Clause](./audio_event_detection/getting_started/threadx/Drivers/BSP/Components/ism330dhcx/LICENSE.md)            | STMicroelectronics |
 | STM32_AI_AudioPreprocessing_Library  | [SLA0055](https://www.st.com/content/ccc/resource/legal/legal_agreement/license_agreement/group0/ad/20/03/4a/42/30/43/b2/DM00251784/files/DM00251784.pdf/jcr:content/translations/en.DM00251784.pdf)                 | STMicroelectronics      |
-| eLooM application framework          | [SLA0044](./audio_event_detection/getting_started/Middlewares/ST/eLooM/LICENSE.md)                 | STMicroelectronics      |
-| Applications                         | [SLA0044](./audio_event_detection/getting_started/LICENSE.md)                 | STMicroelectronics      |
-| Sensor Manager                       | [SLA0094](./audio_event_detection/getting_started/Projects/eLooM_Components/SensorManager/LICENSE.md)                 | STMicroelectronics      |
-| EMData                               | [SLA0044](./audio_event_detection/getting_started/Projects/eLooM_Components/EMData/LICENSE.md)                 | STMicroelectronics      |
-| Digital processing unit (DPU)        | [SLA0044](./audio_event_detection/getting_started/Projects/eLooM_Components/DPU/LICENSE.md)                 | STMicroelectronics      |
+| eLooM application framework          | [SLA0044](./audio_event_detection/getting_started/threadx/Middlewares/ST/eLooM/LICENSE.md)                 | STMicroelectronics      |
+| Applications                         | [SLA0044](./audio_event_detection/getting_started/threadx/LICENSE.md)                 | STMicroelectronics      |
+| Sensor Manager                       | [SLA0094](./audio_event_detection/getting_started/threadx/Projects/eLooM_Components/SensorManager/LICENSE.md)                 | STMicroelectronics      |
+| EMData                               | [SLA0044](./audio_event_detection/getting_started/threadx/Projects/eLooM_Components/EMData/LICENSE.md)                 | STMicroelectronics      |
+| Digital processing unit (DPU)        | [SLA0044](./audio_event_detection/getting_started/threadx/Projects/eLooM_Components/DPU/LICENSE.md)                 | STMicroelectronics      |
 
+
+Concerning audio_event_detection getting started/freertos:
+
+| Component                       | Copyright                                             | License                                                      | Path                                           |
+|:---------                       |:-------                                               |:----------                                                   |:----------                                     |
+| Cortex-M CMSIS                  | ARM Limited                                           | [Apache-2.0](https://opensource.org/license/apache-2-0/)     | Drivers/CMSIS                                  |
+| STM32U5xx CMSIS                 | ARM Limited - STMicroelectronics                      | [Apache-2.0](https://opensource.org/license/apache-2-0/)     | Drivers/CMSIS/Device/ST/STM32U5xx              |
+| STM32U5xx HAL                   | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Drivers/STM32U5xx_HAL_Driver                   |
+| BSP Components                  | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Drivers/BSP                                    |
+| FreeRTOS kernel                 | Amazon.com, Inc. or its affiliates                    | [MIT](https://opensource.org/licenses/MIT)                   | Middleware/FreeRTOS/kernel                     |
+| Getting Started thread          | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/Common/app                            |
+| Getting Started application     | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/b_u585i_iot2a_gs_aed/Core             |
+| X-CUBE-AI runtime library stub  | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Middleware/STM32_AI_Library                    |
+| X-CUBE-AI model stub            | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/Common/X-CUBE-AI                      |
+| Audio preprocessing library     | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Middleware/STM32_AI_AudioPreprocessing_Library |
+| DPU processing units            | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/Common/dpu                            |
 
 Concerning human_activity_recognition:
 | Component                            | License              | Copyright |

@@ -1,0 +1,565 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML><HEAD></HEAD><BODY>
+<OBJECT type="text/site properties">
+<param name="FrameName" value="right">
+</OBJECT>
+<UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#adf8ab54630538db26af9afc88dc34eb3"><param name="Name" value="CoefficientsLength"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="md__l_i_c_e_n_s_e.html"><param name="Name" value="Copyright 2023 STMicroelectronics"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#gae93e659e5dc576f6d9dea17d96349443"><param name="Name" value="DCT(DCT_InstanceTypeDef *S, float32_t *pIn, float32_t *pOut)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ga70c5e341f673f39f464cbba5d1aca2a5"><param name="Name" value="DCT_Init(DCT_InstanceTypeDef *S)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#a9f3406ad17b4f57db2f6b492cc221059"><param name="Name" value="NumFilters"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#ab856df1a0fefcd436f6846d7d6f74b0a"><param name="Name" value="NumInputs"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#ab7eb67b39baeb2dfd97e4174eb36ef9e"><param name="Name" value="RemoveDCTZero"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#aef7b7efa1270c5b324e5a4af1049a6bc"><param name="Name" value="Type"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#a08796198b4188912c2184d42e93809f9"><param name="Name" value="pDCTCoefs"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6eadb7f0c2f8803f71ca09a9a25ffdae32c"><param name="Name" value="DCT_TYPE_I"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea116d3e3011968038ed9fb12000d01e19"><param name="Name" value="DCT_TYPE_II"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea54f7f6b22a41f8607ecd4b617b2d081d"><param name="Name" value="DCT_TYPE_III"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea3c566c04ed08fa0c80b1107ebe548e30"><param name="Name" value="DCT_TYPE_III_ORTHO"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea1744d09dee36ee282f26314ad2fa5794"><param name="Name" value="DCT_TYPE_II_ORTHO"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea3274cb1f1f04b8310538441b5e52943b"><param name="Name" value="DCT_TYPE_II_SCALED"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#gae38ee11aed8002a882cbf743fd8f6e6e"><param name="Name" value="DCT_TypeTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="Discrete Cosine Transform"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a21ce6973341f1465605a418a413ca993"><param name="Name" value="FFTLen"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a21ce6973341f1465605a418a413ca993"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a21ce6973341f1465605a418a413ca993"><param name="Name" value="FFTLen"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a21ce6973341f1465605a418a413ca993"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a3666ca80b2c0036418fc125f3706f5a4"><param name="Name" value="FMax"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a1600a3c3a5dbb1f217ee3164d7719df9"><param name="Name" value="FMin"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="Feature Extraction"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a7866a1dd04a252cbea8992320c0d515b"><param name="Name" value="Formula"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a8ec0c1ddaac2c6ce830fdb825f387a0c"><param name="Name" value="FrameLen"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggae17c80dc16025a2c951088c39aef2fd0a7a933f21f639c4439556c6f46cd806db"><param name="Name" value="LOGMELSPECTROGRAM_SCALE_DB"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggae17c80dc16025a2c951088c39aef2fd0afcd9bd4da6d19b53bea77fc3a3d0d2c5"><param name="Name" value="LOGMELSPECTROGRAM_SCALE_LOG"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#abcaa1ad385438635196373791a0508c6"><param name="Name" value="LogFormula"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#a07056df6bb73b71878a9ecf3e499b97a"><param name="Name" value="LogMelConf"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="namespace_log_mel_spectrogram.html"><param name="Name" value="LogMelSpectrogram"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaabddbf0ec5332d3e285029b8802d2b11"><param name="Name" value="LogMelSpectrogramColumn(LogMelSpectrogramTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html"><param name="Name" value="LogMelSpectrogramTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html"><param name="Name" value="LogMelSpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#abcaa1ad385438635196373791a0508c6"><param name="Name" value="LogFormula"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html"><param name="Name" value="LogMelSpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#a87025aab815b8888d634ccb535f1b13a"><param name="Name" value="MelSpectrogramConf"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html"><param name="Name" value="LogMelSpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#a5c2b510e67a289cbf14f8cfeb9350cf9"><param name="Name" value="Ref"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html"><param name="Name" value="LogMelSpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#ae12c4ec94cd1e61d30153497780ad802"><param name="Name" value="TopdB"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gae17c80dc16025a2c951088c39aef2fd0"><param name="Name" value="LogMelSpectrogram_ScaleTypedef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#ggad56c1fe5cf0bcabbe1b4b98ad90c27bda37fb4b06ffa3cb1161705c9ef158182f"><param name="Name" value="MEL_HTK"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#ggad56c1fe5cf0bcabbe1b4b98ad90c27bda22b720f969bce30cdb259cb8f512c720"><param name="Name" value="MEL_SLANEY"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="namespace_m_f_c_c.html"><param name="Name" value="MFCC"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="dct_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="M_PI"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="dct_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="dct.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="feature__extraction_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="M_PI"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="feature__extraction_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="feature_extraction.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="window_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="M_PI"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="window_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="window.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html"><param name="Name" value="Mel-Frequencies Filterbank"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#abeddbf3f58e4b9691d166cda69fb24c1"><param name="Name" value="Mel2F"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html#ab754a3c2a009daba19ffde2d6930e287"><param name="Name" value="MelFilter"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#adf8ab54630538db26af9afc88dc34eb3"><param name="Name" value="CoefficientsLength"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a21ce6973341f1465605a418a413ca993"><param name="Name" value="FFTLen"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a3666ca80b2c0036418fc125f3706f5a4"><param name="Name" value="FMax"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a1600a3c3a5dbb1f217ee3164d7719df9"><param name="Name" value="FMin"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a7866a1dd04a252cbea8992320c0d515b"><param name="Name" value="Formula"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#abeddbf3f58e4b9691d166cda69fb24c1"><param name="Name" value="Mel2F"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a22d590fd105d2d0c4dcad59a4fb43581"><param name="Name" value="Normalize"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a9dda18c0745ccbe69ed505ac4b309f62"><param name="Name" value="NumMels"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#ad9f11579d3e9034149d0e9b3f207af00"><param name="Name" value="SampRate"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a89e434e1f31e56ccc15d334a14a359ee"><param name="Name" value="pCoefficients"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a214e6aee9d8c960d5b71c8855bf25d01"><param name="Name" value="pStartIndices"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a4660b94a2bb207751c8d708ba7446f3e"><param name="Name" value="pStopIndices"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#gadc6a8192db1b7cd32b7d9c37fab31c1c"><param name="Name" value="MelFilterbank(MelFilterTypeDef *M, float32_t *pSpectrCol, float32_t *pMelCol)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#ga118b3895f07564f49e76c9cd497edfd0"><param name="Name" value="MelFilterbank_Init(MelFilterTypeDef *MelFilterStruct)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#gad56c1fe5cf0bcabbe1b4b98ad90c27bd"><param name="Name" value="MelFormulaTypedef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ga7af8e10efc497f0951f5da10d5f3e628"><param name="Name" value="MelSpectrogramColumn(MelSpectrogramTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#a87025aab815b8888d634ccb535f1b13a"><param name="Name" value="MelSpectrogramConf"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html"><param name="Name" value="MelSpectrogramTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html"><param name="Name" value="MelSpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html#ab754a3c2a009daba19ffde2d6930e287"><param name="Name" value="MelFilter"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html"><param name="Name" value="MelSpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html#a7d21a85ac9793fd760c08ffadbf8edfd"><param name="Name" value="SpectrogramConf"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaae54d9e59f97d131a9bf94e728c7ff52"><param name="Name" value="MfccColumn(MfccTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html"><param name="Name" value="MfccTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html"><param name="Name" value="MfccTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#a07056df6bb73b71878a9ecf3e499b97a"><param name="Name" value="LogMelConf"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html"><param name="Name" value="MfccTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#aa9d58784b25bc5c7ec55796b0f16b364"><param name="Name" value="NumMfccCoefs"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html"><param name="Name" value="MfccTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#a7299c3fb69b8865a91c5d731e95f3e8f"><param name="Name" value="pDCT"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html"><param name="Name" value="MfccTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#a4bcdbeb5bc2222f3ca95cccd2333c8e4"><param name="Name" value="pScratch"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a22d590fd105d2d0c4dcad59a4fb43581"><param name="Name" value="Normalize"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#a9f3406ad17b4f57db2f6b492cc221059"><param name="Name" value="NumFilters"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#ab856df1a0fefcd436f6846d7d6f74b0a"><param name="Name" value="NumInputs"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a9dda18c0745ccbe69ed505ac4b309f62"><param name="Name" value="NumMels"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#aa9d58784b25bc5c7ec55796b0f16b364"><param name="Name" value="NumMfccCoefs"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#a5c2b510e67a289cbf14f8cfeb9350cf9"><param name="Name" value="Ref"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#ab7eb67b39baeb2dfd97e4174eb36ef9e"><param name="Name" value="RemoveDCTZero"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggaf2b1ad86513d1771082d2a4dc3cdfaeea6c673dd86b540f8c90c82ca0ba5421d5"><param name="Name" value="SPECTRUM_TYPE_MAGNITUDE"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggaf2b1ad86513d1771082d2a4dc3cdfaeeada329d2e4755aac2aa7ad52329f56690"><param name="Name" value="SPECTRUM_TYPE_POWER"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#ad9f11579d3e9034149d0e9b3f207af00"><param name="Name" value="SampRate"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#ad9f11579d3e9034149d0e9b3f207af00"><param name="Name" value="MelFilterTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#ad9f11579d3e9034149d0e9b3f207af00"><param name="Name" value="SampRate"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#ad9f11579d3e9034149d0e9b3f207af00"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaefa7824a761138a22b77addcb7244819"><param name="Name" value="SpectrogramColumn(SpectrogramTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_spectrogram_type_def.html#a7d21a85ac9793fd760c08ffadbf8edfd"><param name="Name" value="SpectrogramConf"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a21ce6973341f1465605a418a413ca993"><param name="Name" value="FFTLen"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a8ec0c1ddaac2c6ce830fdb825f387a0c"><param name="Name" value="FrameLen"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#ad9f11579d3e9034149d0e9b3f207af00"><param name="Name" value="SampRate"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a58b5de2e6b870fe1ee9c798e58691979"><param name="Name" value="Type"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a3563073a8304d991679245d5fd32e9c3"><param name="Name" value="pRfft"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#ade18af91e15547f574d1c9871ecd776c"><param name="Name" value="pScratch1"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a29e292223b407ea1a6c68db7562f8ca6"><param name="Name" value="pScratch2"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#aa02550b1dbc15fcd55657cb6c985e730"><param name="Name" value="pWindow"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#addd28ea89bb461b81db922acb18feedd"><param name="Name" value="pad_left"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a6adedd8735cab66a2c558b3938b00f49"><param name="Name" value="pad_right"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a629f15d4b7243704a0f80e449de6644b"><param name="Name" value="spectro_sum"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaf2b1ad86513d1771082d2a4dc3cdfaee"><param name="Name" value="Spectrogram_TypeTypedef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_log_mel_spectrogram_type_def.html#ae12c4ec94cd1e61d30153497780ad802"><param name="Name" value="TopdB"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#aef7b7efa1270c5b324e5a4af1049a6bc"><param name="Name" value="Type"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#aef7b7efa1270c5b324e5a4af1049a6bc"><param name="Name" value="DCT_InstanceTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a58b5de2e6b870fe1ee9c798e58691979"><param name="Name" value="Type"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a58b5de2e6b870fe1ee9c798e58691979"><param name="Name" value="SpectrogramTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ggaf33dba18fb0255827105d1ff45361b01ac446b9dce65ee3b9c0fe35a789a9b80c"><param name="Name" value="WINDOW_BLACKMAN"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ggaf33dba18fb0255827105d1ff45361b01a54f7411de0bcc46ce1980fa548682cbc"><param name="Name" value="WINDOW_HAMMING"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ggaf33dba18fb0255827105d1ff45361b01af8fe57b782cddb6decfe9a68d34494ea"><param name="Name" value="WINDOW_HANN"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="Window functions"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#gaf33dba18fb0255827105d1ff45361b01"><param name="Name" value="WindowTypedef"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#gacfe0a8bf49626941ce42bf9411691113"><param name="Name" value="Window_Init(float32_t *pDst, uint32_t len, WindowTypedef type)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a28ab783c12af6512ddf92a4203c7baee"><param name="Name" value="blackmanWin_1024[1024]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a28ab783c12af6512ddf92a4203c7baee"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a28ab783c12af6512ddf92a4203c7baee"><param name="Name" value="blackmanWin_1024[1024]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a28ab783c12af6512ddf92a4203c7baee"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ga4d7dc5edd861b629470e32c3f7f382c0"><param name="Name" value="buf_to_float(int16_t *pInSignal, float32_t *pOutSignal, uint32_t len)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ga1c82185908c2e874cede2180607cd126"><param name="Name" value="buf_to_float_normed(int16_t *pInSignal, float32_t *pOutSignal, uint32_t len)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a28ab783c12af6512ddf92a4203c7baee"><param name="Name" value="blackmanWin_1024[1024]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a3c303e8dca24979567f90efb794f3b7e"><param name="Name" value="hammingWin_1024[1024]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a1c29b17874813abbd0edd84909cbbbb3"><param name="Name" value="hannWin_1024[1024]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#ab1a7940fc3048278e0df7406b3ce05e1"><param name="Name" value="hannWin_2048[2048]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a22181ab7c45a1a8b9e183addb1394373"><param name="Name" value="melFilterLut_1024_30[968]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#ac899dafe5f4384815eca39803ce4ef12"><param name="Name" value="melFilterLut_2048_128[2020]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a9ed1b37b98612dfb50297055d8a3f857"><param name="Name" value="melFiltersStartIndices_1024_30[30]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a9dcd26c129b61cac78615422a702dab0"><param name="Name" value="melFiltersStartIndices_2048_128[128]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a084b9875c494f05de3fee71f1a16d043"><param name="Name" value="melFiltersStopIndices_1024_30[30]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html"><param name="Name" value="common_tables.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#adf46991891c3c53f8909a6e760486761"><param name="Name" value="melFiltersStopIndices_2048_128[128]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a28ab783c12af6512ddf92a4203c7baee"><param name="Name" value="blackmanWin_1024[1024]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a3c303e8dca24979567f90efb794f3b7e"><param name="Name" value="hammingWin_1024[1024]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a1c29b17874813abbd0edd84909cbbbb3"><param name="Name" value="hannWin_1024[1024]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#ab1a7940fc3048278e0df7406b3ce05e1"><param name="Name" value="hannWin_2048[2048]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a22181ab7c45a1a8b9e183addb1394373"><param name="Name" value="melFilterLut_1024_30[968]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#ac899dafe5f4384815eca39803ce4ef12"><param name="Name" value="melFilterLut_2048_128[2020]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a9ed1b37b98612dfb50297055d8a3f857"><param name="Name" value="melFiltersStartIndices_1024_30[30]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a9dcd26c129b61cac78615422a702dab0"><param name="Name" value="melFiltersStartIndices_2048_128[128]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a084b9875c494f05de3fee71f1a16d043"><param name="Name" value="melFiltersStopIndices_1024_30[30]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html"><param name="Name" value="common_tables.h"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#adf46991891c3c53f8909a6e760486761"><param name="Name" value="melFiltersStopIndices_2048_128[128]"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ga5b588bca93b2d0623d713aa1e7ed1a96"><param name="Name" value="cosine_sum_window_create(float32_t *pDst, uint32_t len, float64_t a0, float64_t a1, float64_t a2)"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="dct_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="dct.c"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="feature__extraction_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="feature_extraction.c"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#gae93e659e5dc576f6d9dea17d96349443"><param name="Name" value="DCT(DCT_InstanceTypeDef *S, float32_t *pIn, float32_t *pOut)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ga70c5e341f673f39f464cbba5d1aca2a5"><param name="Name" value="DCT_Init(DCT_InstanceTypeDef *S)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6eadb7f0c2f8803f71ca09a9a25ffdae32c"><param name="Name" value="DCT_TYPE_I"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea116d3e3011968038ed9fb12000d01e19"><param name="Name" value="DCT_TYPE_II"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea54f7f6b22a41f8607ecd4b617b2d081d"><param name="Name" value="DCT_TYPE_III"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea3c566c04ed08fa0c80b1107ebe548e30"><param name="Name" value="DCT_TYPE_III_ORTHO"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea1744d09dee36ee282f26314ad2fa5794"><param name="Name" value="DCT_TYPE_II_ORTHO"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#ggae38ee11aed8002a882cbf743fd8f6e6ea3274cb1f1f04b8310538441b5e52943b"><param name="Name" value="DCT_TYPE_II_SCALED"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html"><param name="Name" value="groupDCT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_d_c_t.html#gae38ee11aed8002a882cbf743fd8f6e6e"><param name="Name" value="DCT_TypeTypeDef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggae17c80dc16025a2c951088c39aef2fd0a7a933f21f639c4439556c6f46cd806db"><param name="Name" value="LOGMELSPECTROGRAM_SCALE_DB"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggae17c80dc16025a2c951088c39aef2fd0afcd9bd4da6d19b53bea77fc3a3d0d2c5"><param name="Name" value="LOGMELSPECTROGRAM_SCALE_LOG"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaabddbf0ec5332d3e285029b8802d2b11"><param name="Name" value="LogMelSpectrogramColumn(LogMelSpectrogramTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gae17c80dc16025a2c951088c39aef2fd0"><param name="Name" value="LogMelSpectrogram_ScaleTypedef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ga7af8e10efc497f0951f5da10d5f3e628"><param name="Name" value="MelSpectrogramColumn(MelSpectrogramTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaae54d9e59f97d131a9bf94e728c7ff52"><param name="Name" value="MfccColumn(MfccTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggaf2b1ad86513d1771082d2a4dc3cdfaeea6c673dd86b540f8c90c82ca0ba5421d5"><param name="Name" value="SPECTRUM_TYPE_MAGNITUDE"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ggaf2b1ad86513d1771082d2a4dc3cdfaeeada329d2e4755aac2aa7ad52329f56690"><param name="Name" value="SPECTRUM_TYPE_POWER"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaefa7824a761138a22b77addcb7244819"><param name="Name" value="SpectrogramColumn(SpectrogramTypeDef *S, float32_t *pInSignal, float32_t *pOutCol)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#gaf2b1ad86513d1771082d2a4dc3cdfaee"><param name="Name" value="Spectrogram_TypeTypedef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ga4d7dc5edd861b629470e32c3f7f382c0"><param name="Name" value="buf_to_float(int16_t *pInSignal, float32_t *pOutSignal, uint32_t len)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html"><param name="Name" value="groupFeature"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_feature.html#ga1c82185908c2e874cede2180607cd126"><param name="Name" value="buf_to_float_normed(int16_t *pInSignal, float32_t *pOutSignal, uint32_t len)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html"><param name="Name" value="groupMelFilterbank"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#ggad56c1fe5cf0bcabbe1b4b98ad90c27bda37fb4b06ffa3cb1161705c9ef158182f"><param name="Name" value="MEL_HTK"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html"><param name="Name" value="groupMelFilterbank"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#ggad56c1fe5cf0bcabbe1b4b98ad90c27bda22b720f969bce30cdb259cb8f512c720"><param name="Name" value="MEL_SLANEY"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html"><param name="Name" value="groupMelFilterbank"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#gadc6a8192db1b7cd32b7d9c37fab31c1c"><param name="Name" value="MelFilterbank(MelFilterTypeDef *M, float32_t *pSpectrCol, float32_t *pMelCol)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html"><param name="Name" value="groupMelFilterbank"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#ga118b3895f07564f49e76c9cd497edfd0"><param name="Name" value="MelFilterbank_Init(MelFilterTypeDef *MelFilterStruct)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html"><param name="Name" value="groupMelFilterbank"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_mel_filterbank.html#gad56c1fe5cf0bcabbe1b4b98ad90c27bd"><param name="Name" value="MelFormulaTypedef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="groupWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ggaf33dba18fb0255827105d1ff45361b01ac446b9dce65ee3b9c0fe35a789a9b80c"><param name="Name" value="WINDOW_BLACKMAN"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="groupWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ggaf33dba18fb0255827105d1ff45361b01a54f7411de0bcc46ce1980fa548682cbc"><param name="Name" value="WINDOW_HAMMING"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="groupWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ggaf33dba18fb0255827105d1ff45361b01af8fe57b782cddb6decfe9a68d34494ea"><param name="Name" value="WINDOW_HANN"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="groupWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#gaf33dba18fb0255827105d1ff45361b01"><param name="Name" value="WindowTypedef"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="groupWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#gacfe0a8bf49626941ce42bf9411691113"><param name="Name" value="Window_Init(float32_t *pDst, uint32_t len, WindowTypedef type)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html"><param name="Name" value="groupWindow"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="group__group_window.html#ga5b588bca93b2d0623d713aa1e7ed1a96"><param name="Name" value="cosine_sum_window_create(float32_t *pDst, uint32_t len, float64_t a0, float64_t a1, float64_t a2)"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a3c303e8dca24979567f90efb794f3b7e"><param name="Name" value="hammingWin_1024[1024]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a3c303e8dca24979567f90efb794f3b7e"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a3c303e8dca24979567f90efb794f3b7e"><param name="Name" value="hammingWin_1024[1024]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a3c303e8dca24979567f90efb794f3b7e"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a1c29b17874813abbd0edd84909cbbbb3"><param name="Name" value="hannWin_1024[1024]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a1c29b17874813abbd0edd84909cbbbb3"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a1c29b17874813abbd0edd84909cbbbb3"><param name="Name" value="hannWin_1024[1024]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a1c29b17874813abbd0edd84909cbbbb3"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#ab1a7940fc3048278e0df7406b3ce05e1"><param name="Name" value="hannWin_2048[2048]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#ab1a7940fc3048278e0df7406b3ce05e1"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#ab1a7940fc3048278e0df7406b3ce05e1"><param name="Name" value="hannWin_2048[2048]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#ab1a7940fc3048278e0df7406b3ce05e1"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a22181ab7c45a1a8b9e183addb1394373"><param name="Name" value="melFilterLut_1024_30[968]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a22181ab7c45a1a8b9e183addb1394373"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a22181ab7c45a1a8b9e183addb1394373"><param name="Name" value="melFilterLut_1024_30[968]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a22181ab7c45a1a8b9e183addb1394373"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#ac899dafe5f4384815eca39803ce4ef12"><param name="Name" value="melFilterLut_2048_128[2020]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#ac899dafe5f4384815eca39803ce4ef12"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#ac899dafe5f4384815eca39803ce4ef12"><param name="Name" value="melFilterLut_2048_128[2020]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#ac899dafe5f4384815eca39803ce4ef12"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a9ed1b37b98612dfb50297055d8a3f857"><param name="Name" value="melFiltersStartIndices_1024_30[30]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a9ed1b37b98612dfb50297055d8a3f857"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a9ed1b37b98612dfb50297055d8a3f857"><param name="Name" value="melFiltersStartIndices_1024_30[30]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a9ed1b37b98612dfb50297055d8a3f857"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a9dcd26c129b61cac78615422a702dab0"><param name="Name" value="melFiltersStartIndices_2048_128[128]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a9dcd26c129b61cac78615422a702dab0"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a9dcd26c129b61cac78615422a702dab0"><param name="Name" value="melFiltersStartIndices_2048_128[128]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a9dcd26c129b61cac78615422a702dab0"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a084b9875c494f05de3fee71f1a16d043"><param name="Name" value="melFiltersStopIndices_1024_30[30]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#a084b9875c494f05de3fee71f1a16d043"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a084b9875c494f05de3fee71f1a16d043"><param name="Name" value="melFiltersStopIndices_1024_30[30]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#a084b9875c494f05de3fee71f1a16d043"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#adf46991891c3c53f8909a6e760486761"><param name="Name" value="melFiltersStopIndices_2048_128[128]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8c.html#adf46991891c3c53f8909a6e760486761"><param name="Name" value="common_tables.c"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#adf46991891c3c53f8909a6e760486761"><param name="Name" value="melFiltersStopIndices_2048_128[128]"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="common__tables_8h.html#adf46991891c3c53f8909a6e760486761"><param name="Name" value="common_tables.h"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a89e434e1f31e56ccc15d334a14a359ee"><param name="Name" value="pCoefficients"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#a7299c3fb69b8865a91c5d731e95f3e8f"><param name="Name" value="pDCT"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_d_c_t___instance_type_def.html#a08796198b4188912c2184d42e93809f9"><param name="Name" value="pDCTCoefs"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a3563073a8304d991679245d5fd32e9c3"><param name="Name" value="pRfft"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#ade18af91e15547f574d1c9871ecd776c"><param name="Name" value="pScratch1"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a29e292223b407ea1a6c68db7562f8ca6"><param name="Name" value="pScratch2"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mfcc_type_def.html#a4bcdbeb5bc2222f3ca95cccd2333c8e4"><param name="Name" value="pScratch"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a214e6aee9d8c960d5b71c8855bf25d01"><param name="Name" value="pStartIndices"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_mel_filter_type_def.html#a4660b94a2bb207751c8d708ba7446f3e"><param name="Name" value="pStopIndices"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#aa02550b1dbc15fcd55657cb6c985e730"><param name="Name" value="pWindow"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#addd28ea89bb461b81db922acb18feedd"><param name="Name" value="pad_left"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a6adedd8735cab66a2c558b3938b00f49"><param name="Name" value="pad_right"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="struct_spectrogram_type_def.html#a629f15d4b7243704a0f80e449de6644b"><param name="Name" value="spectro_sum"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="window_8c.html#ae71449b1cc6e6250b91f539153a7a0d3"><param name="Name" value="window.c"></OBJECT>
+</UL>
+</BODY>
+</HTML>

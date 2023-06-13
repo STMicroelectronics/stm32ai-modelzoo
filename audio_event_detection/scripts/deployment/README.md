@@ -225,6 +225,8 @@ NOTE : this is currently unsupported, but will be in a future version.
 
 To deploy the model in **B-U585I-IOT02A** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application and flash the board.
 
+Please note that there are two different versions of the Getting Started, with two different licences. The [FreeRTOS](../../getting_started/freertos/) version has an open-source BSD3 license, while the [ThreadX](../../getting_started/threadx/) does not. There is no difference in terms of model performance (accuracy) between both versions.
+
 These steps will be done automatically by configuring the **stm32ai** section in **[user_config.yaml](user_config.yaml)** as the following:
 
 ```python
@@ -239,7 +241,8 @@ stm32ai:
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/stm32cubeidec.exe
 ```
 where:
-- `c_project_path` - *Path* to [Getting Started](../../getting_started/README.md) project.
+- `c_project_path` - *Path* to [Getting Started](../../getting_started/freertos/README.md) project.
+  There are two different versions of the Getting Started, with two different licences. The [FreeRTOS](../../getting_started/freertos/) version has an open-source BSD3 license, while the [ThreadX](../../getting_started/threadx/) does not. There is no difference in terms of model performance (accuracy) between both versions.
 - `serie` - **B-U585I-IOT02A**, only supported option for *Getting Started*.
 - `IDE` -**GCC**, only supported option for *Getting Started*.
 - `verbosity` - *0* or *1*. Mode 0 is silent, and mode 1 displays messages when building and flashing the C applicaiton.

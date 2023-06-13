@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Release Notes for B-U585I-IOT02A BSP Drivers</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="_htmresc/mini-st_2020.css" />
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <link rel="icon" type="image/x-icon" href="_htmresc/favicon.png" />
+</head>
+<body>
+<div class="row">
+<div class="col-sm-12 col-lg-4">
+<center>
+<h1 id="release-notes-for-b-u585i-iot02a-bsp-drivers">Release Notes for <mark>B-U585I-IOT02A BSP Drivers</mark></h1>
+<p>Copyright © 2021 STMicroelectronics<br />
+</p>
+<a href="https://www.st.com" class="logo"><img src="_htmresc/st_logo_2020.png" alt="ST logo" /></a>
+</center>
+<h1 id="purpose">Purpose</h1>
+<p>These drivers provide a set of functions to manage:</p>
+<ul>
+<li>LEDs, push-button, joystick and COM ports</li>
+<li>OctoSPI NOR Flash memory</li>
+<li>OctoSPI PSRAM memory</li>
+<li>Camera</li>
+<li>Motion sensors (Acc, Gyro and Magno)</li>
+<li>Environmental sensors (Temperature, Humidity and Pressure)</li>
+<li>EEPROM memory</li>
+<li>USBPD Type C port</li>
+<li>Light sensor</li>
+</ul>
+<p><em>Note that b_u585i_iot02a_conf_template.h file must be copied in user application as b_u585i_iot02a_conf.h with optional configuration update.</em></p>
+</div>
+<div class="col-sm-12 col-lg-8">
+<h1 id="update-history">Update History</h1>
+<div class="collapse">
+<input type="checkbox" id="collapse-section2" checked aria-hidden="true"> <label for="collapse-section2" aria-hidden="true"><strong>V1.0.1 / 01-October-2021</strong></label>
+<div>
+<h2 id="main-changes">Main Changes</h2>
+<ul>
+<li>b_u585i_iot02a_audio: remove Audio IN functionality (Under rework, to be re-integrated in the next release)</li>
+<li>b_u585i_iot02a_light_sensor: add new driver</li>
+<li>b_u585i_iot02a_motion_sensors: Replace ISM330DLC with ISM330DHCX</li>
+</ul>
+</div>
+</div>
+<div class="collapse">
+<input type="checkbox" id="collapse-section1" aria-hidden="true"> <label for="collapse-section1" aria-hidden="true"><strong>V1.0.0 / 28-June-2021</strong></label>
+<div>
+<h2 id="main-changes-1">Main Changes</h2>
+<ul>
+<li>First official release of <strong>B-U585I-IOT02A</strong> BSP drivers in line with STM32Cube BSP drivers development guidelines (UM2298)</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<footer class="sticky">
+For complete documentation on <mark>STM32 Microcontrollers</mark> , visit: <span style="font-color: blue;"><a href="http://www.st.com/STM32">www.st.com</a></span>
+</footer>
+</body>
+</html>

@@ -98,7 +98,7 @@ def generate_LUTs_c_file(melFilterLut,
     path = os.path.join(HydraConfig.get().runtime.output_dir, "C_header/")
     # Convert LUTs to str to be able to write to file
     melFilterLut_str = np.array2string(melFilterLut,
-                                       separator=',',
+                                       separator='F ,',
                                        formatter={'float': lambda x : np.format_float_scientific(x,
                                                   precision=10, unique=False)},
                                        threshold=sys.maxsize)
@@ -110,7 +110,7 @@ def generate_LUTs_c_file(melFilterLut,
     melFilterStopIndices_str = '{' + melFilterStopIndices_str[1:-1] + '}'
 
     hannWin_str = np.array2string(hannWin,
-                                  separator=',',
+                                  separator='F ,',
                                   formatter={'float': lambda x : np.format_float_scientific(x,
                                              precision=10, unique=False)},
                                   threshold=sys.maxsize)

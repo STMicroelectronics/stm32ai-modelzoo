@@ -15,7 +15,7 @@ onnxconverter-common==1.13.0
 onnxruntime==1.14.1
 optuna==3.1.1
 imgaug==0.4.0
-matplotlib==3.5.1
+matplotlib==3.6.2
 opencv_python==4.6.0.66
 joblib==1.2.0
 librosa==0.10.0.post2

@@ -60,14 +60,14 @@ quantization:
   export_dir: quantized_models
 
 stm32ai:
-  c_project_path: ../../getting_started
+  c_project_path: ../../getting_started/freertos # Change to ../../getting_started/threadx to use threadx version
   serie: STM32U5
   IDE: GCC
   verbosity: 1
   optimization: balanced
   footprints_on_target: False
-  path_to_stm32ai: C:/Users/martinlu/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.0.0/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeidec.exe
+  path_to_stm32ai: <path_to_stm32cubeAI>
+  path_to_cubeIDE: <path_to_stm32cubeIDE>
 
   
 mlflow:

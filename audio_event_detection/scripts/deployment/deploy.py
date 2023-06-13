@@ -11,12 +11,11 @@ import logging
 import os
 import sys
 import warnings
-
 import hydra
 import mlflow
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import DictConfig, OmegaConf
-from temp_scripts.tmp import stm32ai_deploy
+
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
@@ -31,6 +30,7 @@ sys.path.append(os.path.abspath('../../../common'))
 
 from evaluate import evaluate_model
 from utils import get_config, mlflow_ini, setup_seed
+from common_deploy import stm32ai_deploy
 
 
 @hydra.main(version_base=None, config_path="", config_name="user_config")
@@ -44,7 +44,8 @@ def main(cfg: DictConfig) -> None:
 
     # Evaluate model performance / footprints
     evaluate_model(cfg, c_header=True, c_code=True)
-    stm32ai_deploy(cfg, debug=False)
+    additional_files = ["C_header/user_mel_tables.h", "C_header/user_mel_tables.c"]
+    stm32ai_deploy(cfg, debug=False, additional_files=additional_files)
 
     # Record the whole hydra working directory to get all infos
     mlflow.log_artifact(HydraConfig.get().runtime.output_dir)
