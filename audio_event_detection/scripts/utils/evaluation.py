@@ -44,7 +44,6 @@ def _majority_vote(preds, is_multilabel=False):
 def _aggregate_predictions(preds, clip_labels, is_multilabel=False, is_truth=False):
     '''Aggregate predictions from patch level to clip level.
        Pass is_truth=True if aggregating true labels to skip some computation'''
-    # TODO : Rewrite this to handle case where a clip has no patches and raise warning
     n_clips = np.max(clip_labels)
     aggregated_preds = np.empty((n_clips, preds.shape[1]))
     if not is_truth:

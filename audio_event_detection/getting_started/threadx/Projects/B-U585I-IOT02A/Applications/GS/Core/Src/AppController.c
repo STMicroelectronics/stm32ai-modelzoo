@@ -838,7 +838,14 @@ static void AppControllerPrintAIRes(uint32_t cnt, float *p_out)
         max_out = p_out[i];
       }
     }
+    if (max_out > CTRL_X_CUBE_AI_OOD_THR)
+		{	
     fprintf(CTRL_TASK_CFG_OUT_CH, ",\"class\":\"%s\",\"dist\":[%.2f",sAiClassLabels[max_idx],p_out[0]);
+    }
+    else
+    {
+     fprintf(CTRL_TASK_CFG_OUT_CH, ",\"class\":\"%s\",\"dist\":[%.2f","Unknown class",p_out[0]);
+    }
     for (int i = 1 ; i < CTRL_X_CUBE_AI_MODE_CLASS_NUMBER; i++)
     {
       fprintf(CTRL_TASK_CFG_OUT_CH, ",%.2f",p_out[i]);

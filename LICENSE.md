@@ -50,8 +50,6 @@ Concerning audio_event_detection getting started/freertos:
 | FreeRTOS kernel                 | Amazon.com, Inc. or its affiliates                    | [MIT](https://opensource.org/licenses/MIT)                   | Middleware/FreeRTOS/kernel                     |
 | Getting Started thread          | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/Common/app                            |
 | Getting Started application     | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/b_u585i_iot2a_gs_aed/Core             |
-| X-CUBE-AI runtime library stub  | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Middleware/STM32_AI_Library                    |
-| X-CUBE-AI model stub            | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/Common/X-CUBE-AI                      |
 | Audio preprocessing library     | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Middleware/STM32_AI_AudioPreprocessing_Library |
 | DPU processing units            | STMicroelectronics                                    | [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) | Projects/Common/dpu                            |
 

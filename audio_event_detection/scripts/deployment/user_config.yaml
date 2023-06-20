@@ -49,6 +49,7 @@ model:
   expand_last_dim: True
   multi_label : False
   model_path: ..\..\models\yamnet\ST_pretrainedmodel_public_dataset\esc_10\yamnet_256_64x96\yamnet_256_64x96_int8.tflite
+  unknown_class_threshold: 0.0
 
 quantization:
   quantize: True
@@ -66,8 +67,8 @@ stm32ai:
   verbosity: 1
   optimization: balanced
   footprints_on_target: False
-  path_to_stm32ai: <path_to_stm32cubeAI>
-  path_to_cubeIDE: <path_to_stm32cubeIDE>
+  path_to_stm32ai: <path_to_stm32ai_executable>
+  path_to_cubeIDE: <path_to_cubeIDE_executable>
 
   
 mlflow:

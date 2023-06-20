@@ -54,7 +54,7 @@ extern "C" {
 #define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_LUT       (user_melFilterLut)
 #define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_START_IDX (user_melFiltersStartIndices)
 #define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_STOP_IDX  (user_melFiltersStopIndices)
-#define CTRL_X_CUBE_AI_OOD_THR                   (0.5F)
+#define CTRL_X_CUBE_AI_OOD_THR                   (0.0F)
 #define CTRL_SEQUENCE                            {CTRL_CMD_PARAM_AI,0}
 
 #ifdef __cplusplus

@@ -219,6 +219,9 @@ If using a MiniResnet, MiniResnetv2 or Yamnet, set this to True.
 This is not the case in ESC-10.
 NOTE : this is currently unsupported, but will be in a future version.
 - `model_path` - *Path* to the .h5 or .tflite file of the model to deploy. Please check out some pretrained models from STM32 model zoo [here](../../models/README.md).
+- `ood_detection_threshold` - *float* between 0 and 1. If the maximum of the model output probabilities is below this threshold, then the sample is considered to belong to an unknown class.
+Please note that this is a very naïve OOD detection / OSR baseline method, and does not exhibit great performance.
+Improved methods will be forthcoming in the future.
 
 
 **1.5. C project configuration:**

@@ -35,9 +35,6 @@ def vis_training_curves(history,cfg):
     df = pd.concat(frames)
     df = df.reset_index()
 
-    # csv_path = os.path.join(HydraConfig.get().runtime.output_dir,'tb_experiment_1.csv')
-    # df.to_csv(csv_path, index=False)
-
     plt.figure(figsize=(16, 6))
     plt.subplot(1, 2, 1)
     sns.lineplot(data=df, x="step", y="epoch_accuracy",

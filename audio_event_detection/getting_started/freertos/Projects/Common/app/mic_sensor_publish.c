@@ -184,7 +184,14 @@ void vMicSensorPublishTask( void * pvParameters )
 					max_out = pfAIOutput[i];
 				}
 			}
-			LogInfo("{\"class\":\"%s\"}\r\n",sAiClassLabels[max_idx]);
+			if (max_out > CTRL_X_CUBE_AI_OOD_THR )
+			{
+				LogInfo("{\"class\":\"%s\"}\r\n",sAiClassLabels[max_idx]);
+			}
+			else
+			{
+				LogInfo("{\"class\":\"%s\"}\r\n","unknown");
+			}
 		}
 		xAudioProcCtx.S_Spectr.spectro_sum = 0 ;
 	}

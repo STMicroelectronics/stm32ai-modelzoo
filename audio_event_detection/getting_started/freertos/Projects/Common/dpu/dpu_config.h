@@ -132,9 +132,15 @@ extern "C" {
 
 #define CTRL_X_CUBE_AI_SPECTROGRAM_PATCH_LENGTH  ((CTRL_X_CUBE_AI_SPECTROGRAM_COL-1)*CTRL_X_CUBE_AI_SPECTROGRAM_HOP_LENGTH + CTRL_X_CUBE_AI_SPECTROGRAM_NFFT)
 
+#ifndef CTRL_X_CUBE_AI_OOD_THR 
+#define CTRL_X_CUBE_AI_OOD_THR (0.0F)
+#endif
+
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* DPU_CONFIG_H_ */
+
+
 

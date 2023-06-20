@@ -53,6 +53,7 @@ def get_model(cfg):
             return miniresnetv2.get_scratch_model(cfg)
 
     elif cfg.model.model_type.name.lower() == "yamnet":
+        # Check disabled for now
         #check_yamnet_config(cfg)
         return yamnet.get_pretrained_model(cfg)
 

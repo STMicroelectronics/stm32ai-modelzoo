@@ -118,6 +118,7 @@ def gen_h_user_file(config):
         f.write('#define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_LUT       (user_melFilterLut)\n')
         f.write('#define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_START_IDX (user_melFiltersStartIndices)\n')
         f.write('#define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_STOP_IDX  (user_melFiltersStopIndices)\n')
+        f.write('#define CTRL_X_CUBE_AI_OOD_THR                   ({}F)\n'.format(config.model.unknown_class_threshold))
         f.write('#define CTRL_SEQUENCE                            {CTRL_CMD_PARAM_AI,0}\n')
         f.write('\n')
         f.write('#ifdef __cplusplus\n')
