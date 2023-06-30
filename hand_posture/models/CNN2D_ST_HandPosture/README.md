@@ -10,7 +10,7 @@ We recommend to use input size (8 x 8 x 2) but this network can support greater 
 
 The only input required to the model is the input shape and the number of outputs.
 
-In this folder you will find multiple copies of the CNN2D_ST_HandPosture model pretrained on a ST custom dataset (*ST_VL53L5CX_handposture_dataset*).
+In this folder you will find multiple copies of the CNN2D_ST_HandPosture model pretrained on a [ST custom datasets](../../scripts/training/datasets/README.md).
 
 ## Network information (for 8 hand postures)
 
@@ -51,7 +51,7 @@ For an Time of Flight frame resolution of 8x8 and P classes
 
 To train a CNN2D_ST_HandPosture model, you need to configure the [user_config.yaml](../../scripts/training/user_config.yaml) file following the [tutorial](../../scripts/training/README.md) under the training section.
 
-As an example, [CNN2D_ST_HandPosture_8classes_config.yaml](../CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes_config.yaml) file is used to train this model on ST_VL53L5CX_handposture_dataset dataset, you can copy its content in the [user_config.yaml](../../scripts/training/user_config.yaml) file provided under the training section to reproduce the results presented below. 
+As an example, [CNN2D_ST_HandPosture_8classes_config.yaml](../CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes_config.yaml) file is used to train this model on [ST_VL53L8CX_handposture_dataset dataset](../../scripts/training/datasets/), you can copy its content in the [user_config.yaml](../../scripts/training/user_config.yaml) file provided under the training section to reproduce the results presented below. 
 
 ## Deployment
 
@@ -61,36 +61,36 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
-### Reference memory footprint based on ST_VL53L5CX_handposture_dataset (see Accuracy for details on dataset)
+### Reference memory footprint based on ST_VL53LxCX_handposture_dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Input Shape | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
-|:-----------------:|:------:|:-----------:|:-------:|:--------------:|:-----------:|:-------------:|:----------:|:-----------:|:-----------:|
-| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | STM32F4 | 1024 B     | 2.0 KiB       | 10.75 KiB    | 15.81 KiB       |  3.0 KiB   | 26.56 KiB  |
+| Model             | Format | Input Shape | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
+|:-----------------:|:------:|:-----------:|:-------:|:--------------:|:-----------:|:-------------:|:----------:|:-----------:|:-----------:|:---------------------:|
+| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | STM32F4 | 1024 B     | 2.0 KiB       | 10.75 KiB    | 15.81 KiB       |  3.0 KiB   | 26.56 KiB  | 7.3.0                 |
+| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | STM32F4 | 1024 B     | 2.0 KiB       | 10.75 KiB    | 15.81 KiB       |  3.0 KiB   | 26.56 KiB  | 7.3.0                 |
 
 
-
-### Reference inference time based on ST_VL53L5CX_handposture_dataset (see Accuracy for details on dataset)
-
-
-| Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) |
-|:-----------------:|:------:|:----------:|:----------------:|:-------------:|:-------------------:|
-| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | STM32F401 | 84 MHz       |    1.520  ms       |
+### Reference inference time based on ST_VL53LxCX_handposture_dataset (see Accuracy for details on dataset)
 
 
-### Accuracy with ST_VL53L5CX_handposture_dataset
+| Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) | STM32Cube.AI version  |
+|:-----------------:|:------:|:----------:|:----------------:|:-------------:|:-------------------:|:---------------------:|
+| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | STM32F401 | 84 MHz       |    1.520  ms       | 7.3.0                 |
+| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | STM32F401 | 84 MHz       |    1.520  ms       | 7.3.0                 |
+
+### Accuracy with ST_VL53LxCX_handposture_dataset
 
 
-Dataset details: A custom dataset and not publically available, Number of classes: 8 [None, FlatHand, Like, Dislike, Fist, Love, BreakTime, CrossHands]. Training dataset number of frames:  3,031. Test dataset number of frames: 1146.
+Dataset details: A ST custom dataset: [ST_VL53LxCX_handposture_dataset dataset](../../scripts/training/datasets/README.md), Number of classes: 8 [None, FlatHand, Like, Dislike, Fist, Love, BreakTime, CrossHands]. Training dataset number of frames:  3,031. Test dataset number of frames: 1146.
 
 
 | Model | Format | Resolution | Accuracy |
 |:-----------------:|:------:|:----------:|:----------------:|
+| [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | 98.69 %    |
 | [CNN2D_ST_HandPosture](ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) | FLOAT32   | 8 x 8 x 2    | 96.42 %    |
-
 
 
 ## Training and code generation

@@ -30,6 +30,9 @@ export STM32AI_USERNAME="dupont@example.com"    # Address mail used for your MyS
 export STM32AI_PASSWORD="password"              # Your password
 ```
 
+# Arguments Interface
+
+Arguments supported for CLI calls are available in [./stm32ai_dc/types.py](https://github.com/STMicroelectronics/stm32ai-modelzoo/blob/75947f8946c144e0fdd341c189d327bcc187db22/common/stm32ai_dc/types.py#L77)
 
 
 # Troubleshooting
@@ -54,4 +57,4 @@ export NO_SSL_VERIFY="1"
 
 # Example
 
-Examples are available in [stm32ai_dc_examples](../../tutorials/scripts/README.md) folder.
+Examples are available in `./stm32ai_dc_examples/` folder

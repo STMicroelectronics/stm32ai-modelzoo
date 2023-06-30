@@ -41,6 +41,7 @@ extern "C" {
 #define FALSE false
 #endif
 
+typedef void (*tx_entry_function_t)(unsigned long nParam);
 
 #ifdef __cplusplus
 }

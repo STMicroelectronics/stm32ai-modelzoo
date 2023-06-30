@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="org.eclipse.cdt.core.cSource.contenttype_context" deleted="false" description="" enabled="true" name="ODev 6c. DPU source template">${filecomment}
+${includes}
+
+#include "${file_base}.h"
+#include "${file_base}_vtbl.h"
+#include "services/sysmem.h"
+#include "services/sysdebug.h"
+
+${declarations}
+
+#define SYS_DEBUGF(level, message)                   SYS_DEBUGF3(SYS_DBG_DPU, level, message)
+
+
+/**
+ * Class object declaration.
+ */
+typedef struct _${file_base}Class
+{
+  /**
+   * IDPU2_t class virtual table.
+   */
+  IDPU2_vtbl vtbl;
+
+} ${file_base}Class_t;
+
+
+/* Objects instance */
+/********************/
+
+/**
+ * The class object.
+ */
+static const ${file_base}Class_t sTheClass = {
+    /* class virtual table */
+    {
+        ADPU2_vtblAttachToDataSource,
+        ADPU2_vtblDetachFromDataSource,
+        ADPU2_vtblAttachToDPU,
+        ADPU2_vtblDetachFromDPU,
+        ADPU2_vtblDispatchEvents,
+        ADPU2_vtblRegisterNotifyCallback,
+        ${file_base}_vtblProcess
+    }
+};
+
+
+/* Private member function declaration */
+/***************************************/
+
+
+/* Inline function forward declaration */
+/***************************************/
+
+
+/* IDPU2 virtual functions definition */
+/**************************************/
+
+sys_error_code_t ${file_base}_vtblProcess(IDPU2_t *_this, EMData_t in_data, EMData_t out_data)
+{
+  assert_param(_this != NULL);
+  sys_error_code_t res = SYS_NO_ERROR_CODE;
+  /*${file_base}_t *p_obj = (${file_base}_t*) _this;*/
+
+ /* add the processing code here*/
+
+  return res;
+}
+
+
+/* Public functions definition */
+/*******************************/
+
+IDPU2_t *${file_base}_Alloc()
+{
+  IDPU2_t *p_obj = (IDPU2_t*) SysAlloc(sizeof(${file_base}_t));
+
+  if (p_obj != NULL)
+  {
+    p_obj-&gt;vptr = &amp;sTheClass.vtbl;
+  }
+
+  return p_obj;
+}
+
+IDPU2_t *${file_base}_StaticAlloc(void *p_mem_block)
+{
+  ${file_base}_t *p_obj = (${file_base}_t*)p_mem_block;
+
+  if (p_obj != NULL)
+  {
+    ((IDPU2_t*)p_obj)-&gt;vptr = &amp;sTheClass.vtbl;
+  }
+
+  return (IDPU2_t*)p_obj;
+}
+
+sys_error_code_t ${file_base}_Init(${file_base}_t *_this /*ADD DPU SPECIFIC PARAMETERS*/) {
+  assert_param(_this != NULL);
+  sys_error_code_t res = SYS_NO_ERROR_CODE;
+
+  /* define the in_data and out_data for the DPU*/
+  EMData_t in_data, out_data;
+
+  /* add the code to initialize in_data and out_data*/
+
+  /* initialize the base class*/
+  res = ADPU2_Init((ADPU2_t*)_this, in_data, out_data);
+
+  return res;
+}
+
+/* Private function definition */
+/*******************************/
+
+
+</template><template autoinsert="false" context="org.eclipse.cdt.core.cHeader.contenttype_context" deleted="false" description="" enabled="true" name="ODeV 6b. DPU virtual table header template">${filecomment}
+#ifndef ${include_guard_symbol}
+#define ${include_guard_symbol}
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+${includes}
+${declarations}
+
+/* IDPU2 virtual functions */
+sys_error_code_t ${file_base}Process(IDPU2_t *_this, EMData_t in_data, EMData_t out_data); /*!&lt; @sa IDPU2_Process */
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${include_guard_symbol} */</template><template autoinsert="false" context="org.eclipse.cdt.core.cHeader.contenttype_context" deleted="false" description="" enabled="true" name="ODeV 6a. C DPU header template">${filecomment}
+#ifndef ${include_guard_symbol}
+#define ${include_guard_symbol}
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+${includes}
+
+#include "ADPU2.h"
+#include "ADPU2_vtbl.h"
+
+${declarations}
+
+/**
+ * Create  type name for _${file_base}.
+ */
+typedef struct _${file_base} ${file_base}_t;
+
+/**
+ *  ${file_base} internal structure.
+ */
+struct _${file_base} {
+  /**
+   * Base class object.
+   */
+  ADPU2_t super;
+
+  /* DPU variables should be added here. */
+};
+
+
+/* Public API declaration */
+/**************************/
+
+/**
+ * Allocate an instance of _${file_base} in the framework heap.
+ *
+ * @return a pointer to the generic object ::IDPU2 if success,
+ *         or NULL if out of memory error occurs.
+ */
+IDPU2_t *${file_base}_Alloc(void);
+
+/**
+ * Allocate an instance of ${file_base}_t in a memory block specified by the application.
+ * The size of the memory block must be greater or equal to sizeof(${file_base}_t).
+ * This allocator allows the application to avoid the dynamic allocation.
+ *
+ * \code
+ * ${file_base}_t dpu;
+ * ${file_base}_StaticAlloc(&amp;dpu);
+ * \endcode
+ *
+ * @param p_mem_block [IN] specify a memory block allocated by the application.
+ *        The size of the memory block must be greater or equal to sizeof(${file_base}_t).
+ * @return a pointer to the generic object ::IDPU2_t if success,
+ * or NULL if out of memory error occurs.
+ */
+IDPU2_t *${file_base}_StaticAlloc(void *p_mem_block);
+
+/**
+ * Initialize the DPU.
+ * @TODO: this functoin is a placeolder.
+ *        A developer must add DPU specific initialization parameters.
+ *
+ * @param _this [IN] specifies an object instance.
+ * @return SYS_NO_ERROR_CODE if success, an application specific error code otherwise.
+ */
+sys_error_code_t ${file_base}_Init(${file_base}_t *_this/* ADD DPU SPECIFIC PARAMETERS */);
+
+
+/* Inline functions definition */
+/*******************************/
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* ${include_guard_symbol} */</template></templates>

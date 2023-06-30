@@ -118,6 +118,7 @@ where:
 - `serie` - **STM32H7**, only supported option for *Getting Started*.
 - `IDE` -**GCC**, only supported option for *Getting Started*.
 - `verbosity` - *0* or *1*. Mode 0 is silent, and mode 1 displays messages when building and flashing C application on STM32 target.
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **7.3.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `footprints_on_target` - **'STM32H747I-DISCO'** to use **Developer Cloud Services** to benchmark model and generate C code, else keep **False** (i.e. only local download of **STM32Cube.AI** will be used to get model footprints and C code w/o inference time).
 - `path_to_stm32ai` - *Path* to stm32ai executable file to use local download, else **False**.
@@ -182,6 +183,7 @@ where:
 
 - `quantize` - *Boolean*, if True model will be quantized, else False.
 - `evaluate` - *Boolean*, if True evaluate quantized model if validation or test sets are provided, else False.
+- `quantization_dataset` - Path to the quantization dataset, the dataset should respect the same structure of the training set described in [Download the dataset and extract it](../training/README.md#1-download-the-dataset-and-extract-it),  if not provided the training set is used by default to quantize the model.
 - `quantizer` - *String*, only option is "TFlite_converter" which will convert model trained weights from float to integer values. The quantized model will be saved in TensorFlow Lite format.
 - `quantization_type` - *String*, only option is "PTQ",i.e. "Post-Training Quantization".
 - `quantization_input_type` - **int8** or **uint8**, only supported options for *getting started*.

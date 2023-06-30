@@ -134,10 +134,10 @@ static inline EPMClass AMTExGetPMClass(AManagedTaskEx *_this);
 
 /**
  * This is the default control loop of a managed task.
- * @param pParams [IN] specify a pointer to the task object:
+ * @param nParams [IN] specify a pointer to the task object:
  * AManagedTaskEx *pTask = (AManagedTaskEx*)pParams;
  */
-void AMTExRun(void *pParams);
+VOID AMTExRun(ULONG nParam);
 
 
 // Inline functions definition

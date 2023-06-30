@@ -18,7 +18,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "app_sensor.h"
-#include "vl53l5cx_plugin_xtalk.h"
+#include "vl53lmz_plugin_xtalk.h"
 
 /* Global variables ----------------------------------------------------------*/
 extern AppConfig_TypeDef App_Config;
@@ -29,48 +29,55 @@ extern AppConfig_TypeDef App_Config;
 I2C_HandleTypeDef hi2c1;
 
 /* Private function prototypes -----------------------------------------------*/
-static uint8_t apps_layer_vl53l5cx_Configure(AppConfig_TypeDef *App_Config);
+static uint8_t apps_layer_vl53lmz_Configure(AppConfig_TypeDef *App_Config);
 
 /* Private function definitions ----------------------------------------------*/
 
 /**
- * @brief Configure the VL53L5CX sensor
+ * @brief Configure the VL53LMZ sensor
  * @param (AppConfig_TypeDef) *App_Config : configuration to be applied
  * @return (int) status : 0 if OK
  */
-static uint8_t apps_layer_vl53l5cx_Configure(AppConfig_TypeDef *App_Config)
+static uint8_t apps_layer_vl53lmz_Configure(AppConfig_TypeDef *App_Config)
 {
   uint8_t status = 0;
 
-  status = vl53l5cx_set_resolution(&(App_Config->L5Dev),
-      App_Config->Params.Resolution==RESOLUTION_16 ? VL53L5CX_RESOLUTION_4X4 : VL53L5CX_RESOLUTION_8X8);
-  if (status != VL53L5CX_STATUS_OK){
-    printf("ERROR at %s(%d) : vl53l5cx_set_resolution failed : %d\n",__func__, __LINE__,status);
+  status = vl53lmz_set_resolution(&(App_Config->ToFDev),
+      App_Config->Params.Resolution==RESOLUTION_16 ? VL53LMZ_RESOLUTION_4X4 : VL53LMZ_RESOLUTION_8X8);
+  if (status != VL53LMZ_STATUS_OK){
+    printf("ERROR at %s(%d) : vl53lmz_set_resolution failed : %d\n",__func__, __LINE__,status);
     return(status);
   }
 
-  status = vl53l5cx_set_ranging_frequency_hz(&(App_Config->L5Dev), (MILLIHERTZ_TO_HERTZ/App_Config->Params.RangingPeriod));
-  if (status != VL53L5CX_STATUS_OK){
-    printf("ERROR at %s(%d) : vl53l5cx_set_ranging_period_ms failed : %d\n",__func__, __LINE__,status);
+  status = vl53lmz_set_ranging_frequency_hz(&(App_Config->ToFDev), (MILLIHERTZ_TO_HERTZ/App_Config->Params.RangingPeriod));
+  if (status != VL53LMZ_STATUS_OK){
+    printf("ERROR at %s(%d) : vl53lmz_set_ranging_period_ms failed : %d\n",__func__, __LINE__,status);
     return(status);
   }
 
-  status = vl53l5cx_set_integration_time_ms(&(App_Config->L5Dev), App_Config->Params.IntegrationTime);
-  if (status != VL53L5CX_STATUS_OK){
-    printf("ERROR at %s(%d) : vl53l5cx_set_integration_time_ms failed : %d\n",__func__, __LINE__,status);
+  status = vl53lmz_set_integration_time_ms(&(App_Config->ToFDev), App_Config->Params.IntegrationTime);
+  if (status != VL53LMZ_STATUS_OK){
+    printf("ERROR at %s(%d) : vl53lmz_set_integration_time_ms failed : %d\n",__func__, __LINE__,status);
     return(status);
   }
 
-  status = vl53l5cx_set_xtalk_margin(&(App_Config->L5Dev), XTALK_MARGIN);
-  if (status != VL53L5CX_STATUS_OK){
-    printf("ERROR at %s(%d) : vl53l5cx_set_xtalk_margin failed : %d\n",__func__, __LINE__,status);
+  status = vl53lmz_set_xtalk_margin(&(App_Config->ToFDev), XTALK_MARGIN);
+  if (status != VL53LMZ_STATUS_OK){
+    printf("ERROR at %s(%d) : vl53lmz_set_xtalk_margin failed : %d\n",__func__, __LINE__,status);
     return(status);
   }
 
   /* Set Closest target first */
-  status = vl53l5cx_set_target_order(&(App_Config->L5Dev), VL53L5CX_TARGET_ORDER_CLOSEST);
-  if (status != VL53L5CX_STATUS_OK){
-    printf("ERROR at %s(%d) : vl53l5cx_set_target_order failed : %d\n",__func__, __LINE__,status);
+  status = vl53lmz_set_target_order(&(App_Config->ToFDev), VL53LMZ_TARGET_ORDER_CLOSEST);
+  if (status != VL53LMZ_STATUS_OK){
+    printf("ERROR at %s(%d) : vl53lmz_set_target_order failed : %d\n",__func__, __LINE__,status);
+    return(status);
+  }
+
+  /* Sharpener sets to 5 */
+  status = vl53lmz_set_sharpener_percent(&(App_Config->ToFDev), 5);
+  if (status != VL53LMZ_STATUS_OK){
+    printf("ERROR at %s(%d) : vl53lmz_set_sharpener_percent failed : %d\n",__func__, __LINE__,status);
     return(status);
   }
 
@@ -106,16 +113,16 @@ void Sensor_Init(AppConfig_TypeDef *App_Config)
   }
 
   /* Initialize the sensor platform */
-  if (l5_platform_init(&(App_Config->L5Dev.platform)) < 0)
+  if (LMZ_platform_init(&(App_Config->ToFDev.platform)) < 0)
   {
-    printf("l5_platform_init failed\n");
+    printf("LMZ_platform_init failed\n");
     Error_Handler();
   }
 
   /* Initialize the sensor */
-  if (vl53l5cx_init(&(App_Config->L5Dev)) != VL53L5CX_STATUS_OK)
+  if (vl53lmz_init(&(App_Config->ToFDev)) != VL53LMZ_STATUS_OK)
   {
-    printf("vl53l5cx_init failed\n");
+    printf("vl53lmz_init failed\n");
     Error_Handler();
   }
 
@@ -132,17 +139,17 @@ void Sensor_StartRanging(AppConfig_TypeDef *App_Config)
   if (App_Config->params_modif)
   {
     /* Configure the sensor */
-    if (apps_layer_vl53l5cx_Configure(App_Config) != VL53L5CX_STATUS_OK)
+    if (apps_layer_vl53lmz_Configure(App_Config) != VL53LMZ_STATUS_OK)
     {
-      printf("VL53L5CX_Configure failed\n");
+      printf("VL53LMZ_Configure failed\n");
       Error_Handler();
     }
   }
 
   /* Start the sensor */
-  if (vl53l5cx_start_ranging(&(App_Config->L5Dev)) != VL53L5CX_STATUS_OK)
+  if (vl53lmz_start_ranging(&(App_Config->ToFDev)) != VL53LMZ_STATUS_OK)
   {
-    printf("vl53l5cx_start_ranging failed\n");
+    printf("vl53lmz_start_ranging failed\n");
     Error_Handler();
   }
 
@@ -162,20 +169,20 @@ void Sensor_GetRangingData(AppConfig_TypeDef *App_Config)
   if (App_Config->params_modif)
   {
     /* Configure the sensor */
-    if (apps_layer_vl53l5cx_Configure(App_Config) != VL53L5CX_STATUS_OK)
+    if (apps_layer_vl53lmz_Configure(App_Config) != VL53LMZ_STATUS_OK)
     {
-      printf("VL53L5CX_Configure failed\n");
+      printf("VL53LMZ_Configure failed\n");
       Error_Handler();
     }
   }
 
   /* Wait for the sensor to get data */
-  if (wait_for_l5_interrupt(&(App_Config->L5Dev.platform), &(App_Config->IntrCount)) == 0)
+  if (wait_for_ToF_interrupt(&(App_Config->ToFDev.platform), &(App_Config->IntrCount)) == 0)
   {
     /* Get data from the sensor */
-    if (vl53l5cx_get_ranging_data(&(App_Config->L5Dev), &(App_Config->RangingData)) != VL53L5CX_STATUS_OK)
+    if (vl53lmz_get_ranging_data(&(App_Config->ToFDev), &(App_Config->RangingData)) != VL53LMZ_STATUS_OK)
     {
-      printf("vl53l5cx_get_ranging_data failed\n");
+      printf("vl53lmz_get_ranging_data failed\n");
       Error_Handler();
     }
     /* Set the flat indicating a new data has been received */
@@ -200,9 +207,9 @@ void Sensor_StopRanging(AppConfig_TypeDef *App_Config)
   if (App_Config->app_run)
   {
     /* Stop the sensor */
-    if (vl53l5cx_stop_ranging(&(App_Config->L5Dev)) != VL53L5CX_STATUS_OK)
+    if (vl53lmz_stop_ranging(&(App_Config->ToFDev)) != VL53LMZ_STATUS_OK)
     {
-      printf("vl53l5cx_stop_ranging failed\n");
+      printf("vl53lmz_stop_ranging failed\n");
       Error_Handler();
     }
   }

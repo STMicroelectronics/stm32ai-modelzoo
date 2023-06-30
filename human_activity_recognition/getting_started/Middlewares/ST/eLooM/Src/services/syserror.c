@@ -21,11 +21,7 @@
 
 #include "services/systp.h"
 #include "services/syserror.h"
-/* MISRA messages linked to FreeRTOS include are ignored */
-/*cstat -MISRAC2012-* */
-#include "FreeRTOS.h"
-#include "task.h"
-/*cstat +MISRAC2012-* */
+
 
 sys_error_t g_nSysError = {0};
 
@@ -43,15 +39,9 @@ void sys_error_handler(void)
 #if defined(DEBUG)
 	__asm volatile ("bkpt 0");
 #else
-	if (SYS_IS_CALLED_FROM_ISR()) {
-		taskENTER_CRITICAL_FROM_ISR();
-	}
-	else {
-		taskENTER_CRITICAL();
-	}
-
+  __disable_irq();
 	while(1) {
-		__asm volatile( "NOP" );
+      __asm volatile( "NOP" );
 	}
 #endif
 }

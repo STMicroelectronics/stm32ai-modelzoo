@@ -41,6 +41,7 @@ model:
 quantization:
   quantize: True
   evaluate: True
+  quantization_dataset:
   quantizer: TFlite_converter
   quantization_type: PTQ
   quantization_input_type: uint8
@@ -48,6 +49,7 @@ quantization:
   export_dir: quantized_models
 
 stm32ai:
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: STM32H747I-DISCO
   path_to_stm32ai: C:/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe

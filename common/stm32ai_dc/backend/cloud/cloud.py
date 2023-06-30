@@ -41,7 +41,7 @@ class CloudBackend(Stm32AiBackend):
             if (latest):
                 self.version = latest.get('version', None)
                 print(
-                    f"[WARN] It will use the latest version by default ({latest['version']})")
+                    f"[WARN] It will use the latest version by default ({self.version})")
 
         if username is None or password is None:
             # Try to use previous tokens saved in home directory
@@ -71,7 +71,7 @@ class CloudBackend(Stm32AiBackend):
                 details='Please check your credentials')
 
         self.user_service = UserService(self.auth_token)
-        self.stm32ai_service = Stm32AiService(self.auth_token, version)
+        self.stm32ai_service = Stm32AiService(self.auth_token, self.version)
         self.file_service = FileService(self.auth_token)
         self.benchmark_service = BenchmarkService(self.auth_token)
 

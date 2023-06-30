@@ -30,13 +30,13 @@ extern "C" {
 #include "syslowpower.h"
 /* MISRA messages linked to FreeRTOS include are ignored */
 /*cstat -MISRAC2012-* */
-#include "FreeRTOS.h"
+#include "tx_api.h"
 /*cstat -MISRAC2012-* */
 
 /**
  * Specifies the maximum number of errors that can be tracked by a managed task.
  */
-#define MT_MAX_ERROR_COUNT       0x7U
+#define MT_MAX_ERROR_COUNT       0x3U
 
 #ifndef MT_ALLOWED_ERROR_COUNT
 /**
@@ -45,6 +45,8 @@ extern "C" {
  */
 #define MT_ALLOWED_ERROR_COUNT   0x2U
 #endif
+
+#define AMT_MS_TO_TICKS( xTimeInMs ) ( (uint32_t) (((uint32_t )(xTimeInMs) * (uint32_t)TX_TIMER_TICKS_PER_SECOND) / (uint32_t)1000))
 
 
 /**
@@ -86,13 +88,29 @@ static inline sys_error_code_t AMTHardwareInit(AManagedTask *_this, void *pParam
  * @param _this [IN] specifies a task object pointer.
  * @param pvTaskCode [OUT] used by the application to specify the task main function.
  * @param pcName [OUT] used by the application to specify a descriptive name for the task.
- * @param pnStackDepth [OUT] used by the application to specify the task stack size.
- * @param pxPriority [OUT] used by the application to specify the task priority.
- * @param pParams [OUT] specifies a pointer to the parameters passed from the application to the task.
+ * @param pvStackStart [OUT] used by the application to specify the start address of the stack. If it is NULL, the the stack is allocated in the system main memory pool.
+ * @param pnStackSize [OUT] used by the application to specify the task stack size.
+ * @param pnPriority [OUT] used by the application to specify the task priority. Legal values range from 0 through (TX_MAX_PRIORITIES-1), where a value of 0 represents the highest priority.
+ * @param pnPreemptThreshold [OUT] used by the application to specify the task preemptive threshold.
+ *        Highest priority level (0 through (TX_MAX_PRIORITIES-1)) of disabled preemption. Only priorities higher than this
+ *        level are allowed to preempt this thread. This value must be less than or equal to the specified priority.
+ *        A value equal to the thread priority disables preemption-threshold.
+ * @param pnTimeSlice [OUT] Number of timer-ticks this thread is allowed to run before other ready threads of the same
+ *        priority are given a chance to run. Note that using preemption-threshold disables time-slicing.
+ *        Legal time-slice values range from 1 to 0xFFFFFFFF (inclusive).
+ *        A value of TX_NO_TIME_SLICE (a value of 0) disables time-slicing of this thread.
+ * @param pnAutoStart [OUT] Specifies whether the thread starts immediately or is placed in a suspended state.
+ *        Legal options are TX_AUTO_START (0x01) and TX_DONT_START (0x00). If TX_DONT_START is specified,
+ *        the application must later call tx_thread_resume in order for the thread to run.
+ * @param npParams [OUT] A 32-bit value that is passed to the thread's entry function when it first executes. The use for this input is determined exclusively by the application.
  * @return \a SYS_NO_ERROR_CODE if success, a task specific error code otherwise. If the function
  * fails the task creation process is stopped.
  */
-static inline sys_error_code_t AMTOnCreateTask(AManagedTask *_this, TaskFunction_t *pvTaskCode, const char **pcName, unsigned short *pnStackDepth, void **pParams, UBaseType_t *pxPriority);
+static inline sys_error_code_t AMTOnCreateTask(AManagedTask *_this, tx_entry_function_t *pvTaskCode, CHAR **pcName,
+    VOID **pvStackStart, ULONG *pnStackSize,
+    UINT *pnPriority, UINT *pnPreemptThreshold,
+    ULONG *pnTimeSlice, ULONG *pnAutoStart,
+    ULONG *pnParams);
 
 /**
  * Task specific function called by the framework when the system is entering a specific power mode, in order to
@@ -212,14 +230,14 @@ static inline boolean_t AMTIsPowerModeSwitchPending(AManagedTask *_this);
  *        The number of elements of the array must be equal to the number of states of the PM state machine.
  * @return SYS_NO_ERROR_CODE if success, an error code otherwise.
  */
-static inline sys_error_code_t AMTSetPMStateRemapFunc(AManagedTask *_this, EPowerMode *pPMState2PMStateMap);
+static inline sys_error_code_t AMTSetPMStateRemapFunc(AManagedTask *_this, const EPowerMode *pPMState2PMStateMap);
 
 /**
  * This is the default control loop of a managed task.
  * @param pParams [IN] specify a pointer to the task object:
  * AManagedTask *pTask = (AManagedTask*)pParams;
  */
-void AMTRun(void *pParams);
+VOID AMTRun(ULONG pParams);
 
 
 #ifdef __cplusplus

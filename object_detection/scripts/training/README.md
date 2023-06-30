@@ -146,6 +146,7 @@ where:
 
 - `quantize` - *Boolean*, if True model will be quantized, else False.
 - `evaluate` - *Boolean*, if True evaluate quantized model, else False.
+- `quantization_dataset` - Path to the quantization dataset, the dataset should respect the same structure of the training set described in [Download the dataset and extract it](#1-download-the-dataset-and-extract-it),  if not provided the training set is used by default to quantize the model.
 - `quantizer` - *String*, only option is "TFlite_converter" which will convert model trained weights from float to integer values. The quantized model will be saved in TensorFlow Lite format.
 - `quantization_type` - *String*, only option is "PTQ",i.e. "Post-Training Quantization". 
 - `quantization_input_type` - *String*, can be "int8", "uint8" or "float", represents the quantization type for the model input.
@@ -161,6 +162,7 @@ Make Sure to add the path to the stm32ai excutable under **path_to_stm32ai**, el
 ![plot](./doc/cubeai_config.JPG)
 
 where:
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **7.3.0**.
 - `optimization` - *String*, defines the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `footprints_on_target` - Specifies board name to evaluate the model inference time on real stm32 target, e.g. **'STM32H747I-DISCO'** (see [more](./doc/boards.json)), else keep **False**.
 - `path_to_stm32ai` - *Path* to stm32ai executable file.

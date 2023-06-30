@@ -48,7 +48,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Application/Network/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Application/NUCLEO-F401RE/Inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Middlewares/ST/STM32_AI_Runtime/Inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Drivers/BSP/Components/VL53L5CX}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Drivers/BSP/Components/VL53LMZ}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Drivers/BSP/NUCLEO-F401RE}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Drivers/CMSIS/Include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HandPosture_GettingStarted/Drivers/STM32F4xx_HAL_Driver/Inc}&quot;"/>
@@ -89,7 +89,7 @@
 						<entry excluding="STM32CubeIDE" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Application/NUCLEO-F401RE"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Application/NUCLEO-F401RE/STM32CubeIDE"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Application/Network"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Drivers/BSP/Components/VL53L5CX"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Drivers/BSP/Components/VL53LMZ"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Drivers/BSP/NUCLEO-F401RE"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Drivers/STM32F4xx_HAL_Driver/Src"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="Middlewares/ST/STM32_AI_Runtime/Inc"/>

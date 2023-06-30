@@ -28,8 +28,16 @@
 #include <stdlib.h>
 
 /**
- * @brief Structure VL53L5CX_Platform needs to be filled by the customer,
- * depending on his platform. At least, it contains the VL53L5CX I2C address.
+ * @brief Structure VL53LMZ_Platform needs to be filled by the customer,
+ * depending on his platform. At least, it contains the VL53LMZ I2C address.
+ * Some additional fields can be added, as descriptors, or platform
+ * dependencies. Anything added into this structure is visible into the platform
+ * layer.
+ */
+
+/**
+ * @brief Structure VL53LMZ_Platform needs to be filled by the customer,
+ * depending on his platform. At least, it contains the VL53LMZ I2C address.
  * Some additional fields can be added, as descriptors, or platform
  * dependencies. Anything added into this structure is visible into the platform
  * layer.
@@ -42,7 +50,10 @@ typedef struct
 	/* Example for most standard platform : I2C address of sensor */
     uint16_t  			address;
 
-} VL53L5CX_Platform;
+    uint8_t 			module_type;  // MZ-AI specific field used by sensor_command.c
+
+} VL53LMZ_Platform;
+
 
 /*
  * @brief The macro below is used to define the number of target per zone sent
@@ -51,7 +62,7 @@ typedef struct
  * zone means a lower RAM). The value must be between 1 and 4.
  */
 
-#define 	VL53L5CX_NB_TARGET_PER_ZONE		1U
+#define 	VL53LMZ_NB_TARGET_PER_ZONE		1U
 
 /*
  * @brief The macro below can be used to avoid data conversion into the driver.
@@ -60,7 +71,7 @@ typedef struct
  * an increased precision.
  */
 
- #define 	VL53L5CX_USE_RAW_FORMAT
+#define 	VL53LMZ_USE_RAW_FORMAT
 
 /*
  * @brief All macro below are used to configure the sensor output. User can
@@ -70,17 +81,16 @@ typedef struct
 
 /**
  * @brief Function used to initialize platform.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform*) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @return (uint8_t) status : 0 if OK
  */
 
-uint8_t l5_platform_init(
-    VL53L5CX_Platform  *p_platform);
+uint8_t LMZ_platform_init(
+		VL53LMZ_Platform	*p_platform);
 
 /**
- * @brief Mandatory function used to read one single byte.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform*) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @param (uint16_t) Address : I2C location of value to read.
  * @param (uint8_t) *p_values : Pointer of value to read.
@@ -88,13 +98,13 @@ uint8_t l5_platform_init(
  */
 
 uint8_t RdByte(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t *p_value);
 
 /**
  * @brief Mandatory function used to write one single byte.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform*) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @param (uint16_t) Address : I2C location of value to read.
  * @param (uint8_t) value : Pointer of value to write.
@@ -102,13 +112,13 @@ uint8_t RdByte(
  */
 
 uint8_t WrByte(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t value);
 
 /**
  * @brief Mandatory function used to read multiples bytes.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform*) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @param (uint16_t) Address : I2C location of values to read.
  * @param (uint8_t) *p_values : Buffer of bytes to read.
@@ -117,14 +127,14 @@ uint8_t WrByte(
  */
 
 uint8_t RdMulti(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t *p_values,
 		uint32_t size);
 
 /**
  * @brief Mandatory function used to write multiples bytes.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform*) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @param (uint16_t) Address : I2C location of values to write.
  * @param (uint8_t) *p_values : Buffer of bytes to write.
@@ -133,23 +143,19 @@ uint8_t RdMulti(
  */
 
 uint8_t WrMulti(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t *p_values,
 		uint32_t size);
 
 /**
- * @brief Optional function, only used to perform an hardware reset of the
- * sensor. This function is not used in the API, but it can be used by the host.
- * This function is not mandatory to fill if user don't want to reset the
- * sensor.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
- * structure.
- * @return (uint8_t) status : 0 if OK
+ * @brief This function reset the sensor, setting pins LPN, AVVD and VDDIO to 0,
+ * then to 1. This implementation is optional.
+ * @param (VL53LMZ_Platform) *p_platform : VL53LMZ platform structure.
  */
 
 uint8_t Reset_Sensor(
-		VL53L5CX_Platform *p_platform);
+		VL53LMZ_Platform *p_platform);
 
 /**
  * @brief Mandatory function, used to swap a buffer. The buffer size is always a
@@ -161,30 +167,30 @@ uint8_t Reset_Sensor(
 void SwapBuffer(
 		uint8_t 		*buffer,
 		uint16_t 	 	 size);
-
 /**
  * @brief Mandatory function, used to wait during an amount of time. It must be
  * filled as it's used into the API.
- * @param (VL53L5CX_Platform*) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform*) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @param (uint32_t) TimeMs : Time to wait in ms.
  * @return (uint8_t) status : 0 if wait is finished.
  */
 
 uint8_t WaitMs(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint32_t TimeMs);
+
 
 /**
  * @brief Function used to wait for l5 interrupt.
- * @param (VL53L5CX_Platform *) p_platform : Pointer of VL53L5CX platform
+ * @param (VL53LMZ_Platform *) p_platform : Pointer of VL53LMZ platform
  * structure.
  * @param (volatile int *) IntrCount : Pointer to l5 GPIO interrupt counter.
  * @return (uint8_t) status : 0 if l5 interrupt detected.
  */
 
-uint8_t wait_for_l5_interrupt(
-    VL53L5CX_Platform *p_platform,
-    volatile int *IntrCount);
+uint8_t wait_for_ToF_interrupt(
+		VL53LMZ_Platform *p_platform,
+	    volatile int *IntrCount);
 
 #endif	// _PLATFORM_H_

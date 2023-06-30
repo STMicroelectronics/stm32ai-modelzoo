@@ -38,9 +38,10 @@ quantization:
   export_dir: quantized_models
 
 stm32ai:
-  path_to_stm32ai: C:/STMicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
-  optimization: balanced # supported options are : balanced, time, ram
-  footprints_on_target: STM32L4R9I-DISCO
+  path_to_stm32ai: C:/STMicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
+  version: 8.1.0
+  optimization: balanced
+  footprints_on_target: B-U585I-IOT02A
 
 mlflow:
   uri: ./mlruns

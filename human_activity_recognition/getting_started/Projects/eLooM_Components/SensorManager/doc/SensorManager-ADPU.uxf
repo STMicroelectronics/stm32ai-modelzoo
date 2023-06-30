@@ -1,0 +1,240 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>5</zoom_level><element><id>Relation</id><coordinates><x>530</x><y>260</y><w>70</w><h>20</h></coordinates><panel_attributes>lt=-
+m1=   0..n</panel_attributes><additional_attributes>120;10;10;10</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>240</x><y>160</y><w>70</w><h>50</h></coordinates><panel_attributes>IProcessEventSrc
+--
+AddEvenlListener
+RemoveEventListener</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>185</y><w>220</w><h>155</h></coordinates><panel_attributes>/ADPU/
+--
+sensors: *ISensorSource
+nextDPU: ADPU
+isADPUAttached: bool
+SensorEventListener
+ProcessEventSrc
+--
++ GetEventSrcIF()
++ GetEventListenerIF()
+--
+Responsibilities
+-- Process data form a data source
+-- A Process unit can be:
+--- simple data buffering
+--- to execute an op on the data 
+--- re-sampling
+-- To link with another ADPU
+-- To notify the registered actors when a new data processed is ready</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>510</x><y>50</y><w>195</w><h>85</h></coordinates><panel_attributes>CircularBuffer
+--
++ Alloc(..): CircularBuffer*
++ AllocStatic(..): CircularBuffer*
+--
+Responsibilities
+-- Buffer data from a data source
+--- Overllapping
+-- Notify (who) when a data buffer is ready?
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>550</x><y>130</y><w>25</w><h>145</h></coordinates><panel_attributes>lt=.
+m2=0..n</panel_attributes><additional_attributes>10;270;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>325</y><w>95</w><h>75</h></coordinates><panel_attributes>lt=&lt;-
+m1=0..1
+connected</panel_attributes><additional_attributes>10;30;10;130;170;130;170;10;150;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>290</x><y>455</y><w>280</w><h>50</h></coordinates><panel_attributes>FFT_DPU
+--
++ Alloc(length, inDataType) 
++ Process()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>130</x><y>225</y><w>50</w><h>15</h></coordinates><panel_attributes>IEvent</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>145</x><y>235</y><w>15</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;40</additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>255</y><w>100</w><h>50</h></coordinates><panel_attributes>ProcessEvent
+--
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>315</x><y>410</y><w>50</w><h>15</h></coordinates><panel_attributes>Filter example</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>470</x><y>500</y><w>65</w><h>45</h></coordinates><panel_attributes>lt=-()
+m2=
+
+GetFrequencyBin()
+
+
+</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>455</y><w>90</w><h>40</h></coordinates><panel_attributes>lt=)-
+m1=
+
+SetFFTWin()
+SetFFTSize()
+</panel_attributes><additional_attributes>20;20;160;20</additional_attributes></element><element><id>Relation</id><coordinates><x>340</x><y>130</y><w>15</w><h>65</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>UMLNote</id><coordinates><x>135</x><y>315</y><w>175</w><h>55</h></coordinates><panel_attributes>DispatchEvents()
+{
+SendEvent(const ProcessEvent)
+NotifyDataReadyProcess(ProcessEvent, nextDPU)
+}</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>195</x><y>500</y><w>70</w><h>15</h></coordinates><panel_attributes>/AManagedTaskEx/
+bg=#b4bcde</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>510</y><w>35</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;50;70</additional_attributes></element><element><id>Relation</id><coordinates><x>350</x><y>335</y><w>15</w><h>85</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>UMLPackage</id><coordinates><x>575</x><y>180</y><w>680</w><h>705</h></coordinates><panel_attributes></panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>225</x><y>215</y><w>75</w><h>15</h></coordinates><panel_attributes>ISensorEventListener</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>295</x><y>215</y><w>30</w><h>15</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>40;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>250</x><y>25</y><w>205</w><h>110</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+/IDPU/
+--
+/+ Init(): sys_error_code_t/
+/+ AttachToSensor(sensor:ISensorObserver, buffer, size):sys_eeror_code_t/
+/+ DetachFromSensor(sensor:ISensorObserver):sys_eeror_code_t/
+/+ AttachInputADPU(nextPU:IDPU, buffer, size): sys_error_code_t/
+/+ DetachFromADPU(nextPU): sys_error_code_t/
+/+ DispatchEvents(ProcessEvent *pxEvt)/
+/+ NotifyDPUDataReady(ProcessEvent *pxEvt)/
+/+ RegisterNotifyCallback(CallbackHandler_t callback)/
+/+ Process()/</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>500</x><y>130</y><w>35</w><h>65</h></coordinates><panel_attributes>lt=-
+m2=0..1</panel_attributes><additional_attributes>10;110;40;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>205</x><y>545</y><w>120</w><h>40</h></coordinates><panel_attributes>FDM_Task
+--
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>310</x><y>500</y><w>15</w><h>55</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>335</y><w>15</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>290</y><w>70</w><h>15</h></coordinates><panel_attributes>AI_SP_StreamData_t</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>65</x><y>285</y><w>35</w><h>20</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>50;10;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>940</x><y>790</y><w>70</w><h>15</h></coordinates><panel_attributes>/AEventSrc/
+bg=#b4bcde
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>970</x><y>800</y><w>15</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;-
+group=group-1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>1020</x><y>840</y><w>80</w><h>25</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+generate &gt;
+group=group-1</panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1095</x><y>790</y><w>70</w><h>15</h></coordinates><panel_attributes>/IEvent/
+bg=#b4bcde
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1125</x><y>800</y><w>15</w><h>35</h></coordinates><panel_attributes>lt=&lt;&lt;-
+group=group-1</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>860</x><y>840</y><w>75</w><h>25</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+&lt; notify
+group=group-1</panel_attributes><additional_attributes>130;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>725</x><y>790</y><w>70</w><h>15</h></coordinates><panel_attributes>/IEventListener/
+bg=#b4bcde
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>755</x><y>800</y><w>15</w><h>45</h></coordinates><panel_attributes>lt=&lt;&lt;-
+group=group-1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>835</y><w>215</w><h>30</h></coordinates><panel_attributes>ISensorEventListener
+--
++OnNewDataReady(pxEvt:const SensorEvent*): sys_error_code_t
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1090</x><y>825</y><w>80</w><h>40</h></coordinates><panel_attributes>SensorEvent
+--
++p_data: const EMData_t*
++fTimeStamp: double
++sensor_id: uint16_t
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>925</x><y>835</y><w>100</w><h>30</h></coordinates><panel_attributes>SensorEvtSrc
+--
++SensorEventSrcAlloc(): IEventSrc
++SensorEventSrcFree(): void
+group=group-1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>215</y><w>205</w><h>70</h></coordinates><panel_attributes>/ISourceObservable/
+--
+/+ISourceGetId(): uint8_t/
+/+ISourceGetEventSrcIF(): IEventSrc */
+/+IGetDataInfo(): EMData_t/
+
+/+ISourceGetODR(float *p_measured, float *p_nominal): sys_error_code_t/
+/+ISourceGetFS(): float/
+/+ISourceGetSensitivity(): float/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>860</x><y>200</y><w>290</w><h>165</h></coordinates><panel_attributes>SensorManager
+--
+Sensors : ISensor_t vector
+n_sensors : uint16_t
+--
++SMGetSensorObserver(uint8_t id): ISourceObservable *
++SMGetNsensor(): uint16_t
++SMSensorSetODR(uint8_t id, float ODR): sys_error_code_t
++SMSensorSetFS(uint8_t id, float FS): sys_error_code_t
++SMSensorEnable(uint8_t id): sys_error_code_t
++SMSensorDisable(uint8_t id): sys_error_code_t
++SMSensorGetDescription(uint8_t id): SensorDescriptor_t
++SMSensorGetStatus(uint8_t id): SensorStatus_t
++SMDeviceGetDescription(SensorDescriptor_t *device_description):  sys_error_code_t
++SMGetSensorManager(): SensorManager_t
++GetnBytesPerSample(uint8_t id): uint32_t
+--
+Responsibilities
+--Store the information about the sensors in the device(through ISensor interface).
+--Give an abstract layer to interact with sensors (by the "id")
+--Give the descriptions of the device
+--Perform part of configuration (i.e BUS registration)
+--Note: The sensor registers itself to the SensorManager</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>690</x><y>280</y><w>15</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>790</x><y>320</y><w>80</w><h>20</h></coordinates><panel_attributes>lt=-
+m1=   0..n</panel_attributes><additional_attributes>140;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>990</x><y>405</y><w>240</w><h>75</h></coordinates><panel_attributes>/SIterator/
+--
+sensor_idx: uint16_t
+sensors_count: uint16_t
+p_sm: SensorManager_t *
+--
++SIInit(SensorManager_t *p_sm): sys_error_code_t
++SIHasNext(): bool
++SINext(): uint16_t
+--
+Allow to iterate through a sensors collection managed by a ::SensorManager_t.</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>965</x><y>530</y><w>60</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+</panel_attributes><additional_attributes>10;10;100;240</additional_attributes></element><element><id>Relation</id><coordinates><x>965</x><y>570</y><w>60</w><h>130</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+</panel_attributes><additional_attributes>10;10;100;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1015</x><y>595</y><w>160</w><h>70</h></coordinates><panel_attributes>SensorDescriptor_t
+--
++Name: char*
++SensorType: uint8_t
++pODR: float*
++pFS: float*
++DimensionsLabel: char**
++unit: char*
++pSamplesPerTimestamp: uint16_t*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1015</x><y>670</y><w>160</w><h>55</h></coordinates><panel_attributes>SensorStatus_t
+--
++FS: float
++Sensitivity: float
++IsActive: bool
++ODR: float
++MeasuredODR: float</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>735</x><y>470</y><w>235</w><h>295</h></coordinates><panel_attributes>&lt;&lt;Sensor&gt;&gt;
+xxx_Task
+--
+-pIRQConfig: MX_GPIOParams_t*
+-pCSConfig: MX_GPIOParams_t*
+-p_sensor_bus_if: ABusIF
+-sensor_if: ISensor_t
+-sensor_descriptor: const SensorDescriptor_t*
+-sensor_status: SensorStatus_t
+-data: EMData_t
+-id: uint8_t
+-p_sensor_data_buff: uint8_t*
+-p_event_src: IEventSrc
+-in_queue: TX_QUEUE
+-read_timer: TX_TIMER
+-timer_period_ms: ULONG
+-prev_timestamp: double
+--
++Alloc(void *pIRQConfig, void *pMLCConfig, void *pCSConfig): AManagedTaskEx*
++GetSensorIF(): SPI/I2CBusIF*
++GetEventSrcIF(): IEventSrc*
++GetxxxSensorIF(): ISourceObservable*
+--
+-ExecuteStepState1(): sys_error_code_t
+-ExecuteStepDatalog(): sys_error_code_t
+-SensorInit(): sys_error_code_t
+-SensorReadData(): sys_error_code_t
+-SensorRegister(): sys_error_code_t
+-SensorInitTaskParams(): sys_error_code_t
+-EnterLowPowerMode(): sys_error_code_t
+-ConfigureIrqPin(bool LowPower): sys_error_code_t
+-TimerCallbackFunction(ULONG): void
+-EXTI_Callback(uint16_t n_pin): void
+-GetOwnerFromISensorIF(ISensor_t *p_if): xxx_Task
+-PostReportToFront(SMMessage *pReport): sys_error_code_t
+-PostReportToBack(SMMessage *pReport): sys_error_code_t
+--
+Responsibilities
+--Read data from the sensor
+--Store the sensor Description and Status
+--Handle the sensor features (i.e ucf loaded)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>680</x><y>415</y><w>70</w><h>15</h></coordinates><panel_attributes>/AManagedTaskEx/
+bg=#b4bcde</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>710</x><y>425</y><w>35</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;160;50;160</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>965</x><y>710</y><w>75</w><h>75</h></coordinates><panel_attributes>IEventSrc
+--
+Init
+AddEventListener
+RemoveEventListener
+GetMaxListenerCount
+SendEvent</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>620</x><y>425</y><w>125</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=InQueue</panel_attributes><additional_attributes>230;180;10;180;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>415</y><w>70</w><h>15</h></coordinates><panel_attributes>QueueHandle_t
+fg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>775</x><y>385</y><w>15</w><h>95</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>310</y><w>205</w><h>80</h></coordinates><panel_attributes>/ISensor/
+--
+/+ISensorSetODR(float odr): sys_error_code_t/
+/+ISensorSetFS(float fs): sys_error_code_t/
+/+ISensorEnable(): sys_error_code_t/
+/+ISensorDisable(): sys_error_code_t/
+/+ISensorIsEnabled(): boolean_t/
+/+ISensorGetDescription(): SensorDescriptor_t/
+/+ISensorGetStatus(): SensorStatus_t/
+--
+One ISensor for each subsensor</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>405</y><w>170</w><h>45</h></coordinates><panel_attributes>/SensorRegister/
+--
++SMAddSensor(ISensor_t *pSensor): uint8_t
++SMRemoveSensor(ISensor_t *pSensor): sys_error_code_t
+--
+Register/Remove a sensor to/from ::SensorManager_t
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>360</y><w>15</w><h>55</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>445</y><w>15</w><h>35</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>1105</x><y>360</y><w>15</w><h>55</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>990</x><y>495</y><w>240</w><h>75</h></coordinates><panel_attributes>/SQuery/
+--
+iterator: SIterator_t
+--
++SQInit(SensorManager_t *p_sm): sys_error_code_t
++SQNextByName(const char *sensor_name): uint16_t
++SQNextByType(uint8_t sensor_type): uint16_t
++SQNextByNameAndType(const char *sensor_name, uint8_t sensor_type): uint16_t
++SQNextByStatusEnable(bool sensor_enable): uint16_t
+--
+Allow to query SensorManager through a ::SIterator_t obj</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1105</x><y>475</y><w>15</w><h>30</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element></diagram>

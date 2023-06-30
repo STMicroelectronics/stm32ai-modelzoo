@@ -141,38 +141,52 @@ void SystemClock_Config(void)
   */
 static void MX_GPIO_Init(void)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
 
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOH_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOH_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(FLEX_SPI_I2C_N_GPIO_Port, FLEX_SPI_I2C_N_Pin, GPIO_PIN_RESET);
+	/*Configure GPIO pin Output Level */
+	//Set I2C enable
+	HAL_GPIO_WritePin(FLEX_SPI_I2C_N_GPIO_Port, FLEX_SPI_I2C_N_Pin, GPIO_PIN_RESET);
+	// Sensor Reset
+	HAL_GPIO_WritePin(PWR_EN_C_GPIO_Port, PWR_EN_C_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(LPn_C_GPIO_Port, LPn_C_Pin, GPIO_PIN_RESET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(PWR_EN_C_GPIO_Port, PWR_EN_C_Pin, GPIO_PIN_SET);
+	HAL_Delay(100);
+	HAL_GPIO_WritePin(LPn_C_GPIO_Port, LPn_C_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, PWR_EN_C_Pin|LPn_C_Pin, GPIO_PIN_SET);
+	/*Configure GPIO pin : FLEX_SPI_I2C_N_Pin */
+	GPIO_InitStruct.Pin = FLEX_SPI_I2C_N_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(FLEX_SPI_I2C_N_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(I2C_RST_C_GPIO_Port, I2C_RST_C_Pin, GPIO_PIN_RESET);
+	/*Configure GPIO pin : INT_C_Pin */
+	GPIO_InitStruct.Pin = INT_C_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(INT_C_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : FLEX_SPI_I2C_N_Pin */
-  GPIO_InitStruct.Pin = FLEX_SPI_I2C_N_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(FLEX_SPI_I2C_N_GPIO_Port, &GPIO_InitStruct);
+	/*Configure GPIO pins : PWR_EN_C_Pin */
+	GPIO_InitStruct.Pin = PWR_EN_C_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(PWR_EN_C_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : INT_C_Pin */
-  GPIO_InitStruct.Pin = INT_C_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(INT_C_GPIO_Port, &GPIO_InitStruct);
+	/*Configure GPIO pins : LPn_C_Pin PWR_EN_L_Pin */
+	GPIO_InitStruct.Pin = LPn_C_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+	HAL_GPIO_Init(LPn_C_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : LD2_Pin */
   GPIO_InitStruct.Pin = LD2_Pin;
@@ -181,23 +195,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PWR_EN_C_Pin LPn_C_Pin */
-  GPIO_InitStruct.Pin = PWR_EN_C_Pin|LPn_C_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : I2C_RST_C_Pin */
-  GPIO_InitStruct.Pin = I2C_RST_C_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(I2C_RST_C_GPIO_Port, &GPIO_InitStruct);
+	/* EXTI interrupt init*/
+	HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+	HAL_NVIC_EnableIRQ(EXTI4_IRQn);
 
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+	HAL_Delay(100);
 
 }
 
@@ -225,6 +228,8 @@ static void Hardware_Init(AppConfig_TypeDef *App_Config_Ptr)
  */
 static void Software_Init(AppConfig_TypeDef *App_Config_Ptr)
 {
+  printf("\x1b[2J");
+  printf("\x1b[1;1H");
   printf("Hand Posture Getting Started version: %s\n", HANDPOSTURE_EXAMPLE_VERSION);
 
   /* Initialize application context values */

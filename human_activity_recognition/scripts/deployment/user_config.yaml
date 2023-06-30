@@ -13,9 +13,9 @@ pre_processing:
   preprocessing: True
 
 model:
-  model_type: {name : svc}
+  model_type: {name : ign}
   input_shape: [24,3,1]
-  model_path: ../../models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx
+  model_path: ../../models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5
   
 quantization:
   quantize: False
@@ -28,12 +28,13 @@ quantization:
 
 stm32ai:
   c_project_path: ../../getting_started
-  serie: STM32L4
+  serie: STM32U5
   IDE: GCC
   verbosity: 1
+  version: 8.1.0
   optimization: balanced
-  footprints_on_target: STM32L4R9I-DISCO
-  path_to_stm32ai: C:/STMicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
+  footprints_on_target: B-U585I-IOT02A
+  path_to_stm32ai: C:/STMicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.1.0/STM32CubeIDE/stm32cubeidec.exe
 
 mlflow:

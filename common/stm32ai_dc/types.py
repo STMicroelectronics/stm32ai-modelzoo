@@ -103,6 +103,9 @@ class CliParameters(typing.NamedTuple):
     allocateOutputs: bool = True
     """ Optional: When set to true, activations buffer will be also used to handle the output buffers. Defaults to True """
 
+    series: str = 'stm32f4'
+    """ Optional: Defines a serie which will be used to calculate more accurate memory footprint. Defaults to "stm32f4" """
+
     splitWeights: Optional[bool] = False
     """ Optional:  generate a C-data file with a C-table by layer (not supported with the optional '--binary' option) """
 
@@ -124,7 +127,7 @@ class CliParameters(typing.NamedTuple):
     """ Optional enable the prefetch of the compressed x4,x8 weights (extra space will be reserved in activations buffer) """
     # --------------------------------------------------------------------------------------
     #
-    # Generate Arguments
+    # Generate Arguments only
     # --------------------------------------------------------------------------------------
     binary: Optional[bool] = None
     """ Optional: generate model weights as a binary file """
@@ -144,14 +147,11 @@ class CliParameters(typing.NamedTuple):
     relocatable: Optional[bool] = None
     """ Optional:  generate model as a relocatable binary file """
 
-    series: str = 'stm32f4'
-    """ Optional: Defines a serie which will be used to calculate more accurate memory footprint. Defaults to "stm32f4" """
-
     noCFiles: Optional[bool] = False
     """ Optional: only the relocatable binary file is generated """
     # --------------------------------------------------------------------------------------
     #
-    # Validate Arguments
+    # Validate Arguments only
     # --------------------------------------------------------------------------------------
     batchSize: Optional[int] = None
     """ Optional: number of samples for the validation. Defaults to 10 """

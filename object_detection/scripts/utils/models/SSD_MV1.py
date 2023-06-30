@@ -257,7 +257,8 @@ def ssd_model(cfg, l2_reg=0.0005, activation='relu6', bn_dw=True,bn_pred=True, d
         ### Final predictions for all anchor boxes
         predictions = Concatenate(axis=2, name='predictions')([cls_softmax, bbox_preds, anchors])
 
-        model = Model(inputs=base_model.input, outputs=predictions)
+        training_model = Model(inputs=base_model.input, outputs=predictions)
+        inference_model = Model(inputs=base_model.input, outputs=[cls_softmax, bbox_preds, anchors])
 
         fmap_sizes = []
         fmap_sizes.append(fmap_0_size)
@@ -266,7 +267,7 @@ def ssd_model(cfg, l2_reg=0.0005, activation='relu6', bn_dw=True,bn_pred=True, d
         fmap_sizes.append(fmap_3_size)
         fmap_sizes.append(fmap_4_size)
 
-        return model, fmap_sizes
+        return inference_model, training_model, fmap_sizes
 
     elif cfg.model.input_shape[0] == 224:
         ###Get the first feature map from MobileNet
@@ -406,7 +407,8 @@ def ssd_model(cfg, l2_reg=0.0005, activation='relu6', bn_dw=True,bn_pred=True, d
         ### Final predictions for all anchor boxes
         predictions = Concatenate(axis=2, name='predictions')([cls_softmax, bbox_preds, anchors])
 
-        model = Model(inputs=base_model.input, outputs=predictions)
+        training_model = Model(inputs=base_model.input, outputs=predictions)
+        inference_model = Model(inputs=base_model.input, outputs=[cls_softmax, bbox_preds, anchors])
 
         fmap_sizes = []
         fmap_sizes.append(fmap_0_size)
@@ -416,7 +418,7 @@ def ssd_model(cfg, l2_reg=0.0005, activation='relu6', bn_dw=True,bn_pred=True, d
         fmap_sizes.append(fmap_4_size)
         fmap_sizes.append(fmap_5_size)
 
-        return model, fmap_sizes
+        return inference_model, training_model, fmap_sizes
     else:
         ###Get the first feature map from MobileNet
         fmap_0 = base_model.get_layer('conv_pw_5_relu').output # (32, 32)
@@ -553,7 +555,8 @@ def ssd_model(cfg, l2_reg=0.0005, activation='relu6', bn_dw=True,bn_pred=True, d
         ### Final predictions for all anchor boxes
         predictions = Concatenate(axis=2, name='predictions')([cls_softmax, bbox_preds, anchors])
 
-        model = Model(inputs=base_model.input, outputs=predictions)
+        training_model = Model(inputs=base_model.input, outputs=predictions)
+        inference_model = Model(inputs=base_model.input, outputs=[cls_softmax, bbox_preds, anchors])
 
         fmap_sizes = []
         fmap_sizes.append(fmap_0_size)
@@ -563,4 +566,4 @@ def ssd_model(cfg, l2_reg=0.0005, activation='relu6', bn_dw=True,bn_pred=True, d
         fmap_sizes.append(fmap_4_size)
         fmap_sizes.append(fmap_5_size)
 
-        return model, fmap_sizes
+        return inference_model, training_model, fmap_sizes

@@ -48,7 +48,12 @@ def main(cfg: DictConfig) -> None:
 
     # Build and Flash Getting Started
     if cfg.stm32ai.serie.upper() == "STM32H7" and cfg.stm32ai.IDE.lower() == "gcc":
-        stm32ai_deploy(cfg, debug=False)
+        if cfg.stm32ai.footprints_on_target == "STM32H747I-DISCO":
+            stm32ai_deploy(cfg, debug=False, stmaic_conf_filename = "stmaic_STM32H747I-DISCO.conf")
+        elif cfg.stm32ai.footprints_on_target == "NUCLEO-H743ZI2":
+            stm32ai_deploy(cfg, debug=False, stmaic_conf_filename = "stmaic_NUCLEO-H743ZI2.conf")
+        else:
+            raise TypeError("The hardware selected in cfg.stm32ai.footprints_on_target is not supported yet!")    
     else:
         raise TypeError("Options for cfg.stm32ai.serie and cfg.stm32ai.IDE not supported yet!")
 

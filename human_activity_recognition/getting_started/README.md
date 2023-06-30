@@ -1,48 +1,48 @@
-## __Sensing getting started Package__
+# __Sensing and Audio Getting Start Package__
 
-This project provides an STM32 Microcontroler embedded real time environement to execute [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) generated model targetting sensing application
+This project provides an STM32 Microcontroler embedded real time environement to execute [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) generated model targetting sensing and audio applications
 
-### __Keywords__
+## __Keywords__
 
-Getting started, model zoo, Sensing, X-CUBE-AI
+Getting Start, Model Zoo, Sensing, Audio, X-CUBE-AI
 
-### __Directory contents__
+## __Directory contents__
 
 This repository is structured as follows:
 
-| Directory                                                              | Content                                                   |
-|:---------------------------------------------------------------------- |:--------------------------------------------------------- |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart\STM32CubeIDE          | IDE project files                                          |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart                       | Getting start application                                 |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart\X-Cube-AI             | *Place holder* for AI model                             |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart\DPU                   | Digital processing units                                  |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart\SensorManager         | Sensor manager                                            |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart\signal_processing_lib | Signal processing utilities                               |
-| Projects\STM32L4R9ZI-STWIN\Applications\GetStart\mx                    | Hardware related application files                        |
-| Drivers                                                                | Hardware drivers & base port                              |
-| Middlewares\ST\eLooM                                                   | Application Framework                                     |
-| Middlewares\ST\STM32_AI_Library                                        | *Place holder* for AI runtime library                   |
-| Middlewares\ST\Third_Party\FreeRTOS                                    | Real time operating system                                |
+| Directory                                             | Content                                  |
+|:----------------------------------------------------- |:---------------------------------------- |
+| Projects\B-U585I-IOT02A\Applications\GS\STM32CubeIDE  | IDE project files                        |
+| Projects\B-U585I-IOT02A\Applications\GS\Core          | Getting start application                |
+| Projects\B-U585I-IOT02A\Applications\GS\X-Cube-AI     | *Place holder* for AI model              |
+| Projects\eLooM_Components\DPU                         | Digital processing units                 |
+| Projects\eLooM_Components\SensorManager               | Sensor manager                           |
+| Projects\eLooM_Components\EMData                      | Data format definition                   |
+| Projects\B-U585I-IOT02A\Applications\GS\mx            | Hardware related application files       |
+| Middlewares\ST\eLooM                                  | Application Framework                    |
+| Middlewares\ST\STM32_AI_Library                       | *Place holder* for AI runtime library    |
+| Middlewares\ST\Third_Party\FreeRTOS                   | Real time operating system               |
+| Drivers                                               | Hardware drivers & base port             |
 
-### __Hardware and software environment__
+## __Hardware and Software environment__
 
-This example runs on [STEVAL-STWINKT1B](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html)
+This example runs on [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html)
 
-#### __STM32CubeIDE tool installation__
+### __STM32CubeIDE tool installation__
 
 The STM32CubeIDE tool is required to manage an STM32 AI C-project. It allows to install in a simple way, the requested tools to compile, build and flash a firmware on a STM32 development board.
 
 Download [STM32CubeIDE](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide.html), extract the package and execute the installer.
 
-#### __X-CUBE-AI tool installation__
+### __X-CUBE-AI tool installation__
 
 [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) is an STM32Cube Expansion Package, which is part of the STM32Cube.AI ecosystem. It extends STM32CubeMX capabilities with automatic conversion of pretrained artificial intelligence algorithms, including neural network and classical machine learning models. It integrates also a generated optimized library into the user's project.
 
-This software is tested with [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) `v7.3.0`. It is advised that the user uses the same version to avoid any potential compaitability issues.
+This software is tested with [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) `v8.1.0`. It is advised that the user uses the same version to avoid any potential compatibility issues.
 
 The pack can be installed through [STM32CubeMX](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-configurators-and-code-generators/stm32cubemx.html) through the  *STM32CubeExpansion* pack mechanism.
 
-#### __Installation of the X-CUBE-AI runtime__
+### __Installation of the X-CUBE-AI runtime__
 
 Please copy
 
@@ -57,17 +57,19 @@ and
 
 ```bash
 <X_CUBE_AI-directory-path>
-  \- Middlewares/ST/AI/Lib/NetworkRuntime730_CM4_GCC.a
+  \- Middlewares/ST/AI/Lib/GCC/ARMCortexM33/NetworkRuntime810_CM33_GCC.a
 ```
 
 into the middleware project directory `'<getting-start-install-dir>/Middlewares/ST/STM32_AI_Library/Lib'`
 
-#### __Generation and installation of the X-CUBE-AI model__
+Note: <X_CUBE_AI-directory-path> is by default \Users\\<windows_user_name\>\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-AI\\<version\>. Also, in the name of the runtime library: `NetworkRuntime810_CM33_GCC.a`, `810` denotes that we are using [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) version `8.1.0`. For anyother version, update this name accordingly.
+
+### __Generation and Installation of the X-CUBE-AI model__
 
 This package does not provides the AI model generated by [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html).
 The user needs to generate the AI model either using the *GUI* (*G*raphical *U*ser *I*nterface) or the *CLI* (*C*ommand *L*ine *I*nterface).
 
-The Package does not support multiple network, hence please make sure to generate a unique AI network with its default name *network*:
+The package does not support multiple network, hence please make sure to generate a unique AI network with its default name *network*:
 
 With the *GUI*
 
@@ -82,9 +84,16 @@ After generating the network, please copy the resulting following files:
   \- App/network*
 ```
 
-into the project directory `'<getting-start-install-dir>/Projects/STM32L4R9ZI-STWIN/Applications/GetStart/X-CUBE-AI/App'`
+into the project directory `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/X-CUBE-AI/App'`
 
-### __How to use it?__
+For more information, please refer to  [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) documentation.
+
+### __STM32CubeIDE tool launch__
+
+You can find the STM32 Cube IDE project here :
+`'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/STM32CubeIDE/.project'` It can be launched after [STM32CubeIDE](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide.html) is installed by a double click on the file name in windows file explorer for instance.
+
+## __How to use it?__
 
 The purpose of this package is to stream physical data acquired by sensors into a processing chain including a preprocessing step that typically would preform a first level of feature extraction, the machine learning inference itself, and a post processing step before exposing the results to the user in real time.
 
@@ -94,9 +103,11 @@ The getting start application consists of 3 phases :
 2. Execution
 3. Real Time synthesis
 
-#### __Configuration__
+### __Configuration__
 
-The user has the possibility to override the default configuration by altering the user configuration header file, `'<getting-start-install-dir>/Projects/STM32L4R9ZI-STWIN/Applications/GetStart/Inc/ai_model_config.h'`.
+#### __HAR example__
+
+The user has the possibility to override the default configuration by altering the user configuration header file, `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/Inc/ai_model_config.h'`.
 
 In this file, you first can describe the number and the nature of the model output:
 
@@ -119,17 +130,26 @@ Then you describe the class indexes and their labels in this way:
 #define CTRL_X_CUBE_AI_MODE_CLASS_LIST         {"Stationary","Walking","Jogging","Biking"}
 ```
 
-The rest of the model details will be embedded in the `.c` and `.h` files generated by the tool [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html). see section
+These parameters need to be consistent with the model topology that will be executed
 
-You can choose to apply a available pre-processing from
+The rest of the model details will be embedded in the `.c` and `.h` files generated by the tool [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html).
+
+Now you can choose to apply an available pre-processing from
 
 ```C
-#define CTRL_AI_GRAV_ROT_SUPPR     (3U)
-#define CTRL_AI_GRAV_ROT           (4U)
-#define CTRL_AI_BYPASS             (5U)```
+typedef enum {
+CTRL_AI_GRAV_ROT_SUPPR,
+CTRL_AI_GRAV_ROT,
+CTRL_AI_PREPROC,
+CTRL_AI_SPECTROGRAM_MEL,
+CTRL_AI_SPECTROGRAM_LOG_MEL,
+CTRL_AI_SPECTROGRAM_MFCC,
+CTRL_AI_SCALING,
+CTRL_AI_BYPASS
+}Ctrl_preproc_t;
 ```
 
-by defining:
+by defining, for gravity removal as an example:
 
 ```C
 #define CTRL_X_CUBE_AI_PREPROC                 (CTRL_AI_GRAV_ROT_SUPPR)
@@ -144,11 +164,8 @@ You will now describe the sensor that will connect to the AI processing chain:
 #define CTRL_X_CUBE_AI_NB_SAMPLES              (20U)
 ```
 
-Today , only the 3D acceloremeter type is available , but you can vary the *F*ull *S*cale (*FS*) parameter given in G and the *O*utput *D*ata *R*ate (*ODR*).
+Today , 3D accelerometer (`COM_TYPE_ACC`) and microphone (`COM_TYPE_MIC`) types are available,  you can vary the *F*ull *S*cale (*FS*) parameter given in G and the *O*utput *D*ata *R*ate (*ODR*).
 
-
-This parameters needs to be consistent with the model topology that will be executed
- you can define the number of output 
 You can find Herebelow a typical configuration for HAR Deep Neural Network:
 
 ```C
@@ -159,69 +176,202 @@ You can find Herebelow a typical configuration for HAR Deep Neural Network:
 #define CTRL_X_CUBE_AI_SENSOR_TYPE             (COM_TYPE_ACC)
 #define CTRL_X_CUBE_AI_SENSOR_ODR              (26.0F)
 #define CTRL_X_CUBE_AI_SENSOR_FS               (4.0F)
-#define CTRL_X_CUBE_AI_NB_SAMPLES              (0U)  // or number of signals you want to run inference for
+#define CTRL_X_CUBE_AI_NB_SAMPLES              (0U)  // number of signals you want to run inference
+                                                     // zero means undefined
 #define CTRL_X_CUBE_AI_PREPROC                 (CTRL_AI_GRAV_ROT_SUPPR)
 ```
 
-During this phase the AI model is loaded, and the hardware is set up.
+#### __AED example__
+
+The example provided below is based on Yamnet 256 model provided in the ST model zoo.
+
+First describe the number and the nature of the model output and its type:
+
+```C
+#define CTRL_X_CUBE_AI_MODE_NB_OUTPUT          (1U) /* or (2U)*/
+#define CTRL_X_CUBE_AI_MODE_OUTPUT_1           (CTRL_AI_CLASS_DISTRIBUTION)
+#define CTRL_AI_CLASS_DISTRIBUTION (1U)
+```
+
+Then you describe the class indexes and their labels in this way:
+
+```C
+#define CTRL_X_CUBE_AI_MODE_CLASS_NUMBER       (10U)
+#define CTRL_X_CUBE_AI_MODE_CLASS_LIST         {"chainsaw","clock_tick","crackling_fire","crying_baby","dog","helicopter","rain","rooster","sea_waves","sneezing"}
+```
+
+Now you can select audio preprocessing type:
+
+```C
+#define CTRL_X_CUBE_AI_PREPROC                 (CTRL_AI_SPECTROGRAM_LOG_MEL)
+```
+
+For spectrogram log mel pre processing you need to specify the various parameters of the patch processing:
+
+![single network configuration](_htmresc/AudioPatchProcessing.svg)
+
+The parameters are:
+
+```C
+#define CTRL_X_CUBE_AI_SPECTROGRAM_NMEL          (64U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_COL           (96U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_HOP_LENGTH    (160U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_NFFT          (512U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_WINDOW_LENGTH (400U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_NORMALIZE     (0U) // (1U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_FORMULA       (MEL_HTK) //MEL_SLANEY
+#define CTRL_X_CUBE_AI_SPECTROGRAM_FMIN          (125U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_FMAX          (7500U)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_TYPE          (SPECTRUM_TYPE_MAGNITUDE)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_LOG_FORMULA   (LOGMELSPECTROGRAM_SCALE_LOG)
+```
+
+For optimizing Mel Spectrogram computational performances the following *L*ook *U*p *T*ables (*LUT*) needs to be provided:
+
+* the smoothing window to be applied before the Fast Fourrier transform , this is typically an Hanning window the table is named with the following defines:
+
+```C
+#define CTRL_X_CUBE_AI_SPECTROGRAM_WIN           (user_win)
+```
+
+* the Mel filters taps. Only non nul taps are provided in a concatenated form, which is why start and stop indexes are provided in separated tables
+
+```C
+#define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_LUT       (user_melFilterLut)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_START_IDX (user_melFilterStartIndices)
+#define CTRL_X_CUBE_AI_SPECTROGRAM_MEL_STOP_IDX  (user_melFilterStopIndices)
+```
+
+The *LUT*s can be generated by the C-code provided in `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/Core/Src/PreProc_DPU.c'`
+by uncomnenting the following define:
+
+```C
+#define MFCC_GEN_LUT
+```
+
+More typically, they will directlty be generated by the ST model zoo deployement script.
+
+These *LUT*s are defined in `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/Core/Src/user_mel_tables.c'` and declared in `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/Core/Inc/user_mel_tables.h'`
+
+You will now describe the digital microphone that will connect to the AI processing chain:
+
+```C
+#define CTRL_X_CUBE_AI_SENSOR_TYPE            (COM_TYPE_MIC)
+#define CTRL_X_CUBE_AI_SENSOR_ODR             (16000.0F)
+#define CTRL_X_CUBE_AI_SENSOR_FS              (112.5F)
+```
+
+### __Execution__
+
+The package includes a project executing a controller task that is configurable (as described above) by user through the following header file `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/Inc/ai_model_config.h'`
+
+The application itself is implemented in :
+
+```bash
+<getting-start-install-dir>
+  |- Projects/B-U585I-IOT02A/Applications/GS/Core/Inc/*
+  \- Projects/B-U585I-IOT02A/Applications/GS/Core/Src/*
+```
+
+During execution phase the AI model is first loaded and the hardware is set up.
+
+On initialisation, the application loads and checks `X-CUBE-AI` model:
+
+* Api version == `1.2.0` ( `X-CUBE-AI` `7.3.0` & `8.1.0` )
+* Input buffers number == `1`
+* Outputs buffer number must be less or equal than 2
+* Input buffers type : `AI_BUFFER_FMT_TYPE_FLOAT` or `AI_BUFFER_FMT_TYPE_Q` (signed 8 bits)
+* Input buffers size is within boundaries (batch < `1`, height < `100`, width <`100`, channels <`100`)
+* Output buffers type : `AI_BUFFER_FMT_TYPE_FLOAT`
+* Ouput buffers size is within boundaries (batch < `1`, height < `100`, width <`100`, channels <`100`)
+
 A sensor among the available ones is configured.
 
-The package includes a project executing a controller task that is configurable 
-The Application itself is implemented in :
+When data buffer is ready
 
-```bash
-<getting-start-install-dir>
-  |- Middlewares/ST/eLooM/*
-  |- Projects/STM32L4R9ZI-STWIN/Applications/GetStart/Inc/*
-  \- Projects/STM32L4R9ZI-STWIN/Applications/GetStart/Src/*
-```
+* If sensor type is accelerometer, calls built-in pre-processing function
+* Calls `X-CUBE-AI` model
+* Serializes output (if more than one)
+* The inference processing is sent on serial port , json formatted.
 
-The application is configurable through the following header file `'<getting-start-install-dir>/Projects/STM32L4R9ZI-STWIN/Applications/GetStart/Inc/config_user.h'`
+To orchester these various steps properly in sequence a real time operating system is used (ThreadX), on top of which an application framework is added composed of the following modules:
 
-throught the file  all needed drivers to support STMWIN1B boards (), but also
-
-```bash
-<getting-start-install-dir>
-        |- _htmlresc/*
-        |- Drivers/*
-        |- Middlewares/*
-        |- Project/*
-        |- README.md
-        \- LICENSE
-
-```
-
-To orchester these various steps properly in sequence a real time Operating System is used (FreeRTOS), on top of which an application framework is added composed of the following modules:
-
-- *eLooM*, the application framework
-- The *S*ensor *M*anager (*SM*) to configure and get raw data from the sensors on the board.
-- A *D*igital *P*rocessing *U*nit (*DPU*) to process data. 
+* *eLooM*, the application framework
+* A *D*igital *P*rocessing *U*nit (*DPU*) to process data.
+* The *S*ensor *M*anager (*SM*) to configure and get raw data from the sensors on the board.
+* The *E*loo*M* *Data* (*EMData*) to manipulate any kind of data.
 
 These various components can be found :
 
 ```bash
 <getting-start-install-dir>
-  |- Middlewares/Third_Party/FreeRTOS/*
+  |- Middlewares/ST/threadx/*
   |- Middlewares/ST/eLooM/*
-  |- Projects/STM32L4R9ZI-STWIN/Applications/GetStart/DPU/*
-  \- Projects/STM32L4R9ZI-STWIN/Applications/GetStart/SensorManager/*
+  |- Projects/eLooM_Components/DPU/*
+  |- Projects/eLooM_Components/SensorManager/*
+  \- Projects/eLooM_Components/EMData/* 
 ```
 
 More details can be found in [ST wiki](https://wiki.st.com/stm32mcu/wiki/AI:FP-AI-MONITOR1_an_introduction_to_the_technology_behind).
 
-#### __STM32CubeIDE tool launch__
+### __Real time profiling informations__
 
-You can find the STM32 Cube IDE project here :
-`'<getting-start-install-dir>/Projects/STM32L4R9ZI-STWIN/Applications/GetStart/STM32CubeIDE/.project'` It can be launched after [STM32CubeIDE](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-ides/stm32cubeide.html) is installed by a double click on the file name in windows file explorer for instance.
+When the execution phase is stopped, either becuase the user stroke the keyboard or the porgrammed number of signals is reached, the realtime profiling is given
 
-### __History__
+* First, the AI related information:
 
-#### __V0.1 Initial version__
+```bash
+--------------------------------
+         AI Statistics
+--------------------------------
+Processing time per inference
 
-- Includes sensor capture and pre-processing
-- Outputs results on STLink VCom with inference time, class and confidence...
-- Based on FP-AI-MONITOR technology eLoom and sensor manager but simplified
-- Limited to CubeIDE / arm gcc toolchain
-- Manageable through CubeIDE (open, modification, debug)
-- STWIN1B Support
-- Tested with HAR IGN, SVC & GMP models
+         Pre-process :  67.33 ms
+                  AI : 318.21 ms
+                     -----------
+               Total : 385.55 ms
+```
+
+* finally system related informations are given
+
+```bash
+--------------------------------
+       System Statistics
+--------------------------------
+STM32U5 MCU@160Mhz
+
+                CTRL :   0.11 %
+ System Timer Thread :   0.00 %
+                INIT :   0.05 %
+           IMP34DT05 :   1.59 %
+          ISM330DHCX :   0.00 %
+              I2CBUS :   0.02 %
+            PRE_PROC :   5.98 %
+                  AI :  28.24 %
+                 ISR :   2.12 %
+                     -----------
+          Total Load :  35.98 %
+```
+
+## __History__
+### __V2.1 Migration to Thread X__
+
+* Upgraded to X-CUBE-AI version 8.1.0
+
+### __V2.0 Migration to Thread X__
+
+* Added audio preprocessing
+* Added support for Audio Event Detection (AED)
+* Added patch processing for AED
+* Migrated to Thread X
+* Ported to B-U585I-IOT02A
+
+### __V0.1 Initial version__
+
+* Includes sensor capture and pre-processing
+* Outputs results on STLink VCom with inference time, class and confidence...
+* Based on FP-AI-MONITOR technology eLoom and sensor manager but simplified
+* Limited to CubeIDE / arm gcc toolchain
+* Manageable through CubeIDE (open, modification, debug)
+* STWIN1B Support
+* Tested with HAR IGN, SVC & GMP models

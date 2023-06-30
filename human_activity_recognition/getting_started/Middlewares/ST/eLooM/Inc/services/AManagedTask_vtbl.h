@@ -32,10 +32,8 @@ extern "C" {
 #include "systp.h"
 /* MISRA messages linked to FreeRTOS include are ignored */
 /*cstat -MISRAC2012-* */
-#include "FreeRTOS.h"
-#include "task.h"
+#include "tx_api.h"
 /*cstat +MISRAC2012-* */
-
 
 /**
  * Create  type name for _IManagedTask_vtb.
@@ -44,7 +42,7 @@ typedef struct _AManagedTask_vtbl AManagedTask_vtbl;
 
 struct _AManagedTask_vtbl {
   sys_error_code_t (*HardwareInit)(AManagedTask *_this, void *pParams);
-  sys_error_code_t (*OnCreateTask)(AManagedTask *_this, TaskFunction_t *pvTaskCode, const char **pcName, unsigned short *pnStackDepth, void **pParams, UBaseType_t *pxPriority);
+  sys_error_code_t (*OnCreateTask)(AManagedTask *_this, tx_entry_function_t *pvTaskCode, CHAR **pcName, VOID **pvStackStart, ULONG *pnStackSize, UINT *pnPriority, UINT *pnPreemptThreshold, ULONG *pnTimeSlice, ULONG *pnAutoStart, ULONG *pnParams);
   sys_error_code_t (*DoEnterPowerMode)(AManagedTask *_this, const EPowerMode eActivePowerMode, const EPowerMode eNewPowerMode);
   sys_error_code_t (*HandleError)(AManagedTask *_this, SysEvent xError);
   sys_error_code_t (*OnEnterTaskControlLoop)(AManagedTask *_this);
@@ -80,7 +78,13 @@ typedef struct _AMTStatus {
   /**
    * Count the error occurred during the task execution.
    */
-  uint8_t nErrorCount: 3;
+  uint8_t nErrorCount: 2;
+
+  /**
+   * Specify if the task has been created suspended. It depends on the pnAutoStart parameter passed
+   * during the task creation.
+   */
+  uint8_t nAutoStart: 1;
 
   uint8_t nReserved : 1;
 } AMTStatus;
@@ -96,9 +100,9 @@ struct _AManagedTask {
   const AManagedTask_vtbl *vptr;
 
   /**
-   * Specify the native FreeRTOS task handle.
+   * Specifies the native ThreadX task handle.
    */
-  TaskHandle_t m_xTaskHandle;
+  TX_THREAD m_xTaskHandle;
 
   /**
    *Specifies a pointer to the next managed task in the _ApplicationContext.
@@ -139,8 +143,12 @@ sys_error_code_t AMTHardwareInit(AManagedTask *_this, void *pParams) {
 }
 
 SYS_DEFINE_STATIC_INLINE
-sys_error_code_t AMTOnCreateTask(AManagedTask *_this, TaskFunction_t *pvTaskCode, const char **pcName, unsigned short *pnStackDepth, void **pParams, UBaseType_t *pxPriority) {
-  return _this->vptr->OnCreateTask(_this, pvTaskCode, pcName, pnStackDepth, pParams, pxPriority);
+sys_error_code_t AMTOnCreateTask(AManagedTask *_this, tx_entry_function_t *pvTaskCode, CHAR **pcName,
+    VOID **pvStackStart, ULONG *pnStackSize,
+    UINT *pnPriority, UINT *pnPreemptThreshold,
+    ULONG *pnTimeSlice, ULONG *pnAutoStart,
+    ULONG *pnParams) {
+  return _this->vptr->OnCreateTask(_this, pvTaskCode, pcName, pvStackStart, pnStackSize, pnPriority, pnPreemptThreshold, pnTimeSlice, pnAutoStart, pnParams);
 }
 
 SYS_DEFINE_STATIC_INLINE
@@ -171,7 +179,6 @@ sys_error_code_t AMTOnEnterTaskControlLoop(AManagedTask *_this) {
 SYS_DEFINE_STATIC_INLINE
 sys_error_code_t AMTInit(AManagedTask *_this) {
   _this->m_pNext = NULL;
-  _this->m_xTaskHandle = NULL;
   _this->m_pfPMState2FuncMap = NULL;
   _this->m_pPMState2PMStateMap = NULL;
   _this->m_xStatus.nDelayPowerModeSwitch = 1;
@@ -179,6 +186,7 @@ sys_error_code_t AMTInit(AManagedTask *_this) {
   _this->m_xStatus.nPowerModeSwitchDone = 0;
   _this->m_xStatus.nIsTaskStillRunning = 0;
   _this->m_xStatus.nErrorCount = 0;
+  _this->m_xStatus.nAutoStart = 0;
   _this->m_xStatus.nReserved = 0;
 
   return SYS_NO_ERROR_CODE;
@@ -236,7 +244,7 @@ void AMTReportErrOnStepExecution(AManagedTask *_this, sys_error_code_t nStepErro
 }
 
 SYS_DEFINE_STATIC_INLINE
-sys_error_code_t AMTSetPMStateRemapFunc(AManagedTask *_this, EPowerMode *pPMState2PMStateMap) {
+sys_error_code_t AMTSetPMStateRemapFunc(AManagedTask *_this, const EPowerMode *pPMState2PMStateMap) {
 	assert_param(_this != NULL);
 
 	_this->m_pPMState2PMStateMap = pPMState2PMStateMap;

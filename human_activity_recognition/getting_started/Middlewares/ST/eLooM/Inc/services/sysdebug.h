@@ -57,6 +57,7 @@ extern "C" {
   /* Debug Configuration options. */
 /********************************/
 
+#include "services/systp.h"
 #include <stdint.h>
 #include "sysdebug_config.h"
 
@@ -149,26 +150,11 @@ int SysDebugInit(void);
 void SysDebugStartRunTimeStatsTimer(void);
 
 /**
- * Toggle a PIN used as test point.
- *
- * @param nLed [IN] specifies the PIN number (stating from 0).
+ * Display in the debug log the size of the available eLooM heap.
  */
-void SysDebugToggleLed(uint8_t nLed);
+void SysDebugLogFreeHeapSize(void);
 
-/**
- * Set high a PIN used as test point.
- *
- * @param nLed [IN] specifies the PIN number (stating from 0).
- */
-void SysDebugLedOn(uint8_t nLed);
-
-/**
- * Set low a PIN used as test point.
- *
- * @param nLed  [IN] specifies the PIN number (stating from 0).
- */
-void SysDebugLedOff(uint8_t nLed);
-
+/*forward function declaration*/
 int putChar( int ch );
 
 

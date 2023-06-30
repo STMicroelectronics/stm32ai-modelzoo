@@ -61,9 +61,9 @@
 			<locationURI>PARENT-3-PROJECT_LOC/Drivers/BSP/NUCLEO-F401RE</locationURI>
 		</link>
 		<link>
-			<name>Drivers/BSP/Components/VL53L5CX</name>
+			<name>Drivers/BSP/Components/VL53LMZ</name>
 			<type>2</type>
-			<locationURI>PARENT-3-PROJECT_LOC/Drivers/BSP/Components/VL53L5CX</locationURI>
+			<locationURI>PARENT-3-PROJECT_LOC/Drivers/BSP/Components/VL53LMZ</locationURI>
 		</link>
 		<link>
 			<name>Middlewares/ST/STM32_AI_Runtime/Inc</name>

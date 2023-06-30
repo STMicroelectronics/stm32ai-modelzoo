@@ -62,37 +62,36 @@ As an example, [ssd_mobilenet_v1_025_192_config.yaml](../ssd_mobilenetv1/ST_pret
 
 ## Deployment
 
-
-coming soon.
+To deploy your trained model, you need to configure the [user_config.yaml](../../scripts/deployment/user_config.yaml) file following the [tutorial](../../scripts/deployment/README.md) under the deployment section.
 
 
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference MCU memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
-|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32H7 | 195.6 KiB     | ~38 KiB      | 438.28 KiB    | ~113 KiB       | 234 KiB   | 551 KiB  |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32H7 | 333.25 KiB     | ~43 KiB       | 595.66 KiB    | ~127 KiB    | 378 KiB   | 723 KiB  |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3   | STM32H7 | 347.3 KiB     | ~43 KiB       | 595.66 KiB    | ~125 KiB    | 391 KiB   | 721 KiB  |
+| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
+|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32H7 | 249.54 KiB     | 38.94 KiB      | 438.28 KiB    | ~127.23 KiB       | 288.48 KiB   | 565.51 KiB  | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32H7 | 366.15 KiB     | ~44 KiB       | 471.16 KiB    | ~139 KiB    | 410.87 KiB   | 610.25 KiB  | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3   | STM32H7 | 439.34 KiB     | ~44 KiB       | 470.13 KiB    | ~138 KiB    | 483.34 KiB   | 608.18 KiB  | 8.1.0                 |
 
 
 ### Reference inference time based on COCO Person dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) |
-|-------------------|--------|------------|------------------|------------------|-------------|---------------------|
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 173.1 ms       |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 254.9 ms       |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 310 ms           |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 69.8 ms **     |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 99.9 ms **     |
-| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 163.8 ms **    |
+| Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) | STM32Cube.AI version  |
+|-------------------|--------|------------|------------------|------------------|-------------|---------------------|-----------------------|
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 172.3 ms       | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 246.0 ms       | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU | 400 MHz       | 299.0 ms         | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_192/ssd_mobilenet_v1_025_192_int8.tflite) | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 65.9 ms **     | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_224/ssd_mobilenet_v1_025_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 95.1 ms **     | 8.1.0                 |
+| [SSD Mobilenet v1 0.25](../ssd_mobilenetv1/ST_pretrainedmodel_public_dataset/COCO/ssd_mobilenet_v1_0.25_256/ssd_mobilenet_v1_025_256_int8.tflite) | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 115.2 ms **    | 8.1.0                 |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 

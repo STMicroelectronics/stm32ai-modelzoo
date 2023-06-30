@@ -65,6 +65,7 @@ stm32ai:
   serie: STM32U5
   IDE: GCC
   verbosity: 1
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: False
   path_to_stm32ai: <path_to_stm32ai_executable>

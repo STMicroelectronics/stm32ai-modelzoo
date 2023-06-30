@@ -79,8 +79,9 @@ def inc_gpu_mode():
 
 def train(cfg):
     # Get SSD model and feature map sizes
-    model, fmap_sizes = load_models.get_model(cfg)
-    model.summary()
+    #model, fmap_sizes = load_models.get_model(cfg)
+    inference_model, training_model, fmap_sizes = load_models.get_model(cfg)
+    inference_model.summary()
 
     # get loss
     loss = ssd_focal_loss()
@@ -92,19 +93,19 @@ def train(cfg):
     callbacks = get_callbacks(cfg)
 
     # compile the model
-    model.compile(optimizer=optimizer, loss=loss)
+    training_model.compile(optimizer=optimizer, loss=loss)
 
     # Estimate the model footprints
     if cfg.quantization.quantize:
         print("[INFO] : Estimating the model footprints...")
         if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
-            TFLite_PTQ_quantizer(cfg, model, fake=True)
+            TFLite_PTQ_quantizer(cfg, inference_model, fake=True)
             model_path = os.path.join(HydraConfig.get().runtime.output_dir, "{}/{}".format(cfg.quantization.export_dir, "quantized_model.tflite"))
         else:
             raise TypeError("Quantizer and quantization type not supported yet!")
     else:
         model_path = os.path.join(HydraConfig.get().runtime.output_dir, "{}/{}".format(cfg.general.saved_models_dir, "best_model.h5"))
-        model.save(model_path)
+        inference_model.save(model_path)
 
     # Evaluate model footprints with STM32Cube.AI
     if cfg.stm32ai.footprints_on_target:
@@ -156,7 +157,7 @@ def train(cfg):
                        n_classes=n_classes)
 
     print("[INFO] : Starting training...")
-    history = model.fit(train_gen,
+    history = training_model.fit(train_gen,
                         steps_per_epoch=steps_per_epoch,
                         epochs=n_epochs,
                         validation_data=val_gen,
@@ -164,12 +165,15 @@ def train(cfg):
                         validation_steps=int(num_val_samples / batch_size))
 
     # evaluate the float model on test set
-    best_model = tf.keras.models.load_model(os.path.join(HydraConfig.get().runtime.output_dir, cfg.general.saved_models_dir+'/'+"best_model.h5"),
+    training_best_model = tf.keras.models.load_model(os.path.join(HydraConfig.get().runtime.output_dir, cfg.general.saved_models_dir+'/'+"best_model.h5"),
                                             custom_objects={'gen_anchors': gen_anchors, 'relu6': relu6, '_loss': loss})
+    for count,lt in enumerate(inference_model.layers):
+        lt.set_weights(training_best_model.layers[count].get_weights())
+    inference_model.save(os.path.join(HydraConfig.get().runtime.output_dir, "{}/{}".format(cfg.general.saved_models_dir, "best_model.h5")))
 
     # generate Ap curves of the float model
     tf.print('[INFO] Evaluating the float model ...')
-    mAP = calculate_float_map(cfg, best_model)
+    mAP = calculate_float_map(cfg, inference_model)
     mlflow.log_metric("float_model_mAP", mAP)
 
     # Quantize the model with training data
@@ -177,7 +181,7 @@ def train(cfg):
         print("[INFO] : Quantizing the model ... This might take few minutes ...")
 
         if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
-            TFLite_PTQ_quantizer(cfg, best_model, fake=False)
+            TFLite_PTQ_quantizer(cfg, inference_model, fake=False)
             quantized_model_path = os.path.join(HydraConfig.get(
             ).runtime.output_dir, "{}/{}".format(cfg.quantization.export_dir, "quantized_model.tflite"))
 

@@ -1,8 +1,8 @@
-# Human activity recognition STM32 model deployment
+# Human activity recognition (HAR) STM32 model deployment
 
-This tutorial shows how to deploy your pre-trained keras or sklearn (onnx) models on an STM32 board using *STM32Cube.AI*. It will also cover the quantization of the pretrained keras models, to have an even more effecient deployment. 
+This tutorial shows how to deploy your pre-trained keras, tflite or sklearn (onnx) models on an STM32 board using **STM32Cube.AI**. It will also cover the quantization of the pretrained keras models, to have an even more effecient deployment. 
 
-In addition, this tutorial will also explain how to deploy a model from **[ST public model zoo](../../models/README.md)** directly on your *STM32 target board*. In this version only deployment on the [STEVAL-STWINKT1X](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html) is supported.
+This document demonstrate the steps using a pretrained model from **[ST public model zoo](../../models/README.md)**. However, readers can deploy any external or custom model also as long as it has the same restrictions and preprocessing applied. The STM32 project provided supports on only [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html) board.
 
 ## Table of contents
  - <a href='#prereqs'>Before you start</a><br>
@@ -18,33 +18,33 @@ In addition, this tutorial will also explain how to deploy a model from **[ST pu
 <a id='prereqs'></a>
 
 
-Please check out [STM32 model zoo](../../models/README.md) for human activity recognition (HAR).
+Please check out [STM32 model zoo](../../models/README.md) for pretrained models for human activity recognition (HAR).
 
 ### **1. Hardware setup**
 
-The [getting started](../../getting_started/README.md) is running on an STMicroelectronics evaluation kit board called [STEVAL-STWINKT1B](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html). Although this board has many sensors in this version we support only this board, and running an accelerometer ISM330DHCX.
+The [getting started](../../getting_started/README.md) is running on an STMicroelectronics evaluation board called [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html). Although this board has many sensors in this demo version we will be running an accelerometer only.
 
 
 ### **2. Software requirements**
 
 You need to download and install the following software:
 
-- [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html)
-- If using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, open link and download the package, then `extract here` both `'.zip'` and `'.pack'` files.
+- [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) : an all-in-one multi-OS development tool, which is part of the STM32Cube software ecosystem.
+- (optional) [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) : if using STM32Cube.AI locally, open link and download the package, then `extract here` both `'.zip'` and `'.pack'` files.
 
 ### **3. Specifications**
 
-- `serie` : STM32L4
+- `serie` : STM32U5
 - `IDE` : GCC
 - `quantization_input_type` : float
 - `quantization_output_type` : float
 
 <a name="deploy"></a>
-# Deploy a Keras, tflite or .onnx model
+# Deploy a keras, tflite or .onnx model
 
 ### **1. Configure the yaml file**
 
-You can run a demo using a pretrained model from [STM32 model zoo](../../models/README.md). Please refer to the yaml file provided alongside the tflite model to fill the following parameters in [user_config.yaml](user_config.yaml).
+You can run this demo using any of the pretrained models from [STM32 model zoo](../../models/README.md) directory. Please refer to the `.yaml` files provided alongside the models to fill the following parameters in [user_config.yaml](user_config.yaml).
 
 As an example, we will show how to deploy the model [ign_wl_24.h5](../../models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5) pretrained on WISDM dataset using the necessary parameters provided in [ign_wl_24_config.yaml](../../models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_config.yaml).
 
@@ -78,8 +78,8 @@ Configure the **dataset** section in **[user_config.yaml](user_config.yaml)** as
 
 where:
 
-- `name` - Dataset name. `wisdm` is used here, for models trained on ST propritery dataset mobility_v1, specify `mobility_v1`.
-- `class_names` - A list containing the classes name. This will be used to show the inference result on the serial terminal, hence providing the right order which was used at the time of training is very important.
+- `name` - Dataset name used to train the model. `wisdm` is used here, for models trained on ST propritery dataset mobility_v1, specify `mobility_v1`.
+- `class_names` - A list containing the classes name. This will be used to show the inference result on the serial terminal, hence providing the right order which was used at the time of training is very important. For `wisdm` the available classes are `[Jogging,Stationary,Stairs,Walking]` for the models trained on the `mobility_v1` dataset the available classes are `[Stationary,Walking,Jogging,Biking].`
 
 **1.2.2. Preprocessing info:**
 
@@ -95,13 +95,13 @@ pre_processing:
   preprocessing: True
 ```
 
-- `segment_len` - An *integer* value to define how long a segment of acceleration values should be for each inference.
-- `segment_step` - An *integer* value to control the overlap. **In this version this value should be exactly same as the `segment_len` as we do not support the overlap**.
+- `segment_len` - An *integer* value to define how long a segment of acceleration values should be, for each inference.
+- `segment_step` - An *integer* value to control the overlap. **In this version this value should be exactly same as the `segment_len` as we do not support the overlapping frames**.
 - `preprocessing` - A *boolean* value, *True* means gravity rotation and suppression filter is applied, *False* means this filter is diabled.
 
 **1.3. Load model:**
 
-You can run a demo using any of the pretrained models provided in [ST HAR model zoo](../../models/README.md) for human activity recognition. These models were trained and quantized on specific datasets (e.g. a public dataset WISDM, or a custom ST dataset mobility_v1).
+In this demo we will run a using a pretrained model provided in [ST HAR model zoo](../../models/README.md) for human activity recognition. These models were trained and quantized on specific datasets (e.g. a public dataset WISDM, or a custom ST dataset mobility_v1).
 
 Also, you can directly deploy your own pretrained model if quantized using *TFlite Converter* and respecting the specified [intput/output types](#3-specifications), else you can quantize your model before deploying it by following these [steps](#quantize).
 
@@ -111,7 +111,7 @@ The next step in deployment of the model is to configure the **model** section i
 model:
   model_type: {name : ign}
   input_shape: [24,3,1]
-  model_path: ../../models/svc/ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx
+  model_path: ../../models/svc/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5
 ```
 
 where:
@@ -123,28 +123,30 @@ where:
 
 **1.4. C project configuration:**
 
-To deploy the model in **STEVAL-STWINKT1B** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application and flash the board.
+To deploy the model on a **B-U585I-IOT02A** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application provided in [getting_started](../../getting_started/README.md) folder, and flash the board with the built binary.
 
 These steps will be done automatically by configuring the **stm32ai** section in **[user_config.yaml](user_config.yaml)** as the following:
 
 ```python
 stm32ai:
   c_project_path: ../../getting_started
-  serie: STM32L4
+  serie: STM32U5
   IDE: GCC
   verbosity: 1
+  version: 8.1.0
   optimization: balanced
-  footprints_on_target: STM32L4R9I-DISCO
-  path_to_stm32ai: C:/stmicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
+  footprints_on_target: B-U585I-IOT02A
+  path_to_stm32ai: C:/stmicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.0/STM32CubeIDE/stm32cubeidec.exe
 ```
 where:
 - `c_project_path` - *Path* to [Getting Started](../../getting_started/README.md) project.
-- `serie` - **STM32L4**, only supported option for *Getting Started*.
+- `serie` - **STM32U5**, only supported option for *Getting Started*.
 - `IDE` -**GCC**, only supported option for *Getting Started*.
 - `verbosity` - *0* or *1*. Mode 0 is silent, and mode 1 displays messages when building and flashing the C applicaiton.
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **8.1.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
-- `footprints_on_target` - **'STM32L4R9I-DISCO'** to use **Developer Cloud Services** to benchmark model and generate C code, else keep **False** (i.e. only local download of **STM32Cube.AI** will be used to get model footprints and C code w/o inference time).
+- `footprints_on_target` - **'B-U585I-IOT02A'** to use **Developer Cloud Services** to benchmark model and generate C code, else keep **False** (in this case the local installation of **STM32Cube.AI** will be used to get model footprints (w/o inference time) and C code generation).
 - `path_to_stm32ai` - *Path* to stm32ai executable file.
 - `path_to_cubeIDE` - *Path* to stm32cubeide executable file.
 
@@ -153,7 +155,7 @@ where:
 
  **2.1 Attach the board:**
 
- To run build the project and flash the target board, connect an STEVAL-STWINKT1B to your computer. Make sure that you connect both the STLINK-V3-Mini and the USB power connection as shown in the image below.
+ To run build the project and flash the target board, connect an [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html?rt=db&id=DB4410) to your computer. Make sure that you connect the **STLINK \[CN8\]**.
 
 ![plot](./doc/img/board_connect.png)
 
@@ -173,7 +175,7 @@ This will generate the C code, show the foot-prints (and inference time), copy t
 
  ### **3.1. Configure the yaml file**
 
- In addition to the [previous steps](#1-configure-the-yaml-file), you can configure the following sections to quantize your `ign` or `gmp` model provided as `h5` models. Also, you can evaluate its accuracy after quantization if a path to the `dataset.training_path` is provided and `quantize.evaluate` is set to *True*.
+ In addition to the [previous steps](#1-configure-the-yaml-file), you can configure the following sections to quantize your `ign` or `gmp` model provided as `h5` models. Also, you can evaluate its accuracy after quantization if a path to the `dataset.training_path` is provided and `quantize.evaluate` is set to *True*. If the dataset is not provided one can still quantize using fake quantization based on random data generated, however evaluation needs real dataset.
 
  **3.1.1. Loading the dataset:**
 
@@ -232,9 +234,9 @@ In messages below:
 ```bash
 <"signal":1, "class":"Jogging", "dist":[0.99,0.00,0.01,0.00]>
 ``` 
-The labels `"signal"` shows the signal index or number, the `"class"` has the label of the class detected and `"dist"` shows the probability distribution of the confidence of the signal to belong to any given class with classes in order as `[Jogging, Stationary, Stairs, Walking]`.
+The labels `"signal"` shows the signal index or number, the `"class"` has the label of the class detected and `"dist"` shows the probability distribution of the confidence of the signal to belong to any given class with classes in order as `[Jogging, Stationary, Stairs, Walking]`. Note that the activities are different for the model trained on the `mobility_v1` dataset and are `[Stationary,Walking,Jogging,Biking].`,
 
 # restrictions
-- In this version getting started for deployment is only supported on the [STEVAL-STWINKT1X](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html).
+- In this version getting started for deployment is only supported on the [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html).
 - Only the *float* type input is supported for the quantization operation.
 - Only the WISDM dataset can be used for the real quantization otherwise a fake quantization is performed using the randomly generated data.

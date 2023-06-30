@@ -64,30 +64,30 @@ coming soon.
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference MCU memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
-|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| ST Yolo LC v1 | Int8   | 192x192x3    | STM32H7 | 157.44 KiB     | ~9 KiB      | 276.73 KiB    | ~55 KiB       | ~167 KiB   | ~332 KiB  |
-| ST Yolo LC v1 | Int8   | 224x224x3    | STM32H7 | 210.69 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~220 KiB   | ~332 KiB  |
-| ST Yolo LC v1 | Int8   | 256x256x3   | STM32H7 | 271.94 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~281 KiB   | ~332 KiB  |
+| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
+|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
+| ST Yolo LC v1 | Int8   | 192x192x3    | STM32H7 | 157.44 KiB     | ~9 KiB      | 276.73 KiB    | ~55 KiB       | ~167 KiB   | ~332 KiB  | 7.3.0                 |
+| ST Yolo LC v1 | Int8   | 224x224x3    | STM32H7 | 210.69 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~220 KiB   | ~332 KiB  | 7.3.0                 |
+| ST Yolo LC v1 | Int8   | 256x256x3   | STM32H7 | 271.94 KiB     | ~9 KiB       | 276.73 KiB    | ~55 KiB    | ~281 KiB   | ~332 KiB  | 7.3.0                 |
 
 
 ### Reference inference time based on COCO Person dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) |
-|-------------------|--------|------------|------------------|------------------|-------------|---------------------|
-| ST Yolo LC v1     | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 192.8 ms            |
-| ST Yolo LC v1     | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 263.1 ms            |
-| ST Yolo LC v1     | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 343.4 ms            |
-| ST Yolo LC v1     | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 50.9 ms **          |
-| ST Yolo LC v1     | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 69.7 ms **          |
-| ST Yolo LC v1     | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 88.1 ms **          |
+| Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) | STM32Cube.AI version  |
+|-------------------|--------|------------|------------------|------------------|-------------|---------------------|-----------------------|
+| ST Yolo LC v1     | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 192.8 ms            | 7.3.0                 |
+| ST Yolo LC v1     | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 263.1 ms            | 7.3.0                 |
+| ST Yolo LC v1     | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 343.4 ms            | 7.3.0                 |
+| ST Yolo LC v1     | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 50.9 ms **          | 7.3.0                 |
+| ST Yolo LC v1     | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 69.7 ms **          | 7.3.0                 |
+| ST Yolo LC v1     | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 88.1 ms **          | 7.3.0                 |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 

@@ -43,8 +43,8 @@ For an image resolution of NxM and P classes
 
 | Platform | Supported | Recommended |
 |:--------:|:---------:|:-----------:|
-| STM32L4  |    [x]    |      [x]    |
-| STM32U5  |    [x]    |      []     |
+| STM32L4  |    [x]    |      []     |
+| STM32U5  |    [x]    |      [x]    |
 
 
 # Performances
@@ -63,30 +63,30 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference memory footprint based on WISDM dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Input Shape | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
-|:-----------------:|:------:|:-----------:|:-------:|:--------------:|:-----------:|:-------------:|:----------:|:-----------:|:-----------:|
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | STM32L4 | 6.812     | ~2.25 KiB       | 5.711 KiB    | ~18.67 KiB       |  9.06 KiB   | 24.38 KiB  |
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | STM32L4 | 4.671    | ~2.64 KiB       | 1.531 KiB    | ~34.164 KiB       |  7.31 KiB   | 35.69 KiB  |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | STM32L4 | 15.812    | ~2.25 KiB       | 5.71 KiB     | ~18.67 KiB       |  18.62 KiB   | 24.38 KiB  |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | STM32L4 | 6.922    | ~2.64 KiB       | 1.531 KiB    | ~34.156 KiB       |  9.562 KiB   | 35.68 KiB  |
+| Model                                                                               | Format | Input Shape | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)   | Total Flash (KiB) | STM32Cube.AI version  |
+|:-----------------------------------------------------------------------------------:|:------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:-----------------:|:-----------------:|:---------------------:|
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5)         | FLOAT32| 24 x 3 x 1  | STM32L4 | 4.03                 | 2.04              | 5.70                | 14.62            |  6.07             | 20.32             | 8.1.0                 |
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite)| INT8   | 24 x 3 x 1  | STM32L4 | 4.73                 | 2.75              | 1.53                | 37.86            |  7.48             | 39.39             | 8.1.0                 |
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5)         | FLOAT32| 48 x 3 x 1  | STM32L4 | 8.81                 | 2.04              | 5.70                | 14.62            |  10.85            | 20.32             | 8.1.0                 |
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite)| INT8   | 48 x 3 x 1  | STM32L4 | 6.98                 | 2.75              | 1.53                | 37.86            |  9.73             | 39.39             | 8.1.0                 |
 
 
 
 ### Reference inference time based on WISDM dataset (see Accuracy for details on dataset)
 
-
-| Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) |
-|:-----------------:|:------:|:----------:|:----------------:|:-------------:|:-------------------:|
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | STM32L4R9 | 120 MHz       |    8.84  ms       |
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | STM32L4R9 | 120 MHz       |     6.07 ms       |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5) | FLOAT32   | 24 x 3 x 1    | STM32L4R9 | 120 MHz       |    21.44  ms       |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite) | INT8   | 24 x 3 x 1    | STM32L4R9 | 120 MHz       |     13.86 ms       |
+The inference time is reported is calculated using **STM32Cube.AI version 8.1.0**, on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
+| Model                                                                                  | Format   | Resolution | Inference time (ms) |
+|:--------------------------------------------------------------------------------------:|:--------:|:----------:|:-------------------:|
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5)            | FLOAT32  | 24 x 3 x 1 |    4.699            |
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite)   | INT8     | 24 x 3 x 1 |    2.6347           | 
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5)            | FLOAT32  | 24 x 3 x 1 |    11.3             | 
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite)   | INT8     | 24 x 3 x 1 |    6.337            |
 
 
 ### Accuracy with mobility_v1 dataset
@@ -95,12 +95,12 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 Dataset details: A custom dataset and not publically available, Number of classes: 5 [Stationary, Walking, Jogging, Biking, Vehicle]. **(We kept only 4, [Stationary, Walking, Jogging, Biking]) and removed Driving**, Number of input frames:  81,151 (for wl = 24), and 40,575 for (wl = 48).
 
 
-| Model | Format | Resolution | Accuracy |
-|:-----------------:|:------:|:----------:|:----------------:|
-| [GMP wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_24/gmp_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | 94.21     |
-| [GMP wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_24/gmp_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | 94.18 |
-| [GMP wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_48/gmp_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | 93.84   |
-| [GMP wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_48/gmp_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | 94.14    |
+| Model                                                                                          |  Format  | Resolution | Accuracy (%) |
+|:----------------------------------------------------------------------------------------------:|:--------:|:----------:|:-------------:|
+| [GMP wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_24/gmp_wl_24.h5)            | FLOAT32  | 24 x 3 x 1 | 94.21         |
+| [GMP wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_24/gmp_wl_24_int8.tflite)   | INT8     | 24 x 3 x 1 | 94.18         |
+| [GMP wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_48/gmp_wl_48.h5)            | FLOAT32  | 48 x 3 x 1 | 93.84         |
+| [GMP wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/gmp_wl_48/gmp_wl_48_int8.tflite)   | INT8     | 48 x 3 x 1 | 94.14         |
 
 
 Confusion matrix for GMP wl 24 with Float32 weights for mobility_v1 dataset is given below.
@@ -112,12 +112,12 @@ Confusion matrix for GMP wl 24 with Float32 weights for mobility_v1 dataset is g
 
 Dataset details: [link](([WISDM](https://www.cis.fordham.edu/wisdm/dataset.php))) , License [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) , Quotation[[1]](#1) , Number of classes: 6 (we are **combining Upstairs and Downstairs into Stairs** and **Standing and Sitting into Stationary**), Number of samples: 45,579 (at wl = 24), and 22,880 (at wl = 48).
 
-| Model | Format | Resolution |  Accuracy |
-|:-----------------:|:------:|:----------:|:----------------:|
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | 77.95     |
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | 76.53 |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | 76.68   |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | 76.57    |
+| Model                                                                                  |  Format  |  Resolution |  Accuracy (%)  |
+|:--------------------------------------------------------------------------------------:|:--------:|:-----------:|:--------------:|
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5)            | FLOAT32  | 24 x 3 x 1  | 77.95          |
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite)   | INT8     | 24 x 3 x 1  | 76.53          |
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5)            | FLOAT32  | 48 x 3 x 1  | 76.68          |
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite)   | INT8     | 48 x 3 x 1  | 76.57          |
 
 
 ## Training and code generation

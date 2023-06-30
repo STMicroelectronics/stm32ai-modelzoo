@@ -20,8 +20,8 @@
 
 extern I2C_HandleTypeDef 	hi2c1;
 
-uint8_t l5_platform_init(
-    VL53L5CX_Platform	*p_platform)
+uint8_t LMZ_platform_init(
+		VL53LMZ_Platform *p_platform)
 {
 	p_platform->address = 0x52;
 
@@ -29,7 +29,7 @@ uint8_t l5_platform_init(
 }
 
 uint8_t RdByte(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t *p_value)
 {
@@ -47,7 +47,7 @@ uint8_t RdByte(
 }
 
 uint8_t WrByte(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t value)
 {
@@ -63,7 +63,7 @@ uint8_t WrByte(
 }
 
 uint8_t WrMulti(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t *p_values,
 		uint32_t size)
@@ -75,39 +75,46 @@ uint8_t WrMulti(
 }
 
 uint8_t RdMulti(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint16_t RegisterAdress,
 		uint8_t *p_values,
 		uint32_t size)
 {
-	int8_t status;
+	uint8_t status;
 	uint8_t data_write[2];
 	data_write[0] = (RegisterAdress>>8) & 0xFF;
 	data_write[1] = RegisterAdress & 0xFF;
-	status = HAL_I2C_Master_Transmit(&hi2c1, p_platform->address, data_write, 2, 100);
-	status += HAL_I2C_Master_Receive(&hi2c1, p_platform->address, p_values, size, 100);
 
-	return(status);
+	status = HAL_I2C_Master_Transmit(&hi2c1, p_platform->address, data_write, 2, 10);
+	status += HAL_I2C_Master_Receive(&hi2c1, p_platform->address, p_values, size, 400);
+
+	return status;
 }
 
 uint8_t Reset_Sensor(
-		VL53L5CX_Platform *p_platform)
+		VL53LMZ_Platform *p_platform)
 {
 	uint8_t status = 0;
 
 	/* (Optional) Need to be implemented by customer. This function returns 0 if OK */
 
 	/* Set pin LPN to LOW */
+//	HAL_GPIO_WritePin(LPn_C_GPIO_Port, LPn_C_Pin, GPIO_PIN_RESET);
 	/* Set pin AVDD to LOW */
 	/* Set pin VDDIO  to LOW */
+	/* Set 0 to pin DUT_PWR */
+//	HAL_GPIO_WritePin(PWR_EN_C_GPIO_Port, PWR_EN_C_Pin, GPIO_PIN_RESET);
 	WaitMs(p_platform, 100);
 
 	/* Set pin LPN of to HIGH */
+//	HAL_GPIO_WritePin(LPn_C_GPIO_Port, LPn_C_Pin, GPIO_PIN_SET);
 	/* Set pin AVDD of to HIGH */
 	/* Set pin VDDIO of  to HIGH */
+	/* Set 1 to pin DUT_PWR */
+//	HAL_GPIO_WritePin(PWR_EN_C_GPIO_Port, PWR_EN_C_Pin, GPIO_PIN_RESET);
 	WaitMs(p_platform, 100);
 
-	return(status);
+	return status;
 }
 
 void SwapBuffer(
@@ -131,19 +138,18 @@ void SwapBuffer(
 }	
 
 uint8_t WaitMs(
-		VL53L5CX_Platform *p_platform,
+		VL53LMZ_Platform *p_platform,
 		uint32_t TimeMs)
 {
 	HAL_Delay(TimeMs);
-
-	return(0);
+	return 0;
 }
 
-uint8_t wait_for_l5_interrupt(
-    VL53L5CX_Platform *p_dev,
+uint8_t wait_for_ToF_interrupt(
+	VL53LMZ_Platform *p_platform,
     volatile int *IntrCount)
 {
-	(void)p_dev;
+	(void)p_platform;
 
 	HAL_SuspendTick();
 	__WFI(); /* Wait For Interrupt */

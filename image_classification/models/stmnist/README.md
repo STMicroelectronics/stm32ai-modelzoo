@@ -61,25 +61,25 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference MCU memory footprint based on EMNIST-Byclass dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
-|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28x1    | STM32H7 | 30.25 KiB     | ~3 KiB      | 38.02 KiB    | ~18 KiB       | ~ 34 KiB   | ~56 KiB  |
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28x1    | STM32H7 | 14.13 KiB     | ~5 KiB       | 10.08 KiB    | ~46 KiB    | ~19 KiB   | ~56 KiB  |
+| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
+|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28x1    | STM32H7 | 30.25 KiB     | ~3 KiB      | 38.02 KiB    | ~18 KiB       | ~ 34 KiB   | ~56 KiB  | 7.3.0                 |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28x1    | STM32H7 | 14.13 KiB     | ~5 KiB       | 10.08 KiB    | ~46 KiB    | ~19 KiB   | ~56 KiB  | 7.3.0                 |
 
 
 ### Reference inference time based on EMNIST-Byclass dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) |
-|-------------------|--------|------------|------------------|---------------|---------------------|
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28x1   | STM32H747I-DISCO | 400 MHz       |     14.63 ms       |
-| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28x1    | STM32H747I-DISCO | 400 MHz       |      4.718 ms       |
+| Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) | STM32Cube.AI version  |
+|-------------------|--------|------------|------------------|---------------|---------------------|-----------------------|
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1.h5) | Float   | 28x28x1   | STM32H747I-DISCO | 400 MHz       |     14.63 ms       | 7.3.0                 |
+| [ST MNIST Byclass v1 28x28](./ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1/stmnist_v1_int8.tflite) | Int8   | 28x28x1    | STM32H747I-DISCO | 400 MHz       |      4.718 ms       | 7.3.0                 |
 
 
 ### Accuracy with EMNIST-Byclass dataset

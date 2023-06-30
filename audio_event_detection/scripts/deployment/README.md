@@ -238,6 +238,7 @@ stm32ai:
   serie: STM32U5
   IDE: GCC
   verbosity: 1
+  version : 7.3.0
   optimization: balanced
   footprints_on_target: False
   path_to_stm32ai: C:/stmicroelectronics/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
@@ -249,6 +250,7 @@ where:
 - `serie` - **B-U585I-IOT02A**, only supported option for *Getting Started*.
 - `IDE` -**GCC**, only supported option for *Getting Started*.
 - `verbosity` - *0* or *1*. Mode 0 is silent, and mode 1 displays messages when building and flashing the C applicaiton.
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **7.3.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `footprints_on_target` - **'B-U585I-IOT02A'** to use **Developer Cloud Services** to benchmark model and generate C code, else keep **False** (i.e. only local download of **STM32Cube.AI** will be used to get model footprints and C code w/o inference time).
 - `path_to_stm32ai` - *Path* to stm32ai executable file.

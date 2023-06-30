@@ -36,6 +36,11 @@ extern "C" {
 #include "events/IEventListener_vtbl.h"
 
 
+// Forward functions declaration
+// *****************************
+
+void *SysAlloc(size_t nSize);
+
 // Public API declaration
 //***********************
 

@@ -13,13 +13,13 @@ train_parameters:
 dataset:
   name: ST_handposture_dataset
   class_names: [None, Like, Dislike, FlatHand, Fist, Love, BreakTime, CrossHands]
-  training_path: datasets/ST_VL53L5CX_handposture_dataset
-  validation_path: datasets/ST_VL53L5CX_handposture_test
+  training_path: datasets/ST_VL53L8CX_handposture_dataset
+  validation_path: #datasets/ST_VL53L8CX_handposture_test
   test_path: 
 
 pre_processing:
-  Max_distance: 350
-  Min_distance: 150
+  Max_distance: 400
+  Min_distance: 100
   Background_distance: 120
 
 data_augmentation:
@@ -31,6 +31,7 @@ model:
   dropout: 0.5
 
 stm32ai:
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: STM32L4R9I-DISCO
   path_to_stm32ai: C:/Work/AI/Cube.AI/7.3.0/windows/stm32ai.exe

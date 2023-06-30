@@ -38,7 +38,7 @@ Download [STM32CubeIDE](https://www.st.com/content/st_com/en/products/developmen
 
 [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) is an STM32Cube Expansion Package, which is part of the STM32Cube.AI ecosystem. It extends STM32CubeMX capabilities with automatic conversion of pretrained artificial intelligence algorithms, including neural network and classical machine learning models. It integrates also a generated optimized library into the user's project.
 
-This software is tested with [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) `v8.0.0`. It is advised that the user uses the same version to avoid any potential compatibility issues.
+This software is tested with [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) `v8.1.0`. It is advised that the user uses the same version to avoid any potential compatibility issues.
 
 The pack can be installed through [STM32CubeMX](https://www.st.com/content/st_com/en/products/development-tools/software-development-tools/stm32-software-development-tools/stm32-configurators-and-code-generators/stm32cubemx.html) through the  *STM32CubeExpansion* pack mechanism.
 
@@ -57,10 +57,12 @@ and
 
 ```bash
 <X_CUBE_AI-directory-path>
-  \- Middlewares/ST/AI/Lib/NetworkRuntime800_CM33_GCC.a
+  \- Middlewares/ST/AI/Lib/GCC/ARMCortexM33/NetworkRuntime810_CM33_GCC.a
 ```
 
 into the middleware project directory `'<getting-start-install-dir>/Middlewares/ST/STM32_AI_Library/Lib'`
+
+Note: <X_CUBE_AI-directory-path> is by default \Users\\<windows_user_name\>\STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-AI\\<version\>. Also, in the name of the runtime library: `NetworkRuntime810_CM33_GCC.a`, `810` denotes that we are using [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) version `8.1.0`. For anyother version, update this name accordingly.
 
 ### __Generation and Installation of the X-CUBE-AI model__
 
@@ -83,6 +85,8 @@ After generating the network, please copy the resulting following files:
 ```
 
 into the project directory `'<getting-start-install-dir>/Projects/B-U585I-IOT02A/Applications/GS/X-CUBE-AI/App'`
+
+For more information, please refer to  [X-CUBE-AI](https://www.st.com/en/embedded-software/x-cube-ai.html) documentation.
 
 ### __STM32CubeIDE tool launch__
 
@@ -273,7 +277,7 @@ During execution phase the AI model is first loaded and the hardware is set up.
 
 On initialisation, the application loads and checks `X-CUBE-AI` model:
 
-* Api version == `1.2.0` ( `X-CUBE-AI` `7.3.0` & `8.0.0` )
+* Api version == `1.2.0` ( `X-CUBE-AI` `7.3.0` & `8.1.0` )
 * Input buffers number == `1`
 * Outputs buffer number must be less or equal than 2
 * Input buffers type : `AI_BUFFER_FMT_TYPE_FLOAT` or `AI_BUFFER_FMT_TYPE_Q` (signed 8 bits)
@@ -350,6 +354,9 @@ STM32U5 MCU@160Mhz
 ```
 
 ## __History__
+### __V2.1 Migration to Thread X__
+
+* Upgraded to X-CUBE-AI version 8.1.0
 
 ### __V2.0 Migration to Thread X__
 

@@ -44,6 +44,34 @@
 #endif
 /*cstat +MISRAC2012-* */
 
+#if (SYS_TS_CFG_ENABLE_SERVICE == 1)
+/* include the stm32__xx_ll_tim.h for the timestamp service*/
+/* MISRA messages linked to HAL include are ignored */
+/*cstat -MISRAC2012-* */
+#ifdef SYS_TP_MCU_STM32L4
+#include "stm32l4xx_ll_tim.h"
+#elif defined (SYS_TP_MCU_STM32L0)
+#include "stm32l0xx_ll_tim.h"
+#elif defined(SYS_TP_MCU_STM32U5)
+#include "stm32u5xx_ll_tim.h"
+#elif defined(SYS_TP_MCU_STM32WB)
+#include "stm32wbxx_ll_tim.h"
+#elif defined(SYS_TP_MCU_STM32L5)
+#include "stm32l5xx_ll_tim.h"
+#elif defined(SYS_TP_MCU_STM32G4)
+#include "stm32g4xx_ll_tim.h"
+#else
+#error "no target platform defined in the project options."
+#endif
+/*cstat +MISRAC2012-* */
+#endif // (SYS_TS_CFG_ENABLE_SERVICE == 1)
+
+/* Specifies the RTOS. Valid value are:
+ * - SYS_TP_RTOS_FREERTOS
+ * - SYS_TP_RTOS_THREADX*/
+
+#define SYS_TP_RTOS_THREADX
+
 /* Compiler specific define */
 /****************************/
 

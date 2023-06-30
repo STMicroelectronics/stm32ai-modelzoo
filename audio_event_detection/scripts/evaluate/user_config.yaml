@@ -59,8 +59,9 @@ quantization:
   export_dir: quantized_models
 
 stm32ai:
+  version: 7.3.0
   optimization: balanced
-  footprints_on_target: False
+  footprints_on_target: B-U585I-IOT02A
   path_to_stm32ai: C:\Users\martinlu\work\Xcubeai-7.3.0\windows\stm32ai.exe
   
 mlflow:

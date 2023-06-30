@@ -41,7 +41,7 @@ You need to download and install the following software:
 
 You can run a demo using a pretrained model from [STM32 model zoo](../../models/README.md). Please refer to the YAML file provided alongside the TFlite model to fill the following sections in [user_config.yaml](user_config.yaml) (namely `Dataset Configuration` and `Load model`).
 
-As an example, we will show how to deploy the model [ST_ToF_VL53L5CX_7_hand_postures.h5](../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) pretrained on ST VL53L5CX dataset using the necessary parameters provided in [ST_ToF_VL53L5CX_7_hand_postures_config.yaml](../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes_config.yaml).
+As an example, we will show how to deploy the model [CNN2D_ST_HandPosture_8classes.h5](../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5) pretrained on [ST_VL53L8CX_handposture_dataset dataset](../training/datasets/) using the necessary parameters provided in [CNN2D_ST_HandPosture_8classes_config.yaml](../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes_config.yaml).
 
 **1.1. General settings:**
 
@@ -85,7 +85,7 @@ To do so, you need to specify the **preprocessing** configuration in **[user_con
 
 **1.3. Load model:**
 
-You can run a demo using a pretrained model provided in [STM32 model zoo](../../models/README.md) for hand posture recognition. These models were trained on specific datasets (e.g. ST_VL53L5CX_handposture_dataset).
+You can run a demo using a pretrained model provided in [STM32 model zoo](../../models/README.md) for hand posture recognition. These models were trained on specific datasets (e.g. ST_VL53L5CX_handposture_dataset or ST_VL53L8CX_handposture_dataset).
 
 Also, you can directly deploy your own pretrained model.
 
@@ -113,6 +113,7 @@ where:
 - `serie` - **STM32F4**, only supported option for *Getting Started*.
 - `IDE` -**GCC**, only supported option for *Getting Started*.
 - `verbosity` - *0* or *1*. Mode 0 is silent, and mode 1 displays messages when building and flashing C application on STM32 target.
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **7.3.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `footprints_on_target` - (Not used for this example). **'STM32H747I-DISCO'** to use **Developer Cloud Services** to benchmark model and generate C code, else keep **False** (i.e. only local download of **STM32Cube.AI** will be used to get model footprints and C code w/o inference time).
 - `path_to_stm32ai` - *Path* to stm32ai executable file to use local download, else **False**.
@@ -135,7 +136,7 @@ python deploy.py
 ```
 
 
-### **3. Run the application:**
+### **3. Run the application in the Gesture EVK GUI**
 
 When the application is running on the *NUCLEO-F401RE* Nucleo board, it can be tested with the ST User Interface: STSW-IMG035_EVK (Gesture EVK).
 This tool can be downloaded on [ST.com](https://www.st.com/en/embedded-software/stsw-img035.html).
@@ -143,9 +144,23 @@ This tool can be downloaded on [ST.com](https://www.st.com/en/embedded-software/
 The implementation and the dataset are done with the following sensor orientation:
 ![plot](./doc/img/sensor_orientation.JPG)
 
+There are two ways to visualize the Hand Posture Model outputs: 
 
 Below are the different steps to open the dedicated Hand Posture widget to visualize the output of your application.
 
 ![plot](./doc/img/hand_posture_widget.JPG)
 
 A dedicated User Manual is available in this software STSW-IMG035_EVK (Gesture EVK).
+
+### **4. Run the application in a serial terminal**
+Once, programmed the board can be connected through a serial terminal and the output of the inference can be seen in the serial terminal. 
+To connect the serial port please follow the steps shown in the figure below:
+![plot](./doc/img/tera_term_connection.png)
+
+To run the application, use the command line "enable" and press enter.
+
+![plot](./doc/img/getting_started_running.jpg)
+
+The Tera Term terminal shows the output of one inference from the live data.
+
+![plot](./doc/img/application_running.JPG)

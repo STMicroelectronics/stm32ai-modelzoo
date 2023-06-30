@@ -23,9 +23,13 @@ def TFLite_PTQ_quantizer(cfg, model, fake):
                 data = np.random.rand(1, cfg.model.input_shape[0], cfg.model.input_shape[1], cfg.model.input_shape[2])
                 yield [data.astype(np.float32)]
         else:
-            for image_file in tqdm.tqdm(os.listdir(cfg.dataset.training_path)):
+            if cfg.quantization.quantization_dataset is not None:
+                representative_ds_path = cfg.quantization.quantization_dataset
+            else:
+                representative_ds_path = cfg.dataset.training_path
+            for image_file in tqdm.tqdm(os.listdir(representative_ds_path)):
                 if image_file.endswith(".jpg"):
-                    image = cv2.imread(os.path.join(cfg.dataset.training_path, image_file))
+                    image = cv2.imread(os.path.join(representative_ds_path, image_file))
                     if len(image.shape) != 3:
                         image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
                     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

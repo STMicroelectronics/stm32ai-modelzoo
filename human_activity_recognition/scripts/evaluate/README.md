@@ -84,14 +84,16 @@ Make Sure to add the path to the stm32ai excutable under **path_to_stm32ai**, el
 
 ```python
 stm32ai:
-  path_to_stm32ai: C:/stmicroelectronics2022/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.3.0/Utilities/windows/stm32ai.exe
+  version: 8.1.0
+  path_to_stm32ai: C:/stmicroelectronics2022/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
   optimization: balanced
-  footprints_on_target: STM32L4R9I-DISCO
+  footprints_on_target: B-U585I-IOT02A
 ```
 
 where:
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **8.1.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, available options are: "*balanced*", "*time*", "*ram*".
-- `footprints_on_target` - Specify board name to evaluate the model inference time on real stm32 target, e.g. **'STM32L4R9I-DISCO'** (see [more](../training/doc/boards.json)), else keep **False**.
+- `footprints_on_target` - Specify board name to evaluate the model inference time on real stm32 target, e.g. **'B-U585I-IOT02A'** (see [more](../training/doc/boards.json)), else keep **False**.
 - `path_to_stm32ai` - *Path* to stm32ai executable file.
 
 ### **2. Run benchmark**

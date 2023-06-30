@@ -66,26 +66,26 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference MCU memory footprint based on Flowers dataset (see Accuracy for details on dataset)
 
 
-| Model                                                                                                                               | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM     | Total Flash |
-|-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|--------------|------------|---------------|-------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 240.25 KiB     | ~18 KiB     | 716.70 KiB   | ~77  KiB   | ~261.13 KiB   | ~792.01 KiB |
-| [SqueezeNet v1.1 ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 756.25 KiB     | ~ 18 KiB    | 716.71 KiB   | ~ 77 KiB   | ~775  KiB     | ~793 KiB    |
+| Model                                                                                                                               | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM     | Total Flash | STM32Cube.AI version  |
+|-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|--------------|------------|---------------|-------------|-----------------------|
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 240.25 KiB     | ~18 KiB     | 716.70 KiB   | ~77  KiB   | ~261.13 KiB   | ~792.01 KiB | 7.3.0                 |
+| [SqueezeNet v1.1 ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 756.25 KiB     | ~ 18 KiB    | 716.71 KiB   | ~ 77 KiB   | ~775  KiB     | ~793 KiB    | 7.3.0                 |
 
 
 ### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
 
 
-| Model                                                                                                                               | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) |
-|-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|------------------|---------------|-----------|---------------------|
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 277.3 ms            |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 977.8 ms            |
-| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz   | 224.2 ms **         |
+| Model                                                                                                                               | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) | STM32Cube.AI version  |
+|-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|------------------|---------------|-----------|---------------------|-----------------------|
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128/squeezenet_v1.1_128_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 277.3 ms            | 7.3.0                 |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 977.8 ms            | 7.3.0                 |
+| [SqueezeNet v1.1  ](../squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224/squeezenet_v1.1_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz   | 224.2 ms **         | 7.3.0                 |
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 

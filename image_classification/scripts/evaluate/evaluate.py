@@ -94,7 +94,10 @@ def evaluate_model(cfg, c_header=False, c_code=False):
             stm32ai_benchmark(cfg, cfg.model.model_path, c_code)
 
         else:
-            if cfg.dataset.training_path is None and cfg.dataset.validation_path is None and cfg.dataset.test_path is None:
+            if cfg.dataset.training_path is None and cfg.quantization.quantization_dataset is None:
+                print(f"[WARN] : No Training or Quantization dataset was provided! Please provide a dataset to properly quantize your model.")
+                print(f"[WARN] : Using fake quantization to benchmark the model footprints!")
+
                 TFLite_PTQ_quantizer(cfg, model, train_ds=None, fake=True)
                 quantized_model_path = os.path.join(HydraConfig.get().runtime.output_dir,
                                                     "{}/{}".format(cfg.quantization.export_dir,
@@ -103,12 +106,10 @@ def evaluate_model(cfg, c_header=False, c_code=False):
                 # Benchmark/Generating C model
                 stm32ai_benchmark(cfg, quantized_model_path, c_code)
 
-            else:
+                if cfg.quantization.evaluate:
+                    print(f"[WARN] : The model is not properly quantized, so the evaluation can not be run on this model.")
 
-                # Check train set is provided
-                if cfg.dataset.training_path is None:
-                    raise TypeError(
-                        "Path to Training set is empty. Please provide the training set used to train the model in order to quantize it!")
+            else:
 
                 # Adding batch_size to load dataset
                 second_conf = OmegaConf.create({"train_parameters": {"batch_size": 32}})
@@ -120,20 +121,26 @@ def evaluate_model(cfg, c_header=False, c_code=False):
                 pre_process = preprocessing(cfg)
 
                 # Get datasets
-                if cfg.dataset.name.lower() == "cifar10":
-                    train_ds, valid_ds = load_CIFAR_10(cfg)
-                elif cfg.dataset.name.lower() == "cifar100":
-                    train_ds, valid_ds = load_CIFAR_100(cfg)
-                elif cfg.dataset.name.lower() == "emnist_byclass":
-                    train_ds, valid_ds = load_EMNIST_Byclass(cfg)
-                else:
-                    train_ds = get_ds(cfg.dataset.training_path, cfg)
+                if cfg.dataset.training_path is not None:
+                    if cfg.dataset.name.lower() == "cifar10":
+                        train_ds, valid_ds = load_CIFAR_10(cfg)
+                    elif cfg.dataset.name.lower() == "cifar100":
+                        train_ds, valid_ds = load_CIFAR_100(cfg)
+                    elif cfg.dataset.name.lower() == "emnist_byclass":
+                        train_ds, valid_ds = load_EMNIST_Byclass(cfg)
+                    else:
+                        train_ds = get_ds(cfg.dataset.training_path, cfg)
 
-                train_ds = train_ds.map(lambda x, y: (pre_process(x), y))
+                # Get quantization dataset
+                if cfg.quantization.quantization_dataset is not None:
+                    quantization_ds = get_ds(cfg.quantization.quantization_dataset, cfg)
+                else:
+                    quantization_ds = train_ds
+                quantization_ds = quantization_ds.map(lambda x, y: (pre_process(x), y))
 
                 print("[INFO] : Quantizing the model ... This might take few minutes ...")
                 if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
-                    TFLite_PTQ_quantizer(cfg, model, train_ds, fake=False)
+                    TFLite_PTQ_quantizer(cfg, model, quantization_ds, fake=False)
                     quantized_model_path = os.path.join(HydraConfig.get().runtime.output_dir,
                                                         "{}/{}".format(cfg.quantization.export_dir,
                                                                        "quantized_model.tflite"))

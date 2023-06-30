@@ -12,8 +12,9 @@ Concerning tutorials folder:
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|
 | notebooks                            | [BSD-3-Clause](./tutorials/notebooks/LICENSE.md)              | STMicroelectronics |
+| notebooks/models                     | [Apache License 2.0](./tutorials/notebooks/models/LICENSE.md)              | STMicroelectronics |
 | scripts                              | [BSD-3-Clause](./tutorials/scripts/stm32ai_dc_examples/LICENSE.md)              | STMicroelectronics |
-| models                               | [Apache License 2.0](./tutorials/scripts/models/LICENSE.md)              | STMicroelectronics |
+| scripts/models                       | [Apache License 2.0](./tutorials/scripts/models/LICENSE.md)              | STMicroelectronics |
 
 
 Concerning audio_event_detection:
@@ -79,6 +80,20 @@ Concerning object_detection:
 | scripts                              | [SLA0044](./object_detection/LICENSE.md)              | STMicroelectronics |
 | scripts  utils  object_det_metrics   | [MIT](./object_detection/scripts/utils/object_det_metrics/LICENSE.md)                  | Copyright (c) 2018 Rafael Padilla |
 
+Concerning object_detection getting started:
+| Component                       | License              | Copyright |
+|:---------                       |:-------              |:----------|
+| CMSIS                           | [Apache License 2.0](./object_detection/getting_started/Drivers/CMSIS/LICENSE.md)   | STMicroelectronics |
+| STM32H7xx_HAL_Driver            | [BSD-3-Clause](./object_detection/getting_started/Drivers/STM32H7xx_HAL_Driver/LICENSE.md)         | STMicroelectronics |
+| BSP STM32H747I-Discovery        | [BSD-3-Clause](./object_detection/getting_started/Drivers/BSP/STM32H747I-Discovery/LICENSE.md)         | STMicroelectronics |
+| BSP Components                  | [BSD-3-Clause](./object_detection/getting_started/Drivers/BSP/Components/LICENSE.md)         | STMicroelectronics |
+| STM32_AI_Runtime                | [SLA0044](./object_detection/getting_started/Middlewares/ST/STM32_AI_Runtime/LICENSE.md)              | STMicroelectronics |
+| STM32_ImageProcessing_Library   | [SLA0044](./object_detection/getting_started/Middlewares/ST/STM32_ImageProcessing_Library/LICENSE.md)    | STMicroelectronics |
+| STM32_Objdetect_Postprocess     | [SLA0044](./object_detection/getting_started/Middlewares/ST/STM32_Objdetect_Postprocess/LICENSE.md)    | STMicroelectronics |
+| Application                     | [SLA0044](./object_detection/getting_started/Application/LICENSE.md)              | STMicroelectronics |
+| Utilities                       | [BSD-3-Clause](./object_detection/getting_started/Utilities/LICENSE.md)         | STMicroelectronics |
+
+
 
 Concerning image_classification:
 | Component                                                    | License              | Copyright |
@@ -93,10 +108,13 @@ Concerning image_classification getting started:
 |:---------                       |:-------              |:----------|
 | CMSIS                           | [Apache License 2.0](./image_classification/getting_started/Drivers/CMSIS/LICENSE.md)   | STMicroelectronics |
 | STM32H7xx_HAL_Driver            | [BSD-3-Clause](./image_classification/getting_started/Drivers/STM32H7xx_HAL_Driver/LICENSE.md)         | STMicroelectronics |
-| BSP STM32H747I-Discovery        | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/STM32H747I-Discovery/LICENSE.md)         | STMicroelectronics |
+| BSP STM32H747I-DISCO            | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/STM32H747I-DISCO/LICENSE.md)         | STMicroelectronics |
+| BSP NUCLEO-H743ZI2              | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/NUCLEO-H743ZI2/LICENSE.md)         | STMicroelectronics |
 | BSP Components                  | [BSD-3-Clause](./image_classification/getting_started/Drivers/BSP/Components/LICENSE.md)         | STMicroelectronics |
 | STM32_AI_Runtime                | [SLA0044](./image_classification/getting_started/Middlewares/ST/STM32_AI_Runtime/LICENSE.md)              | STMicroelectronics |
 | STM32_ImageProcessing_Library   | [SLA0044](./image_classification/getting_started/Middlewares/ST/STM32_ImageProcessing_Library/LICENSE.md)              | STMicroelectronics |
+| STM32_USB_Device                | [SLA0044](./image_classification/getting_started/Middlewares/ST/STM32_USB_Device/LICENSE.md)              | STMicroelectronics |
+| STM32_USB_Display               | [SLA0044](./image_classification/getting_started/Middlewares/ST/STM32_USB_Display/LICENSE.md)              | STMicroelectronics |
 | Application                     | [SLA0044](./image_classification/getting_started/Application/LICENSE.md)              | STMicroelectronics |
 | Utilities                       | [BSD-3-Clause](./image_classification/getting_started/Utilities/LICENSE.md)         | STMicroelectronics |
 
@@ -106,6 +124,7 @@ Concerning hand posture:
 |:---------                            |:-------              |:----------|
 | scripts                              | [SLA0081](./hand_posture/scripts/LICENSE.md)              | STMicroelectronics |
 | models                               | [SLA0081](./hand_posture/models/LICENSE.md)              | STMicroelectronics |
+| datasets                             | [SLA0081](./hand_posture/scripts/training/datasets/LICENSE.md)              | STMicroelectronics |
 
 Concerning hand posture getting started:
 | Component                       | License              | Copyright |

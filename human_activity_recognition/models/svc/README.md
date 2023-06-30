@@ -64,23 +64,23 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference memory footprint and inference time for the two datasets (see Accuracy for details on dataset)
 
-The memory footprints, and the inference times for the various pretrained SVC models for two datasets are provided in the table below. For the inference times please note that these are computed on the STM32L4R9 running at frequency value of 120 MHz.
+The memory footprints, and the inference times for the various pretrained SVC models for two datasets are provided in the table below. For the inference times please note that these are computed on the **'B-U585I-IOT02A'** running at frequency value of 160 MHz.
 
-| Model                                                                                                | dataset |  Format | Input Shape     | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |Inference Time (ms) |
-|:----------------------------------------------------------------------------------------------------:|:-------:|:-------:|:---------------:|:-------:|:--------------:|:-----------:|:-------------:|:----------:|:-----------:|:-----------:|:------------------:| 
-| [SVC wl 24 pct 5](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx)    | WISDM   | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 4.25 KiB      | 1.086 KiB   | 97.16 KiB    | 17.12 KiB |  6.13 KiB  | 114.29 KiB | 4.197              |
-| [SVC wl 24 pct 10](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_10/svc_wl_24_pct_10.onnx) | WISDM   | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 7.359 KiB      | 1.886 KiB   | 168.683 KiB   | 17.12 KiB |  9.245 KiB  | 185.803 KiB | 7.348              |
-| [SVC wl 48 pct 5](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx)    | WISDM   | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 2.798 KiB      | 1.742 KiB   | 69.371 KiB    | 16.511 KiB |  4.539 KiB  | 85.882 KiB  | 3.045              |
-| [SVC wl 48 pct 10](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_10/svc_wl_48_pct_10.onnx) | WISDM   | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 4.625 KiB      | 1.742 KiB   | 111.418 KiB   | 16.523 KiB |  6.361 KiB  | 127.9413 KiB| 4.686              |
-| [SVC wl 24 pct 2](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_2/svc_wl_24_pct_2.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 2.289 KiB      | 1.742 KiB   | 60.828 KiB    | 16.511 KiB | 4.031 KiB   | 77.339 KiB  | 2.411              |
-| [SVC wl 24 pct 5](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 72  | STM32L4 | 4.457 KiB      | 1.742 KiB   | 119.367 KiB   | 16.515 KiB | 6.199 KiB   | 135.882 KiB | 4.837              |
-| [SVC wl 48 pct 2](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_2/svc_wl_48_pct_2.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 1.277 KiB      | 1.742 KiB   | 40.261 KiB    | 16.507 KiB | 3.019 KiB   | 56.768 KiB  | 1.502              |
-| [SVC wl 48 pct 5](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx)      | mobility_v1     | FLOAT32 | 1 x 1 x 1 x 144 | STM32L4 | 2.664 KiB      | 1.742 KiB   | 77.703 KiB    | 16.511 KiB | 4.406 KiB   | 94.214 KiB  | 2.983              |
+| Model                                                                                                   | dataset    |  Format | Input Shape     | Series  |Activation RAM (KiB)|Runtime RAM (KiB)|Weights Flash (KiB)|Code Flash (KiB)|Total RAM (KiB)|Total Flash (KiB)|Inference Time (ms)|STM32Cube.AI version |
+|:-------------------------------------------------------------------------------------------------------:|:----------:|:-------:|:---------------:|:-------:|:------------------:|:---------------:|:-----------------:|:--------------:|:-------------:|:---------------:|:-----------------:|:-------------------:|
+| [SVC wl 24 pct 5](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx)       | WISDM      | FLOAT32 | 1 x 1 x 1 x 72  | STM32U5 | 4.25               | 1.74            | 97.17             | 16.82          |  5.99         | 113.99          | 2.546              | 8.1.0              |
+| [SVC wl 24 pct 10](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_24_pct_10/svc_wl_24_pct_10.onnx)    | WISDM      | FLOAT32 | 1 x 1 x 1 x 72  | STM32U5 | 7.36               | 1.74            | 168.68            | 16.80          |  9.10         | 185.49          | 4.604              | 8.1.0              |
+| [SVC wl 48 pct 5](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx)       | WISDM      | FLOAT32 | 1 x 1 x 1 x 144 | STM32U5 | 2.8                | 1.74            | 69.37             | 16.79          |  4.54         | 86.16           | 1.724              | 8.1.0              |
+| [SVC wl 48 pct 10](./ST_pretrainedmodel_public_dataset/WISDM/svc_wl_48_pct_10/svc_wl_48_pct_10.onnx)    | WISDM      | FLOAT32 | 1 x 1 x 1 x 144 | STM32U5 | 4.62               | 1.74            | 111.42            | 16.80          |  6.37         | 128.22          | 2.851              | 8.1.0              |
+| [SVC wl 24 pct 2](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_2/svc_wl_24_pct_2.onnx) | mobility_v1| FLOAT32 | 1 x 1 x 1 x 72  | STM32U5 | 2.29               | 1.74            | 60.83             | 16.79          |  4.03         | 77.61           | 1.424              | 8.1.0              |
+| [SVC wl 24 pct 5](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_24_pct_5/svc_wl_24_pct_5.onnx) | mobility_v1| FLOAT32 | 1 x 1 x 1 x 72  | STM32U5 | 4.46               | 1.74            | 119.37            | 16.80          |  6.20         | 136.16          | 2.861              | 8.1.0              |
+| [SVC wl 48 pct 2](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_2/svc_wl_48_pct_2.onnx) | mobility_v1| FLOAT32 | 1 x 1 x 1 x 144 | STM32U5 | 1.28               | 1.74            | 40.26             | 16.79          |  3.0é         | 57.05           | 0.852              | 8.1.0              |
+| [SVC wl 48 pct 5](./ST_pretrainedmodel_custom_dataset/mobility_v1/svc_wl_48_pct_5/svc_wl_48_pct_5.onnx) | mobility_v1| FLOAT32 | 1 x 1 x 1 x 144 | STM32U5 | 2.66               | 1.74            | 77.70             | 16.79          |  4.4&         | 94.09           | 1.748              | 8.1.0              |
 
 
 

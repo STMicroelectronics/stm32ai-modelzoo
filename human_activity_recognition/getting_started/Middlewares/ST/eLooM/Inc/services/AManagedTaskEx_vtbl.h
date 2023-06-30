@@ -32,8 +32,7 @@ extern "C" {
 #include "systp.h"
 /* MISRA messages linked to FreeRTOS include are ignored */
 /*cstat -MISRAC2012-* */
-#include "FreeRTOS.h"
-#include "task.h"
+#include "tx_api.h"
 /*cstat -MISRAC2012-* */
 #include "AManagedTask_vtbl.h"
 
@@ -44,7 +43,7 @@ typedef struct _AManagedTaskEx_vtbl AManagedTaskEx_vtbl;
 
 struct _AManagedTaskEx_vtbl {
   sys_error_code_t (*HardwareInit)(AManagedTask *_this, void *pParams);
-  sys_error_code_t (*OnCreateTask)(AManagedTask *_this, TaskFunction_t *pvTaskCode, const char **pcName, unsigned short *pnStackDepth, void **pParams, UBaseType_t *pxPriority);
+  sys_error_code_t (*OnCreateTask)(AManagedTask *_this, tx_entry_function_t *pvTaskCode, CHAR **pcName, VOID **pvStackStart, ULONG *pnStackSize, UINT *pnPriority, UINT *pnPreemptThreshold, ULONG *pnTimeSlice, ULONG *pnAutoStart, ULONG *pnParams);
   sys_error_code_t (*DoEnterPowerMode)(AManagedTask *_this, const EPowerMode eActivePowerMode, const EPowerMode eNewPowerMode);
   sys_error_code_t (*HandleError)(AManagedTask *_this, SysEvent xError);
   sys_error_code_t (*OnEnterTaskControlLoop)(AManagedTask *_this);
@@ -75,9 +74,9 @@ struct _AManagedTaskEx {
   const AManagedTaskEx_vtbl *vptr;
 
   /**
-   * Specify the native FreeRTOS task handle.
+   * Specifies the native ThreadX task handle.
    */
-  TaskHandle_t m_xThaskHandle;
+  TX_THREAD m_xTaskHandle;
 
   /**
    *Specifies a pointer to the next managed task in the _ApplicationContext.
@@ -143,7 +142,8 @@ SYS_DEFINE_STATIC_INLINE
 sys_error_code_t AMTInitEx(AManagedTaskEx *_this) {
 
   _this->m_pNext = NULL;
-  _this->m_xThaskHandle = NULL;
+  _this->m_pfPMState2FuncMap = NULL;
+  _this->m_pPMState2PMStateMap = NULL;
   _this->m_pfPMState2FuncMap = NULL;
   _this->m_pPMState2PMStateMap = NULL;
   _this->m_xStatus.nDelayPowerModeSwitch = 1;
@@ -151,9 +151,10 @@ sys_error_code_t AMTInitEx(AManagedTaskEx *_this) {
   _this->m_xStatus.nPowerModeSwitchDone = 0;
   _this->m_xStatus.nIsTaskStillRunning = 0;
   _this->m_xStatus.nErrorCount = 0;
+  _this->m_xStatus.nAutoStart = 0;
   _this->m_xStatus.nReserved = 1; // this identifies the task as an AManagedTaskEx.
   _this->m_xStatusEx.nIsWaitingNoTimeout = 0;
-  _this->m_xStatusEx.nPowerModeClass = (uint8_t)E_PM_CLASS_0;
+  _this->m_xStatusEx.nPowerModeClass = E_PM_CLASS_0;
   _this->m_xStatusEx.nUnused = 0;
   _this->m_xStatusEx.nReserved = 0;
 

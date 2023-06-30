@@ -1,21 +1,20 @@
 /**
- ******************************************************************************
- * @file    ism330dhcx.h
- * @author  MEMS Software Solutions Team
- * @brief   ISM330DHCX header driver file
- ******************************************************************************
- * @attention
- *
- * <h2><center>&copy; Copyright (c) 2019 STMicroelectronics.
- * All rights reserved.</center></h2>
- *
- * This software component is licensed by ST under BSD 3-Clause license,
- * the "License"; You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at:
- *                        opensource.org/licenses/BSD-3-Clause
- *
- ******************************************************************************
- */
+  ******************************************************************************
+  * @file    ism330dhcx.h
+  * @author  MEMS Software Solutions Team
+  * @brief   ISM330DHCX header driver file
+  ******************************************************************************
+  * @attention
+  *
+  * Copyright (c) 2019 STMicroelectronics.
+  * All rights reserved.
+  *
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
+  *
+  ******************************************************************************
+  */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef ISM330DHCX_H
@@ -31,24 +30,25 @@ extern "C"
 #include <string.h>
 
 /** @addtogroup BSP BSP
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup Component Component
- * @{
- */
+  * @{
+  */
 
 /** @addtogroup ISM330DHCX ISM330DHCX
- * @{
- */
+  * @{
+  */
 
 /** @defgroup ISM330DHCX_Exported_Types ISM330DHCX Exported Types
- * @{
- */
+  * @{
+  */
 
 typedef int32_t (*ISM330DHCX_Init_Func)(void);
 typedef int32_t (*ISM330DHCX_DeInit_Func)(void);
 typedef int32_t (*ISM330DHCX_GetTick_Func)(void);
+typedef void (*ISM330DHCX_Delay_Func)(uint32_t);
 typedef int32_t (*ISM330DHCX_WriteReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 typedef int32_t (*ISM330DHCX_ReadReg_Func)(uint16_t, uint16_t, uint8_t *, uint16_t);
 
@@ -67,6 +67,7 @@ typedef struct
   ISM330DHCX_WriteReg_Func      WriteReg;
   ISM330DHCX_ReadReg_Func       ReadReg;
   ISM330DHCX_GetTick_Func       GetTick;
+  ISM330DHCX_Delay_Func         Delay;
 } ISM330DHCX_IO_t;
 
 typedef struct
@@ -94,6 +95,15 @@ typedef struct
   unsigned int D6DOrientationStatus : 1;
   unsigned int SleepStatus : 1;
 } ISM330DHCX_Event_Status_t;
+
+typedef struct
+{
+  unsigned int FifoWatermark : 1;
+  unsigned int FifoOverrun : 1;
+  unsigned int FifoFull : 1;
+  unsigned int CounterBdr : 1;
+  unsigned int FifoOverrunLatched : 1;
+} ISM330DHCX_Fifo_Status_t;
 
 typedef struct
 {
@@ -154,33 +164,37 @@ typedef struct
   int32_t (*GetAxesRaw)(ISM330DHCX_Object_t *, ISM330DHCX_AxesRaw_t *);
 } ISM330DHCX_GYRO_Drv_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit[3];
   uint8_t u8bit[6];
 } ism330dhcx_axis3bit16_t;
 
-typedef union{
+typedef union
+{
   int16_t i16bit;
   uint8_t u8bit[2];
 } ism330dhcx_axis1bit16_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit[3];
   uint8_t u8bit[12];
 } ism330dhcx_axis3bit32_t;
 
-typedef union{
+typedef union
+{
   int32_t i32bit;
   uint8_t u8bit[4];
 } ism330dhcx_axis1bit32_t;
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @defgroup ISM330DHCX_Exported_Constants ISM330DHCX Exported Constants
- * @{
- */
+  * @{
+  */
 
 #define ISM330DHCX_OK                       0
 #define ISM330DHCX_ERROR                   -1
@@ -202,12 +216,12 @@ typedef union{
 #define ISM330DHCX_GYRO_SENSITIVITY_FS_4000DPS 140.000f
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ISM330DHCX_Exported_Functions ISM330DHCX Exported Functions
- * @{
- */
+  * @{
+  */
 
 int32_t ISM330DHCX_RegisterBusIO(ISM330DHCX_Object_t *pObj, ISM330DHCX_IO_t *pIO);
 int32_t ISM330DHCX_Init(ISM330DHCX_Object_t *pObj);
@@ -247,9 +261,6 @@ int32_t ISM330DHCX_ACC_Disable_Free_Fall_Detection(ISM330DHCX_Object_t *pObj);
 int32_t ISM330DHCX_ACC_Set_Free_Fall_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Threshold);
 int32_t ISM330DHCX_ACC_Set_Free_Fall_Duration(ISM330DHCX_Object_t *pObj, uint8_t Duration);
 
-int32_t ISM330DHCX_ACC_Enable_Tilt_Detection(ISM330DHCX_Object_t *pObj, ISM330DHCX_SensorIntPin_t IntPin);
-int32_t ISM330DHCX_ACC_Disable_Tilt_Detection(ISM330DHCX_Object_t *pObj);
-
 int32_t ISM330DHCX_ACC_Enable_Wake_Up_Detection(ISM330DHCX_Object_t *pObj, ISM330DHCX_SensorIntPin_t IntPin);
 int32_t ISM330DHCX_ACC_Disable_Wake_Up_Detection(ISM330DHCX_Object_t *pObj);
 int32_t ISM330DHCX_ACC_Set_Wake_Up_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Threshold);
@@ -286,10 +297,15 @@ int32_t ISM330DHCX_GYRO_Get_Init_Status(ISM330DHCX_Object_t *pObj, uint8_t *Stat
 
 int32_t ISM330DHCX_FIFO_Get_Num_Samples(ISM330DHCX_Object_t *pObj, uint16_t *NumSamples);
 int32_t ISM330DHCX_FIFO_Get_Full_Status(ISM330DHCX_Object_t *pObj, uint8_t *Status);
+int32_t ISM330DHCX_FIFO_Get_All_Status(ISM330DHCX_Object_t *pObj, ISM330DHCX_Fifo_Status_t *Status);
 int32_t ISM330DHCX_FIFO_ACC_Set_BDR(ISM330DHCX_Object_t *pObj, float Bdr);
 int32_t ISM330DHCX_FIFO_GYRO_Set_BDR(ISM330DHCX_Object_t *pObj, float Bdr);
 int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT1_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status);
 int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Full(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Threshold(ISM330DHCX_Object_t *pObj, uint8_t Status);
+int32_t ISM330DHCX_FIFO_Set_INT2_FIFO_Overrun(ISM330DHCX_Object_t *pObj, uint8_t Status);
 int32_t ISM330DHCX_FIFO_Set_Watermark_Level(ISM330DHCX_Object_t *pObj, uint16_t Watermark);
 int32_t ISM330DHCX_FIFO_Set_Stop_On_Fth(ISM330DHCX_Object_t *pObj, uint8_t Status);
 int32_t ISM330DHCX_FIFO_Set_Mode(ISM330DHCX_Object_t *pObj, uint8_t Mode);
@@ -312,20 +328,20 @@ int32_t ISM330DHCX_GYRO_Disable_DRDY_On_INT2(ISM330DHCX_Object_t *pObj);
 int32_t ISM330DHCX_DRDY_Set_Mode(ISM330DHCX_Object_t *pObj, uint8_t Mode);
 
 /**
- * @}
- */
+  * @}
+  */
 
 /** @addtogroup ISM330DHCX_Exported_Variables ISM330DHCX Exported Variables
- * @{
- */
+  * @{
+  */
 
 extern ISM330DHCX_CommonDrv_t ISM330DHCX_COMMON_Driver;
 extern ISM330DHCX_ACC_Drv_t ISM330DHCX_ACC_Driver;
 extern ISM330DHCX_GYRO_Drv_t ISM330DHCX_GYRO_Driver;
 
 /**
- * @}
- */
+  * @}
+  */
 
 #ifdef __cplusplus
 }
@@ -334,15 +350,13 @@ extern ISM330DHCX_GYRO_Drv_t ISM330DHCX_GYRO_Driver;
 #endif
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
+  * @}
+  */
 
 /**
- * @}
- */
-
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+  * @}
+  */

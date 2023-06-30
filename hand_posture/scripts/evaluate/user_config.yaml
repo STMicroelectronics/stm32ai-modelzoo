@@ -15,9 +15,10 @@ pre_processing:
 model:
   model_type: {name : CNN2D_ST_HandPosture, version : v1}
   input_shape: [8, 8, 2]
-  model_path: ../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5
+  model_path: ../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5
 
 stm32ai:
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: STM32L4R9I-DISCO
   path_to_stm32ai: C:/Work/AI/Cube.AI/7.3.0/windows/stm32ai.exe

@@ -180,9 +180,14 @@ def train(cfg):
     if cfg.quantization.quantize:
         print("[INFO] : Quantizing the model ... This might take few minutes ...")
 
+        if cfg.quantization.quantization_dataset is not None:
+            quantization_ds = get_ds(cfg.quantization.quantization_dataset, cfg)
+        else:
+            quantization_ds = train_ds
+        quantization_ds = quantization_ds.map(lambda x, y: (pre_process(x), y))
+
         if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
-            train_ds = train_ds.map(lambda x, y: (pre_process(x), y))
-            TFLite_PTQ_quantizer(cfg, best_model, train_ds, fake=False)
+            TFLite_PTQ_quantizer(cfg, best_model, quantization_ds, fake=False)
             quantized_model_path = os.path.join(HydraConfig.get(
             ).runtime.output_dir, "{}/{}".format(cfg.quantization.export_dir, "quantized_model.tflite"))
 

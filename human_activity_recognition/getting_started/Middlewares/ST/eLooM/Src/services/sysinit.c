@@ -24,29 +24,33 @@
 #include "services/sysdebug.h"
 #include "services/NullErrorDelegate.h"
 #include "services/SysDefPowerModeHelper.h"
-/* MISRA messages linked to FreeRTOS include are ignored */
+#include "services/SysTimestamp.h"
+/* MISRA messages linked to ThreadX include are ignored */
 /*cstat -MISRAC2012-* */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include "tx_api.h"
+#include "tx_timer.h"
 /*cstat +MISRAC2012-* */
 #include <string.h>
 
 #ifndef INIT_TASK_CFG_STACK_SIZE
-#define INIT_TASK_CFG_STACK_SIZE               (size_t)(configMINIMAL_STACK_SIZE * 2U)
+#define INIT_TASK_CFG_STACK_SIZE               (140U)
 #endif
-#define INIT_TASK_CFG_PRIORITY                 (configMAX_PRIORITIES - 1)
+#define INIT_TASK_CFG_PRIORITY                 (0) // with ThreadX the task priority are from MAX=0 to MIN=app_defined
 #define INIT_TASK_CFG_QUEUE_ITEM_SIZE          sizeof(SysEvent)
 #ifndef INIT_TASK_CFG_QUEUE_LENGTH
 #define INIT_TASK_CFG_QUEUE_LENGTH             16
 #endif
 #define INIT_TASK_CFG_PM_SWITCH_DELAY_MS       50
 
-#ifndef INIT_TASK_CFG_ENABLE_BOOT_IF
-#define INIT_TASK_CFG_ENABLE_BOOT_IF           0
+#ifndef INIT_TASK_CFG_HEAP_SIZE
+#define INIT_TASK_CFG_HEAP_SIZE                4096
 #endif
 
-#define INIT_IS_KIND_OF_AMTEX(pTask)            ((pTask)->m_xStatus.nReserved == 1)
+#ifndef INIT_TASK_CFG_POST_EVENT_TIMEOUT_MS
+#define INIT_TASK_CFG_POST_EVENT_TIMEOUT_MS    (50U)
+#endif
+
+#define INIT_IS_KIND_OF_AMTEX(pxTask)           ((pxTask)->m_xStatus.nReserved == 1)
 
 #define SYS_DEBUGF(level, message) 			        SYS_DEBUGF3(SYS_DBG_INIT, level, message)
 
@@ -62,7 +66,7 @@ struct _System{
   /**
    * Specifies the INIT task handle.
    */
-  TaskHandle_t m_xInitTask;
+  TX_THREAD m_xInitTask;
 
   /**
    * Specifies the queue used to serialize the system request made by the application tasks.
@@ -70,7 +74,7 @@ struct _System{
    * - Power Mode Switch.
    * - Error.
    */
-  QueueHandle_t m_xSysQueue;
+  TX_QUEUE m_xSysQueue;
 
   /**
    * Specifies the application specific error manager delegate object.
@@ -82,6 +86,16 @@ struct _System{
    */
   IAppPowerModeHelper *m_pxAppPowerModeHelper;
 
+  /**
+   * Specifies the address of the first unused memory as reported by the linker.
+   */
+  void *pvFirstUnusedMemory;
+
+#if (SYS_TS_CFG_ENABLE_SERVICE == 1)
+  SysTimestamp_t m_xTimestampSrv;
+#endif
+
+
 #if INIT_TASK_CFG_ENABLE_BOOT_IF == 1
   /**
    * Specifies the application specific boot interface object.
@@ -89,13 +103,16 @@ struct _System{
   IBoot *m_pxAppBootIF;
 #endif
 
-#if (SYS_DBG_ENABLE_TA4 == 1)
   /**
-   * When TA4 is enabled, this member is used to inject system event in the trace RecoderData.
+   * System memory pool control block.
    */
-  traceString m_ta4Event;
-#endif
+  TX_BYTE_POOL m_xSysMemPool;
 
+  /**
+   * System heap. This memory block is used to create the system byte pool.
+   * This is a convenient way to handle the memory allocation at application level.
+   */
+  uint8_t m_pnHeap[INIT_TASK_CFG_HEAP_SIZE];
 };
 
 
@@ -107,13 +124,6 @@ struct _System{
  */
 static System s_xTheSystem;
 
-#if( configAPPLICATION_ALLOCATED_HEAP == 1 )
-/**
- * The FreeRTOS HEAP is allocated by the application so the system can initialize the heap memory at startup
- * in order to prevent some SRAM retention strange issue.
- */
-uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
-#endif
 
 
 /* Private function declaration */
@@ -130,11 +140,27 @@ extern void SystemClock_Config(void);
 extern void SysPowerConfig(void);
 
 /**
+ * Initialize the system timestamp service. This function, even if it is not static, is not declared in the header file
+ * because it should be used only by the INIT task.
+ *
+ * @param _this  [IN] specifies a system timestamp object.
+ * @param pxDrvCfg [IN] specify the configuration structure of an hardware timer or SYS_TS_USE_SW_TSDRIVER to use the RTOS tick.
+ * @return SYS_NO_ERROR_CODE if success, SYS_TS_SERVICE_ISSUE_ERROR_CODE otherwise.
+ */
+extern sys_error_code_t SysTsInit(SysTimestamp_t *_this, const void *pxDrvCfg);
+
+/**
  * INIT task control loop. The INIT task is in charge of the system initialization.
  *
- * @param pParams not used.
+ * @param thread_input not used.
  */
-static void InitTaskRun(void *pParams);
+static void InitTaskRun(ULONG thread_input);
+
+#if defined(DEBUG) && !defined(SYS_TP_MCU_STM32U5)
+/* Used in DEBUG to check for stack overflow */
+static void SysThreadxStackErrorHandler(TX_THREAD *thread_ptr);
+#endif
+
 
 /**
  * Execute the power mode transaction for all managed tasks belonging to a given PMClass.
@@ -211,16 +237,6 @@ sys_error_code_t SysInit(boolean_t bEnableBootIF) {
 
 #endif  /* INIT_TASK_CFG_ENABLE_BOOT_IF */
 
-#if (SYS_DBG_ENABLE_TA4 == 1)
-#if (SYS_DBG_AUTO_START_TA4 == 1)
-  /* The trace engine must be initialized here because in DEBUG configuration
-   a mutex object maybe created by the SysDebugInit.*/
-   vTraceEnable(TRC_START_AWAIT_HOST);
-#else
-   xTraceInitialize();
-#endif
-#endif
-
 #ifdef SYS_DEBUG
   if (SysDebugInit() != 0) {
     sys_error_handler();
@@ -234,35 +250,45 @@ sys_error_code_t SysInit(boolean_t bEnableBootIF) {
   /* Clear the global error.*/
   SYS_CLEAR_ERROR();
 
-  SYS_DEBUGF(SYS_DBG_LEVEL_VERBOSE, ("System Initialization\r\n"));
-
   /* Create the INIT task to complete the system initialization
    after RTOS is started.*/
+
+#ifdef SYS_TP_RTOS_FREERTOS
   if (xTaskCreate(InitTaskRun, "INIT", INIT_TASK_CFG_STACK_SIZE, NULL, INIT_TASK_CFG_PRIORITY, &s_xTheSystem.m_xInitTask) != pdPASS) {
     xRes = SYS_OUT_OF_MEMORY_ERROR_CODE;
     SYS_SET_SERVICE_LEVEL_ERROR_CODE(xRes);
   }
+
+  // ThreadX use a different approach. After the scheduler is started, it will call the following function
+  // that the application code must overwrite:
+  // void tx_application_define(void *first_unused_memory)
+#endif
 
   return xRes;
 }
 
 sys_error_code_t SysPostEvent(SysEvent xEvent) {
   sys_error_code_t xRes = SYS_NO_ERROR_CODE;
-  BaseType_t xResult;
+  UINT xResult = TX_SUCCESS;
 
   if (SYS_IS_ERROR_EVENT(xEvent)) {
     /* notify the error delegate to allow a first response to critical errors.*/
     xRes = IAEDOnNewErrEvent(s_xTheSystem.m_pxAppErrorDelegate, xEvent);
   }
 
-  if (SYS_IS_CALLED_FROM_ISR()) {
-    xResult = xQueueSendToBackFromISR(s_xTheSystem.m_xSysQueue, &xEvent, NULL);
-  }
-  else {
-    xResult = xQueueSendToBack(s_xTheSystem.m_xSysQueue, &xEvent, pdMS_TO_TICKS(50));
+  ULONG wait_option = TX_NO_WAIT;
+
+  if (!SYS_IS_CALLED_FROM_ISR()) {
+    /* check if we are in the system timer thread*/
+    TX_THREAD *p_current_thread = tx_thread_identify();
+    if (p_current_thread != &_tx_timer_thread) {
+      wait_option = SYS_MS_TO_TICKS(INIT_TASK_CFG_POST_EVENT_TIMEOUT_MS);
+    }
   }
 
-  if (xResult == errQUEUE_FULL) {
+  xResult = tx_queue_send(&s_xTheSystem.m_xSysQueue, &xEvent, wait_option);
+
+  if (xResult != TX_SUCCESS) {
     SYS_SET_SERVICE_LEVEL_ERROR_CODE(SYS_INIT_TASK_POWER_MODE_NOT_ENABLE_ERROR_CODE);
     xRes = SYS_INIT_TASK_POWER_MODE_NOT_ENABLE_ERROR_CODE;
   }
@@ -280,7 +306,7 @@ sys_error_code_t SysTaskErrorHandler(AManagedTask *pxTask) {
 
   /* TODO: STF - how to handle the shutdown of the task?*/
 
-  vTaskSuspend(pxTask->m_xTaskHandle);
+  tx_thread_suspend(&pxTask->m_xTaskHandle);
 
   return xRes;
 }
@@ -294,15 +320,27 @@ void SysResetAEDCounter(void) {
 }
 
 boolean_t SysEventsPending(void) {
-  boolean_t bRes = FALSE;
-  if (SYS_IS_CALLED_FROM_ISR()) {
-    bRes = uxQueueMessagesWaitingFromISR(s_xTheSystem.m_xSysQueue) > 0U ? TRUE : FALSE;
+  ULONG nEnqueued = 0;
+  UINT xResult = tx_queue_info_get(&s_xTheSystem.m_xSysQueue, TX_NULL, &nEnqueued, TX_NULL, TX_NULL, TX_NULL, TX_NULL);
+#ifdef USE_FULL_ASSERT
+  assert_param(xResult == TX_SUCCESS);
+#else
+  UNUSED(xResult);
+#endif
+
+  return nEnqueued > 0;
+}
+
+void *SysAlloc(size_t nSize) {
+  void *pcMemory = NULL;
+  if (TX_SUCCESS != tx_byte_allocate(&s_xTheSystem.m_xSysMemPool, (VOID **)&pcMemory, nSize, TX_NO_WAIT)) {
+    pcMemory = NULL;
   }
-  else {
-    bRes = uxQueueMessagesWaiting(s_xTheSystem.m_xSysQueue) > 0U ? TRUE : FALSE;
+  return pcMemory;
   }
 
-  return bRes;
+void SysFree(void *pvData) {
+  tx_byte_release(pvData);
 }
 
 __weak IApplicationErrorDelegate *SysGetErrorDelegate(void) {
@@ -319,6 +357,11 @@ __weak IAppPowerModeHelper *SysGetPowerModeHelper(void) {
   return SysDefPowerModeHelperAlloc();
 }
 
+#if (SYS_TS_CFG_ENABLE_SERVICE == 1)
+SysTimestamp_t *SysGetTimestampSrv(void) {
+  return &s_xTheSystem.m_xTimestampSrv;
+}
+#endif
 
 /* Private functions definition */
 /********************************/
@@ -330,28 +373,34 @@ __weak IAppPowerModeHelper *SysGetPowerModeHelper(void) {
  *
  * @param pParams not used
  */
-static void InitTaskRun(void *pParams) {
+static void InitTaskRun(ULONG thread_input) {
   sys_error_code_t xRes = SYS_NO_ERROR_CODE;
-  BaseType_t xRtosRes;
-  UNUSED(pParams);
+  UINT nRtosRes = TX_SUCCESS;
+  UNUSED(thread_input);
 
-  vTaskSuspendAll();
+  SYS_DEBUGF(SYS_DBG_LEVEL_VERBOSE, ("System Initialization\r\n"));
 
-#if (SYS_DBG_ENABLE_TA4 == 1)
-  s_xTheSystem.m_ta4Event = xTraceRegisterString("SYS_EVT");
+#if defined(DEBUG) && !defined(SYS_TP_MCU_STM32U5)
+  tx_thread_stack_error_notify(SysThreadxStackErrorHandler);
 #endif
 
-  /* Create the queue for the system message.*/
-  s_xTheSystem.m_xSysQueue = xQueueCreate(INIT_TASK_CFG_QUEUE_LENGTH, INIT_TASK_CFG_QUEUE_ITEM_SIZE);
-  if (s_xTheSystem.m_xSysQueue == NULL) {
-    /* if s_xSysQueue is NULL then the execution is blocked by sys_error_handler().
-     see bugtabs4 #5265 (WGID:201282)*/
+
+//  vTaskSuspendAll();
+  // to suspend all tasks, they are created with auto_start set to 0.
+  // At the end of the system initialization all tasks with auto_start set to 1 are resumed.
+
+  // allocate the system memory pool
+  if (TX_SUCCESS != tx_byte_pool_create(&s_xTheSystem.m_xSysMemPool, "SYS_MEM_POOL", s_xTheSystem.m_pnHeap, INIT_TASK_CFG_HEAP_SIZE)) {
+    // if the memory pool allocation fails then the execution is blocked
     sys_error_handler();
   }
 
-#ifdef DEBUG
-    vQueueAddToRegistry(s_xTheSystem.m_xSysQueue, "SYS_Q");
-#endif
+  CHAR *pcMemory = NULL;
+  // Create the queue for the system messages.
+  if (TX_SUCCESS != tx_byte_allocate(&s_xTheSystem.m_xSysMemPool, (VOID **)&pcMemory, INIT_TASK_CFG_QUEUE_ITEM_SIZE * INIT_TASK_CFG_QUEUE_LENGTH, TX_NO_WAIT)) {
+    sys_error_handler();
+  }
+  tx_queue_create(&s_xTheSystem.m_xSysQueue, "SYS_Q", INIT_TASK_CFG_QUEUE_ITEM_SIZE / sizeof(uint32_t), pcMemory, INIT_TASK_CFG_QUEUE_ITEM_SIZE * INIT_TASK_CFG_QUEUE_LENGTH);
 
   /* Check if the system has resumed from WWDG reset*/
   if (__HAL_RCC_GET_FLAG(RCC_FLAG_WWDGRST) != RESET) {
@@ -372,6 +421,15 @@ static void InitTaskRun(void *pParams) {
 
   /* Clear reset flags in any case*/
   __HAL_RCC_CLEAR_RESET_FLAGS();
+
+#if (SYS_TS_CFG_ENABLE_SERVICE == 1)
+  /* Initialize the System Timestamp service*/
+  xRes = SysTsInit(&s_xTheSystem.m_xTimestampSrv, SYS_TS_CFG_TSDRIVER_PARAMS);
+  if (SYS_IS_ERROR_CODE(xRes)) {
+    __NOP();
+    SYS_DEBUGF(SYS_DBG_LEVEL_WARNING, ("INIT: error during timestamp srv initialization.\r\n"));
+  }
+#endif
 
   /* Get the default application error manager delegate*/
   s_xTheSystem.m_pxAppErrorDelegate = SysGetErrorDelegate();
@@ -425,21 +483,35 @@ static void InitTaskRun(void *pParams) {
   SYS_DEBUGF(SYS_DBG_LEVEL_VERBOSE, ("DONE.\r\n"));
 
   /* Create the application tasks*/
-  TaskFunction_t pvTaskCode;
-  const char *pcName;
-  unsigned short nStackDepth;
-  void *pTaskParams;
-  UBaseType_t xPriority;
+  tx_entry_function_t pvTaskCode;
+  CHAR *pcName;
+  VOID *pvStackStart;
+  ULONG nStackSize;
+  UINT nPriority;
+  UINT nPreemptThreshold;
+  ULONG nTimeSlice;
+  ULONG nAutoStart;
+  ULONG nParams;
 
   pxTask = ACGetFirstTask(&xContext);
   while ((pxTask != NULL) && !SYS_IS_ERROR_CODE(xRes)) {
-    xRes = AMTOnCreateTask(pxTask, &pvTaskCode, &pcName, &nStackDepth, &pTaskParams, &xPriority);
+    xRes = AMTOnCreateTask(pxTask, &pvTaskCode, &pcName, &pvStackStart, &nStackSize, &nPriority, &nPreemptThreshold, &nTimeSlice, &nAutoStart, &nParams);
     if (SYS_IS_ERROR_CODE(xRes)) {
       SYS_SET_SERVICE_LEVEL_ERROR_CODE(SYS_INIT_TASK_FAILURE_ERROR_CODE);
       SYS_DEBUGF(SYS_DBG_LEVEL_SEVERE, ("INIT: system failure.\r\n"));
     } else {
-      xRtosRes = xTaskCreate(pvTaskCode, pcName, nStackDepth, pTaskParams, xPriority, &pxTask->m_xTaskHandle);
-      if(xRtosRes != pdPASS) {
+      if(pvStackStart == NULL) {
+        // allocate the task stack in the system memory pool
+        nRtosRes = tx_byte_allocate(&s_xTheSystem.m_xSysMemPool, &pvStackStart, nStackSize, TX_NO_WAIT);
+      }
+      if (nRtosRes == TX_SUCCESS) {
+        if (nAutoStart == TX_AUTO_START) {
+          pxTask->m_xStatus.nAutoStart = 1;
+        }
+        nRtosRes = tx_thread_create(&pxTask->m_xTaskHandle, pcName, pvTaskCode, nParams, pvStackStart, nStackSize,
+            nPriority, nPreemptThreshold, nTimeSlice, TX_DONT_START);
+      }
+      if(nRtosRes != TX_SUCCESS) {
         SYS_SET_SERVICE_LEVEL_ERROR_CODE(SYS_INIT_TASK_FAILURE_ERROR_CODE);
         SYS_DEBUGF(SYS_DBG_LEVEL_SEVERE, ("INIT: unable to create task %s.\r\n", pcName));
       }
@@ -454,21 +526,29 @@ static void InitTaskRun(void *pParams) {
 
 #if defined(DEBUG) || defined(SYS_DEBUG)
   if (SYS_DBG_LEVEL_SL >= g_sys_dbg_min_level) {
-    size_t nFreeHeapSize = xPortGetFreeHeapSize();
+    ULONG nFreeHeapSize = 0;
+    tx_byte_pool_info_get(&s_xTheSystem.m_xSysMemPool, TX_NULL, &nFreeHeapSize, TX_NULL, TX_NULL, TX_NULL, TX_NULL);
     SYS_DEBUGF(SYS_DBG_LEVEL_SL, ("INIT: free heap = %i.\r\n", nFreeHeapSize));
     SYS_DEBUGF(SYS_DBG_LEVEL_SL, ("INIT: SystemCoreClock = %iHz.\r\n", SystemCoreClock));
   }
 #endif
 
-  xTaskResumeAll();
+  /*Resume all tasks created with auto_start set to 1.*/
+  pxTask = ACGetFirstTask(&xContext);
+  while (pxTask != NULL && !SYS_IS_ERROR_CODE(xRes)) {
+    if (pxTask->m_xStatus.nAutoStart) {
+      tx_thread_resume(&pxTask->m_xTaskHandle);
+    }
+    pxTask = ACGetNextTask(&xContext, pxTask);
+  }
 
-  /* After the system initialization the INIT task is used to implement some system call
-   because it is the owner of the Application Context.
-   At the moment this is an initial implementation of a system level Power Management:
-   wait for a system level power mode request*/
+  // After the system initialization the INIT task is used to implement some system call
+  // because it is the owner of the Application Context.
+  // At the moment this is an initial implementation of a system level Power Management:
+  // wait for a system level power mode request
   SysEvent xEvent;
   for (;;) {
-    if (pdTRUE == xQueueReceive(s_xTheSystem.m_xSysQueue, &xEvent, portMAX_DELAY)) {
+    if (TX_SUCCESS == tx_queue_receive(&s_xTheSystem.m_xSysQueue, &xEvent, TX_WAIT_FOREVER)) {
       EPowerMode eActivePowerMode = IapmhGetActivePowerMode(s_xTheSystem.m_pxAppPowerModeHelper);
       /* check if it is a system error event*/
       if (SYS_IS_ERROR_EVENT(xEvent)) {
@@ -517,11 +597,19 @@ static void InitTaskRun(void *pParams) {
           /* Enter the specified power mode*/
           IapmhDidEnterPowerMode(s_xTheSystem.m_pxAppPowerModeHelper, ePowerMode);
 
+#if defined(DEBUG) || defined(SYS_DEBUG)
+          if (SYS_DBG_LEVEL_SL >= g_sys_dbg_min_level) {
+            ULONG nFreeHeapSize = 0;
+            tx_byte_pool_info_get(&s_xTheSystem.m_xSysMemPool, TX_NULL, &nFreeHeapSize, TX_NULL, TX_NULL, TX_NULL, TX_NULL);
+            SYS_DEBUGF(SYS_DBG_LEVEL_SL, ("INIT: free heap = %i.\r\n", nFreeHeapSize));
+          }
+#endif
+
           pxTask = ACGetFirstTask(&xContext);
           for (; pxTask!=NULL; pxTask=ACGetNextTask(&xContext, pxTask)) {
             pxTask->m_xStatus.nPowerModeSwitchDone = 0;
             pxTask->m_xStatus.nPowerModeSwitchPending = 0;
-            vTaskResume(pxTask->m_xTaskHandle);
+            tx_thread_resume(&pxTask->m_xTaskHandle);
           }
         }
         else {
@@ -543,30 +631,20 @@ static uint16_t InitTaskDoEnterPowerModeForPMClass(ApplicationContext *pxContext
   boolean_t bDelayPowerModeSwitch;
   uint16_t nTaskCount = 0;
 
-#if (SYS_DBG_ENABLE_TA4 == 1)
-  char *pcTaskName = NULL;
-#endif
-
   do {
     bDelayPowerModeSwitch = FALSE;
     pTask = ACGetFirstTask(pxContext);
     for (; pTask!=NULL; pTask=ACGetNextTask(pxContext, pTask)) {
-#if (SYS_DBG_ENABLE_TA4 == 1)
-      pcTaskName = pcTaskGetName(pTask->m_xTaskHandle);
-#endif
+
       /* check if the task is a AMTEx and, in case, if its power mode class is equal to ePowerModeClass*/
       eTaskPMClass = INIT_IS_KIND_OF_AMTEX(pTask) ? AMTExGetPMClass((AManagedTaskEx*)pTask) : E_PM_CLASS_0;
       if (eTaskPMClass == ePowerModeClass) {
         /* notify the task that the power mode is changing,
          so the task will suspend.*/
         pTask->m_xStatus.nPowerModeSwitchPending = 1;
-        if (pTask->m_xStatus.nPowerModeSwitchDone == 0U) {
-          if ((pTask->m_xStatus.nDelayPowerModeSwitch == 0U)) {
-#if (SYS_DBG_ENABLE_TA4 == 1)
-            if (xTraceIsRecorderEnabled()) {
-              vTracePrintF(s_xTheSystem.m_ta4Event, "%s DoEPM", pcTaskName);
-            }
-#endif
+        if (pTask->m_xStatus.nPowerModeSwitchDone == 0) {
+          if ((pTask->m_xStatus.nDelayPowerModeSwitch == 0)) {
+
             AMTDoEnterPowerMode(pTask, eActivePowerMode, eNewPowerMode);
             pTask->m_xStatus.nPowerModeSwitchDone = 1;
             pTask->m_xStatus.nIsTaskStillRunning = 1;
@@ -585,10 +663,49 @@ static uint16_t InitTaskDoEnterPowerModeForPMClass(ApplicationContext *pxContext
     }
 
     if (bDelayPowerModeSwitch == TRUE) {
-      vTaskDelay(pdMS_TO_TICKS(INIT_TASK_CFG_PM_SWITCH_DELAY_MS));
+      tx_thread_sleep(SYS_MS_TO_TICKS(INIT_TASK_CFG_PM_SWITCH_DELAY_MS));
     }
 
   } while (bDelayPowerModeSwitch == TRUE);
 
   return nTaskCount;
 }
+
+#if defined(SYS_DEBUG)
+void SysDebugLogFreeHeapSize(void)
+{
+  ULONG nFreeHeapSize = 0;
+  tx_byte_pool_info_get(&s_xTheSystem.m_xSysMemPool, TX_NULL, &nFreeHeapSize, TX_NULL, TX_NULL, TX_NULL, TX_NULL);
+  SYS_DEBUGF(SYS_DBG_LEVEL_SL, ("INIT: free heap = %i.\r\n", nFreeHeapSize));
+}
+#endif
+
+// ThreadX integration
+// *******************
+#ifdef SYS_TP_RTOS_THREADX
+
+void tx_application_define(void *first_unused_memory) {
+  UINT nRes = TX_SUCCESS;
+  // create the INIT task.
+  s_xTheSystem.pvFirstUnusedMemory = first_unused_memory;
+  nRes = tx_thread_create(&s_xTheSystem.m_xInitTask, "INIT", InitTaskRun, ELOOM_MAGIC_NUMBER, s_xTheSystem.pvFirstUnusedMemory, INIT_TASK_CFG_STACK_SIZE, INIT_TASK_CFG_PRIORITY, INIT_TASK_CFG_PRIORITY, TX_NO_TIME_SLICE, TX_AUTO_START);
+  if (nRes != TX_SUCCESS) {
+    sys_error_handler();
+  }
+  uint32_t mem = (uint32_t)(INIT_TASK_CFG_STACK_SIZE * 4);
+  uint32_t p =  ((uint32_t)s_xTheSystem.pvFirstUnusedMemory) + mem;
+  s_xTheSystem.pvFirstUnusedMemory = (void *) p ;
+}
+
+/* For more info check cortex_m33/tx_port.h file (look for TX_ENABLE_STACK_CHECKING) */
+#if defined(DEBUG) && !defined(SYS_TP_MCU_STM32U5)
+static void SysThreadxStackErrorHandler(TX_THREAD *thread_ptr) {
+  tx_interrupt_control(TX_INT_DISABLE);
+#ifdef DEBUG
+  __asm volatile ("bkpt 0");
+#else
+  while (1) __NOP();
+#endif
+}
+#endif
+#endif // SYS_TP_RTOS_THREADX

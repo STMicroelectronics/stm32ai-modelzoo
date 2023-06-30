@@ -7,11 +7,12 @@ The STM32 model zoo includes several models for hand posture recognition use cas
 <a name="ic_models"></a>
 ## Hand posture recognition models
 
-The table below summarizes the performance of the models, as well as their memory footprints generated using STM32Cube.AI (v7.3.0) for deployment purposes.
+The table below summarizes the performance of the models, as well as their memory footprints generated using STM32Cube.AI for deployment purposes.
 
 By default, the results are provided for float models.
 
-| Models                          | Implementation | Dataset                         | Input Resolution | Top 1 Accuracy (%) | MACCs    (M) | Activation RAM (KiB) | Weights Flash (KiB) | Source                                                                                                                         |
-|---------------------------------|----------------|---------------------------------|------------------|--------------------|--------------|----------------------|---------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| CNN2D_ST_HandPosture 8 postures | TensorFlow     | ST_VL53L5CX_handposture_dataset | 8x8x2            | 96.42%             | 0.009        | 1.0                  | 10.75               | [link](CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5)|
+| Models                                   | Implementation | Dataset                         | Input Resolution | Top 1 Accuracy (%) | MACCs    (M) | Activation RAM (KiB) | Weights Flash (KiB) | STM32Cube.AI version  | Source                                                                                                                         |
+|------------------------------------------|----------------|---------------------------------|------------------|--------------------|--------------|----------------------|---------------------|-----------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| CNN2D_ST_HandPosture VL53L8CX 8 postures | TensorFlow     | ST_VL53L8CX_handposture_dataset | 8x8x2            | 98.69%             | 0.009        | 1.0                  | 10.75               | 7.3.0                 | [link](CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5)|
+| CNN2D_ST_HandPosture VL53L5CX 8 postures | TensorFlow     | ST_VL53L5CX_handposture_dataset | 8x8x2            | 96.42%             | 0.009        | 1.0                  | 10.75               | 7.3.0                 | [link](CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5)|
 

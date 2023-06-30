@@ -38,6 +38,7 @@ model:
   - 2
   dropout: 0.5
 stm32ai:
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: null
   path_to_stm32ai: C:/Work/AI/Cube.AI/7.3.0/windows/stm32ai.exe

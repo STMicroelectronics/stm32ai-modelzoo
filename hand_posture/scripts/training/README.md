@@ -1,7 +1,7 @@
 # ST multi-zone Time-of-Flight sensors hand posture recognition STM32 model zoo
 
 This tutorial shows how to train from scratch or apply transfer learning on a hand posture model using a custom dataset.
-As an example we will demonstrate the workflow on the **ST_VL53L5CX_handposture_dataset** classification dataset.
+As an example we will demonstrate the workflow on the **ST_VL53L8CX_handposture_dataset** classification dataset.
 
 `Note:` If you are training a model in order to deploy it with the [getting started](../../getting_started/README.md), please check out first the application specifications [here](../deployment/README.md).
 
@@ -203,11 +203,12 @@ where:
 
 STM32CubeAI will allow you to benchmark your model and estimate its footprints for STM32 target devices.
 
-Make Sure to add the path to the stm32ai excutable under **path_to_stm32ai**, else you will need to provide your credentials to use the **Developer Cloud Services**:
+Make Sure to add the path to the stm32ai executable under **path_to_stm32ai**, else you will need to provide your credentials to use the **Developer Cloud Services**:
 
 ![plot](./doc/img/cubeai_config.JPG)
 
 where:
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **7.3.0**.
 - `optimization` - *String*, defines the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `footprints_on_target` - Specifies a board name to evaluate the model inference time on real stm32 target using the **Developer Cloud Services**, e.g. **'STM32H747I-DISCO'** (see [more](./doc/boards.json)), else keep **False** (i.e. only local download on **STM32Cube.AI** will be used to evaluate footprints w/o inference time).
 - `path_to_stm32ai` - *Path* to stm32ai executable file to use local download, else **False**.

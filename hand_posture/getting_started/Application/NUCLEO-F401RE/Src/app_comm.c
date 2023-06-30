@@ -324,8 +324,19 @@ int SC_HandleCmd(const char *Buffer)
  */
 static void Comm_PrintTerm(AppConfig_TypeDef *App_Config)
 {
-  printf(": %d - %s\r\n", (int) (App_Config->AI_Data.handposture_label),
-      classes_table[(int)(App_Config->AI_Data.handposture_label)]);
+	printf("\x1b[2J");
+	printf("\x1b[1;1H");
+	printf("Hand Posture =  #%d {%s}                                          \r\n",
+			(int) (App_Config->AI_Data.handposture_label),
+			classes_table[(int)(App_Config->AI_Data.handposture_label)]);
+
+	for (int i = 0; i<AI_NETWORK_OUT_1_SIZE; i++)
+	{
+		printf("Class #%d {%s} : %f                                           \r\n",
+				i,
+				classes_table[i],
+				App_Config->aiOutData[i]);
+	}
 
 }
 
@@ -365,7 +376,7 @@ static void Comm_PrintEvk(AppConfig_TypeDef *App_Config)
       ",,,,,"
       ",,,,,",
       App_Config->frame_count,
-      App_Config->L5Dev.streamcount,
+      App_Config->ToFDev.streamcount,
       (int32_t) HAL_GetTick(),
       evk_label_table[(int)(App_Config->AI_Data.handposture_label)]
       );

@@ -30,6 +30,13 @@ extern "C" {
 #endif
 
 #include "services/syslowpower.h"
+#include <stddef.h>
+
+// Forward functions declaration
+// *****************************
+
+void *SysAlloc(size_t nSize);
+
 
 /**
  * Creates a type name for _IDriver.

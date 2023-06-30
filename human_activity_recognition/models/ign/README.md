@@ -43,8 +43,8 @@ For an input resolution of wl x 3 x 1 and P classes
 
 | Platform | Supported | Recommended |
 |:----------:|:-----------:|:-----------:|
-| STM32L4  |    [x]    |    [x]    |
-| STM32U5  |    [x]    |    []     |
+| STM32L4  |    [x]    |    []    |
+| STM32U5  |    [x]    |    [x]     |
 
 
 # Performances
@@ -63,30 +63,30 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 
 
-Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled input / output allocated option.
+Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
 ### Reference memory footprint based on WISDM dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Input Shape | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |
-|:-----------------:|:------:|:-----------:|:-------:|:--------------:|:-----------:|:-------------:|:----------:|:-----------:|:-----------:|
-| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | STM32L4 | 1.968     | 1.937 KiB       | 11.968 KiB    | 17.21 KiB       |  3.905 KiB   | 29.178 KiB  |
-| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | STM32L4 | 1.539    | 2.64 KiB       | 3.109 KiB    | 29.582 KiB       |  4.179 KiB   | 32.691 KiB  |
-| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | STM32L4 | 4.5    | 1.937 KiB       | 38.968 KiB     | 17.21 KiB       |  6.437 KiB   | 56.178 KiB  |
-| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | STM32L4 | 2.332    | 2.64 KiB       | 9.859 KiB    | 29.613 KiB       |  4.972 KiB   | 39.472 KiB  |
+| Model                                                                                |   Format  | Input Shape | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)| Total Flash (KiB) | STM32Cube.AI version  |
+|:------------------------------------------------------------------------------------:|:---------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:--------------:|:-----------------:|:---------------------:|
+| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5)          | FLOAT32   | 24 x 3 x 1  | STM32U5 | 2.81                 | 2.21              | 11.97               | 15.46            |  5.03          | 27.43             | 8.1.0                 |
+| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite) | INT8      | 24 x 3 x 1  | STM32U5 | 1.63                 | 2.75              | 3.11                | 33.42            |  4.38          | 36.53             | 8.1.0                 |
+| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5)          | FLOAT32   | 48 x 3 x 1  | STM32U5 | 9.84                 | 2.21              | 38.97               | 15.46            |  12.06         | 54.43             | 8.1.0                 |
+| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite) | INT8      | 48 x 3 x 1  | STM32U5 | 2.33                 | 2.75              | 9.86                | 33.45            |  5.08          | 43.30             | 8.1.0                 |
 
 
 
 ### Reference inference time based on WISDM dataset (see Accuracy for details on dataset)
+The inference time is reported is calculated using **STM32Cube.AI version 8.1.0**, on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
 
-
-| Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) |
-|:-----------------:|:------:|:----------:|:----------------:|:-------------:|:-------------------:|
-| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | STM32L4R9 | 120 MHz       |    3.905  ms       |
-| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | STM32L4R9 | 120 MHz       |     4.179 ms       |
-| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | STM32L4R9 | 120 MHz       |    6.437  ms       |
-| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | STM32L4R9 | 120 MHz       |     4.972 ms       |
+| Model                                                                                     | Format  | Resolution | Inference time (ms) |
+|:-----------------------------------------------------------------------------------------:|:-------:|:----------:|:-------------------:|
+| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5)               | FLOAT32 | 24 x 3 x 1 |    2.224            |
+| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite)      | INT8    | 24 x 3 x 1 |    0.804            |
+| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5)               | FLOAT32 | 48 x 3 x 1 |    8.085            |
+| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite)      | INT8    | 48 x 3 x 1 |    2.802            |
 
 
 ### Accuracy with mobility_v1 dataset
@@ -95,12 +95,12 @@ Measures are done with default STM32Cube.AI (v7.3.0) configuration with enabled 
 Dataset details: A custom dataset and not publically available, Number of classes: 5 [Stationary, Walking, Jogging, Biking, Vehicle]. **(We kept only 4, [Stationary, Walking, Jogging, Biking]) and removed Driving**, Number of input frames:  81,151 (for wl = 24), and 40,575 for (wl = 48).
 
 
-| Model | Format | Resolution | Accuracy |
-|:-----------------:|:------:|:----------:|:----------------:|
-| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | 95.51     |
-| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | 95.19 |
-| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | 96.06   |
-| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | 96.07    |
+| Model                                                                                        | Format | Resolution | Accuracy (%)|
+|:--------------------------------------------------------------------------------------------:|:------:|:----------:|:-----------:|
+| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24.h5)          | FLOAT32| 24 x 3 x 1 | 95.51       |
+| [IGN wl 24](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1 | 95.19       |
+| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_48/ign_wl_48.h5)          | FLOAT32| 48 x 3 x 1 | 96.06       |
+| [IGN wl 48](./ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1 | 96.07       |
 
 Confusion matrix for IGN wl 24 with Float32 weights for mobility_v1 dataset is given below.
 
@@ -112,12 +112,12 @@ Confusion matrix for IGN wl 24 with Float32 weights for mobility_v1 dataset is g
 
 Dataset details: [link](([WISDM]("https://www.cis.fordham.edu/wisdm/dataset.php"))) , License [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) , Quotation[[1]](#1) , Number of classes: 4 (we are combining [Upstairs and Downstairs into Stairs] and [Standing and Sitting into Stationary]), Number of samples: 45,579 (at wl = 24), and 22,880 (at wl = 48).
 
-| Model | Format | Resolution |  Accuracy |
-|:-----------------:|:------:|:----------:|:----------------:|
-| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1    | 86.38     |
-| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite) | INT8   | 24 x 3 x 1    | 85.62 |
-| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1    | 85.4  |
-| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite) | INT8   | 48 x 3 x 1    | 85.01    |
+| Model                                                                                 | Format  | Resolution |  Accuracy (%) |
+|:-------------------------------------------------------------------------------------:|:-------:|:----------:|:-------------:|
+| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5)           | FLOAT32 | 24 x 3 x 1 | 86.38         |
+| [IGN wl 24](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite)  | INT8    | 24 x 3 x 1 | 85.62         |
+| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5)           | FLOAT32 | 48 x 3 x 1 | 85.4          |
+| [IGN wl 48](ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite)  | INT8    | 48 x 3 x 1 | 85.01         |
 
 
 ## Training and code generation

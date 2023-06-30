@@ -23,6 +23,7 @@
 
 #include "events/AEventSrc.h"
 #include "events/AEventSrc_vtbl.h"
+#include <string.h>
 
 
 /* Public functions definition */
@@ -53,9 +54,7 @@ sys_error_code_t AEventSrv_vtblInit(IEventSrc *_this) {
   AEventSrc *pObj = (AEventSrc*)_this;
   sys_error_code_t xRes = SYS_NO_ERROR_CODE;
 
-  for (uint8_t i=0; i<AEVENT_SRC_CFG_MAX_LISTENERS; ++i) {
-    pObj->m_pxListeners[i] = NULL;
-  }
+  memset(pObj->m_pxListeners, 0, sizeof(pObj->m_pxListeners));
 
   return xRes;
 }

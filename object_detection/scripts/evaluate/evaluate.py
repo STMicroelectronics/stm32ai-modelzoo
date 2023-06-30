@@ -70,11 +70,11 @@ def evaluate_model(cfg, c_header=False, c_code=False):
         keras_model = tf.keras.models.load_model(cfg.model.model_path,custom_objects={'gen_anchors': gen_anchors, 'relu6': relu6, '_loss': loss})
         if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
             tf.print("[INFO] : Quantizing the model ... This might take few minutes ...")
-            if cfg.dataset.training_path is None:
+            if cfg.dataset.training_path is None and cfg.quantization.quantization_dataset is None:
                 TFLite_PTQ_quantizer(cfg, keras_model, fake=True)
                 quantized_model_path = os.path.join(HydraConfig.get().runtime.output_dir, "{}/{}".format(cfg.quantization.export_dir, "quantized_model.tflite"))
                 stm32ai_benchmark(cfg, quantized_model_path, c_code)
-                tf.print("[INFO] A Training set was not provided, the model can't be properly quantized for evaluation. Please provide a training dataset")
+                tf.print("[INFO] A Training set or Quantization dataset was not provided, the model can't be properly quantized for evaluation. Please provide the necessary dataset!")
             else:
                 TFLite_PTQ_quantizer(cfg, keras_model, fake=False)
                 quantized_model_path = os.path.join(HydraConfig.get().runtime.output_dir, "{}/{}".format(cfg.quantization.export_dir, "quantized_model.tflite"))

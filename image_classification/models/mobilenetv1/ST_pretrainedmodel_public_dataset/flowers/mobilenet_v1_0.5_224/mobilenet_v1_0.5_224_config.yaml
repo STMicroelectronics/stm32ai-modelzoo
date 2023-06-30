@@ -50,12 +50,14 @@ model:
 quantization:
   quantize: true
   evaluate: true
+  quantization_dataset:
   quantizer: TFlite_converter
   quantization_type: PTQ
   quantization_input_type: uint8
   quantization_output_type: float
   export_dir: quantized_models
 stm32ai:
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: false
   path_to_stm32ai: stm32ai

@@ -21,7 +21,7 @@ dataset:
   file_extension: .wav
   validation_split: 0.1
   test_split : 0.2
-  test_path: 
+  test_path:
 
 pre_processing:
   min_length: 1
@@ -84,10 +84,11 @@ quantization:
   export_dir: quantized_models
 
 stm32ai:
+  version: 7.3.0
   optimization: balanced
-  footprints_on_target: B-U585I-IOT02A 
+  footprints_on_target: B-U585I-IOT02A
   path_to_stm32ai: C:/Users/martinlu/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.0.0/Utilities/windows/stm32ai.exe
-  
+
 mlflow:
   uri: ./mlruns
 

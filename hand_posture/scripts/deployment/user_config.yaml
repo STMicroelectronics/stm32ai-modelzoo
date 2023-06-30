@@ -7,21 +7,22 @@ dataset:
   test_path:
 
 pre_processing:
-  Max_distance: 350
-  Min_distance: 150
+  Max_distance: 400
+  Min_distance: 100
   Background_distance: 120
 
 
 model:
   model_type: {name : CNN2D_ST_HandPosture, version : v1}
   input_shape: [8, 8, 2]
-  model_path: ../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5
+  model_path: ../../models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5
 
 stm32ai:
   c_project_path: ../../getting_started
   serie: STM32F4
   IDE: GCC
   verbosity: 1
+  version: 7.3.0
   optimization: balanced
   footprints_on_target: STM32L4R9I-DISCO
   path_to_stm32ai: C:/Work/AI/Cube.AI/7.3.0/windows/stm32ai.exe

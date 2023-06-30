@@ -162,7 +162,8 @@ def calculate_float_map(cfg, best_model):
             resized_image = cv2.resize(image, (int(cfg.model.input_shape[0]), int(cfg.model.input_shape[0])), interpolation=cv2.INTER_LINEAR)
             image_data = resized_image/cfg.pre_processing.rescaling.scale + cfg.pre_processing.rescaling.offset
             image_processed = np.expand_dims(image_data, 0)
-            predictions = best_model.predict_on_batch(image_processed)
+            predictions_list = best_model.predict_on_batch(image_processed)
+            predictions = np.concatenate([predictions_list[0], predictions_list[1], predictions_list[2]], axis=2)
             preds_decoded = decode_predictions(predictions, normalize=True, org_img_height=height, org_img_width=width)
             final_preds = do_nms(preds_decoded, nms_thresh=float(cfg.post_processing.NMS_thresh), confidence_thresh=float(cfg.post_processing.confidence_thresh))
 
@@ -223,7 +224,7 @@ def calculate_quantized_map(cfg, quantized_model_path):
     interpreter_quant.allocate_tensors()
     input_details = interpreter_quant.get_input_details()[0]
     input_index_quant = interpreter_quant.get_input_details()[0]["index"]
-    output_index_quant = interpreter_quant.get_output_details()[0]["index"]
+    output_index_quant = interpreter_quant.get_output_details()
     class_names = ["background"] + cfg.dataset.class_names
 
     m_Start = time.time()
@@ -267,7 +268,12 @@ def calculate_quantized_map(cfg, quantized_model_path):
             image_processed = tf.expand_dims(image_processed, 0)
             interpreter_quant.set_tensor(input_index_quant, image_processed)
             interpreter_quant.invoke()
-            predictions = interpreter_quant.get_tensor(output_index_quant)
+
+            predicted_scores_output = interpreter_quant.get_tensor(output_index_quant[0]["index"])
+            predicted_boxes_output = interpreter_quant.get_tensor(output_index_quant[1]["index"])
+            predicted_anchors_output = interpreter_quant.get_tensor(output_index_quant[2]["index"])
+
+            predictions = np.concatenate([predicted_scores_output, predicted_boxes_output, predicted_anchors_output], axis=2)
             preds_decoded = decode_predictions(predictions, normalize=True, org_img_height=height, org_img_width=width)
             final_preds = do_nms(preds_decoded, nms_thresh=float(cfg.post_processing.NMS_thresh), confidence_thresh=float(cfg.post_processing.confidence_thresh))
 

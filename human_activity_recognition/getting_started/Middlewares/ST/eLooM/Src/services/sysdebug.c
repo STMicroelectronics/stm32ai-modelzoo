@@ -20,16 +20,10 @@
  ******************************************************************************
  */
 
-#include "services/systp.h"
 #include "services/sysdebug.h"
 #include <stdio.h>
 #include <stdint.h>
-/* MISRA messages linked to FreeRTOS include are ignored */
-/*cstat -MISRAC2012-* */
-#include "FreeRTOS.h"
-#include "semphr.h"
-#include "task.h"
-/*cstat +MISRAC2012-* */
+#include "tx_api.h"
 
 #ifndef SYS_DBG_LEVEL
 #define SYS_DBG_LEVEL    SYS_DBG_LEVEL_VERBOSE
@@ -61,11 +55,7 @@ uint8_t g_sys_dbg_min_level = SYS_DBG_LEVEL;
  */
 #define SYS_DBG_IS_CALLED_FROM_ISR() ((SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk) != 0 ? 1 : 0)
 
-static SemaphoreHandle_t s_xMutex = NULL;
-
-uint32_t g_ulHighFrequencyTimerTicks = 0;
-
-static void SysDebugSetupRunTimeStatsTimer(void);
+static TX_SEMAPHORE s_xMutex;
 
 void null_lockfn(void);
 void SysDebugLock(void);
@@ -84,37 +74,16 @@ int SysDebugInit() {
   SysDebugHardwareInit();
 
   // software initialization.
-  s_xMutex = xSemaphoreCreateMutex();
+  UINT xResult = tx_semaphore_create(&s_xMutex, "DBG_S", 1);
 
-  if (s_xMutex == NULL) {
+  if (xResult != TX_SUCCESS) {
     return 1;
   }
 
   xSysDebugUnlockFn = SysDebugUnlock;
   xSysDebugLockFn = SysDebugLock;
 
-#ifdef DEBUG
-  vQueueAddToRegistry(s_xMutex, "DBG");
-#endif
   return 0;
-}
-
-void SysDebugToggleLed(uint8_t nLed) {
-  UNUSED(nLed);
-
-  HAL_GPIO_TogglePin(SYS_DBG_TP1_PORT, SYS_DBG_TP1_PIN);
-}
-
-void SysDebugLedOn(uint8_t nLed) {
-  UNUSED(nLed);
-
-  HAL_GPIO_WritePin(SYS_DBG_TP1_PORT, SYS_DBG_TP1_PIN, GPIO_PIN_SET);
-}
-
-void SysDebugLedOff(uint8_t nLed) {
-  UNUSED(nLed);
-
-  HAL_GPIO_WritePin(SYS_DBG_TP1_PORT, SYS_DBG_TP1_PIN, GPIO_PIN_RESET);
 }
 
 void null_lockfn()
@@ -123,26 +92,18 @@ void null_lockfn()
 }
 
 void SysDebugLock() {
+  UINT xResult = TX_SUCCESS;
   if (SYS_DBG_IS_CALLED_FROM_ISR()) {
-    xSemaphoreTakeFromISR(s_xMutex, NULL);
+    xResult = tx_semaphore_get(&s_xMutex, TX_NO_WAIT);
   }
   else {
-    if (xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED) {
-      xSemaphoreTake(s_xMutex, 0);
+    xResult = tx_semaphore_get(&s_xMutex, TX_WAIT_FOREVER);
     }
-    else {
-      xSemaphoreTake(s_xMutex, portMAX_DELAY);
-    }
-  }
+  assert_param(xResult == TX_SUCCESS);
 }
 
 void SysDebugUnlock() {
-  if (SYS_DBG_IS_CALLED_FROM_ISR()) {
-    xSemaphoreGiveFromISR(s_xMutex, NULL);
-  }
-  else {
-    xSemaphoreGive(s_xMutex);
-  }
+  tx_semaphore_put(&s_xMutex);
 }
 
 #if defined ( __ICCARM__ )
@@ -154,36 +115,7 @@ int SysDebugHardwareInit() {
 
   SYS_DBG_UART_INIT();
 
-#ifdef DEBUG
-  // Debug TP1 and TP2 configuration
-  GPIO_InitTypeDef GPIO_InitStruct;
-  SYS_DBG_TP1_CLK_ENABLE();
-  SYS_DBG_TP2_CLK_ENABLE();
-
-  HAL_GPIO_WritePin(SYS_DBG_TP1_PORT, SYS_DBG_TP1_PIN, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(SYS_DBG_TP2_PORT, SYS_DBG_TP2_PIN, GPIO_PIN_RESET);
-  GPIO_InitStruct.Pin = SYS_DBG_TP1_PIN;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(SYS_DBG_TP1_PORT, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = SYS_DBG_TP2_PIN;
-  HAL_GPIO_Init(SYS_DBG_TP2_PORT, &GPIO_InitStruct);
-
-  SysDebugSetupRunTimeStatsTimer();
-#endif
-
   return 0;
-}
-
-void SysDebugSetupRunTimeStatsTimer() {
-  SYS_DBG_TIM_INIT();
-}
-
-void SysDebugStartRunTimeStatsTimer() {
-  HAL_NVIC_EnableIRQ(SYS_DBG_TIM_IRQ_N);
-  HAL_TIM_Base_Start_IT(&SYS_DBG_TIM);
 }
 
 int SysDebugLowLevelPutchar(int x) {
@@ -194,20 +126,6 @@ int SysDebugLowLevelPutchar(int x) {
 //  ITM_SendChar(x);
 
   return x;
-}
-
-// CubeMx integration
-// ******************
-
-void SYS_DBG_TIM_IRQ_HANDLER(void) {
-    // TIM Update event
-  if(__HAL_TIM_GET_FLAG(&SYS_DBG_TIM, TIM_FLAG_UPDATE) != RESET) {
-    if(__HAL_TIM_GET_IT_SOURCE(&SYS_DBG_TIM, TIM_IT_UPDATE) != RESET) {
-      __HAL_TIM_CLEAR_IT(&SYS_DBG_TIM, TIM_IT_UPDATE);
-      // handle the update event.
-      g_ulHighFrequencyTimerTicks++;
-    }
-  }
 }
 
 #endif // SYS_DEBUG

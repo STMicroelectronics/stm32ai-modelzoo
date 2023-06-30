@@ -42,13 +42,19 @@
  extern "C" {
 #endif
 
-#if( configAPPLICATION_ALLOCATED_HEAP == 1 )
-/**
- * The FreeRTOS HEAP is allocated by the application so the system can initialize the heap memory at startup
- * in order to prevent some SRAM retention strange issue.
- */
-extern uint8_t ucHeap[ configTOTAL_HEAP_SIZE ];
+#ifndef INIT_TASK_CFG_ENABLE_BOOT_IF
+#define INIT_TASK_CFG_ENABLE_BOOT_IF           0
 #endif
+
+#if (INIT_TASK_CFG_ENABLE_BOOT_IF == 0)
+#define INIT_TASK_CGF_BOOT_PARAM               false
+#else
+#define INIT_TASK_CGF_BOOT_PARAM               true
+#endif
+
+#define ELOOM_MAGIC_NUMBER  (12974U)
+
+#define SYS_MS_TO_TICKS( xTimeInMs ) ( (uint32_t) (((uint32_t )(xTimeInMs) * (uint32_t)TX_TIMER_TICKS_PER_SECOND) / (uint32_t)1000))
 
 /**
  * It initialize the minimum set of resources, hardware and software, in order to start the scheduler,
@@ -141,6 +147,7 @@ IBoot *SysGetBootIF(void);
  * @return a pointer to an IAppPowerModeHelper object.
  */
 IAppPowerModeHelper *SysGetPowerModeHelper(void);
+
 
 #ifdef __cplusplus
 }

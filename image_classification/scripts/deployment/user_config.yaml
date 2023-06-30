@@ -22,6 +22,7 @@ model:
 quantization:
   quantize: False
   evaluate: False
+  quantization_dataset:
   quantizer: TFlite_converter
   quantization_type: PTQ
   quantization_input_type: uint8
@@ -33,9 +34,10 @@ stm32ai:
   serie: STM32H7
   IDE: GCC
   verbosity: 1
+  version: 8.0.1
   optimization: balanced
-  footprints_on_target: STM32H747I-DISCO
-  path_to_stm32ai: C:/en.x-cube-ai-windows_v7.3.0/windows/stm32ai.exe
+  footprints_on_target: STM32H747I-DISCO # NUCLEO-H743ZI2 and STM32H747I-DISCO supported 
+  path_to_stm32ai: C:/ST/STM32CubeAI/en.x-cube-ai-windows_v7.3.0/windows/stm32ai.exe
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
 
 mlflow:

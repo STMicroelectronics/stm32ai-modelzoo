@@ -21,7 +21,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-#include "vl53l5cx_api.h"
+#include "vl53lmz_api.h"
 #include "network.h"
 
 #include <stdbool.h>
@@ -40,11 +40,11 @@
 /* Median */
 #define NORMALIZATION_RANGING_CENTER              (295)
 /* Interquartile range */
-#define NORMALIZATION_RANGING_IQR                 (150)
+#define NORMALIZATION_RANGING_IQR                 (196)
 /* Median */
-#define NORMALIZATION_SIGNAL_CENTER               (169)
+#define NORMALIZATION_SIGNAL_CENTER               (281)
 /* Interquartile range */
-#define NORMALIZATION_SIGNAL_IQR                  (296)
+#define NORMALIZATION_SIGNAL_IQR                  (452)
 /* Number of output class filtering */
 #define LABEL_FILTER_N                            (3)
 /* Keep last class valid until a new one is detected */
@@ -221,9 +221,9 @@ typedef struct
   struct Params_t Params;
 
   /* Sensor context */
-  VL53L5CX_Configuration L5Dev;
-  VL53L5CX_Platform p_platform;
-  VL53L5CX_ResultsData RangingData;
+  VL53LMZ_Configuration ToFDev;
+  VL53LMZ_Platform p_platform;
+  VL53LMZ_ResultsData RangingData;
   volatile int IntrCount;
   bool new_data_received;
   bool params_modif;

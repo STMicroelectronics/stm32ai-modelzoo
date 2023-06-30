@@ -40,8 +40,6 @@ struct _IDriver_vtbl {
   sys_error_code_t (*Start)(IDriver *_this);
   sys_error_code_t (*Stop)(IDriver *_this);
   sys_error_code_t (*DoEnterPowerMode)(IDriver *_this, const EPowerMode eActivePowerMode, const EPowerMode eNewPowerMode);
-//  sys_error_code_t (*Write)(IDriver *_this, uint8_t *pDataBuffer, uint16_t nDataSize, uint16_t nChannel);
-//  sys_error_code_t (*Read)(IDriver *_this, uint8_t *pDataBuffer, uint16_t nDataSize, uint16_t nChannel);
   sys_error_code_t (*Reset)(IDriver *_this, void *pParams);
 };
 
@@ -75,16 +73,6 @@ SYS_DEFINE_STATIC_INLINE
 sys_error_code_t IDrvDoEnterPowerMode(IDriver *_this, const EPowerMode eActivePowerMode, const EPowerMode eNewPowerMode) {
   return _this->vptr->DoEnterPowerMode(_this, eActivePowerMode, eNewPowerMode);
 }
-
-//SYS_DEFINE_STATIC_INLINE
-//sys_error_code_t IDrvWrite(IDriver *_this, uint8_t *pDataBuffer, uint16_t nDataSize, uint16_t nChannel) {
-//  return _this->vptr->Write(_this, pDataBuffer, nDataSize, nChannel);
-//}
-//
-//SYS_DEFINE_STATIC_INLINE
-//sys_error_code_t IDrvRead(IDriver *_this, uint8_t *pDataBuffer, uint16_t nDataSize, uint16_t nChannel) {
-//  return _this->vptr->Read(_this, pDataBuffer, nDataSize, nChannel);
-//}
 
 SYS_DEFINE_STATIC_INLINE
 sys_error_code_t IDrvReset(IDriver *_this, void *pParams) {

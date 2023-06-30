@@ -182,13 +182,15 @@ STM32Cube.AI will allow you to benchmark your model and estimate its footprints 
 Make Sure to add the path to your stm32ai excutable under **path_to_stm32ai**:
 ```python
 stm32ai:
+  version: 8.1.0
   optimization: default
-  footprints_on_target: STM32L4R9I-DISCO
+  footprints_on_target: B-U585I-IOT02A
   path_to_stm32ai: C:/stmicroelectronics2022/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/7.2.0/Utilities/windows/stm32ai.exe
 ```
 where:
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **7.3.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", or "*ram*".
-- `footprints_on_target` - Specify board name to evaluate the model inference time on real stm32 target, e.g. **'STM32L4R9I-DISCO'**. The other supported boards are NUCLEO-H745ZI-Q, STM32H747I-DISCO, STM32F469I-DISCO, STM32H7B3I-DK, NUCLEO-G474RE, STM32F769I-DISCO, STM32F746G-DISCO, STM32H735G-DK, else set it to **False** if do not want to find the inference time on the target board. In this case only the footprints (RAM/FLAS) and computation requirements are provided in terms of (MAACs). Details on the supported boards and their specs can be found [here](./doc/boards.json).
+- `footprints_on_target` - Specify board name to evaluate the model inference time on real stm32 target, e.g. **'B-U585I-IOT02A'**. The other supported boards are NUCLEO-H745ZI-Q, STM32H747I-DISCO, STM32F469I-DISCO, STM32H7B3I-DK, NUCLEO-G474RE, STM32F769I-DISCO, STM32F746G-DISCO, STM32H735G-DK, else set it to **False** if do not want to find the inference time on the target board. In this case only the footprints (RAM/FLAS) and computation requirements are provided in terms of (MAACs). Details on the supported boards and their specs can be found [here](./doc/boards.json).
 - `path_to_stm32ai` - *Path* to stm32ai executable file.
 
 

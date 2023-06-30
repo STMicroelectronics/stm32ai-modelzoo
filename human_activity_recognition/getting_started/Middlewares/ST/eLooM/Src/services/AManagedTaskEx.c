@@ -28,10 +28,11 @@
 /* Public API definition */
 /*************************/
 
-void AMTExRun(void *pParams) {
-  sys_error_code_t xRes;
-  AManagedTaskEx *_this = (AManagedTaskEx*)pParams;
+VOID AMTExRun(ULONG nParam) {
+  sys_error_code_t xRes = SYS_NO_ERROR_CODE;
+  AManagedTaskEx *_this = (AManagedTaskEx*)nParam;
   pExecuteStepFunc_t pExecuteStepFunc = NULL;
+  UINT nPosture = TX_INT_ENABLE;
 
   /* At this point all system has been initialized.
      Execute task specific delayed one time initialization. */
@@ -49,10 +50,10 @@ void AMTExRun(void *pParams) {
     /* check if there is a pending power mode switch request */
     if (_this->m_xStatus.nPowerModeSwitchPending == 1U) {
       /* clear the power mode switch delay because the task is ready to switch.*/
-      taskENTER_CRITICAL();
-      _this->m_xStatus.nDelayPowerModeSwitch = 0;
-      taskEXIT_CRITICAL();
-      vTaskSuspend(NULL);
+      nPosture = tx_interrupt_control(TX_INT_DISABLE);
+        _this->m_xStatus.nDelayPowerModeSwitch = 0;
+      tx_interrupt_control(nPosture);
+      tx_thread_suspend(&_this->m_xTaskHandle);
     }
     else {
       /* find the execute step function  */
@@ -60,18 +61,18 @@ void AMTExRun(void *pParams) {
       pExecuteStepFunc = _this->m_pfPMState2FuncMap[nPMState];
 
       if (pExecuteStepFunc != NULL) {
-        taskENTER_CRITICAL();
-        _this->m_xStatus.nDelayPowerModeSwitch = 1;
-        taskEXIT_CRITICAL();
+        nPosture = tx_interrupt_control(TX_INT_DISABLE);
+          _this->m_xStatus.nDelayPowerModeSwitch = 1;
+        tx_interrupt_control(nPosture);
         xRes = pExecuteStepFunc((AManagedTask*)_this);
-        taskENTER_CRITICAL();
-        _this->m_xStatus.nDelayPowerModeSwitch = 0;
-        taskEXIT_CRITICAL();
+        nPosture = tx_interrupt_control(TX_INT_DISABLE);
+          _this->m_xStatus.nDelayPowerModeSwitch = 0;
+        tx_interrupt_control(nPosture);
       }
       else {
         /* there is no function so, we suspend the task.*/
         (void)AMTExSetInactiveState(_this, TRUE);
-        vTaskSuspend(_this->m_xThaskHandle);
+        tx_thread_suspend(&_this->m_xTaskHandle);
         (void)AMTExSetInactiveState(_this, FALSE);
       }
 

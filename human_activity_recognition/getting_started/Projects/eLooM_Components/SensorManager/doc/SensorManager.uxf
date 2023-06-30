@@ -1,0 +1,167 @@
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>50</x><y>30</y><w>410</w><h>140</h></coordinates><panel_attributes>/ISourceObservable/
+--
+/+ISourceGetId(): uint8_t/
+/+ISourceGetEventSrcIF(): IEventSrc */
+/+IGetDataInfo(): EMData_t/
+
+/+ISourceGetODR(float *p_measured, float *p_nominal): sys_error_code_t/
+/+ISourceGetFS(): float/
+/+ISourceGetSensitivity(): float/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>590</x><y>0</y><w>580</w><h>330</h></coordinates><panel_attributes>SensorManager
+--
+Sensors : ISensor_t vector
+n_sensors : uint16_t
+--
++SMGetSensorObserver(uint8_t id): ISourceObservable *
++SMGetNsensor(): uint16_t
++SMSensorSetODR(uint8_t id, float ODR): sys_error_code_t
++SMSensorSetFS(uint8_t id, float FS): sys_error_code_t
++SMSensorEnable(uint8_t id): sys_error_code_t
++SMSensorDisable(uint8_t id): sys_error_code_t
++SMSensorGetDescription(uint8_t id): SensorDescriptor_t
++SMSensorGetStatus(uint8_t id): SensorStatus_t
++SMDeviceGetDescription(SensorDescriptor_t *device_description):  sys_error_code_t
++SMGetSensorManager(): SensorManager_t
++GetnBytesPerSample(uint8_t id): uint32_t
+--
+Responsibilities
+--Store the information about the sensors in the device(through ISensor interface).
+--Give an abstract layer to interact with sensors (by the "id")
+--Give the descriptions of the device
+--Perform part of configuration (i.e BUS registration)
+--Note: The sensor registers itself to the SensorManager</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>250</x><y>160</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element><element><id>Relation</id><coordinates><x>450</x><y>240</y><w>160</w><h>40</h></coordinates><panel_attributes>lt=-
+m1=   0..n</panel_attributes><additional_attributes>140;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>850</x><y>410</y><w>480</w><h>150</h></coordinates><panel_attributes>/SIterator/
+--
+sensor_idx: uint16_t
+sensors_count: uint16_t
+p_sm: SensorManager_t *
+--
++SIInit(SensorManager_t *p_sm): sys_error_code_t
++SIHasNext(): bool
++SINext(): uint16_t
+--
+Allow to iterate through a sensors collection managed by a ::SensorManager_t.</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>660</y><w>120</w><h>260</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+
+</panel_attributes><additional_attributes>10;10;100;240</additional_attributes></element><element><id>Relation</id><coordinates><x>800</x><y>740</y><w>120</w><h>260</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+</panel_attributes><additional_attributes>10;10;100;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>900</x><y>790</y><w>320</w><h>140</h></coordinates><panel_attributes>SensorDescriptor_t
+--
++Name: char*
++SensorType: uint8_t
++pODR: float*
++pFS: float*
++DimensionsLabel: char**
++unit: char*
++pSamplesPerTimestamp: uint16_t*
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>900</x><y>940</y><w>320</w><h>110</h></coordinates><panel_attributes>SensorStatus_t
+--
++FS: float
++Sensitivity: float
++IsActive: bool
++ODR: float
++MeasuredODR: float</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>540</y><w>470</w><h>590</h></coordinates><panel_attributes>&lt;&lt;Sensor&gt;&gt;
+xxx_Task
+--
+-pIRQConfig: MX_GPIOParams_t*
+-pCSConfig: MX_GPIOParams_t*
+-p_sensor_bus_if: ABusIF
+-sensor_if: ISensor_t
+-sensor_descriptor: const SensorDescriptor_t*
+-sensor_status: SensorStatus_t
+-data: EMData_t
+-id: uint8_t
+-p_sensor_data_buff: uint8_t*
+-p_event_src: IEventSrc
+-in_queue: TX_QUEUE
+-read_timer: TX_TIMER
+-timer_period_ms: ULONG
+-prev_timestamp: double
+--
++Alloc(void *pIRQConfig, void *pMLCConfig, void *pCSConfig): AManagedTaskEx*
++GetSensorIF(): SPI/I2CBusIF*
++GetEventSrcIF(): IEventSrc*
++GetxxxSensorIF(): ISourceObservable*
+--
+-ExecuteStepState1(): sys_error_code_t
+-ExecuteStepDatalog(): sys_error_code_t
+-SensorInit(): sys_error_code_t
+-SensorReadData(): sys_error_code_t
+-SensorRegister(): sys_error_code_t
+-SensorInitTaskParams(): sys_error_code_t
+-EnterLowPowerMode(): sys_error_code_t
+-ConfigureIrqPin(bool LowPower): sys_error_code_t
+-TimerCallbackFunction(ULONG): void
+-EXTI_Callback(uint16_t n_pin): void
+-GetOwnerFromISensorIF(ISensor_t *p_if): xxx_Task
+-PostReportToFront(SMMessage *pReport): sys_error_code_t
+-PostReportToBack(SMMessage *pReport): sys_error_code_t
+--
+Responsibilities
+--Read data from the sensor
+--Store the sensor Description and Status
+--Handle the sensor features (i.e ucf loaded)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>230</x><y>430</y><w>140</w><h>30</h></coordinates><panel_attributes>/AManagedTaskEx/
+bg=#b4bcde</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>290</x><y>450</y><w>70</w><h>180</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;160;50;160</additional_attributes></element><element><id>UMLInterface</id><coordinates><x>810</x><y>1020</y><w>140</w><h>150</h></coordinates><panel_attributes>IEventSrc
+--
+Init
+AddEventListener
+RemoveEventListener
+GetMaxListenerCount
+SendEvent</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>110</x><y>450</y><w>250</w><h>200</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m2=InQueue</panel_attributes><additional_attributes>230;180;10;180;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>50</x><y>430</y><w>140</w><h>30</h></coordinates><panel_attributes>QueueHandle_t
+fg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>420</x><y>370</y><w>30</w><h>190</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>50</x><y>220</y><w>410</w><h>160</h></coordinates><panel_attributes>/ISensor/
+--
+/+ISensorSetODR(float odr): sys_error_code_t/
+/+ISensorSetFS(float fs): sys_error_code_t/
+/+ISensorEnable(): sys_error_code_t/
+/+ISensorDisable(): sys_error_code_t/
+/+ISensorIsEnabled(): boolean_t/
+/+ISensorGetDescription(): SensorDescriptor_t/
+/+ISensorGetStatus(): SensorStatus_t/
+--
+One ISensor for each subsensor</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>470</x><y>410</y><w>340</w><h>90</h></coordinates><panel_attributes>/SensorRegister/
+--
++SMAddSensor(ISensor_t *pSensor): uint8_t
++SMRemoveSensor(ISensor_t *pSensor): sys_error_code_t
+--
+Register/Remove a sensor to/from ::SensorManager_t
+
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>320</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>630</x><y>490</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>320</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>850</x><y>590</y><w>480</w><h>150</h></coordinates><panel_attributes>/SQuery/
+--
+iterator: SIterator_t
+--
++SQInit(SensorManager_t *p_sm): sys_error_code_t
++SQNextByName(const char *sensor_name): uint16_t
++SQNextByType(uint8_t sensor_type): uint16_t
++SQNextByNameAndType(const char *sensor_name, uint8_t sensor_type): uint16_t
++SQNextByStatusEnable(bool sensor_enable): uint16_t
+--
+Allow to query SensorManager through a ::SIterator_t obj</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>720</x><y>1270</y><w>200</w><h>60</h></coordinates><panel_attributes>SensorEvtSrc
+--
++SensorEventSrcAlloc(): IEventSrc
++SensorEventSrcFree(): void
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>750</x><y>1180</y><w>140</w><h>30</h></coordinates><panel_attributes>/AEventSrc/
+bg=#b4bcde
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>1200</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
+group=1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>Relation</id><coordinates><x>910</x><y>1280</y><w>160</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+generate &gt;
+group=1</panel_attributes><additional_attributes>10;20;140;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1060</x><y>1180</y><w>140</w><h>30</h></coordinates><panel_attributes>/IEvent/
+bg=#b4bcde
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1120</x><y>1200</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-
+group=1</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>1280</y><w>150</w><h>50</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+&lt; notify
+group=1</panel_attributes><additional_attributes>130;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>1180</y><w>140</w><h>30</h></coordinates><panel_attributes>/IEventListener/
+bg=#b4bcde
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>1200</y><w>30</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-
+group=1</panel_attributes><additional_attributes>10;10;10;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>170</x><y>1270</y><w>430</w><h>60</h></coordinates><panel_attributes>ISensorEventListener
+--
++OnNewDataReady(pxEvt:const SensorEvent*): sys_error_code_t
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1050</x><y>1250</y><w>160</w><h>80</h></coordinates><panel_attributes>SensorEvent
+--
++p_data: const EMData_t*
++fTimeStamp: double
++sensor_id: uint16_t
+group=1</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1080</x><y>550</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element></diagram>

@@ -58,7 +58,7 @@ static int label_filter(int, HANDPOSTURE_Data_t *);
 /* AI functions */
 static int AI_Init(void);
 static int AI_Run(float *pIn, float *pOut);
-static int AI_CopyInputData(HANDPOSTURE_Input_Data_t *HANDPOSTURE_Input_Data, VL53L5CX_ResultsData *pRangingData);
+static int AI_CopyInputData(HANDPOSTURE_Input_Data_t *HANDPOSTURE_Input_Data, VL53LMZ_ResultsData *pRangingData);
 /* Frame validation */
 static int ValidateFrame(HANDPOSTURE_Data_t *AI_Data, HANDPOSTURE_Input_Data_t *Input_AI_Data);
 /* Data normalization */
@@ -190,7 +190,7 @@ static int AI_Run(float *pIn, float *pOut)
  * @param  pRangingData Pointer to source
  * @retval 0
  */
-static int AI_CopyInputData(HANDPOSTURE_Input_Data_t *HANDPOSTURE_Input_Data, VL53L5CX_ResultsData *pRangingData)
+static int AI_CopyInputData(HANDPOSTURE_Input_Data_t *HANDPOSTURE_Input_Data, VL53LMZ_ResultsData *pRangingData)
 {
   int idx;
 
@@ -377,6 +377,10 @@ void Network_Inference(AppConfig_TypeDef *App_Config)
       printf("AI_Run failed\n");
       Error_Handler();
     }
+  }
+  else
+  {
+	  for (int i = 0; i<AI_NETWORK_OUT_1_SIZE; i++) App_Config->aiOutData[i] = 0;
   }
 
 }

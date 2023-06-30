@@ -58,21 +58,21 @@ Please, Contact Edge.ai@st.com.
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 ### Reference MCU memory footprints based on Flowers dataset (see Accuracy for details on dataset)
-| Model                 | Format | Resolution   | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash |
-|-----------------------|--------|--------------|---------|----------------|-------------|---------------|------------|-----------|-------------|
-| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32H7 | 309 KiB        |  68 KiB     |   505 KiB     |  183 KiB   |  379 KiB  | 688 KiB     |
-| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32H7 | 175 KiB        |  68 KiB     |   505 KiB     |  183 KiB   |  175 KiB  | 688 KiB     |
+| Model                 | Format | Resolution   | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash | STM32Cube.AI version  |
+|-----------------------|--------|--------------|---------|----------------|-------------|---------------|------------|-----------|-------------|-----------------------|
+| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32H7 | 309 KiB        |  68 KiB     |   505 KiB     |  183 KiB   |  379 KiB  | 688 KiB     | 7.3.0                 |
+| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32H7 | 175 KiB        |  68 KiB     |   505 KiB     |  183 KiB   |  175 KiB  | 688 KiB     | 7.3.0                 |
 
 
 ### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
-| Model                 | Format | Resolution   | Board            | Execution Engine | Frequency    | Inference time (ms) |
-|-----------------------|--------|--------------|------------------|------------------|--------------|---------------------|
-| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 503.3 ms            |
-| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 168.4 ms            |
-| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz      | 886 ms              |
-| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz      | 302.6 ms            |
-| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 138.1 ms **         |
-| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 46.8 ms **          |
+| Model                 | Format | Resolution   | Board            | Execution Engine | Frequency    | Inference time (ms) | STM32Cube.AI version  |
+|-----------------------|--------|--------------|------------------|------------------|--------------|---------------------|-----------------------|
+| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 503.3 ms            | 7.3.0                 |
+| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 168.4 ms            | 7.3.0                 |
+| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz      | 886 ms              | 7.3.0                 |
+| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32H769I-DISCO | 1 CPU            | 216 MHz      | 302.6 ms            | 7.3.0                 |
+| ST EfficientNet LC v1 | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 138.1 ms **         | 7.3.0                 |
+| ST EfficientNet LC v1 | Int8   | 128x128x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 46.8 ms **          | 7.3.0                 |
 
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
