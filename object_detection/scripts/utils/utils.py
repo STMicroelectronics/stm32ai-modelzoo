@@ -210,8 +210,6 @@ def train(cfg):
         else:
             raise TypeError("Quantizer and quantization type not supported yet!")
 
-        # Generate Config.h for C embedded application
-        gen_h_user_file(cfg, quantized_model_path)
 
     # record the whole hydra working directory to get all infos
     mlflow.log_artifact(HydraConfig.get().runtime.output_dir)

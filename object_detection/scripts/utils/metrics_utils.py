@@ -8,6 +8,7 @@
 import io
 import os
 import time
+import math
 
 import cv2
 import matplotlib.pyplot as plt
@@ -24,7 +25,7 @@ from object_det_metrics.lib.utils import BBFormat, BBType, CoordinatesType
 
 
 def check(va):
-    if va in ["inf", "-inf", "NaN", "nan"]:
+    if va in ["inf", "-inf", "NaN", "nan"] or math.isnan(float(va)):
         va = 0
     return va
 
@@ -187,7 +188,7 @@ def calculate_float_map(cfg, best_model):
         plt.title('AP for class %s on db %s' % (str(classID), cfg.dataset.name))
         precision = class_metrics['precision']
         recall = class_metrics['recall']
-        ap = class_metrics['AP']
+        ap = float(check(class_metrics['AP']))
         plt.plot(recall, precision, label=str(classID)+" AP " + "{:.2f}".format(ap*100)+"%")
         plt.legend(shadow=True, prop={'size': 8})
         plt.grid()
@@ -297,7 +298,7 @@ def calculate_quantized_map(cfg, quantized_model_path):
         plt.title('AP for class %s on db %s' % (str(classID), cfg.dataset.name))
         precision = class_metrics['precision']
         recall = class_metrics['recall']
-        ap = class_metrics['AP']
+        ap = float(check(class_metrics['AP']))
         plt.plot(recall, precision, label=str(classID)+" AP " + "{:.2f}".format(ap*100)+"%")
         plt.legend(shadow=True, prop={'size': 8})
         plt.grid()
