@@ -5,6 +5,10 @@
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
 
+class InvalidCredentialsException(Exception):
+    "Raised when a login fails due to credentials error"
+    def __init__(self) -> None:
+        super().__init__('Invalid credentials. Please verify.')
 
 class LoginFailureException(Exception):
     def __init__(self, username: str, password: str, details:str='') -> None:

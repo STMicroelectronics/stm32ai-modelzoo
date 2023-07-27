@@ -16,7 +16,7 @@ import os
 import time
 from pathlib import Path
 
-from stm32ai_dc.errors import LoginFailureException
+from stm32ai_dc.errors import InvalidCredentialsException, LoginFailureException
 
 from .helpers import get_ssl_verify_status, _get_env_proxy
 from .endpoints import get_login_authenticate_ep, get_login_service_ep
@@ -76,6 +76,18 @@ class LoginService:
         return token
 
     def login(self, username, password) -> str:
+        for i in range(5):
+            try:
+                self._login(username, password)
+                return self.auth_token
+            except InvalidCredentialsException as e:
+                raise e
+            except Exception as e:
+                print('Login issue, retry (' + str(i+1) + '/5)')
+                time.sleep(5)
+
+
+    def _login(self, username, password) -> str:
         # Starts a requests sesson
         s = requests.session()
         s.proxies = _get_env_proxy()
@@ -130,6 +142,11 @@ class LoginService:
             },
             allow_redirects=False,
         )
+
+        if (resp.status_code == 200):
+            failure_regex = re.search(r'You have provided the wrong password. You have \d+ attempts left after which your account password will expire.', resp.text)
+            if (failure_regex):
+                raise InvalidCredentialsException
 
         redirect = resp.headers['Location']
         is_ready = False
