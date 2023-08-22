@@ -25,7 +25,6 @@
 #endif
 
 #include "objdetect_pp_output_if.h"
-#include "objdetect_ssd_st_pp_user.h"
 
 
 /* I/O structures for SSD detector type */

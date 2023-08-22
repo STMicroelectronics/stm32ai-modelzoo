@@ -97,6 +97,7 @@ Apply post-processing by modifiying the post_processing parameters in **[user_co
 - `type` - A *string* could be "*SSD*", "*CENTER_NET*", "*YOLO*".
 - `confidence_thresh` - A *float* between 0.0 and 1.0, the score thresh to filter detections .
 - `NMS_thresh` - A *float* between 0.0 and 1.0, NMS thresh to filter and reduce overlapped boxes.
+- `max_boxes_limit` - An *int* to filter the number of bounding boxes.
 
 **1.4. Load model:**
 

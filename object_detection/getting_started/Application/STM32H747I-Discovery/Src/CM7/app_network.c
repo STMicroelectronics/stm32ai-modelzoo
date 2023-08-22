@@ -160,10 +160,9 @@ void Network_Postprocess(AppConfig_TypeDef *App_Config_Ptr)
   //post processing the output of the inference
   if (App_Config_Ptr->error == AI_OBJDETECT_POSTPROCESS_ERROR_NO)
   {
-    App_Config_Ptr->error = app_postprocess_run( App_Config_Ptr->postprocess_type,
-											                       App_Config_Ptr->nn_output_buffer,
-                                             (void*)&App_Config_Ptr->output,
-                                             (void*)&App_Config_Ptr->input_static_param);
+    App_Config_Ptr->error = app_postprocess_run( App_Config_Ptr->nn_output_buffer,
+                                                (void*)&App_Config_Ptr->output,
+                                                (void*)&App_Config_Ptr->input_static_param);
   }
   else
   {

@@ -113,7 +113,8 @@ def gen_h_user_file(config, quantized_model_path):
         f.write("#define ASPECT_RATIO_MODE    {}\n".format(opt[yaml_opt.index(params.pre_processing.aspect_ratio)]))
         f.write("\n\n")
 
-        f.write("/* Postprocessing configuration */\n")
+        f.write("/***** Postprocessing configuration *****/\n")
+        f.write("/* Postprocessing type configuration */\n")
         f.write("\n")
         f.write("#define POSTPROCESS_CENTER_NET (0)\n")
         f.write("#define POSTPROCESS_YOLO       (1)\n")
@@ -127,6 +128,17 @@ def gen_h_user_file(config, quantized_model_path):
             f.write("#define POSTPROCESS_TYPE POSTPROCESS_YOLO\n")
         else:
             raise TypeError("please select one of this supported post processing options [CENTER_NET, YOLO, SSD]")
+
+        if params.post_processing.type == "SSD":
+            f.write("\n/* Postprocessing SSD configuration */\n")
+            f.write("#define AI_OBJDETECT_SSD_ST_PP_NB_CLASSES         ({})\n".format(len(class_names)+1))
+            f.write("#define AI_OBJDETECT_SSD_ST_PP_IOU_THRESHOLD      ({})\n".format(float(params.post_processing.NMS_thresh)))
+            f.write("#define AI_OBJDETECT_SSD_ST_PP_CONF_THRESHOLD     ({})\n".format(float(params.post_processing.confidence_thresh)))
+            f.write("#define AI_OBJDETECT_SSD_ST_PP_MAX_BOXES_LIMIT    ({})\n".format(int(params.post_processing.max_boxes_limit)))
+            f.write("#define AI_OBJDETECT_SSD_ST_PP_TOTAL_DETECTIONS   ({})\n".format(int(output_details['shape'][1])))
+        else:
+            raise TypeError(" Only the SSD option is supported for now ...")
+
         f.write("\n")
 
         f.write("/* Input color format configuration */\n")

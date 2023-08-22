@@ -29,10 +29,9 @@ extern "C"
 
 /* Exported functions ------------------------------------------------------- */
 int32_t app_postprocess_init( AppConfig_TypeDef *App_Config_Ptr);
-int32_t app_postprocess_run( network_postprocess_type network_type,
-                         void **pInput,
-                         postprocess_out_t*pOutput,
-                         void *pInput_static_param);
+int32_t app_postprocess_run( void **pInput,
+                             postprocess_out_t*pOutput,
+                             void *pInput_static_param);
 
 #ifdef __cplusplus
 }

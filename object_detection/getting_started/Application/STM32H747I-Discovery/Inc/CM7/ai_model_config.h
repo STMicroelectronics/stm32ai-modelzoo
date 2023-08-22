@@ -53,12 +53,19 @@
 #define ASPECT_RATIO_MODE    KEEP_ASPECT_RATIO_DISABLE
 
 
-/* Postprocessing configuration */
+/***** Postprocessing configuration *****/
+/* Postprocessing type configuration */
 
 #define POSTPROCESS_CENTER_NET (0)
 #define POSTPROCESS_YOLO       (1)
 #define POSTPROCESS_SSD        (2)
 #define POSTPROCESS_TYPE POSTPROCESS_SSD
+/* Postprocessing SSD configuration */
+#define AI_OBJDETECT_SSD_ST_PP_NB_CLASSES         (2)
+#define AI_OBJDETECT_SSD_ST_PP_IOU_THRESHOLD      (0.5)
+#define AI_OBJDETECT_SSD_ST_PP_CONF_THRESHOLD     (0.5)
+#define AI_OBJDETECT_SSD_ST_PP_MAX_BOXES_LIMIT    (10)
+#define AI_OBJDETECT_SSD_ST_PP_TOTAL_DETECTIONS   (3830)
 
 /* Input color format configuration */
 #define RGB_FORMAT          (1)

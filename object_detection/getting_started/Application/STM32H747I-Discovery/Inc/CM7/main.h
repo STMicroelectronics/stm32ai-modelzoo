@@ -32,9 +32,15 @@
 
 #include "stm32h747i_discovery_sd.h"
 #include "ai_model_config.h"
+
+#if POSTPROCESS_TYPE == POSTPROCESS_CENTER_NET
 #include "objdetect_centernet_pp_if.h"
+#elif POSTPROCESS_TYPE == POSTPROCESS_YOLO
 #include "objdetect_yolov2_pp_if.h"
+#elif POSTPROCESS_TYPE == POSTPROCESS_SSD
 #include "objdetect_ssd_st_pp_if.h"
+#endif
+
 
 
 #define WELCOME_MSG_0             AI_NETWORK_ORIGIN_MODEL_NAME
@@ -205,7 +211,6 @@ typedef struct
   
   /*Post-Processing context*/
   int32_t error;
-  network_postprocess_type postprocess_type;
 #if POSTPROCESS_TYPE == POSTPROCESS_CENTER_NET
   centernet_pp_static_param_t input_static_param;
 #elif POSTPROCESS_TYPE == POSTPROCESS_YOLO

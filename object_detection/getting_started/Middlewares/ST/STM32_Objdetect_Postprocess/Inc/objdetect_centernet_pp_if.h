@@ -27,7 +27,6 @@
 
 #include "arm_math.h"
 #include "objdetect_pp_output_if.h"
-#include "objdetect_centernet_pp_user.h"
 
 
 

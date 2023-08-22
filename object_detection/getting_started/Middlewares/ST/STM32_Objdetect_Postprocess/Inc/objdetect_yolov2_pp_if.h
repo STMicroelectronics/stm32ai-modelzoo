@@ -26,7 +26,6 @@
 #endif
 
 #include "objdetect_pp_output_if.h"
-#include "objdetect_yolov2_pp_user.h"
 
 
 /* I/O structures for YoloV2 detector type */

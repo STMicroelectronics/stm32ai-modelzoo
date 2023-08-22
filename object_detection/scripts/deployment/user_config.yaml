@@ -18,6 +18,7 @@ post_processing:
   type: SSD
   confidence_thresh: 0.5
   NMS_thresh: 0.5
+  max_boxes_limit: 10
 
 model:
   model_type: {name : mobilenet, version : v1, alpha : 0.25}
