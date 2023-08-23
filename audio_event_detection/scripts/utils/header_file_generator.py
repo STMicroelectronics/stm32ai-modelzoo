@@ -24,7 +24,12 @@ def gen_h_user_file(config):
         "Window length must be lower or equal to n_fft"
     )
     # Sort names from config as was done when training model
-    class_names = sorted(config.dataset.class_names)
+    class_names = config.dataset.class_names
+    n_classes = len(class_names)
+    if config.dataset.use_other_class:
+        n_classes += 1
+        class_names.append("other")
+    class_names = sorted(class_names)
     # input_shape = params.model.input_shape
 
     classes = '{' + ','.join(['"' + x + '"' for x in class_names]) + '}'
@@ -70,7 +75,7 @@ def gen_h_user_file(config):
         f.write('#define CTRL_X_CUBE_AI_MODE_NAME                 "X-CUBE-AI AED"\n')
         f.write('#define CTRL_X_CUBE_AI_MODE_NB_OUTPUT            (1U)\n')
         f.write('#define CTRL_X_CUBE_AI_MODE_OUTPUT_1             (CTRL_AI_CLASS_DISTRIBUTION)\n')
-        f.write('#define CTRL_X_CUBE_AI_MODE_CLASS_NUMBER         ({}U)\n'.format(len(class_names)))
+        f.write('#define CTRL_X_CUBE_AI_MODE_CLASS_NUMBER         ({}U)\n'.format(n_classes))
         f.write('#define CTRL_X_CUBE_AI_MODE_CLASS_LIST           {}\n'.format(classes))
         f.write('#define CTRL_X_CUBE_AI_SENSOR_TYPE               COM_TYPE_MIC\n')
         f.write('#define CTRL_X_CUBE_AI_SENSOR_NAME               "imp34dt05"\n')

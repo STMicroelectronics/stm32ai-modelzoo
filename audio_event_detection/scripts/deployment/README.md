@@ -221,6 +221,7 @@ NOTE : this is currently unsupported, but will be in a future version.
 - `model_path` - *Path* to the .h5 or .tflite file of the model to deploy. Please check out some pretrained models from STM32 model zoo [here](../../models/README.md).
 - `ood_detection_threshold` - *float* between 0 and 1. If the maximum of the model output probabilities is below this threshold, then the sample is considered to belong to an unknown class.
 Please note that this is a very naïve OOD detection / OSR baseline method, and does not exhibit great performance.
+**NOTE** : Cannot be used conjointly with `dataset/use_other_class`. Set `dataset/use_other_class` to False if you wish to use this OOD detection method.
 Improved methods will be forthcoming in the future.
 
 
@@ -297,7 +298,9 @@ Configure the **dataset** section in **[user_config.yaml](user_config.yaml)** in
   file_extension: .wav
   validation_split: 0.1
   test_split : 0.05
-  test_path: 
+  test_path:
+  use_other_class: False
+  n_samples_per_other_class: 2 
 ```
 
 where:
@@ -313,7 +316,22 @@ NOTE : All the following parameters are used to perfor
 - `file_extension` - Extension of the audio files. Will be automatically appended to the end of the filenames contained in the .csv file if necessary when fetching the audio files. 
 - `validation_split` - Real number between 0 and 1. Proportion of the training set to use for validation. If left empty, defaults to 0.1 
 - `test_split` - Real number between 0 and 1. Proportion of the dataset to use as test set. If left empty, defaults to 0.2.
-- `test_path` - If you want to use a specific subset of data for testing, include a path to the csv file for this subset, in the same format as the one provided in `csv_path`. If this is not empty, `test_split` will be ignored. You will also need to make sure that there is no overlap between this specific test set and the dataset provided in `test_path`. Audio files must be put in the folder given in `audio_path`. Only taken into account if choosing to perform evaluation before deployment. 
+- `test_path` - If you want to use a specific subset of data for testing, include a path to the csv file for this subset, in the same format as the one provided in `csv_path`. If this is not empty, `test_split` will be ignored. You will also need to make sure that there is no overlap between this specific test set and the dataset provided in `test_path`. Audio files must be put in the folder given in `audio_path`. Only taken into account if choosing to perform evaluation before deployment.
+- `use_other_class` -  **(Experimental)** *boolean*, If set to True, any samples not belonging to classes specified in `class_names` get lumped together in a new "Other" class, and the model is trained on the classes specified in `class_names` plus this new class.
+**WARNING** : this will yield extremely poor results unless your dataset has a lot of classes, and you are using a small proportion of them in `class_names`. **If in doubt, set to False.**
+- `n_samples_per_other_class` - **(Experimental)** *int*, number of samples of each unused class to lump into the "Other" class. Generally, when lumping all samples from all unused classes into the "Other" class, the resulting dataset is extremely unbalanced. If this parameter is not provided, the scripts will try to infer a number that results in a dataset that isn't too poorly balanced.
+
+**2.2.1. Dataset-specific parameters**
+<a id='fsd50k params'></a>
+
+We provide support for using FSD50K in the model zoo. As FSD50K's structure is quite different to what is regularly expected by the model zoo, we provide pre-processing scripts to make it compatible.
+These scripts require a few parameters, which are under the `dataset_specific/fsd50K` section of [user_config.yaml](user_config.yaml).
+- `csv_folder` - Folder where the dev and eval csv files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.ground_truth`
+- `dev_audio_folder` - Folder where the dev audio files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.dev_audio`
+- `eval_audio_folder` - Folder where the eval audio files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.eval_audio`
+- `audioset_ontology_path` - Path to the audioset ontology JSON file. The file is provided in the model zoo [here](../utils/dataset_utils/fsd50k/audioset_ontology.json), but you can also download it from https://github.com/audioset/ontology/blob/master/ontology.json
+- `only_keep_monolabel` - *boolean* If set to True, discard all multi-label samples. This is a comparatively small proportion of all samples.
+
 
  **3.1.2. Model quantization:**
 
@@ -357,3 +375,53 @@ The labels `"signal"` shows the signal index or number, the `"class"` has the la
 # restrictions
 - In this version getting started for deployment is only supported on the [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html).
 - Only the *int8* type input is supported for the quantization operation.
+
+## **Using FSD50K in the model zoo**
+<a id='fsd50k dataset'></a>
+
+**Download the dataset**
+Download the dataset here : https://zenodo.org/record/4060432
+The dataset is comprised of several archives. We suggest extracting them all in the same folder, for example `datasets/FSD50K/`.
+
+After extraction you should end up with the following folders : 
+- `FSD50K.dev_audio`
+- `FSD50K.doc`
+- `FSD50K.eval_audio`
+- `FSD50K.ground_truth`
+- `FSD50K.metadata`
+
+Strictly speaking, `FSD50K.metadata` and `FSD50K.doc` are unnecessary, so they can be deleted.
+
+**Set up the dataset-specific parameters**
+First, set `dataset/name` to `fsd50k`.
+
+You will need to set some dataset-specific parameters in [user_config.yaml](user_config.yaml).
+See <a href='#fsd50k params'>the appropriate section</a> for a detailed description of each parameter.
+
+**NOTE** The regular `audio_path` and `csv_path` are unused for FSD50K, so you can safely leave them blank.
+
+**Pre-process the dataset**
+In order to make FSD50K compatible with the model zoo's expected dataset format, we make a few changes to the dataset. 
+Notably, we **unsmear** labels, and then convert the labels to monolabel.
+FSD50K comes with smeared labels. This means that some labels are added automatically. For example, any sample with the Electric_guitar label, will automatically be assigned the Music label. Unsmearing simply undoes this process, e.g. only the Electric_guitar label would remain.
+
+Then, we convert any multilabel sample to monolabel. You can choose in which way this is done by changing the appropriate parameter in [user_config.yaml](user_config.yaml).
+
+Support for multilabel inference is coming, so you will be able to keep smeared labels and multilabel samples in the future.
+
+All this happens automatically if you set `dataset/name` to `fsd50k`.
+
+That's it !
+
+## Out-of-distribution (OOD) detection in the model zoo.
+A common issue in audio event detection applications is being able to reject samples which do not come from one of the classes the model is trained on.
+The model zoo provides several baseline options for doing this. 
+
+The first option consists of thresholding the network output probabilities at runtime. This is a naïve baseline which does not yield great results, but is a good starting point. 
+You can set the threshold in the [deployment user_config.yaml](../deployment/user_config.yaml), using the `model/unknown_class_threshold` parameter.
+
+The second option consists of adding an additional "Other" class to your model at training time, using samples from the dataset which do not belong to any of the classes specified in `class_names`.
+**IMPORTANT NOTE** : This feature is **experimental**. It will yield **very poor results** if the dataset provided does not have a very large number of unused classes to lump into the "Other" class. Do not expect great results from this.
+You can enable this option by setting `dataset/use_other_class` to True in [user_config.yaml](user_config.yaml).
+
+**IMPORTANT NOTE** These two methods are **NOT COMPATIBLE**, and cannot be used together. You must enable one or the other, or none at all.

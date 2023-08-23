@@ -56,6 +56,21 @@ where:
 - `validation_split` - Real number between 0 and 1. Proportion of the training set to use for validation. If left empty, defaults to 0.1. For evaluation, it is recommended to set it at 0
 - `test_split` - Real number between 0 and 1. Proportion of the dataset to use as test set. If left empty, defaults to 0.2. If you want to use the entire dataset for evaluation, set to 1.
 - `test_path` - If you want to use a specific subset of data for testing, include a path to the csv file for this subset, in the same format as the one provided in `csv_path`. If this is not empty, `test_split` will be ignored. You will also need to make sure that there is no overlap between this specific test set and the dataset provided in `test_path`. Audio files must be put in the folder given in `audio_path`
+- `use_other_class` -  **(Experimental)** *boolean*, If set to True, any samples not belonging to classes specified in `class_names` get lumped together in a new "Other" class, and the model is trained on the classes specified in `class_names` plus this new class. 
+**WARNING** : this will yield extremely poor results unless your dataset has a lot of classes, and you are using a small proportion of them in `class_names`. **If in doubt, set to False.**
+- `n_samples_per_other_class` - **(Experimental)** *int*, number of samples of each unused class to lump into the "Other" class. Generally, when lumping all samples from all unused classes into the "Other" class, the resulting dataset is extremely unbalanced. If this parameter is not provided, the scripts will try to infer a number that results in a dataset that isn't too poorly balanced.
+
+**2.2.1. Dataset-specific parameters**
+<a id='fsd50k params'></a>
+
+We provide support for using FSD50K in the model zoo. As FSD50K's structure is quite different to what is regularly expected by the model zoo, we provide pre-processing scripts to make it compatible.
+These scripts require a few parameters, which are under the `dataset_specific/fsd50K` section of [user_config.yaml](user_config.yaml).
+- `csv_folder` - Folder where the dev and eval csv files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.ground_truth`
+- `dev_audio_folder` - Folder where the dev audio files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.dev_audio`
+- `eval_audio_folder` - Folder where the eval audio files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.eval_audio`
+- `audioset_ontology_path` - Path to the audioset ontology JSON file. The file is provided in the model zoo [here](../utils/dataset_utils/fsd50k/audioset_ontology.json), but you can also download it from https://github.com/audioset/ontology/blob/master/ontology.json
+- `only_keep_monolabel` - *boolean* If set to True, discard all multi-label samples. This is a comparatively small proportion of all samples.
+ 
 
 **1.3.2. Temporal domain preprocessing:**
 
@@ -189,3 +204,53 @@ To view and examine the results of multiple trainings, you can simply access the
 mlflow ui
 ```
 And open the given IP adress in your browser.
+
+## **Using FSD50K in the model zoo**
+<a id='fsd50k dataset'></a>
+
+**Download the dataset**
+Download the dataset here : https://zenodo.org/record/4060432
+The dataset is comprised of several archives. We suggest extracting them all in the same folder, for example `datasets/FSD50K/`.
+
+After extraction you should end up with the following folders : 
+- `FSD50K.dev_audio`
+- `FSD50K.doc`
+- `FSD50K.eval_audio`
+- `FSD50K.ground_truth`
+- `FSD50K.metadata`
+
+Strictly speaking, `FSD50K.metadata` and `FSD50K.doc` are unnecessary, so they can be deleted.
+
+**Set up the dataset-specific parameters**
+First, set `dataset/name` to `fsd50k`.
+
+You will need to set some dataset-specific parameters in [user_config.yaml](user_config.yaml).
+See <a href='#fsd50k params'>the appropriate section</a> for a detailed description of each parameter.
+
+**NOTE** The regular `audio_path` and `csv_path` are unused for FSD50K, so you can safely leave them blank.
+
+**Pre-process the dataset**
+In order to make FSD50K compatible with the model zoo's expected dataset format, we make a few changes to the dataset. 
+Notably, we **unsmear** labels, and then convert the labels to monolabel.
+FSD50K comes with smeared labels. This means that some labels are added automatically. For example, any sample with the Electric_guitar label, will automatically be assigned the Music label. Unsmearing simply undoes this process, e.g. only the Electric_guitar label would remain.
+
+Then, we convert any multilabel sample to monolabel. You can choose in which way this is done by changing the appropriate parameter in [user_config.yaml](user_config.yaml).
+
+Support for multilabel inference is coming, so you will be able to keep smeared labels and multilabel samples in the future.
+
+All this happens automatically if you set `dataset/name` to `fsd50k`.
+
+That's it !
+
+## Out-of-distribution (OOD) detection in the model zoo.
+A common issue in audio event detection applications is being able to reject samples which do not come from one of the classes the model is trained on.
+The model zoo provides several baseline options for doing this. 
+
+The first option consists of thresholding the network output probabilities at runtime. This is a naïve baseline which does not yield great results, but is a good starting point. 
+You can set the threshold in the [deployment user_config.yaml](../deployment/user_config.yaml), using the `model/unknown_class_threshold` parameter.
+
+The second option consists of adding an additional "Other" class to your model at training time, using samples from the dataset which do not belong to any of the classes specified in `class_names`.
+**IMPORTANT NOTE** : This feature is **experimental**. It will yield **very poor results** if the dataset provided does not have a very large number of unused classes to lump into the "Other" class. Do not expect great results from this.
+You can enable this option by setting `dataset/use_other_class` to True in [user_config.yaml](user_config.yaml).
+
+**IMPORTANT NOTE** These two methods are **NOT COMPATIBLE**, and cannot be used together. You must enable one or the other, or none at all.

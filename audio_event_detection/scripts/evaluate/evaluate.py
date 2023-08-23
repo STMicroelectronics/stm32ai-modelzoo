@@ -29,7 +29,7 @@ sys.path.append(os.path.abspath('../../../common'))
 
 from benchmark import evaluate_TFlite_quantized_model
 from common_benchmark import stm32ai_benchmark
-from datasets import load_ESC_10, load_custom_esc_like_multiclass
+from datasets import load_ESC_10, load_custom_esc_like_multiclass, load_FSD50K
 from quantization import TFLite_PTQ_quantizer
 from utils import get_config, mlflow_ini, setup_seed
 from visualize import _compute_confusion_matrix, _plot_confusion_matrix
@@ -62,11 +62,13 @@ def evaluate_model(cfg, c_header=True, c_code=True):
             OmegaConf.set_struct(cfg, True)
 
             #get datasets
-            if cfg.dataset.name.lower()=="esc10":
+            if cfg.dataset.name.lower() == "esc10":
                 train_ds, valid_ds, test_ds, clip_labels = load_ESC_10(cfg)
-            elif cfg.dataset.name.lower()=="custom" and not cfg.model.multi_label:
+            elif cfg.dataset.name.lower() == "fsd50k":
+                train_ds, valid_ds, test_ds, clip_labels = load_FSD50K(cfg)
+            elif cfg.dataset.name.lower() == "custom" and not cfg.model.multi_label:
                 train_ds, valid_ds, test_ds, clip_labels = load_custom_esc_like_multiclass(cfg)
-            elif cfg.dataset.name.lower()=="custom" and cfg.model.multi_label:
+            elif cfg.dataset.name.lower() == "custom" and cfg.model.multi_label:
                 raise NotImplementedError("Multilabel support not implemented yet !")
             else:
                 raise NotImplementedError("Please choose a valid dataset ('esc10' or 'custom')")

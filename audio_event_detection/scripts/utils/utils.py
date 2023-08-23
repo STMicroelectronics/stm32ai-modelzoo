@@ -22,7 +22,7 @@ from tensorflow import keras
 from quantization import TFLite_PTQ_quantizer
 from benchmark import evaluate_TFlite_quantized_model
 from data_augment import get_data_augmentation
-from datasets import _esc10_csv_to_tf_dataset, load_ESC_10, load_custom_esc_like_multiclass
+from datasets import _esc10_csv_to_tf_dataset, load_ESC_10, load_custom_esc_like_multiclass, load_FSD50K
 from visualize import _compute_confusion_matrix, _plot_confusion_matrix
 from common_visualize import vis_training_curves
 from callbacks import get_callbacks
@@ -110,6 +110,8 @@ def train(cfg):
         train_ds, valid_ds, test_ds, clip_labels = load_ESC_10(cfg)
     elif cfg.dataset.name.lower()=="custom" and not cfg.model.multi_label:
         train_ds, valid_ds, test_ds, clip_labels = load_custom_esc_like_multiclass(cfg)
+    elif cfg.dataset.name.lower() == "fsd50k":
+        train_ds, valid_ds, test_ds, clip_labels = load_FSD50K(cfg)
     elif cfg.dataset.name.lower()=="custom" and cfg.model.multi_label:
         raise NotImplementedError("Multilabel support not implemented yet !")
     else:
@@ -178,7 +180,10 @@ def train(cfg):
 
     
     # Load best trained model w/o data augmentation layers
-    best_model = augmented_model.layers[-1]
+    if augment:
+        best_model = augmented_model.layers[-1]
+    else:
+        best_model = augmented_model
     best_model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
     best_model.save(
         os.path.join(HydraConfig.get().runtime.output_dir, cfg.general.saved_models_dir + '/' + "best_model.h5"))

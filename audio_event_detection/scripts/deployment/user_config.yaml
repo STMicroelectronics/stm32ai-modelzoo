@@ -5,12 +5,23 @@ dataset:
   name: esc10
   class_names: ['dog', 'chainsaw', 'crackling_fire', 'helicopter', 'rain',
        'crying_baby', 'clock_tick', 'sneezing', 'rooster', 'sea_waves']
-  audio_path: ..\training\datasets\ESC-50\audio
-  csv_path: ..\training\datasets\ESC-50\meta\esc50.csv
+  audio_path: datasets/ESC-50/audio
+  csv_path: datasets/ESC-50/meta/esc50.csv
   file_extension: .wav
   validation_split: 0.1
-  test_split : 0.05
+  test_split : 0.2
   test_path: 
+  use_other_class: False
+  n_samples_per_other_class: 2
+
+dataset_specific:
+# Contains dataset-specific parameters.
+  fsd50k:
+    csv_folder: ../training/datasets/FSD50K/FSD50K.ground_truth
+    dev_audio_folder: ../training/datasets/FSD50K/FSD50K.dev_audio
+    eval_audio_folder: ../training/datasets/FSD50K/FSD50K.eval_audio
+    audioset_ontology_path: ../utils/dataset_utils/fsd50k/audioset_ontology.json
+    only_keep_monolabel: True
 
 pre_processing:
   min_length: 1
@@ -52,7 +63,7 @@ model:
   unknown_class_threshold: 0.0
 
 quantization:
-  quantize: True
+  quantize: False
   evaluate: False
   quantizer: TFlite_converter
   quantization_type: PTQ
@@ -61,15 +72,15 @@ quantization:
   export_dir: quantized_models
 
 stm32ai:
-  c_project_path: ../../getting_started/freertos # Change to ../../getting_started/threadx to use threadx version
+  c_project_path: ../../getting_started/threadx # Change to ../../getting_started/threadx to use threadx version
   serie: STM32U5
   IDE: GCC
   verbosity: 1
   version: 7.3.0
   optimization: balanced
-  footprints_on_target: False
-  path_to_stm32ai: <path_to_stm32ai_executable>
-  path_to_cubeIDE: <path_to_cubeIDE_executable>
+  footprints_on_target: B-U585I-IOT02A
+  path_to_stm32ai: STM32Cube\Repository\Packs\STMicroelectronics\X-CUBE-AI\8.0.0\Utilities\windows\stm32ai.exe
+  path_to_cubeIDE: C:\ST\STM32CubeIDE_1.10.1\STM32CubeIDE\stm32cubeide.exe
 
   
 mlflow:

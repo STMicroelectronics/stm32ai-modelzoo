@@ -99,6 +99,8 @@ def MiniResNet(n_stacks=1,
 def get_scratch_model(cfg):
     input_shape=(cfg.model.input_shape[0], cfg.model.input_shape[1], 1)
     n_classes = len(cfg.dataset.class_names)
+    if cfg.dataset.use_other_class:
+        n_classes += 1
     n_stacks = cfg.model.model_type.n_stacks
     pooling=cfg.model.model_type.pooling
     if cfg.model.multi_label:
@@ -127,6 +129,8 @@ def get_pretrained_model(cfg):
 
     # Add head
     n_classes = len(cfg.dataset.class_names)
+    if cfg.dataset.use_other_class:
+        n_classes += 1
     if cfg.model.multi_label:
         activation = 'sigmoïd'
     else:
@@ -134,7 +138,7 @@ def get_pretrained_model(cfg):
 
     miniresnet = add_head(backbone=miniresnet,
                          n_classes=n_classes,
-                         trainable_backbone=False,
+                         trainable_backbone=cfg.model.fine_tune,
                          add_flatten=False,
                          functional=True,
                          activation=activation,

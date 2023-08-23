@@ -11,6 +11,8 @@ train_parameters:
   patience: 100
   learning_rate_scheduler: reducelronplateau
   restore_best_weights: False
+  use_other_class: False
+  n_samples_per_other_class: 2
 
 dataset:
   name: esc10
@@ -70,6 +72,7 @@ model:
   input_shape: [64, 50]
   expand_last_dim: True
   transfer_learning : True
+  fine_tune : False
   dropout: 0
   multi_label : False
 

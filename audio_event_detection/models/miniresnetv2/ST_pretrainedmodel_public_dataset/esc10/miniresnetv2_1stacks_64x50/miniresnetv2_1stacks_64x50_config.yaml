@@ -21,7 +21,9 @@ dataset:
   file_extension: .wav
   validation_split: 0.1
   test_split : 0.2
-  test_path: 
+  test_path:
+  use_other_class: False
+  n_samples_per_other_class: 2
 
 pre_processing:
   min_length: 2
@@ -70,6 +72,7 @@ model:
   input_shape: [64, 50]
   expand_last_dim: True
   transfer_learning : True
+  fine_tune : False
   dropout: 0
   multi_label : False
 

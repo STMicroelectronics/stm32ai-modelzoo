@@ -167,6 +167,10 @@ def get_data_augmentation(cfg):
                                                n_time_mask=cfg.data_augmentation.n_time_mask,
                                                mask_value=cfg.data_augmentation.mask_value))
 
+    if augmentation_layers:
+        augment = True
+    else:
+        augment = False
     data_augmentation = keras.Sequential(augmentation_layers)
     data_augmentation._name = "Data_augmentation"
 
