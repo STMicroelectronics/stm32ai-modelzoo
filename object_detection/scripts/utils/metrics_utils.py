@@ -138,7 +138,28 @@ def calculate_float_map(cfg, best_model):
     else:
         test_set_path = cfg.dataset.validation_path
 
-    for image_file in tqdm.tqdm(os.listdir(test_set_path)):
+
+    if test_set_path == None:
+
+        test_set_path = cfg.dataset.training_path
+
+        annotations = os.listdir(test_set_path)
+        nbannots = len(annotations)
+        all_annots = np.random.RandomState(seed=42).permutation(np.arange(nbannots))
+
+        validation_split = 0.2
+
+        train_split = all_annots[int(validation_split*nbannots):]
+        val_split = all_annots[:int(validation_split*nbannots)]
+
+        train_annotations,val_annotations = [annotations[i] for i in train_split],[annotations[i] for i in val_split]
+
+        list_of_files = val_annotations
+
+    else:
+        list_of_files = os.listdir(test_set_path)
+
+    for image_file in tqdm.tqdm(list_of_files):
         if image_file.endswith(".jpg"):
 
             image = cv2.imread(os.path.join(test_set_path, image_file))
@@ -239,7 +260,27 @@ def calculate_quantized_map(cfg, quantized_model_path):
     else:
         test_set_path = cfg.dataset.validation_path
 
-    for image_file in tqdm.tqdm(os.listdir(test_set_path)):
+    if test_set_path == None:
+
+        test_set_path = cfg.dataset.training_path
+
+        annotations = os.listdir(test_set_path)
+        nbannots = len(annotations)
+        all_annots = np.random.RandomState(seed=42).permutation(np.arange(nbannots))
+
+        validation_split = 0.2
+
+        train_split = all_annots[int(validation_split*nbannots):]
+        val_split = all_annots[:int(validation_split*nbannots)]
+
+        train_annotations,val_annotations = [annotations[i] for i in train_split],[annotations[i] for i in val_split]
+
+        list_of_files = val_annotations
+
+    else:
+        list_of_files = os.listdir(test_set_path)
+
+    for image_file in tqdm.tqdm(list_of_files):
         if image_file.endswith(".jpg"):
 
             image = cv2.imread(os.path.join(test_set_path, image_file))

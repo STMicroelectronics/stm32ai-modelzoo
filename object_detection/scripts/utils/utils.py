@@ -124,17 +124,38 @@ def train(cfg):
         benchmark_model(cfg, model_path)
 
     # train the model
-    tf.print("Loading Training ... ")
-    train_annotations = parse_data(cfg.dataset.training_path)
-    train_images_filename_list, train_gt_labels_list, num_train_samples = load_data(train_annotations)
 
-    tf.print("Loading Validation ... ")
     if cfg.dataset.validation_path is not None:
+
+        tf.print("Loading Training ... ")
+        train_annotations = parse_data(cfg.dataset.training_path)
+        train_images_filename_list, train_gt_labels_list, num_train_samples = load_data(train_annotations)
+
+        tf.print("Loading Validation ... ")
+    
         val_annotations = parse_data(cfg.dataset.validation_path)
         val_images_filename_list, val_gt_labels_list, num_val_samples = load_data(val_annotations)
+
     else:
-        val_annotations = parse_data(cfg.dataset.training_path)
+
+        annotations = parse_data(cfg.dataset.training_path)
+
+        nbannots = len(annotations)
+        all_annots = np.random.RandomState(seed=42).permutation(np.arange(nbannots))
+
+        validation_split = 0.2
+
+        train_split = all_annots[int(validation_split*nbannots):]
+        val_split = all_annots[:int(validation_split*nbannots)]
+
+        train_annotations,val_annotations = [annotations[i] for i in train_split],[annotations[i] for i in val_split]
+
+        tf.print("Loading Training ... ")
+        train_images_filename_list, train_gt_labels_list, num_train_samples = load_data(train_annotations)
+
+        tf.print("Loading Validation ... ")
         val_images_filename_list, val_gt_labels_list, num_val_samples = load_data(val_annotations)
+
 
     n_epochs = cfg.train_parameters.training_epochs
     batch_size = cfg.train_parameters.batch_size

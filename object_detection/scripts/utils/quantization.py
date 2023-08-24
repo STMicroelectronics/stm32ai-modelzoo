@@ -26,8 +26,30 @@ def TFLite_PTQ_quantizer(cfg, model, fake):
             if cfg.quantization.quantization_dataset is not None:
                 representative_ds_path = cfg.quantization.quantization_dataset
             else:
-                representative_ds_path = cfg.dataset.training_path
-            for image_file in tqdm.tqdm(os.listdir(representative_ds_path)):
+
+                if cfg.dataset.validation_path == None :
+
+                    representative_ds_path = cfg.dataset.training_path
+
+                    annotations = os.listdir(representative_ds_path)
+                    nbannots = len(annotations)
+                    all_annots = np.random.RandomState(seed=42).permutation(np.arange(nbannots))
+
+                    validation_split = 0.2
+
+                    train_split = all_annots[int(validation_split*nbannots):]
+                    val_split = all_annots[:int(validation_split*nbannots)]
+
+                    train_annotations,val_annotations = [annotations[i] for i in train_split],[annotations[i] for i in val_split]
+
+                    list_of_files = train_annotations
+
+                else:
+                    representative_ds_path = cfg.dataset.training_path
+                    list_of_files = os.listdir(representative_ds_path)
+
+
+            for image_file in tqdm.tqdm(list_of_files):
                 if image_file.endswith(".jpg"):
                     image = cv2.imread(os.path.join(representative_ds_path, image_file))
                     if len(image.shape) != 3:
