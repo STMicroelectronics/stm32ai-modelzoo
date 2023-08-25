@@ -26,7 +26,7 @@ def TFLite_PTQ_quantizer(cfg, model, train_ds, fake):
 					data = np.expand_dims(data, axis=-1)
 				yield [data.astype(np.float32)]
 		else:
-			for images, labels in tqdm.tqdm(train_ds, total=len(list(train_ds))):
+			for images, labels in tqdm.tqdm(train_ds, total=len(train_ds)):
 				for image in images:
 					image = tf.cast(image, dtype=tf.float32)
 					image = np.expand_dims(image, axis=0)

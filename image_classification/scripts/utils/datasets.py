@@ -35,7 +35,7 @@ def get_train_val_ds(cfg, validation_split=0.2, to_cache=False):
         crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio),
         batch_size=cfg.train_parameters.batch_size)
 
-    train_ds = train_ds.shuffle(len(list(train_ds)), reshuffle_each_iteration=True, seed=133)
+    train_ds = train_ds.shuffle(len(train_ds), reshuffle_each_iteration=True, seed=133)
     if to_cache:
         train_ds = train_ds.cache()
     train_ds = train_ds.prefetch(buffer_size=tf.data.AUTOTUNE)
@@ -73,7 +73,7 @@ def get_ds(datapath, cfg, shuffle=False, to_cache=False):
         crop_to_aspect_ratio=(True if cfg.pre_processing.aspect_ratio == "crop" else cfg.pre_processing.aspect_ratio),
         batch_size=cfg.train_parameters.batch_size)
     if shuffle:
-        ds = ds.shuffle(len(list(ds)), reshuffle_each_iteration=True, seed=133)
+        ds = ds.shuffle(len(ds), reshuffle_each_iteration=True, seed=133)
     if to_cache:
         ds = ds.cache()
     ds = ds.prefetch(buffer_size=tf.data.AUTOTUNE)

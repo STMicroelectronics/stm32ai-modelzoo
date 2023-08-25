@@ -152,10 +152,10 @@ def get_ds(cfg, ds_path, shuffle=False, to_cache=False, split=1, set=None):
     ds_2 = data_ds.skip(ds_1_size)
 
     if split == 1:
-        print("Using {} files for {}.".format(len(list(ds_1)),set))
+        print("Using {} files for {}.".format(len(ds_1),set))
     else:
-        print("Using {} files for training.".format(len(list(ds_1))))
-        print("Using {} files for validation.".format(len(list(ds_2))))
+        print("Using {} files for training.".format(len(ds_1)))
+        print("Using {} files for validation.".format(len(ds_2)))
 
     ds_1 = ds_1.batch(cfg.train_parameters.batch_size)
     ds_2 = ds_2.batch(cfg.train_parameters.batch_size)

@@ -116,7 +116,7 @@ def benchmark_model(cfg, model_path):
         command = "{} --version".format(cfg.stm32ai.path_to_stm32ai)
         args = shlex.split(command, posix="win" not in sys.platform)
         line = Popen(args, env=new_env, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")
-        version_line = line.split(' ')[9].split('-')[0]
+        version_line = line.split('v')[-1].split('-')[0]
         if not version_line.endswith(str(cfg.stm32ai.version)):
             print(f"[WARN] : STM32Cube.AI installed version doesn't match the version specified in user_config.yaml file! Currently using STM32Cube.AI version {version_line[1:]}.")
 

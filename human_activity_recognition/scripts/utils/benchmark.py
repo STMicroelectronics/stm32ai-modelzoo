@@ -29,7 +29,7 @@ def evaluate_TFlite_quantized_model(quantized_model_path, test_dataset, cfg):
     output_index_quant = interpreter_quant.get_output_details()[0]["index"]
     test_pred = []
     test_labels = []
-    for inputs, labels in tqdm.tqdm(test_dataset, total=len(list(test_dataset))):
+    for inputs, labels in tqdm.tqdm(test_dataset, total=len(test_dataset)):
         count = 0
         for input in inputs:
             if input_details['dtype'] in [np.uint8, np.int8]:
