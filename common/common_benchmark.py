@@ -118,7 +118,8 @@ def benchmark_model(cfg, model_path):
         line = Popen(args, env=new_env, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")
         version_line = line.split('v')[-1].split('-')[0]
         if not version_line.endswith(str(cfg.stm32ai.version)):
-            print(f"[WARN] : STM32Cube.AI installed version doesn't match the version specified in user_config.yaml file! Currently using STM32Cube.AI version {version_line[1:]}.")
+            print(f"[WARN] : STM32Cube.AI installed version {version_line} does not match the version specified in user_config.yaml file {cfg.stm32ai.version} !")
+        print(f"[INFO] : STM32Cube.AI version {version_line} used.")
 
         # Run generate command locally
         command = "{} generate -m {} -v 0 --allocate-inputs --allocate-outputs --output {} --workspace {} --optimization {}".format(
