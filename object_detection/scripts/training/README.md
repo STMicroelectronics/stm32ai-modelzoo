@@ -55,7 +55,7 @@ Configure the **dataset** section in **[user_config.yaml](user_config.yaml)** as
 where:
 
 - `name` - Dataset name.
-- `class_names` - A list containing the classes name *in order*.
+- `class_names` - A list containing the classes name *in order*. Please ensure that the classes names are in accordance with their assigned numerical IDs as specified in the dataset description.
 - `training_path` - The directory where the training set is located. 
 - `validation_path` - The directory where the validation set is located.
 - `test_path` - Path to the test_set, if not provided the validation set will be used for evaluation.
