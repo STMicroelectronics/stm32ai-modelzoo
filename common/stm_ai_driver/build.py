@@ -10,6 +10,7 @@ STM AI driver - C-project Updater/Builder
 """
 
 import os
+import sys
 import logging
 import glob
 import shutil
@@ -225,8 +226,8 @@ def _programm_dev_board(config, serial_number=None):
         warning_msg = 'board programming is SKIPPED!'
 
         def _connected_boards(st_links):
-            for st_link in st_links:
-                msg_ = '    board={}, sn={}'.format(st_link['board'], st_link['sn'])
+            for index_enum, st_link in enumerate(st_links):
+                msg_ = ' id={}    board={}, sn={}'.format(index_enum, st_link['board'], st_link['sn'])
                 logger.warning(msg_)
 
         if not st_links:
@@ -236,8 +237,12 @@ def _programm_dev_board(config, serial_number=None):
             return
         # if sn is not defined, find the first sn associated to the board name if available
         found = None
+        if isinstance(config.board, list):
+            list_boards = [name.lower() for name in config.board]
+        else:
+            list_boards = config.board.lower()
         for st_link in st_links:
-            if st_link['board'].lower() == config.board.lower():
+            if st_link['board'].lower() in list_boards:
                 found = st_link['sn']
                 break
         if config.board and not found:
@@ -245,7 +250,34 @@ def _programm_dev_board(config, serial_number=None):
             msg_ = f' -> no {config.board} board is connected (ST-LINK/swd port). '
             logger.warning(msg_)
             _connected_boards(st_links)
-            return
+
+            """ Get approval to flash to the connected board"""
+            if len(st_links) == 1:
+                if sys.stdin.isatty():
+                    msg_ = f'Do you confirm you want to flash the {st_links[0]["board"]} board? yes/no: '
+                    flash_anyway = input(msg_)
+                else:
+                    flash_anyway = sys.stdin.readline().rstrip()
+                if flash_anyway.lower() in ["yes", "y"]:
+                    found = st_link['sn']
+                    logger.warning("You can add your board in the section board in the stmaic_*.conf you're deploying to skip prompt")
+                else:
+                    found = None
+                    return
+            # """ Choose one of the connected board"""
+            else:
+                if sys.stdin.isatty():
+                    msg_ = f'Do you want to flash one of the board? Enter the board id or False: '
+                    index_board = input(msg_)
+                else:
+                    index_board = sys.stdin.readline().rstrip()
+                if index_board.isnumeric():
+                    found = st_links[int(index_board)]['sn']
+                    logger.warning("You can add your board in the section board in the stmaic_*.conf you're deploying to skip prompt")
+                else:
+                    found = None
+                    return
+                
         serial_number = found if not serial_number else serial_number
         if len(st_links) > 1 and not serial_number:
             logger.warning(warning_msg)
@@ -269,7 +301,6 @@ def _programm_dev_board(config, serial_number=None):
         port = re.search('port=swd', str_args, re.IGNORECASE)
         if port and serial_number:
             str_args = str_args[:port.start()] + f'port=swd sn={str(serial_number)} ' + str_args[port.end() + 1:]
-
     # logger.debug(' {}'.format(str_args))
     run_shell_cmd(str_args,
                   cwd=config.cwd,
