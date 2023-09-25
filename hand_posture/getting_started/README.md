@@ -26,7 +26,7 @@ This repository is structured as follows:
 In order to run this hand posture classification application examples you need to have the following hardware:
 
 - [NUCLEO-F401RE](https://www.st.com/en/evaluation-tools/nucleo-f401re.html) Nucleo board
-- [X-NUCLEO-53LxA1](https://www.st.com/en/evaluation-tools/x-nucleo-53l8a1.html) Nucleo expansion board
+- [X-NUCLEO-53LxA1](https://www.st.com/en/ecosystems/x-nucleo-53l8a1.html) Nucleo expansion board
 
 Only this hardware is supported for now
 

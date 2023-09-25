@@ -30,15 +30,17 @@
 #include "stm32h747i_discovery_errno.h"
 #include "lcd.h"
 
-#if (USE_LCD_CTRL_OTM8009A == 1)
+/* Include NT35510 LCD Driver IC driver code */
+#include "../Components/nt35510/nt35510.h"
+
 /* Include OTM8009A LCD Driver IC driver code */
 #include "../Components/otm8009a/otm8009a.h"
-#endif
 
 #if (USE_LCD_CTRL_ADV7533 == 1)
 /* Include ADV7533 HDMI Driver IC driver code */
 #include "../Components/adv7533/adv7533.h"
-#endif
+#endif /* USE_LCD_CTRL_ADV7533 */
+
 /** @addtogroup BSP
   * @{
   */
@@ -261,7 +263,7 @@ int32_t BSP_LCD_RegisterMspCallbacks (uint32_t Instance, BSP_LCD_Cb_t *CallBacks
 #endif /*(USE_HAL_DSI_REGISTER_CALLBACKS == 1) */
 
 /* LCD specific APIs: Layer control & LCD HW reset */
-int32_t BSP_LCD_Relaod(uint32_t Instance, uint32_t ReloadType);
+int32_t BSP_LCD_Reload(uint32_t Instance, uint32_t ReloadType);
 int32_t BSP_LCD_ConfigLayer(uint32_t Instance, uint32_t LayerIndex, BSP_LCD_LayerConfig_t *Config);
 int32_t BSP_LCD_SetLayerVisible(uint32_t Instance, uint32_t LayerIndex, FunctionalState State);
 int32_t BSP_LCD_SetTransparency(uint32_t Instance, uint32_t LayerIndex, uint8_t Transparency);
@@ -307,6 +309,7 @@ int32_t BSP_LCD_GetPixelFormat(uint32_t Instance, uint32_t *PixelFormat);
   */
 /* Legacy defines */
 #define LCD_ORIENTATION_PORTRAIT         0x00U /* Portrait orientation choice of LCD screen               */
+#define BSP_LCD_Relaod   BSP_LCD_Reload
 /**
   * @}
   */

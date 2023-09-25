@@ -48,7 +48,7 @@
      o Initialize the display with HDMI using BSP_LCD_InitHDMI(). Two display formats
        are supported: HDMI_FORMAT_720_480 or HDMI_FORMAT_720_576
 
-     o Select the LCD layer to be used using the BSP_LCD_SelectLayer() function.
+     o Select the LCD layer to be activated using the BSP_LCD_SetActiveLayer() function.
      o Enable the LCD display using the BSP_LCD_DisplayOn() function.
      o Disable the LCD display using the BSP_LCD_DisplayOff() function.
      o Set the display brightness using the BSP_LCD_SetBrightness() function.
@@ -60,12 +60,12 @@
      o Draw a bitmap image using the BSP_LCD_DrawBitmap() function.
 
    + Options
-     o Configure the LTDC reload mode by calling BSP_LCD_Relaod(). By default, the
+     o Configure the LTDC reload mode by calling BSP_LCD_Reload(). By default, the
        reload mode is set to BSP_LCD_RELOAD_IMMEDIATE then LTDC is reloaded immediately.
        To control the reload mode:
-         - Call BSP_LCD_Relaod() with ReloadType parameter set to BSP_LCD_RELOAD_NONE
+         - Call BSP_LCD_Reload() with ReloadType parameter set to BSP_LCD_RELOAD_NONE
          - Configure LTDC (color keying, transparency ..)
-         - Call BSP_LCD_Relaod() with ReloadType parameter set to BSP_LCD_RELOAD_IMMEDIATE
+         - Call BSP_LCD_Reload() with ReloadType parameter set to BSP_LCD_RELOAD_IMMEDIATE
            for immediate reload or BSP_LCD_RELOAD_VERTICAL_BLANKING for LTDC reload
            in the next vertical blanking
      o Configure LTDC layers using BSP_LCD_ConfigLayer()
@@ -151,6 +151,12 @@ typedef struct
   uint32_t      DataLaneMaxReadTime;
   uint32_t      StopWaitTime;
 } LCD_HDMI_Timing_t;
+
+typedef enum
+{
+  LCD_CTRL_NT35510,
+  LCD_CTRL_OTM8009A
+} LCD_Driver_t;
 /**
   * @}
   */
@@ -163,6 +169,8 @@ DSI_HandleTypeDef   hlcd_dsi;
 DMA2D_HandleTypeDef hlcd_dma2d;
 LTDC_HandleTypeDef  hlcd_ltdc;
 BSP_LCD_Ctx_t       Lcd_Ctx[LCD_INSTANCES_NBR];
+LCD_Driver_t        Lcd_Driver_Type = LCD_CTRL_NT35510;
+
 /**
   * @}
   */
@@ -175,15 +183,14 @@ static void DSI_MspDeInit(DSI_HandleTypeDef *hdsi);
 static int32_t DSI_IO_Write(uint16_t ChannelNbr, uint16_t Reg, uint8_t *pData, uint16_t Size);
 static int32_t DSI_IO_Read(uint16_t ChannelNbr, uint16_t Reg, uint8_t *pData, uint16_t Size);
 
-#if (USE_LCD_CTRL_OTM8009A > 0)
+static int32_t NT35510_Probe(uint32_t ColorCoding, uint32_t Orientation);
 static int32_t OTM8009A_Probe(uint32_t ColorCoding, uint32_t Orientation);
-# endif /* USE_LCD_CTRL_OTM8009A > 0 */
 
 #if (USE_LCD_CTRL_ADV7533 > 0)
 static int32_t ADV7533_Probe(void);
 static void LCD_Get_HDMI_VideoModeTiming(uint32_t Format, LCD_HDMI_Timing_t *Timing);
 static void LTDC_HDMI_Init(LCD_HDMI_Timing_t *Timing);
-#endif /* (USE_LCD_CTRL_ADV7533 > 0) */
+#endif /* USE_LCD_CTRL_ADV7533 */
 
 static void LTDC_MspInit(LTDC_HandleTypeDef *hltdc);
 static void LTDC_MspDeInit(LTDC_HandleTypeDef *hltdc);
@@ -246,14 +253,12 @@ int32_t BSP_LCD_InitEx(uint32_t Instance, uint32_t Orientation, uint32_t PixelFo
     {
       ltdc_pixel_format = LTDC_PIXEL_FORMAT_RGB565;
       dsi_pixel_format = DSI_RGB565;
-      ctrl_pixel_format = OTM8009A_FORMAT_RBG565;
       Lcd_Ctx[Instance].BppFactor = 2U;
     }
     else /* LCD_PIXEL_FORMAT_RGB888 */
     {
       ltdc_pixel_format = LTDC_PIXEL_FORMAT_ARGB8888;
       dsi_pixel_format = DSI_RGB888;
-      ctrl_pixel_format = OTM8009A_FORMAT_RGB888;
       Lcd_Ctx[Instance].BppFactor = 4U;
     }
 
@@ -350,18 +355,46 @@ int32_t BSP_LCD_InitEx(uint32_t Instance, uint32_t Orientation, uint32_t PixelFo
         /* Enable the DSI BTW for read operations */
         (void)HAL_DSI_ConfigFlowControl(&hlcd_dsi, DSI_FLOW_CONTROL_BTA);
 
-#if (USE_LCD_CTRL_OTM8009A == 1)
-        /* Initialize the OTM8009A LCD Display IC Driver (KoD LCD IC Driver)
+        /* Initialize the NT35510 LCD Display IC Driver (KoD LCD IC Driver)
         depending on configuration of DSI */
-        if(OTM8009A_Probe(ctrl_pixel_format, Orientation) != BSP_ERROR_NONE)
+        if(PixelFormat == LCD_PIXEL_FORMAT_RGB565)
         {
-          ret = BSP_ERROR_UNKNOWN_COMPONENT;
+          ctrl_pixel_format = NT35510_FORMAT_RBG565;
+        }
+        else /* LCD_PIXEL_FORMAT_RGB888 */
+        {
+          ctrl_pixel_format = NT35510_FORMAT_RGB888;
+        }
+        if(NT35510_Probe(ctrl_pixel_format, Orientation) != BSP_ERROR_NONE)
+        {
+         Lcd_Driver_Type = LCD_CTRL_OTM8009A;
+
+          if(ret == BSP_ERROR_NONE)
+          {
+            /* Initialize the OTM8009A LCD Display IC Driver (KoD LCD IC Driver)
+            depending on configuration of DSI */
+            if(PixelFormat == LCD_PIXEL_FORMAT_RGB565)
+            {
+              ctrl_pixel_format = OTM8009A_FORMAT_RBG565;
+            }
+            else /* LCD_PIXEL_FORMAT_RGB888 */
+            {
+              ctrl_pixel_format = OTM8009A_FORMAT_RGB888;
+            }
+            if(OTM8009A_Probe(ctrl_pixel_format, Orientation) != BSP_ERROR_NONE)
+            {
+              ret = BSP_ERROR_UNKNOWN_COMPONENT;
+            }
+            else
+            {
+              ret = BSP_ERROR_NONE;
+            }
+          }
         }
         else
         {
           ret = BSP_ERROR_NONE;
         }
-#endif
       }
     /* By default the reload is activated and executed immediately */
     Lcd_Ctx[Instance].ReloadEnable = 1U;
@@ -624,8 +657,7 @@ int32_t BSP_LCD_InitHDMI(uint32_t Instance, uint32_t Format)
 
   return ret;
 }
-
-#endif /*USE_LCD_CTRL_ADV7533 > 0*/
+#endif /* USE_LCD_CTRL_ADV7533 */
 /**
   * @brief  BSP LCD Reset
   *         Hw reset the LCD DSI activating its XRES signal (active low for some time)
@@ -744,7 +776,16 @@ __weak HAL_StatusTypeDef MX_DSIHOST_DSI_Init(DSI_HandleTypeDef *hdsi, uint32_t W
   */
   VidCfg.VirtualChannelID = 0;
   VidCfg.ColorCoding = PixelFormat;
-  VidCfg.LooselyPacked = DSI_LOOSELY_PACKED_DISABLE;
+
+  if(Lcd_Driver_Type == LCD_CTRL_NT35510)
+  {
+    VidCfg.LooselyPacked = DSI_LOOSELY_PACKED_ENABLE;
+  }
+  else
+  {
+    VidCfg.LooselyPacked = DSI_LOOSELY_PACKED_DISABLE;
+  }
+
   VidCfg.Mode = DSI_VID_MODE_BURST;
   VidCfg.PacketSize = Width;
   VidCfg.NumberOfChunks = 0;
@@ -752,16 +793,39 @@ __weak HAL_StatusTypeDef MX_DSIHOST_DSI_Init(DSI_HandleTypeDef *hdsi, uint32_t W
   VidCfg.HSPolarity = DSI_HSYNC_ACTIVE_HIGH;
   VidCfg.VSPolarity = DSI_VSYNC_ACTIVE_HIGH;
   VidCfg.DEPolarity = DSI_DATA_ENABLE_ACTIVE_HIGH;
-  VidCfg.HorizontalSyncActive = (OTM8009A_480X800_HSYNC * 62500U)/27429U;
-  VidCfg.HorizontalBackPorch = (OTM8009A_480X800_HBP * 62500U)/27429U;
-  VidCfg.HorizontalLine = ((Width + OTM8009A_480X800_HSYNC + OTM8009A_480X800_HBP + OTM8009A_480X800_HFP) * 62500U)/27429U;
-  VidCfg.VerticalSyncActive = OTM8009A_480X800_VSYNC;
-  VidCfg.VerticalBackPorch = OTM8009A_480X800_VBP;
-  VidCfg.VerticalFrontPorch = OTM8009A_480X800_VFP;
+  
+  if(Lcd_Driver_Type == LCD_CTRL_NT35510)
+  {
+    VidCfg.HorizontalSyncActive = (NT35510_480X800_HSYNC * 62500U)/27429U;
+    VidCfg.HorizontalBackPorch = (NT35510_480X800_HBP * 62500U)/27429U;
+    VidCfg.HorizontalLine = ((Width + NT35510_480X800_HSYNC + NT35510_480X800_HBP + NT35510_480X800_HFP) * 62500U)/27429U;
+    VidCfg.VerticalSyncActive = NT35510_480X800_VSYNC;
+    VidCfg.VerticalBackPorch = NT35510_480X800_VBP;
+    VidCfg.VerticalFrontPorch = NT35510_480X800_VFP;
+  }
+  else
+  {
+    VidCfg.HorizontalSyncActive = (OTM8009A_480X800_HSYNC * 62500U)/27429U;
+    VidCfg.HorizontalBackPorch = (OTM8009A_480X800_HBP * 62500U)/27429U;
+    VidCfg.HorizontalLine = ((Width + OTM8009A_480X800_HSYNC + OTM8009A_480X800_HBP + OTM8009A_480X800_HFP) * 62500U)/27429U;
+    VidCfg.VerticalSyncActive = OTM8009A_480X800_VSYNC;
+    VidCfg.VerticalBackPorch = OTM8009A_480X800_VBP;
+    VidCfg.VerticalFrontPorch = OTM8009A_480X800_VFP;
+  }
+
   VidCfg.VerticalActive = Height;
   VidCfg.LPCommandEnable = DSI_LP_COMMAND_ENABLE;
-  VidCfg.LPLargestPacketSize = 4;
-  VidCfg.LPVACTLargestPacketSize = 4;
+
+  if(Lcd_Driver_Type == LCD_CTRL_NT35510)
+  {
+    VidCfg.LPLargestPacketSize = 64;
+    VidCfg.LPVACTLargestPacketSize = 64;
+  }
+  else
+  {
+    VidCfg.LPLargestPacketSize = 4;
+    VidCfg.LPVACTLargestPacketSize = 4;
+  }
 
   VidCfg.LPHorizontalFrontPorchEnable  = DSI_LP_HFP_ENABLE;
   VidCfg.LPHorizontalBackPorchEnable   = DSI_LP_HBP_ENABLE;
@@ -794,14 +858,28 @@ __weak HAL_StatusTypeDef MX_LTDC_Init(LTDC_HandleTypeDef *hltdc, uint32_t Width,
   hltdc->Init.DEPolarity = LTDC_DEPOLARITY_AL;
   hltdc->Init.PCPolarity = LTDC_PCPOLARITY_IPC;
 
-  hltdc->Init.HorizontalSync     = OTM8009A_480X800_HSYNC - 1;
-  hltdc->Init.AccumulatedHBP     = OTM8009A_480X800_HSYNC + OTM8009A_480X800_HBP - 1;
-  hltdc->Init.AccumulatedActiveW = OTM8009A_480X800_HSYNC + Width + OTM8009A_480X800_HBP - 1;
-  hltdc->Init.TotalWidth         = OTM8009A_480X800_HSYNC + Width + OTM8009A_480X800_HBP + OTM8009A_480X800_HFP - 1;
-  hltdc->Init.VerticalSync       = OTM8009A_480X800_VSYNC - 1;
-  hltdc->Init.AccumulatedVBP     = OTM8009A_480X800_VSYNC + OTM8009A_480X800_VBP - 1;
-  hltdc->Init.AccumulatedActiveH = OTM8009A_480X800_VSYNC + Height + OTM8009A_480X800_VBP - 1;
-  hltdc->Init.TotalHeigh         = OTM8009A_480X800_VSYNC + Height + OTM8009A_480X800_VBP + OTM8009A_480X800_VFP - 1;
+  if(Lcd_Driver_Type == LCD_CTRL_NT35510)
+  {
+    hltdc->Init.HorizontalSync     = NT35510_480X800_HSYNC - 1;
+    hltdc->Init.AccumulatedHBP     = NT35510_480X800_HSYNC + NT35510_480X800_HBP - 1;
+    hltdc->Init.AccumulatedActiveW = NT35510_480X800_HSYNC + Width + NT35510_480X800_HBP - 1;
+    hltdc->Init.TotalWidth         = NT35510_480X800_HSYNC + Width + NT35510_480X800_HBP + NT35510_480X800_HFP - 1;
+    hltdc->Init.VerticalSync       = NT35510_480X800_VSYNC - 1;
+    hltdc->Init.AccumulatedVBP     = NT35510_480X800_VSYNC + NT35510_480X800_VBP - 1;
+    hltdc->Init.AccumulatedActiveH = NT35510_480X800_VSYNC + Height + NT35510_480X800_VBP - 1;
+    hltdc->Init.TotalHeigh         = NT35510_480X800_VSYNC + Height + NT35510_480X800_VBP + NT35510_480X800_VFP - 1;
+  }
+  else
+  {
+    hltdc->Init.HorizontalSync     = OTM8009A_480X800_HSYNC - 1;
+    hltdc->Init.AccumulatedHBP     = OTM8009A_480X800_HSYNC + OTM8009A_480X800_HBP - 1;
+    hltdc->Init.AccumulatedActiveW = OTM8009A_480X800_HSYNC + Width + OTM8009A_480X800_HBP - 1;
+    hltdc->Init.TotalWidth         = OTM8009A_480X800_HSYNC + Width + OTM8009A_480X800_HBP + OTM8009A_480X800_HFP - 1;
+    hltdc->Init.VerticalSync       = OTM8009A_480X800_VSYNC - 1;
+    hltdc->Init.AccumulatedVBP     = OTM8009A_480X800_VSYNC + OTM8009A_480X800_VBP - 1;
+    hltdc->Init.AccumulatedActiveH = OTM8009A_480X800_VSYNC + Height + OTM8009A_480X800_VBP - 1;
+    hltdc->Init.TotalHeigh         = OTM8009A_480X800_VSYNC + Height + OTM8009A_480X800_VBP + OTM8009A_480X800_VFP - 1;
+  }
 
   hltdc->Init.Backcolor.Blue  = 0x00;
   hltdc->Init.Backcolor.Green = 0x00;
@@ -1066,7 +1144,7 @@ int32_t BSP_LCD_GetPixelFormat(uint32_t Instance, uint32_t *PixelFormat)
   *         - BSP_LCD_RELOAD_VERTICAL_BLANKING
   * @retval BSP status
   */
-int32_t BSP_LCD_Relaod(uint32_t Instance, uint32_t ReloadType)
+int32_t BSP_LCD_Reload(uint32_t Instance, uint32_t ReloadType)
 {
   int32_t ret = BSP_ERROR_NONE;
 
@@ -1948,7 +2026,6 @@ static int32_t DSI_IO_Read(uint16_t ChannelNbr, uint16_t Reg, uint8_t *pData, ui
 
   return ret;
 }
-
 #if (USE_LCD_CTRL_ADV7533 > 0)
 /**
   * @brief  Get HDMI DSI video mode timings for selected format
@@ -2071,8 +2148,57 @@ static int32_t ADV7533_Probe(void)
 
   return ret;
 }
-#endif /*USE_LCD_CTRL_ADV7533 */
-#if (USE_LCD_CTRL_OTM8009A > 0)
+#endif /* USE_LCD_CTRL_ADV7533 */
+
+/**
+  * @brief  Register Bus IOs if component ID is OK
+  * @retval error status
+  */
+int32_t NT35510_Probe(uint32_t ColorCoding, uint32_t Orientation)
+{
+  int32_t ret;
+  uint32_t id = 0;
+  NT35510_IO_t              IOCtx;
+  static NT35510_Object_t   NT35510Obj;
+
+  /* Configure the audio driver */
+  IOCtx.Address     = 0;
+  IOCtx.GetTick     = BSP_GetTick;
+  IOCtx.WriteReg    = DSI_IO_Write;
+  IOCtx.ReadReg     = DSI_IO_Read;
+
+  if(NT35510_RegisterBusIO(&NT35510Obj, &IOCtx) != NT35510_OK)
+  {
+    ret = BSP_ERROR_BUS_FAILURE;
+  }
+  else
+  {
+    Lcd_CompObj = &NT35510Obj;
+
+    if(NT35510_ReadID(Lcd_CompObj, &id) != NT35510_OK)
+    {
+      ret = BSP_ERROR_COMPONENT_FAILURE;
+    }
+    else if (id != NT35510_ID)
+    {
+      ret = BSP_ERROR_UNKNOWN_COMPONENT;
+    }
+    else
+    {
+      Lcd_Drv = (LCD_Drv_t *)(void *) &NT35510_LCD_Driver;
+      if(Lcd_Drv->Init(Lcd_CompObj, ColorCoding, Orientation) != NT35510_OK)
+      {
+        ret = BSP_ERROR_COMPONENT_FAILURE;
+      }
+      else
+      {
+        ret = BSP_ERROR_NONE;
+      }
+    }
+  }
+  return ret;
+}
+
 /**
   * @brief  Register Bus IOs if component ID is OK
   * @retval error status
@@ -2080,7 +2206,7 @@ static int32_t ADV7533_Probe(void)
 static int32_t OTM8009A_Probe(uint32_t ColorCoding, uint32_t Orientation)
 {
   int32_t ret;
-  uint32_t id;
+  uint32_t id = 0;
   OTM8009A_IO_t              IOCtx;
   static OTM8009A_Object_t   OTM8009AObj;
 
@@ -2102,7 +2228,10 @@ static int32_t OTM8009A_Probe(uint32_t ColorCoding, uint32_t Orientation)
     {
       ret = BSP_ERROR_COMPONENT_FAILURE;
     }
-
+    else if (id != OTM8009A_ID)
+    {
+      ret = BSP_ERROR_UNKNOWN_COMPONENT;
+    }
     else
     {
       Lcd_Drv = (LCD_Drv_t *)(void *) &OTM8009A_LCD_Driver;
@@ -2118,7 +2247,7 @@ static int32_t OTM8009A_Probe(uint32_t ColorCoding, uint32_t Orientation)
   }
   return ret;
 }
-#endif /* USE_LCD_CTRL_OTM8009A */
+
 /**
   * @}
   */
