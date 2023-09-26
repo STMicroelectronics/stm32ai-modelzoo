@@ -53,7 +53,7 @@ It outputs embedding vectors of size 256. If you use the train.py script to perf
 # Performances
 ## Training
 
-Note : Yamnet variant models are only available with pretrained weights.
+**NOTE** : Yamnet can only be used with transfer learning or fine tuning, as it is simply a MobileNet with pretrained weights, not using the pretrained weights wouldn't make it much of a Yamnet anymore.
 
 To train a Yamnet model with pretrained weights you need to configure the [user_config.yaml](../../scripts/training/user_config.yaml) file following the [tutorial](../../scripts/training/README.md) under the training section.
 

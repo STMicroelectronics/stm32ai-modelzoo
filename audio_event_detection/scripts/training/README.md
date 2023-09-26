@@ -150,7 +150,7 @@ where:
 - `expand_last_dim` - *Boolean* Some models expect input of the shape *[n_mels, patch_length, 1]*, often because they are repurposed image classification architectures. Set this to True if that is the case.
 If using a MiniResnet, MiniResnetv2 or Yamnet, set this to True.
 - `transfer_learning` - *Boolean*, if True, a pretrained model is loaded, its layers are frozen, a classification head is added and trained. If False, the entire network is trained from scratch.
-Note that Yamnet can only be used with `transfer_learning=True`
+**NOTE** : Yamnet can only be used with `transfer_learning=True` or `fine_tune=True`
 - `fine_tune` : *boolean* If True, a pretrained model is loaded and a classification head is added, but the layers of the backbone are NOT frozen. **WARNING :** Models have a severe tendency to overfit when using this option with too little data, which leads to worse performance when deploying on board. Use with caution. This parameter does nothing if `transfer_learning` is set to `False`
 - `dropout` : *float between 0 and 1* If > 0, adds dropout to the classification head, with probability equal to this parameter.
 - `multi_label` - *Boolean*. Set to True if you want to perform multilabel classification, i.e. if each sample can belong to more than 1 class at a time. 

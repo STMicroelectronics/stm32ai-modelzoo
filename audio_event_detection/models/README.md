@@ -16,6 +16,8 @@ A note on clip-level accuracy : In a traditional AED data processing pipeline, a
 
 The reason this metric is used instead of patch-level accuracy is because patch-level accuracy varies immensely depending on the specific manner used to cut spectrogram into patches, and also because clip-level accuracy is the metric most often reported in research papers.
 
+**NOTE** : Yamnet can only be used with transfer learning or fine tuning, as it is simply a MobileNet with pretrained weights, not using the pretrained weights wouldn't make it much of a Yamnet anymore
+
 By default, the results are provided for quantized Int8 models.
 
 
