@@ -117,6 +117,15 @@ where:
 - `logs_dir` - Path to save tensorboard logs.
 - `saved_models_dir` - Path to save the trained model.
 
+**2.1.1 TensorFlow deterministic operations**
+
+If you want your experiments to be fully reproducible, you need to activate the `deterministic_ops` attribute.
+```yaml
+general:
+   deterministic_ops: True
+```
+Enabling the `deterministic_ops` attribute will restrict TensorFlow to use only deterministic operations on the device, but it may lead to a drop in training performance. It should be noted that not all operations in the used version of TensorFlow can be computed deterministically. If your case involves any such operation, a warning message will be displayed and the attribute will be ignored.
+
 **2.2. Loading the dataset:**
 
 Configure the **dataset** section in **[user_config.yaml](user_config.yaml)** as the following:

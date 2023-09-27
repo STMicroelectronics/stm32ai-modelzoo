@@ -19,6 +19,7 @@ import random
 
 import load_models
 import numpy as np
+import imgaug
 from anchor_boxes_utils import gen_anchors, get_sizes_ratios
 from common_benchmark import *
 from callbacks import *
@@ -39,6 +40,7 @@ def setup_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
     tf.random.set_seed(seed)  # tf cpu fix seed
+    imgaug.seed(seed)
 
 
 def get_config(cfg):
@@ -75,6 +77,29 @@ def inc_gpu_mode():
                 logical_gpus = tf.config.experimental.list_logical_devices('GPU')
         except RuntimeError as e:
             print(e)
+
+
+def check_training(model: tf.keras.Model, sample_ds: tf.data.Dataset):
+    """
+    Check if there are operations that can rise exceptions during training.
+    Args:
+        model (tf.keras.Model): A keras model.
+    
+    Returns:
+        valid_training (bool): True if the training raise no exception.
+    """
+    valid_training = True
+    x_sample, y_sample = next(iter(sample_ds))
+    try:
+        with tf.GradientTape() as g:
+            y = model(x_sample, training=True)
+            loss = model.loss(y_sample, y)
+        _ = g.gradient(loss, model.trainable_variables)
+        
+    except Exception as error:
+        print(f"[WARN] {error}")
+        valid_training = False
+    return valid_training
 
 
 def train(cfg):
@@ -176,6 +201,14 @@ def train(cfg):
     val_gen = generate(cfg, val_images_filename_list, val_gt_labels_list, batch_size, shuffle=False, augmentation=False,
                        fmap_sizes=fmap_sizes, img_width=img_width, img_height=img_height, sizes=sizes_h, ratios=ratios_h,
                        n_classes=n_classes)
+    
+    # check if determinism can be enabled
+    if cfg.general.deterministic_ops:
+        tf.config.experimental.enable_op_determinism()
+        if not check_training(training_model, train_gen):
+            print("[WARN] Some operations cannot be runned deterministically. Setting deterministic_ops to False.")
+            tf.config.experimental.enable_op_determinism.__globals__["_pywrap_determinism"].enable(False)
+
 
     print("[INFO] : Starting training...")
     history = training_model.fit(train_gen,

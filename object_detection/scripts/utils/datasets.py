@@ -240,6 +240,12 @@ def generate(cfg, images_filename_list,
     assert cfg.pre_processing.aspect_ratio is False, "Aspect ratio == True not supported yet"
     assert cfg.pre_processing.color_mode == "rgb", "only rgb training is supported"
     num_samples = len(images_filename_list)
+    
+    # handle case when the batchsize is greater or equal the dataset size
+    if batch_size >= num_samples:
+        exp = np.math.log(num_samples, 2)
+        exp = np.math.floor(exp)
+        batch_size = int(2**exp)
 
     if shuffle:
         sampled_indices = random.sample(range(num_samples), num_samples)

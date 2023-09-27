@@ -95,6 +95,29 @@ def get_loss(cfg):
     return loss
 
 
+def check_training(model: tf.keras.Model, sample_ds: tf.data.Dataset):
+    """
+    Check if there are operations that can rise exceptions during training.
+    Args:
+        model (tf.keras.Model): A keras model.
+    
+    Returns:
+        valid_training (bool): True if the training raise no exception.
+    """
+    valid_training = True
+    x_sample, y_sample = next(iter(sample_ds))
+    try:
+        with tf.GradientTape() as g:
+            y = model(x_sample, training=True)
+            loss = model.loss(y_sample, y)
+        _ = g.gradient(loss, model.trainable_variables)
+        
+    except Exception as error:
+        print(f"[WARN] {error}")
+        valid_training = False
+    return valid_training
+
+
 def svm_optimization(train_x, train_y, dim_red=True, n_components=20, svc_C=[100, 1000], svc_Gamma=[0.001, 0.005], opt_data_keep=0.05):
     train_inds = random.choices(
         np.arange(0, len(train_y)), k=int(len(train_y) * opt_data_keep))
@@ -253,6 +276,15 @@ def train(cfg):
 
     else:
         benchmark_model(cfg, model_path)
+
+    
+    # check if determinism can be enabled
+    if cfg.general.deterministic_ops:
+        sample_ds = train_ds.take(1)
+        tf.config.experimental.enable_op_determinism()
+        if not check_training(model, sample_ds):
+            print("[WARN] Some operations cannot be runned deterministically. Setting deterministic_ops to False.")
+            tf.config.experimental.enable_op_determinism.__globals__["_pywrap_determinism"].enable(False)
 
     # train the model
     print("[INFO] : Starting training...")
