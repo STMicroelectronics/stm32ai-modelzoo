@@ -31,10 +31,15 @@ from stm32ai_dc.types import ValidateResult, ValidateResultMetrics
 
 class CloudBackend(Stm32AiBackend):
     def __init__(
-        self, username: str, password: str, version: typing.Union[str, None] = None
+        self,
+        username: str,
+        password: str,
+        auth_token: typing.Union[str, None] = None,
+        version: typing.Union[str, None] = None,
     ) -> None:
         self.username = username
         self.password = password
+        self.auth_token = None
         self.version = version
         self.supportedVersions = get_supported_versions()
         self.login_service = LoginService()
@@ -51,7 +56,7 @@ class CloudBackend(Stm32AiBackend):
                     f"[WARN] It will use the latest version by default ({self.version})"
                 )
 
-        if username is None or password is None:
+        if (username is None or password is None) and auth_token is None:
             # Try to use previous tokens saved in home directory
             sso_resp = self.login_service.get_access_token()
             if sso_resp:
@@ -60,6 +65,8 @@ class CloudBackend(Stm32AiBackend):
                 raise LoginFailureException(
                     username, password, details="Empty login or stored token invalid."
                 )
+        elif auth_token is not None:
+            self.auth_token = auth_token
         else:
             try:
                 self.auth_token = self.login_service.login(
