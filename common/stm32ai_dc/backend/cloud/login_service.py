@@ -95,7 +95,7 @@ class LoginService:
         s.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv59.0) Gecko/20100101',
         })
-        provider = 'https://idpsso.st.com'
+        provider = 'https://sso.st.com'
         client_id = 'oidc_prod_client_app_stm32ai'
         redirect_uri = 'https://stm32ai-cs.st.com/callback'
 
