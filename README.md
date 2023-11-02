@@ -84,7 +84,7 @@ git clone https://github.com/STMicroelectronics/stm32ai-modelzoo.git
     ```
     Install python 3.10:
     ```
-    conda install -c conda-forge pyhton=3.10
+    conda install -c conda-forge python=3.10
     ```
     If using NVIDIA GPU, install cudatoolkit and cudnn and add to conda path:
     ```
