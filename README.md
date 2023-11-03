@@ -47,6 +47,7 @@ This project is organized by application, for each application you will have a s
 * [ONNX_model_quantization.ipynb](https://github.com/STMicroelectronics/stm32ai-modelzoo/blob/main/tutorials/notebooks/ONNX_model_quantization.ipynb): a Jupyter notebook that shows how to quantize ONNX format models with fake or real data by using ONNX runtime and benchmark it by using the STM32Cube.AI Developer Cloud.
 * [STM32 Developer Cloud examples](tutorials/scripts/stm32ai_dc_examples): a collection of Python scripts that you can use in order to get started with STM32Cube.AI Developer Cloud [ST Python APIs](common/stm32ai_dc).
 * [Tutorial video](https://youtu.be/yuSVz3x9LzE): discover how to create an AI application for image classification using the STM32 model zoo.
+* [stm32ai-tao](https://github.com/STMicroelectronics/stm32ai-tao): this GitHub repository provides Python scripts and Jupyter notebooks to manage a complete life cycle of a model from training, to compression, optimization and benchmarking using **NVIDIA TAO Toolkit** and STM32Cube.AI Developer Cloud.
 
 ## Before you start
 
@@ -84,7 +85,7 @@ git clone https://github.com/STMicroelectronics/stm32ai-modelzoo.git
     ```
     Install python 3.10:
     ```
-    conda install -c conda-forge pyhton=3.10
+    conda install -c conda-forge python=3.10
     ```
     If using NVIDIA GPU, install cudatoolkit and cudnn and add to conda path:
     ```
