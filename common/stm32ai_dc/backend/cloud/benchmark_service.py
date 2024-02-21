@@ -161,7 +161,7 @@ class BenchmarkService:
                 if isinstance(result, dict):
                     self.benchmark_state = result.get('state', '').lower()
                     if result.get('state', '').lower() == 'done':
-                        return result.get('benchmark', {})
+                        return result
                     elif result.get('state', '').lower() == 'error':
                         logger.error(f'Benchmark return an error: {result}')
                         raise BenchmarkFailure(result.get('board', 'ND'),

@@ -1,0 +1,78 @@
+general:
+  project_name: my_project
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: True
+  global_seed: 127
+  gpu_memory_limit: 3
+
+operation_mode: chain_tqe
+
+dataset:
+   name: flowers
+   class_names: [daisy, dandelion, roses, sunflowers, tulips]
+   training_path: ../datasets/flower_photos
+   validation_split: 0.15
+   quantization_split: 0.3
+
+preprocessing:
+   rescaling:
+      scale: 1/127.5
+      offset: -1
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+data_augmentation:
+  random_contrast:
+    factor: 0.4
+  random_brightness:
+    factor: 0.2
+  random_flip:
+    mode: horizontal_and_vertical
+  random_translation:
+    width_factor: 0.2
+    height_factor: 0.2
+  random_rotation:
+    factor: 0.15
+  random_zoom:
+    width_factor: 0.25
+    height_factor: 0.25
+
+training:
+   model:
+      name: mobilenet
+      version: v2
+      alpha: 0.35
+      pretrained_weights: imagenet
+      input_shape: (224, 224, 3)
+   frozen_layers: (0:-7, -5)
+   batch_size: 32
+   epochs: 120
+   dropout: 0.3
+   optimizer:
+      Adam:
+         learning_rate: 0.001
+   callbacks:
+      ReduceLROnPlateau:
+         monitor: val_accuracy
+         factor: 0.5
+         patience: 10
+      EarlyStopping:
+         monitor: val_accuracy
+         patience: 40
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

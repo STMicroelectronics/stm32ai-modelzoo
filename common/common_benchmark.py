@@ -1,5 +1,5 @@
 # /*---------------------------------------------------------------------------------------------
-#  * Copyright (c) 2022 STMicroelectronics.
+#  * Copyright (c) 2022-2023 STMicroelectronics.
 #  * All rights reserved.
 #  *
 #  * This software is licensed under terms that can be found in the LICENSE file in
@@ -14,46 +14,51 @@ import sys
 import shlex
 import subprocess
 from subprocess import Popen
-
+from typing import List, Union, Optional, Tuple
 import mlflow
 from hydra.core.hydra_config import HydraConfig
 from stm32ai_dc import (CliLibraryIde, CliLibrarySerie, CliParameters,
-                     CloudBackend, Stm32Ai)
+                        CloudBackend, Stm32Ai)
 from stm32ai_dc.errors import BenchmarkServerError
 
 
-def analyze_footprints(offline=True, results=None, inference_res=False):
+def analyze_footprints(offline: bool = True, results: dict = None, stm32ai_output: str = None,
+                       inference_res: bool = False) -> None:
+    """Prints and logs footprints after the Cube.AI benchmark.
 
-    """ Print footprints after cube.ai benchmark. """
-
+    Args:
+        offline (bool, optional): Flag to indicate if the results are offline. Defaults to True.
+        results (dict, optional): Dictionary containing the results of the benchmark. Defaults to None.
+        inference_res (bool, optional): Flag to indicate if the results are for inference. Defaults to False.
+        stm32ai_output (str, optional): Path to the output directory for the STM32. Defaults to "".
+    """
+    # Load results from file if offline
+    output_dir = HydraConfig.get().runtime.output_dir
     if offline:
-        with open(os.path.join(HydraConfig.get().runtime.output_dir, 'stm32ai_files/network_report.json'), 'r') as f:
+        with open(os.path.join(stm32ai_output, 'network_report.json'), 'r') as f:
             results = json.load(f)
-
-        activations_ram = int(results["ram_size"][0]) / 1024
-        weights_rom = int(results["rom_size"]) / 1024
-        macc = int(results["rom_n_macc"]) / 1e6
-
-
+        # Extract footprint values
+        activations_ram = round(int(results["ram_size"][0]) / 1024, 2)
+        weights_rom = round(int(results["rom_size"]) / 1024, 2)
+        macc = round(int(results["rom_n_macc"]) / 1e6, 3)
         print("[INFO] : RAM Activations : {} (KiB)".format(activations_ram))
         print("[INFO] : Flash weights : {} (KiB)".format(weights_rom))
         print("[INFO] : MACCs : {} (M)".format(macc))
-
     else:
-        activations_ram = int(results["ram_size"]) / 1024
-        weights_rom = int(results["rom_size"]) / 1024
-        macc = int(results["macc"]) / 1e6
-
-        tools_version = '.'.join([str(results["report"]["tools_version"]["major"]),
-                                  str(results["report"]["tools_version"]["minor"]),
-                                  str(results["report"]["tools_version"]["micro"])])
-
-        if inference_res or int(tools_version[0])>=8:
-            runtime_ram = results["estimated_library_ram_size"] / 1024
-            total_ram = activations_ram + runtime_ram
-            code_rom = results["estimated_library_flash_size"] / 1024
-            total_flash = weights_rom + code_rom
-
+        activations_ram = round(int(results["ram_size"]) / 1024, 2)
+        weights_rom = round(int(results["rom_size"]) / 1024, 2)
+        macc = round(int(results["macc"]) / 1e6, 3)
+        tools_version = results["report"]["tools_version"]
+        # Check if inference results or tools version 8
+        version_numbers = ["major", "minor", "micro"]
+        version_strings = [str(tools_version.get(key, "0")) for key in version_numbers]
+        tools_version_str = ".".join(version_strings)
+        if inference_res or int(tools_version_str[0]) >= 8:
+            runtime_ram = round(results["estimated_library_ram_size"] / 1024, 2)
+            total_ram = round(activations_ram + runtime_ram, 2)
+            code_rom = round(results["estimated_library_flash_size"] / 1024, 2)
+            total_flash = round(weights_rom + code_rom, 2)
+            # Print and log total footprints
             print("[INFO] : Total RAM : {} (KiB)".format(total_ram))
             print("[INFO] :     RAM Activations : {} (KiB)".format(activations_ram))
             print("[INFO] :     RAM Runtime : {} (KiB)".format(runtime_ram))
@@ -61,251 +66,332 @@ def analyze_footprints(offline=True, results=None, inference_res=False):
             print("[INFO] :     Flash Weights  : {} (KiB)".format(weights_rom))
             print("[INFO] :     Estimated Flash Code : {} (KiB)".format(code_rom))
             print("[INFO] : MACCs : {} (M)".format(macc))
-
+            # Print and log inference results
             if inference_res:
-                cycles = results["cycles"]
-                inference_time = results["duration_ms"]
-                print("[INFO] : Number of cycles : {} ".format(cycles))
+                internal_flash_usage = round(results["internal_flash_consumption"] / 1024,2)
+                external_flash_usage = round(results["external_flash_consumption"] / 1024, 2)
+                internal_ram_usage = round(results["internal_ram_consumption"] / 1024,2)
+                external_ram_usage = round(results["external_ram_consumption"] / 1024, 2)
+                if external_flash_usage > 0:
+                    print("[INFO] : Internal Flash usage : {} (KiB)".format(internal_flash_usage))
+                    print("[INFO] : External Flash usage : {} (KiB)".format(external_flash_usage))
+                    mlflow.log_metric("Internal Flash usage", internal_flash_usage)
+                    mlflow.log_metric("External Flash usage", external_flash_usage)
+                    with open(os.path.join(output_dir, "stm32ai_main.log"), "a") as log_file:
+                        log_file.write(f'Internal Flash usage : {internal_flash_usage} KiB\n' + f'External Flash usage : {external_flash_usage} KiB\n')    
+                if external_ram_usage > 0:
+                    print("[INFO] : Internal RAM usage : {} (KiB)".format(internal_ram_usage))
+                    print("[INFO] : External RAM usage : {} (KiB)".format(external_ram_usage))
+                    mlflow.log_metric("Internal RAM usage", internal_ram_usage)
+                    mlflow.log_metric("External RAM usage", external_ram_usage)
+                    with open(os.path.join(output_dir, "stm32ai_main.log"), "a") as log_file:
+                        log_file.write(f'Internal RAM usage : {internal_ram_usage} KiB\n' + f'External RAM usage : {external_ram_usage} KiB\n') 
+                cycles = round(results["cycles"] / 1e6, 3)
+                inference_time = round(results["duration_ms"], 2)
+                print("[INFO] : Number of cycles : {} (M) ".format(cycles))
                 print("[INFO] : Inference Time : {} (ms)".format(inference_time))
                 mlflow.log_metric("cycles", cycles)
                 mlflow.log_metric("inference_time ms", inference_time)
+                with open(os.path.join(output_dir, "stm32ai_main.log"), "a") as log_file:
+                    log_file.write(f'Cycles : {cycles} M\n' + f'Inference_time : {inference_time} ms\n')
 
             mlflow.log_metric("Total RAM KiB", total_ram)
-            mlflow.log_metric("Runtime KiB", runtime_ram)
+            mlflow.log_metric("RAM Runtime KiB", runtime_ram)
             mlflow.log_metric("Total Flash KiB", total_flash)
-            mlflow.log_metric("Estimated_Code KiB", code_rom)
-
-
+            mlflow.log_metric("Estimated Flash Code KiB", code_rom)
+            with open(os.path.join(output_dir, "stm32ai_main.log"), "a") as log_file:
+                log_file.write(f'Total RAM : {total_ram} KiB\n' + f'RAM Runtime : {runtime_ram} KiB\n'+ 
+                               f'Total Flash : {total_flash} KiB\n' +f'Estimated Flash Code : {code_rom} KiB\n' )
+                
+        # Print and log activation, weight, and MACC footprints if not inference results
         else:
             print("[INFO] : RAM Activations : {} (KiB)".format(activations_ram))
             print("[INFO] : Flash weights : {} (KiB)".format(weights_rom))
             print("[INFO] : MACCs : {} (M)".format(macc))
-
-    mlflow.log_metric("Activations KiB", activations_ram)
-    mlflow.log_metric("weights KiB", weights_rom)
+    mlflow.log_metric("RAM Activations KiB", activations_ram)
+    mlflow.log_metric("Flash weights KiB", weights_rom)
     mlflow.log_metric("MACCs M", macc)
+    with open(os.path.join(output_dir, "stm32ai_main.log"), "a") as log_file:
+        log_file.write(f'RAM Activations : {activations_ram} KiB\n' + f'Flash weights : {weights_rom} KiB\n'+ 
+                       f'MACCs : {macc} M\n')
 
 
-def get_model_name(cfg):
 
-    strings = list(cfg['model']['model_type'].values())
-    strings.append(str(cfg['model']['input_shape'][0]))
-    strings.append(cfg['general']['project_name'])
+def get_model_name(model_type: str, input_shape: int, project_name: str) -> str:
+    """Returns a string representation of the model name.
 
+    Args:
+        model_type (str): Type of the model.
+        input_shape (int): Input shape of the model.
+        project_name (str): Name of the project.
+
+    Returns:
+        str: String representation of the model name.
+    """
+    # Combine strings to form model name
+    strings = [model_type, str(input_shape), project_name]
     name = '_'.join([str(i) for i in strings])
 
     return name
 
 
-def benchmark_model(cfg, model_path):
+def benchmark_model(optimization: str = None, model_path: str = None, path_to_stm32ai: str = None,
+                    stm32ai_output: str = None, stm32ai_version: str = None, get_model_name_output: str = None) -> \
+        Optional[Exception]:
+    """
+    Benchmark model using STM32Cube.AI locally.
 
-    """ Benchmark model using cube.ai locally. """
+    Args:
+        optimization (str): Optimization level.
+        model_path (str): Path to the model file.
+        path_to_stm32ai (str): Path to STM32Cube.AI.
+        stm32ai_output (str): Path to output directory.
+        stm32ai_version (str): STM32Cube.AI version.
+        get_model_name_output (str): Model name output.
 
-    if not cfg.stm32ai.footprints_on_target:
-        print("[WARNING] : Add a board name under footprints_on_target in order to use the STM32CubeAI developer cloud")
-    stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "stm32ai_files")
+    Returns:
+        Optional[Exception]: None if successful, otherwise the exception that occurred.
+    """
+
+    # Create output directory if it doesn't exist
+    os.makedirs(stm32ai_output, exist_ok=True)
+
+    print("[INFO] : Starting the model memory footprints estimation...")
 
     try:
-        if not os.path.exists(stm32ai_output):
-            os.system("mkdir {}".format(stm32ai_output))
-
+        # Set environment variables for STM32Cube.AI
         new_env = os.environ.copy()
-        new_env.update({'STATS_TYPE': '_'.join(['stmai_modelzoo', get_model_name(cfg)])})
+        new_env.update({'STATS_TYPE': '_'.join(['stmai_modelzoo', get_model_name_output])})
 
-        # Check if cubeAI local version is compatible with yaml version
-        command = "{} --version".format(cfg.stm32ai.path_to_stm32ai)
+        # Check STM32Cube.AI version compatibility
+        command = f"{path_to_stm32ai} --version"
         args = shlex.split(command, posix="win" not in sys.platform)
         line = Popen(args, env=new_env, stdout=subprocess.PIPE).communicate()[0].decode("utf-8")
         version_line = line.split('v')[-1].split('-')[0]
-        if not version_line.endswith(str(cfg.stm32ai.version)):
-            print(f"[WARN] : STM32Cube.AI installed version {version_line} does not match the version specified in user_config.yaml file {cfg.stm32ai.version} !")
+        if not version_line.endswith(stm32ai_version):
+            print(
+                f"[WARN] : STM32Cube.AI installed version {version_line} does not match the version specified in user_config.yaml file {stm32ai_version} !")
         print(f"[INFO] : STM32Cube.AI version {version_line} used.")
 
         # Run generate command locally
-        command = "{} generate -m {} -v 0 --allocate-inputs --allocate-outputs --output {} --workspace {} --optimization {}".format(
-            cfg.stm32ai.path_to_stm32ai, model_path, stm32ai_output, stm32ai_output, cfg.stm32ai.optimization)
+        command = f"{path_to_stm32ai} generate -m {model_path} -v 0 --allocate-inputs --allocate-outputs --output {stm32ai_output} --workspace {stm32ai_output} --optimization {optimization}"
         args = shlex.split(command, posix="win" not in sys.platform)
-        stm32ai_subprocess = Popen(args, env=new_env)
-        stm32ai_subprocess.wait()
+        subprocess.run(args, env=new_env, check=True)
 
-        # Print footprints
-        analyze_footprints()
+    except subprocess.CalledProcessError as e:
+        raise TypeError(
+            f"Received: stm32ai.path_to_stm32ai={path_to_stm32ai}. Please specify a correct path to STM32Cube.AI!") from e
 
-    except Exception:
-        raise TypeError(f"Received: stm32ai.path_to_stm32ai= {cfg.stm32ai.path_to_stm32ai}. Please specify a correct path to stm32ai!")
+    return stm32ai_output
 
 
-def get_credentials():
+def get_credentials() -> tuple:
+    """
+    Get user credentials.
 
-    """ Get user credentials. """
+    Returns:
+        tuple: Username and password.
+    """
+
+    # Check if credentials are set as environment variables
     if ("stmai_username" and "stmai_password") in os.environ:
         username = os.environ.get('stmai_username')
         password = os.environ.get('stmai_password')
+    # If running in a terminal, prompt the user for credentials
     elif sys.stdin.isatty():
         username = input("Username: ")
         password = getpass.getpass("Password: ")
+    # If running in a non-interactive environment, read credentials from stdin
     else:
         username = sys.stdin.readline().rstrip()
         password = sys.stdin.readline().rstrip()
+
     return username, password
 
 
-def Cloud_analyze(cfg, quantized_model_path):
+def cloud_connect(stm32ai_version: str = None, credentials: list[str] = None) -> Union[bool, Stm32Ai, list[str]]:
+    """
+    Connect to your STM32Cube.AI Developer Cloud account.
 
-    """ Use STM32Cube.AI STM32Cube.AI Developer Cloud Services to analyze model footprints """
+    Args:
+        stm32ai_version (str): Version of the STM32Cube.AI backend to use.
+        credentials list[str]: User credentials used before to connect.
+    Returns:
+        ai (class): Stm32Ai Class to establish connection with STM32Cube.AI Developer Cloud Services.
+        login_success (bool): Flag to validate if login was done successfully.
+        credentials list[str]: User credentials used before to connect.
+    """
 
-    print("[INFO] : To create an account https://stm32ai-cs.st.com/home. Enter credentials:")
-    login_success = 0
-    username, password = get_credentials()
+    print(
+        "[INFO] : Establishing a connection to STM32Cube.AI Developer Cloud to launch the model benchmark on STM32 target...")
+    if credentials:
+        username, password = credentials
+    else:
+        print("[INFO] : To create an account, go to https://stm32ai-cs.st.com/home. Enter your credentials:")
+        username, password = get_credentials()
+        credentials = username, password
+
+    login_success = False
+    ai = None
+    # Try to create the STM32Cube.AI instance up to 3 times
     for attempt in range(3):
         try:
-            ai = Stm32Ai(CloudBackend(str(username), str(password), version=str(cfg.stm32ai.version)))
-            login_success = 1
+            backend = CloudBackend(username, password, version=stm32ai_version)
+            ai = Stm32Ai(backend)
+            login_success = True
             break
         except Exception as e:
-            login_success = 0
             if type(e).__name__ == "LoginFailureException":
                 if attempt < 2:
-                    print("[ERROR] : Try logging again...")
+                    print("[ERROR]: Login failed. Please try again.")
                     username, password = get_credentials()
-
                 else:
-                    raise Exception(e)
+                    print("[ERROR]: Failed to create STM32Cube.AI instance.")
+
     if login_success:
-        optimization = str(cfg.stm32ai.optimization.lower())
-        print("[INFO] : Successfully connected, starting to analyze the model footprints ...")
-
-        # Benchmarking model using local file
-        ai.upload_model(quantized_model_path)
-        model_name = os.path.basename(quantized_model_path)
-        res = ai.analyze(CliParameters(model=model_name, optimization=optimization, fromModel=get_model_name(cfg)))
-        res_dict = dict((name, getattr(res, name)) for name in dir(res) if not name.startswith('__'))
-        analyze_footprints(offline=False, results=res_dict)
-
-        ai.delete_model(model_name)
-
-        return [username, password]
+        print("[INFO] : Successfully connected!")
     else:
-        return 0
+        print("[WARN] : Login failed!")
+    return login_success, ai, credentials
 
 
-def Cloud_benchmark(cfg, quantized_model_path, credentials, c_code=False):
+def cloud_analyze(ai: Stm32Ai = None, model_path: str = None, optimization: str = None,
+                  get_model_name_output: str = None) -> dict:
+    """
+    Use STM32Cube.AI Developer Cloud Services to analyze model footprints.
 
-    """ Use STM32Cube.AI Developer Cloud Services to benchmark the model on a board and generate C code. """
+    Args:
+        ai (class): Stm32Ai Class to establish connection with STM32Cube.AI Developer Cloud Services.
+        model_path (str): Path to the quantized model file.
+        optimization (str): Optimization level to use.
+        get_model_name_output (str): Model name output.
+    Returns:
+        Dictionary of analyze results.
+    """
 
-    stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "stm32ai_files")
-    username, password = credentials
-    try:
-        ai = Stm32Ai(CloudBackend(str(username), str(password), version=str(cfg.stm32ai.version)))
-        login_success = 1
-    except Exception as e:
-        login_success = 0
-        if type(e).__name__ == "LoginFailureException":
-            raise Exception(e)
+    # Benchmark model using local file
+    print("[INFO] : Starting the model memory footprints estimation...")
+    optimization = optimization.lower()
+    ai.upload_model(model_path)
+    model_name = os.path.basename(model_path)
+    res = ai.analyze(CliParameters(model=model_name, optimization=optimization, fromModel=get_model_name_output))
 
-    if login_success:
-        cloud_results = {}
+    # Store the analyzee results in a dictionary
+    res_dict = {name: getattr(res, name) for name in dir(res) if not name.startswith("__")}
 
-        # Benchmarking the model on board
-        board_name = str(cfg.stm32ai.footprints_on_target)
-        optimization = str(cfg.stm32ai.optimization.lower())
-        boards = ai.get_benchmark_boards()
-        board_names = [boards[i].name for i in range(len(boards))]
+    return res_dict
 
-        # Upload model to STM32Cube.AI Developer Cloud Services
-        ai.upload_model(quantized_model_path)
-        model_name = os.path.basename(quantized_model_path)
 
-        print("[INFO] : Successfully connected, starting the model validation on target ...")
-        if len(board_names) != 0:
-            if board_name in board_names:
-                print("[INFO] : Starting the benchmark on target {}, other available boards  {}".format(board_name, board_names))
-                # Benchmarking model using local file
-                res_benchmark = ai.benchmark(CliParameters(model=model_name, optimization=optimization, fromModel=get_model_name(cfg)), board_name)
-                cloud_results["duration_ms"] = res_benchmark.duration_ms
-                cloud_results["cycles"] = res_benchmark.cycles
+def cloud_benchmark(ai: Stm32Ai = None, model_path: str = None, board_name: str = None, optimization: str = None,
+                    get_model_name_output: str = None) -> dict:
+    """
+    Use STM32Cube.AI Developer Cloud Services to benchmark the model on a board and generate C code.
 
-            else:
-                raise BenchmarkServerError("Board {} not listed. Please select one of the available boards {}".format(board_name, board_names))
-        else:
-            raise BenchmarkServerError("No board detected remotely, can't start benchmark")
+    :param ai: Stm32Ai Class to establish connection with STM32Cube.AI Developer Cloud Services.
+    :param model_path: Path to the quantized model file
+    :param board_name: Name of the board to benchmark the model on
+    :param optimization: Type of optimization to apply to the model
+    :param get_model_name_output: Path to the output directory for the generated model name
+    :return: Dictionary of benchmark results.
+    """
+    # Set up the STM32Cube.AI API client
 
-        # Get Libray/ code memory size
-        try:
-            res_validate = ai.validate(CliParameters(model=model_name, relocatable=True, fromModel=get_model_name(cfg)))
-            cloud_results["ram_size"] = res_validate.ram_size
-            cloud_results["estimated_library_ram_size"] = res_validate.estimated_library_ram_size
-            cloud_results["rom_size"] = res_validate.rom_size
-            cloud_results["estimated_library_flash_size"] = res_validate.estimated_library_flash_size
-            cloud_results["macc"] = res_validate.macc
-            cloud_results["report"] = res_validate.report
+    cloud_results = {}
+    # Upload the model to STM32Cube.AI Developer Cloud Services
+    ai.upload_model(model_path)
+    model_name = os.path.basename(model_path)
+    # Benchmark the model on the specified board
+    boards = ai.get_benchmark_boards()
+    board_names = [boards[i].name for i in range(len(boards))]
+    if board_name not in board_names:
+        raise ValueError(f"Board {board_name} not listed. Please select one of the available boards {board_names}")
 
-            analyze_footprints(offline=False, results=cloud_results, inference_res=True)
+    print(f"[INFO] : Starting the model benchmark on target {board_name}, other available boards {board_names}...")
+    res_benchmark = ai.benchmark(
+        CliParameters(model=model_name, optimization=optimization, fromModel=get_model_name_output),
+        board_name=board_name)
 
-        except Exception as e:
-            raise Exception(e)
+    # Store the benchmark results in a dictionary
+    res_dict = {name: getattr(res_benchmark, name) for name in dir(res_benchmark) if not name.startswith("__")}
 
-        if c_code:
-            # Generate model using local file
+    return res_dict
+
+
+def stm32ai_benchmark(footprints_on_target: str = False, optimization: str = None,
+                      stm32ai_version: str = None, model_path: str = None,
+                      stm32ai_output: str = None, path_to_stm32ai: str = None,
+                      get_model_name_output: str = None, on_cloud: bool = False,
+                      credentials: list[str] = None) -> None:
+    """
+    Benchmarks a model on Cloud or locally.
+
+    Args:
+    - footprints_on_target (str): Flag indicating the name of the board.
+    - optimization (str): Optimization level to use.
+    - stm32ai_version (str): Version of STM32Cube.AI to use.
+    - model_path (str): Path to the model file.
+    - stm32ai_output (str): Path to the output directory for the generated C code.
+    - get_model_name_output (str): Path to the output directory for the generated model name.
+    -  on_cloud(bool):Flag indicating whether to benchmark on cloud or not.
+    - credentials list[str]: User credentials used before to connect.
+    Returns:
+    - None
+    """
+
+    # Initialise variables
+    cloud_res = None
+    offline = True
+    inference_res = False
+
+    # If on cloud is True, benchmark the model on Cloud
+    if on_cloud:
+
+        # Connect to STM32Cube.AI Developer Cloud
+        login_success, ai, _ = cloud_connect(stm32ai_version=stm32ai_version, credentials=credentials)
+
+        # Start benchmark on the board
+        board_name = str(footprints_on_target)
+        if login_success:
             try:
-                print("[INFO] : Generating the model C code and retrieving STM32Cube.AI Lib from STM32Cube.AI Developer Cloud Services...")
+                # Benchmark the model inference time
+                cloud_res = cloud_benchmark(ai=ai, model_path=model_path, board_name=board_name,
+                                                optimization=optimization,
+                                                get_model_name_output=get_model_name_output)
 
-                ai.generate(CliParameters(model=quantized_model_path, output=stm32ai_output, fromModel=get_model_name(cfg),
-                                          includeLibraryForSerie=CliLibrarySerie(cfg.stm32ai.serie.upper()),
-                                          includeLibraryForIde=CliLibraryIde(cfg.stm32ai.IDE.lower())))
-
+                inference_res = True
+                offline = False
             except Exception as e:
-                raise Exception(e)
+                print(f"[FAIL] : Cloud Benchmark failed : {e}. Trying Cloud Analyze to get model memory footprints!")
 
-        ai.delete_model(model_name)
-    else:
-        return 0
-
-
-def stm32ai_benchmark(cfg, model_path, c_code):
-
-    """
-    To benchmark model on Cloud or locally
-    """
-
-    if cfg.stm32ai.footprints_on_target:
-        try:
-            print("[INFO] : To create an account https://stm32ai-cs.st.com/home. Enter credentials:")
-            credentials = get_credentials()
-            output_benchmark = Cloud_benchmark(cfg, model_path, credentials, c_code)
-            if output_benchmark == 0:
-                raise Exception("Connection failed, using local STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
-
-        except Exception as e:
-            print("[FAIL] :", e)
-            if type(e).__name__ == "BenchmarkFailure":
                 try:
-                    print("[INFO] : Cloud model analyze launched...")
-                    # Benchmarking model using local file
-                    optimization = str(cfg.stm32ai.optimization.lower())
-                    ai = Stm32Ai(CloudBackend(str(credentials[0]), str(credentials[1]), version=str(cfg.stm32ai.version)))
-                    res = ai.analyze(CliParameters(model=model_path, optimization=optimization, fromModel=get_model_name(cfg)))
-                    res_dict = dict((name, getattr(res, name)) for name in dir(res) if not name.startswith('__'))
-                    analyze_footprints(offline=False, results=res_dict)
-
-                    if c_code:
-                        # Generate model using local file
-                        try:
-                            print("[INFO] : Generating the model C code and retrieving STM32Cube.AI Lib from STM32Cube.AI Developer Cloud Services...")
-                            stm32ai_output = os.path.join(HydraConfig.get().runtime.output_dir, "stm32ai_files")
-                            ai.generate(CliParameters(model=model_path, output=stm32ai_output, fromModel=get_model_name(cfg),
-                                                      includeLibraryForSerie=CliLibrarySerie(cfg.stm32ai.serie.upper()),
-                                                      includeLibraryForIde=CliLibraryIde(cfg.stm32ai.IDE.lower())))
-
-                        except Exception as e:
-                            raise Exception(e)
+                    # Analyze the model memory footprints
+                    cloud_res = cloud_analyze(ai=ai, model_path=model_path, optimization=optimization,
+                                            get_model_name_output=get_model_name_output)
+                    offline = False
 
                 except Exception as e:
-                    print("[FAIL] :", e)
-                    print("[INFO] : Offline benchmark {} launched...".format(("and c code generation" if c_code else "")))
-                    benchmark_model(cfg, model_path)
-            else:
-                print("[INFO] : Offline benchmark {} launched...".format(("and c code generation" if c_code else "")))
-                benchmark_model(cfg, model_path)
+                    print("[FAIL] : Cloud Analyze failed :", e)
+                    print(
+                        "[INFO] : Using the local download of STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+                    benchmark_model(
+                        optimization=optimization, model_path=model_path, path_to_stm32ai=path_to_stm32ai,
+                        stm32ai_output=stm32ai_output, stm32ai_version=stm32ai_version,
+                        get_model_name_output=get_model_name_output)
+
+        else:
+            print(
+                "[INFO] : Using the local download of STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+            benchmark_model(
+                optimization=optimization, model_path=model_path, path_to_stm32ai=path_to_stm32ai,
+                stm32ai_output=stm32ai_output, stm32ai_version=stm32ai_version,
+                get_model_name_output=get_model_name_output)
     else:
-        benchmark_model(cfg, model_path)
+        print(
+            "[INFO] : Using the local download of STM32Cube.AI. Link to download https://www.st.com/en/embedded-software/x-cube-ai.html")
+        benchmark_model(
+            optimization=optimization, model_path=model_path, path_to_stm32ai=path_to_stm32ai,
+            stm32ai_output=stm32ai_output, stm32ai_version=stm32ai_version,
+            get_model_name_output=get_model_name_output)
+
+    # Print footprints
+    analyze_footprints(offline=offline, results=cloud_res, stm32ai_output=stm32ai_output, inference_res=inference_res)

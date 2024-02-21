@@ -1,0 +1,138 @@
+general:
+  project_name: tf_flowers
+#  model_path: 
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: True
+  global_seed: 127
+  gpu_memory_limit: 10
+
+operation_mode: training
+#choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
+#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+
+dataset:
+  name: flowers
+  class_names: [daisy, dandelion, roses, sunflowers, tulips]  # Mandatory for deployment, optional otherwise (class names will be 
+                                                              # inferred automatically from the dataset).
+  training_path: ../datasets/flower_photos  # Mandatory
+  validation_path:        # Optional
+  validation_split: 0.2   # Optional, default value is 0.2
+  test_path:              # Optional
+  quantization_path:      # Optional
+  quantization_split:     # Optional
+  check_image_files: False  # Optional, set it to True if you want to check that all the image files can be read successfully
+  seed: 127               # Optional, there is a default seed
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+data_augmentation:    # Optional section
+  random_contrast:
+    factor: 0.2
+  random_brightness:
+    factor: 0.2
+  random_flip:
+    mode: horizontal_and_vertical
+  random_translation:
+    width_factor: 0.1
+    height_factor: 0.2
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.2
+    fill_mode: reflect
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.3
+    height_factor: 0.3
+    fill_mode: reflect
+    interpolation: nearest
+#  random_shear:
+#    factor: 0.0515
+#    fill_mode: wrap
+#    interpolation: nearest
+#  random_gaussian_noise:
+#    stddev: (0.0001, 0.005)
+
+training:
+  model:    # Use it if you want to use a model from the zoo, mutually exclusive with 'general.model_path'
+    name: squeezenet
+    version: v11
+#    alpha: 0.5
+    input_shape: (128, 128, 3)
+#    pretrained_weights: imagenet   # Optional, use it if you want to use the 'imagenet' pretrained weights, available only for MobileNet models
+    pretrained_model_path:         # Optional, available for transfer learning with all models, mutually exclusive with pretrained_weights
+  resume_training_from: # Optional, use to resume a training from a previous experiment.
+                        # Example: experiments_outputs/2023_10_26_18_36_09/saved_models/last_augmented_model.h5 
+#  frozen_layers: (0:-1)            # Optional, use if you want to freeze some layers (by default all layers are trainable)
+  dropout: 0.5                     # Optional, use it if you want a dropout layer to be included in the model
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.001
+  callbacks:          # Optional section
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      mode: max
+      factor: 0.5
+      patience: 40
+      min_lr: 1.0e-05
+    # LRWarmupCosineDecay:
+    #   initial_lr: 0.0001
+    #   warmup_steps: 100
+    #   max_lr: 0.005
+    #   hold_steps: 100
+    #   decay_steps: 800
+    #   end_lr: 5.0e-05
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: true
+      patience: 60
+#  trained_model_path: trained.h5   # Optional, use it if you want to save the best model at the end of the training to a path of your choice
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+# The prediction section is optional unless you set operation_mode to "prediction".
+# If you do so, the attribute test_images_path is mandatory.
+prediction:
+  test_images_path: ../datasets/flower_photos/daisy
+
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: True
+    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+  board: STM32H747I-DISCO
+
+deployment:
+  c_project_path: ../../stm32ai_application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: CAMERA_INTERFACE_DCMI
+    output: DISPLAY_INTERFACE_USB
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

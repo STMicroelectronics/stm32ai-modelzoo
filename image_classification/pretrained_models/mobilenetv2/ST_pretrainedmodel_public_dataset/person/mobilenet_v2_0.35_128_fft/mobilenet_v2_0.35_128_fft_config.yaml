@@ -1,0 +1,109 @@
+general:
+  project_name: tf_person_presence_detection
+  model_path: ../pretrained_models/mobilenetv2/ST_pretrainedmodel_public_dataset/person/mobilenet_v2_0.35_128_tl/mobilenet_v2_0.35_128_tl.h5
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: true
+  global_seed: 127
+  gpu_memory_limit: 36
+operation_mode: chain_tbqeb
+dataset:
+  name: person-presence-detection
+  class_names:
+  - person
+  - not-person
+  training_path: ../datasets/Person_detection_datasets
+  validation_path: null
+  validation_split: 0.2
+  test_path: null
+  quantization_path: null
+  quantization_split: null
+  check_image_files: false
+  seed: 127
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+data_augmentation:
+  random_hue:
+    delta: 0.04
+    change_rate: 1.0
+  random_contrast:
+    factor: 0.6
+    change_rate: 1.0
+  random_brightness:
+    factor: 0.05
+    change_rate: 1.0
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.125
+    fill_mode: reflect
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_shear:
+    factor: 0.015
+    fill_mode: wrap
+    interpolation: nearest
+training:
+  dropout: 0.3
+  batch_size: 64
+  epochs: 800
+  optimizer:
+    Adam:
+      learning_rate: 0.001
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      mode: max
+      factor: 0.5
+      patience: 30
+      min_lr: 1.0e-05
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: true
+      patience: 50
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+prediction: null
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: true
+    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+benchmarking:
+  board: STM32H747I-DISCO
+deployment:
+  c_project_path: ../../stm32ai_application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: CAMERA_INTERFACE_DCMI
+    output: DISPLAY_INTERFACE_USB
+mlflow:
+  uri: ./experiments_outputs/mlruns
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

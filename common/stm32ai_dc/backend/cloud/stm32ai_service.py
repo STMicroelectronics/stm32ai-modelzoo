@@ -61,7 +61,7 @@ class Stm32AiService:
     def _make_trigger_request(self, route: str, options: CliParameters):
         if type(options) != CliParameters:
             raise WrongTypeError(options, CliParameters)
-
+        files = {}
         def _build_arguments_dict(options: CliParameters):
             data = {}
             for field in options._fields:
@@ -71,6 +71,8 @@ class Stm32AiService:
                 # if isinstance(current_value, bool):
                 #     if current_value:
                 #         data[field] = ''
+                if field == 'target_info':
+                    files.update({'target.info': open(file=options.target_info, mode='rb')})
                 if isinstance(current_value, CliParameterCompression):
                     data[field] = current_value.value
                 elif isinstance(current_value, CliParameterType):
@@ -87,14 +89,9 @@ class Stm32AiService:
         data['statsType'] = os.environ.get('STATS_TYPE', None)
 
         if os.path.exists(model_file_path):
-            cloud_models = self._get_cloud_models()
-            uploaded = False
-            if os.path.basename(model_file_path) not in cloud_models:
-                uploaded = self.file_service.upload_model(modelPath=model_file_path)
-            else:
-                uploaded = True
+            uploaded = self.file_service.upload_model(modelPath=model_file_path)
             if uploaded:
-                data['model'] = os.path.basename(model_file_path)
+                data['model'] = os.path.basename(model_file_path)         
 
         cloud_models = self._get_cloud_models()
         if data['model'] not in cloud_models:
@@ -107,6 +104,7 @@ class Stm32AiService:
             route,
             data={"args": json.dumps(data)},
             headers=headers, verify=get_ssl_verify_status(),
+            files=files,
             proxies=_get_env_proxy())
 
         if resp.status_code == 200:

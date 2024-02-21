@@ -60,6 +60,7 @@ class CProjectDescReader:
 
         # update the ${xxx} tags
         env = self._dict.get('env', dict())
+        memory_pool = self._dict.get('memory_pool', dict())
 
         for item in env.items():
             if not isinstance(item[1], str):
@@ -82,6 +83,10 @@ class CProjectDescReader:
             env['cwd'] = env['ProjectFolder']
 
         self._dict['env'] = env
+
+        # update the 'memory_pool_path' value
+        if memory_pool:
+            memory_pool["memory_pool_path"] = memory_pool["memory_pool_path"].replace("${ProjectFolder}", env['ProjectFolder'])
 
         # update first the 'env' values
         for item in env.items():
@@ -120,6 +125,12 @@ class CProjectDescReader:
             conf['use_makefile'] = to_bool(env, 'use_makefile')
             conf['no_templates'] = to_bool(conf, 'no_templates')
             conf['linked_conf'] = conf.get('linked_conf', '')
+            if memory_pool:
+                conf['internalFlash_size'] = conf.get('internalFlash_size', memory_pool['internalFlash_size'])
+                conf['externalFlash_size'] = conf.get('externalFlash_size', memory_pool['externalFlash_size'])
+                conf['application_size'] = conf.get('application_size', memory_pool['application_size'])
+                conf['lib_size'] = conf.get('lib_size', memory_pool['lib_size'])
+                conf['memory_pool_path'] = conf.get('memory_pool_path', memory_pool['memory_pool_path'])
 
             tpls = conf.get('templates', None)
             if isinstance(tpls, str):

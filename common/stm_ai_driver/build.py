@@ -300,7 +300,12 @@ def _programm_dev_board(config, serial_number=None):
                 return
         port = re.search('port=swd', str_args, re.IGNORECASE)
         if port and serial_number:
-            str_args = str_args[:port.start()] + f'port=swd sn={str(serial_number)} ' + str_args[port.end() + 1:]
+            if hasattr(config, 'external_loader'):
+                path_external_loader = os.path.join(os.path.dirname(shutil.which(STM32Tools().CUBE_PROGRAMMER)), "ExternalLoader/", config.external_loader)
+                str_args = str_args[:port.start()] + f'port=swd sn={str(serial_number)} ' + str_args[port.end() + 1:] + " --extload " + path_external_loader
+            else:
+                str_args = str_args[:port.start()] + f'port=swd sn={str(serial_number)} ' + str_args[port.end() + 1:]
+
     # logger.debug(' {}'.format(str_args))
     run_shell_cmd(str_args,
                   cwd=config.cwd,

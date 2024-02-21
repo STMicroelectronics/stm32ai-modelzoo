@@ -1,0 +1,210 @@
+general:
+  project_name: food-101
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: true
+  global_seed: 127
+  gpu_memory_limit: 24
+operation_mode: chain_tbqeb
+dataset:
+  name: food-101
+  class_names:
+  - apple_pie
+  - baby_back_ribs
+  - baklava
+  - beef_carpaccio
+  - beef_tartare
+  - beet_salad
+  - beignets
+  - bibimbap
+  - bread_pudding
+  - breakfast_burrito
+  - bruschetta
+  - caesar_salad
+  - cannoli
+  - caprese_salad
+  - carrot_cake
+  - ceviche
+  - cheesecake
+  - cheese_plate
+  - chicken_curry
+  - chicken_quesadilla
+  - chicken_wings
+  - chocolate_cake
+  - chocolate_mousse
+  - churros
+  - clam_chowder
+  - club_sandwich
+  - crab_cakes
+  - creme_brulee
+  - croque_madame
+  - cup_cakes
+  - deviled_eggs
+  - donuts
+  - dumplings
+  - edamame
+  - eggs_benedict
+  - escargots
+  - falafel
+  - filet_mignon
+  - fish_and_chips
+  - foie_gras
+  - french_fries
+  - french_onion_soup
+  - french_toast
+  - fried_calamari
+  - fried_rice
+  - frozen_yogurt
+  - garlic_bread
+  - gnocchi
+  - greek_salad
+  - grilled_cheese_sandwich
+  - grilled_salmon
+  - guacamole
+  - gyoza
+  - hamburger
+  - hot_and_sour_soup
+  - hot_dog
+  - huevos_rancheros
+  - hummus
+  - ice_cream
+  - lasagna
+  - lobster_bisque
+  - lobster_roll_sandwich
+  - macaroni_and_cheese
+  - macarons
+  - miso_soup
+  - mussels
+  - nachos
+  - omelette
+  - onion_rings
+  - oysters
+  - pad_thai
+  - paella
+  - pancakes
+  - panna_cotta
+  - peking_duck
+  - pho
+  - pizza
+  - pork_chop
+  - poutine
+  - prime_rib
+  - pulled_pork_sandwich
+  - ramen
+  - ravioli
+  - red_velvet_cake
+  - risotto
+  - samosa
+  - sashimi
+  - scallops
+  - seaweed_salad
+  - shrimp_and_grits
+  - spaghetti_bolognese
+  - spaghetti_carbonara
+  - spring_rolls
+  - steak
+  - strawberry_shortcake
+  - sushi
+  - tacos
+  - takoyaki
+  - tiramisu
+  - tuna_tartare
+  - waffles
+  training_path: ../datasets/food-101/images
+  validation_path: null
+  validation_split: 0.2
+  test_path: null
+  quantization_path: null
+  quantization_split: null
+  check_image_files: false
+  seed: 127
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+data_augmentation:
+  random_contrast:
+    factor: 0.6
+  random_brightness:
+    factor: 0.05
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.125
+    fill_mode: reflect
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_shear:
+    factor: 0.15
+    fill_mode: wrap
+    interpolation: nearest
+training:
+  model:
+    name: mobilenet
+    version: v1
+    alpha: 0.25
+    input_shape: (224, 224, 3)
+    pretrained_weights: None
+    pretrained_model_path: null
+  resume_training_from: null
+  dropout: 0.5
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.01
+  callbacks:
+    LRWarmupCosineDecay:
+      initial_lr: 0.0001
+      warmup_steps: 100
+      max_lr: 0.005
+      hold_steps: 100
+      decay_steps: 700
+      end_lr: 5.0e-05
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: true
+      patience: 100
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: true
+    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+benchmarking:
+  board: STM32H747I-DISCO
+deployment:
+  c_project_path: ../../stm32ai_application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: CAMERA_INTERFACE_DCMI
+    output: DISPLAY_INTERFACE_USB
+mlflow:
+  uri: ./experiments_outputs/mlruns
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

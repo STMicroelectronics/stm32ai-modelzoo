@@ -1,0 +1,39 @@
+general:
+  model_path: ../pretrained_models/tiny_yolo_v2/ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_224/tiny_yolo_v2_224.h5
+  model_type: tiny_yolo_v2
+operation_mode: quantization
+
+dataset:
+  name: COCO_2017_person
+  class_names: [ person ]
+  test_path:
+  quantization_path: ../datasets/COCO_2017_person/
+  quantization_split: 0.4
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+postprocessing:
+  confidence_thresh: 0.6
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.3
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 10
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

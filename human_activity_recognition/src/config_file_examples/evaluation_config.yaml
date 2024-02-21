@@ -1,0 +1,27 @@
+general:
+  model_path: ../pretrained_models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5     # Path to the model file to deploy
+  gpu_memory_limit: 24
+operation_mode: evaluation
+
+dataset:
+  name: wisdm
+  class_names: [Jogging,Stationary,Stairs,Walking]
+  training_path: ../datasets/WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt
+  # validation_split: 0.2
+  # test_data:
+  # test_split: 0.25
+
+training:
+  model:
+    name: ign # optional
+    input_shape: (24, 3, 1) # mandatory
+
+preprocessing: # mandatory
+  gravity_rot_sup: true  # mandatory
+  normalization: false # mandatory
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

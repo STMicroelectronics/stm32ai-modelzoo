@@ -1,0 +1,21 @@
+general:
+  model_path: ../pretrained_models/CNN2D_ST_HandPosture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/CNN2D_ST_HandPosture_8classes/CNN2D_ST_HandPosture_8classes.h5     # Path to the model file to deploy
+
+operation_mode: evaluation
+
+dataset:
+  name: ST_handposture_dataset
+  class_names: [None, Like, Dislike, FlatHand, Fist, Love, BreakTime, CrossHands]
+  test_path: ../datasets/ST_VL53L8CX_handposture_dataset
+
+preprocessing:
+  Max_distance: 400
+  Min_distance: 100
+  Background_distance:  120
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -1,0 +1,115 @@
+general:
+  project_name: tf_flowers
+  model_path: ../pretrained_models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_tl/mobilenet_v2_0.35_128_tl.h5
+  logs_dir: logs
+  saved_models_dir: saved_models
+  global_seed: 127
+  gpu_memory_limit: 5
+
+operation_mode: chain_tbqeb
+
+dataset:
+  name: flowers
+  class_names:
+  - daisy
+  - dandelion
+  - roses
+  - sunflowers
+  - tulips
+  training_path: ../datasets/flower_photos
+  validation_path: null
+  validation_split: 0.2
+  test_path: null
+  quantization_path: null
+  quantization_split: null
+  seed: 127
+
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+data_augmentation:
+  random_flip:
+    mode: horizontal_and_vertical
+  random_translation:
+    width_factor: 0.2
+    height_factor: 0.2
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.125
+    fill_mode: reflect
+    interpolation: nearest
+  random_contrast:
+    factor: 0.2
+  random_brightness:
+    factor: 0.2
+  random_zoom:
+    width_factor: 0.2
+    height_factor: 0.2
+    fill_mode: nearest
+    interpolation: nearest
+  random_shear:
+    factor: 0.1
+    fill_mode: wrap
+    interpolation: nearest
+
+training:
+  frozen_layers: None
+  dropout: 0.5
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.0001
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      patience: 30
+      factor: 0.1
+    EarlyStopping:
+      monitor: val_accuracy
+      patience: 60
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+prediction:
+  test_images_path:
+
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: True
+    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+  board: STM32H747I-DISCO
+
+deployment:
+  c_project_path: ../../stm32ai_application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: SPI_CAMERA
+    output: USB_DISPLAY
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -1,0 +1,24 @@
+{
+    "memory": {
+        "mempools": [
+            {
+                   "name": "DTCMRAM",
+                   "prop": { "throughput": "HIGH", "latency": "LOW" },
+                    "size":   { "value": "100", "magnitude": "KBYTES" },
+                    "offset":   { "value": "0", "magnitude": "BYTES" }
+            },
+            {
+                   "name": "AXIRAM",
+                   "prop": { "throughput": "HIGH", "latency": "LOW" },
+                    "size":   { "value": "512", "magnitude": "KBYTES" },
+                    "offset":   { "value": "0", "magnitude": "BYTES" }
+            },
+            {
+                   "name": "SDRAM",
+                   "prop": { "throughput": "MID", "latency": "MID" },
+                    "size":   { "value": "0", "magnitude": "KBYTES" },
+                    "offset":   { "value": "0", "magnitude": "BYTES" }
+            }
+        ]
+    }
+}

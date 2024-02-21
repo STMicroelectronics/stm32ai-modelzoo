@@ -1,7 +1,9 @@
-# Human activity recognition STM32 model zoo
+# Human Activity Recognition STM32 Model Zoo
 
 
-## Directory Components:
-* [getting_started](./getting_started/README.md) contains the C project and all the required files to run and demonstrate the usage of an human activity recognition (HAR) model on STM32 board.
-* [models](./models/README.md) a collection of optimized pretrained models for human activity recognition.
-* [scripts](./scripts/README.md) contains tools to prepare dataset, and train, evaluate and deploy your model on your STM32 target.
+## Directory components:
+
+* [datasets](datasets/README.md) placeholder for the human activity recognition datasets.
+* [deployment](deployment/README.md) contains the necessary files for the deployment service.
+* [pretrained_models](pretrained_models/README.md) a collection of optimized pretrained models on different human activity datasets.
+* [src](src/README.md) contains tools to train, evaluate, benchmark and quantize your model on your STM32 target.

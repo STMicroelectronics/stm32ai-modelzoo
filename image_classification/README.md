@@ -3,7 +3,7 @@
 
 ## Directory components:
 
-* [getting_started](getting_started/README.md) contains an application template for image classification.
-The user must first run the [deploy.py](scripts/deployment/deploy.py) script before running it. See deployment [README.md](scripts/deployment/README.md)
-* [models](models/README.md) a collection of optimized pretrained models for different image classification use-cases.
-* [scripts](scripts/README.md) contains tools to train, evaluate and deploy your model on your STM32 target.
+* [datasets](datasets/README.md) placeholder for the image classification datasets.
+* [deployment](deployment/README.md) contains the necessary files for the deployment service.
+* [pretrained_models](pretrained_models/README.md) a collection of optimized pretrained models on different image classification datasets.
+* [src](src/README.md) contains tools to train, evaluate, benchmark and quantize your model on your STM32 target.

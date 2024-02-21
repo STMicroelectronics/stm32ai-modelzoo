@@ -21,3 +21,4 @@ joblib==1.2.0
 librosa==0.10.0.post2
 mako==1.2.4
 pyserial==3.5
+colorama==0.4.5

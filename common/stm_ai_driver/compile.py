@@ -180,6 +180,10 @@ def cmd_compile(
         session.options.quiet = True
 
     cmd_line.extend([session.options.to_cli_args(str(session.tools))])
+    if target:
+        if hasattr(target.config, 'memory_pool_path'):
+            if os.path.exists(target.config.memory_pool_path):
+                cmd_line.extend(['--target.info ', target.config.memory_pool_path])
 
     logger.info(' tools       : %s', str(session.tools))
     logger.info(' target      : %s', str(session.board))

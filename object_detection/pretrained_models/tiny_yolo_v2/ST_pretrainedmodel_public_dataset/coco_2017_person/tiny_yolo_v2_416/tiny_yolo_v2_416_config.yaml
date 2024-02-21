@@ -1,0 +1,89 @@
+general:
+  project_name: coco
+  model_type: tiny_yolo_v2
+  model_path: 
+  logs_dir: logs
+  saved_models_dir: saved_models
+  gpu_memory_limit: 16
+  global_seed: 127
+operation_mode: chain_tqe
+dataset:
+  name: coco_person
+  class_names:
+  - person
+  training_path: ../datasets/coco2017_person/train
+  validation_path: ../datasets/coco2017_person/val
+  test_path: ../datasets/coco2017_person/val
+  quantization_path: null
+  quantization_split: null
+preprocessing:
+  rescaling:
+    scale: 1/255
+    offset: 0
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+data_augmentation:
+  rotation: 10
+  shearing: 2
+  translation: 0.1
+  vertical_flip: null
+  horizontal_flip: 1.0
+  gaussian_blur: 3.0
+  linear_contrast:
+  - 0.75
+  - 1.5
+training:
+  model:
+    alpha: 0.25
+    input_shape: (416, 416, 3)
+    pretrained_weights: coco
+  dropout: null
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.01
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_loss
+      patience: 1
+      verbose: 1
+      min_delta: 0.1
+      min_lr: 1.0e-06
+    EarlyStopping:
+      monitor: val_loss
+      patience: 3
+      verbose: 1
+      min_delta: 0.1
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.4
+  plot_metrics: true
+  max_detection_boxes: 100
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+benchmarking:
+  board: STM32H747I-DISCO
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: true
+    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+deployment:
+  c_project_path: ../../stm32ai_application_code/object_detection/
+  IDE: GCC
+  verbosity: 1 n
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+mlflow:
+  uri: ./experiments_outputs/mlruns

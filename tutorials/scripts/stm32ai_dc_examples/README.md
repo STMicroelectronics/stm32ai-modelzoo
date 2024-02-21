@@ -36,7 +36,7 @@ Benchmark script permits to get informations about a given model associated to a
 ## Before you start
 
 - Create, if not already done, an account by connecting to [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) to be able to use the service. 
-- Install all the necessary python packages listed in [requirement file](../requirements.txt)
+- Install all the necessary python packages listed in [requirement file](../../../requirements.txt)   
 ```sh
     pip install -r ./requirements.txt
 ```
@@ -45,4 +45,4 @@ Benchmark script permits to get informations about a given model associated to a
     export STM32AI_USERNAME="dupont@example.com"
     export STM32AI_PASSWORD="password"
 ```
-- When getting started with one example, kindly replace `SET_YOUR_OWN_MODEL_NAME_HERE` by the path of your own model. 
+- When getting started with one example, kindly replace "`mobilenet_v1_0.25_96.h5`" by the path of your own model. 

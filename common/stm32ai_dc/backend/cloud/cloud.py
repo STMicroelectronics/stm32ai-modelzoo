@@ -241,7 +241,9 @@ class CloudBackend(Stm32AiBackend):
         result = self.benchmark_service.wait_for_run(bid, timeout=timeout)
 
         if result:
-            report = result["report"]
+            benchmark = result.get('benchmark', {})
+            memory_mapping = result.get('memoryMapping', {}) if result.get('memoryMapping') is not None else {}
+            report = benchmark['report']
             validate_result_metrics = []
             for valmetrics in report["val_metrics"]:
                 validate_result_metrics.append(
@@ -256,9 +258,18 @@ class CloudBackend(Stm32AiBackend):
                         ts_name=valmetrics["ts_name"],
                     )
                 )
-            graph = result["graph"]
+            graph = benchmark['graph']
             exec_time = graph["exec_time"]
-            memory_footprint = graph.get("memory_footprint", {})
+            c_arrays = {}
+            for arr in graph.get('c_arrays', []):
+                c_arrays[arr['name']] = arr
+            memory_footprint = memory_mapping.get('memoryFootprint', graph.get("memory_footprint", {}))
+            internal_memory_pools = [p for p in graph.get('memory_pools', []) if "EXTERNAL" not in p['name']]
+            external_memory_pools = [p for p in graph.get('memory_pools', []) if "EXTERNAL" in p['name']]
+            layers_in_internal_flash = memory_mapping.get('layersInExternalFlash', [])
+            layers_in_external_flash = memory_mapping.get('layersInInternalFlash', [])
+            internal_flash_usage = functools.reduce(lambda a, b: a+b, map(lambda a: c_arrays.get(a + "_array").get('c_size_in_byte'), layers_in_internal_flash), 0)
+            external_flash_usage = functools.reduce(lambda a, b: a+b, map(lambda a: c_arrays.get(a + "_array").get('c_size_in_byte'), layers_in_external_flash), 0)
             benchmark_result = BenchmarkResult(
                 rom_size=memory_footprint.get("weights", 0),
                 macc=graph.get("macc", 0),
@@ -280,6 +291,18 @@ class CloudBackend(Stm32AiBackend):
                 duration_ms=exec_time.get("duration_ms", -1),
                 device=exec_time.get("device", ""),
                 cycles_by_macc=exec_time.get("cycles_by_macc", -1),
+                estimated_library_flash_size=memory_footprint.get("kernel_flash", 0)
+                    + memory_footprint.get("extra_flash", 0)
+                    + memory_footprint.get("toolchain_flash", 0),
+                estimated_library_ram_size=memory_footprint.get("kernel_ram", 0)
+                    + memory_footprint.get("extra_ram", 0)
+                    + memory_footprint.get("toolchain_ram", 0),
+                use_external_ram=memory_mapping.get("useExternalRam", False),
+                use_external_flash=memory_mapping.get("useExternalFlash", False),
+                internal_ram_consumption=functools.reduce(lambda a, b: a + b.get("used_size", 0), internal_memory_pools, 0),
+                external_ram_consumption=functools.reduce(lambda a, b: a + b.get("used_size", 0), external_memory_pools, 0),
+                internal_flash_consumption=internal_flash_usage,
+                external_flash_consumption=external_flash_usage,
             )
             return benchmark_result
         else:

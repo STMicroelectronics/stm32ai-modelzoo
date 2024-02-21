@@ -125,6 +125,10 @@ class CliParameters(typing.NamedTuple):
 
     prefetchCompressedWeights: Optional[bool] = None
     """ Optional enable the prefetch of the compressed x4,x8 weights (extra space will be reserved in activations buffer) """
+       
+    target_info: Optional[str] = None
+    """ Provides information for memory layout which will be used by the allocator """
+    
     # --------------------------------------------------------------------------------------
     #
     # Generate Arguments only
@@ -316,6 +320,14 @@ class BenchmarkResult(typing.NamedTuple):
     duration_ms: int
     device: str
     cycles_by_macc: int
+    estimated_library_flash_size: int
+    estimated_library_ram_size: int
+    use_external_ram: bool
+    use_external_flash: bool
+    internal_ram_consumption: int
+    external_ram_consumption: int
+    internal_flash_consumption: int
+    external_flash_consumption: int
 
     def __str__(self) -> str:
         data = self._asdict()

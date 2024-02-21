@@ -1,0 +1,33 @@
+general:
+   model_path: ../pretrained_models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft.h5
+
+operation_mode: chain_eqe
+
+dataset:
+  name: flowers
+  class_names: [daisy, dandelion, roses, sunflowers, tulips]
+  test_path: ../datasets/flower_photos  
+  quantization_path: ../datasets/flower_photos
+
+preprocessing:
+   rescaling:
+      scale: 1/127.5
+      offset: -1
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

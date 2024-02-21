@@ -1,0 +1,105 @@
+general:
+  project_name: tf_flowers
+  logs_dir: logs
+  saved_models_dir: saved_models
+  global_seed: 127
+  gpu_memory_limit: 24
+operation_mode: chain_tqe
+dataset:
+  name: flowers
+  class_names:
+  - daisy
+  - dandelion
+  - roses
+  - sunflowers
+  - tulips
+  training_path: ../datasets/flower_photos
+  validation_path: null
+  validation_split: 0.2
+  test_path: null
+  quantization_path: null
+  quantization_split: null
+  seed: 127
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+data_augmentation:
+  random_brightness: 
+    factor: 0.3
+  random_contrast:
+    factor: 0.2
+  random_zoom:
+    width_factor: 0.2
+    height_factor: 0.2
+    fill_mode: nearest
+    interpolation: nearest
+  random_translation:
+    width_factor: 0.4
+    height_factor: 0.3
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_flip:
+    mode: horizontal_and_vertical
+training:
+  model:
+    name: mobilenet
+    version: v1
+    alpha: 0.25
+    input_shape: (128, 128, 3)
+    pretrained_weights: None
+    pretrained_model_path:  None
+  #resume_training_from: None   
+  frozen_layers: None
+  dropout: 0.25
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.01
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      patience: 40
+    EarlyStopping:
+      monitor: val_accuracy
+      patience: 100
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+prediction:
+  test_images_path: null
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: true
+    path_to_stm32ai: C:/Users/XXX/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+benchmarking:
+  board: STM32H747I-DISCO
+deployment:
+  c_project_path: ../../stm32ai_application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: SPI_CAMERA
+    output: USB_DISPLAY
+mlflow:
+  uri: ./experiments_outputs/mlruns
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
