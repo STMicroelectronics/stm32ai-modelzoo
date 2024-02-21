@@ -6,7 +6,6 @@ operation_mode: quantization
 dataset:
   name: flowers
   class_names: [daisy, dandelion, roses, sunflowers, tulips]
-  test_path:
   quantization_path: ../datasets/flower_photos
   quantization_split: 0.4
 

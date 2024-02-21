@@ -6,7 +6,7 @@ operation_mode: chain_eqe
 dataset:
   name: flowers
   class_names: [daisy, dandelion, roses, sunflowers, tulips]
-  test_path: ../datasets/flower_photos  
+  test_path: ../datasets/flower_photos_testset
   quantization_path: ../datasets/flower_photos
 
 preprocessing:

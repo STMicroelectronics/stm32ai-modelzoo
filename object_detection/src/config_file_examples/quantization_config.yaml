@@ -6,8 +6,7 @@ operation_mode: quantization
 dataset:
   name: COCO_2017_person
   class_names: [ person ]
-  test_path:
-  quantization_path: ../datasets/COCO_2017_person/
+  quantization_path: ../datasets/COCO_2017_person/train
   quantization_split: 0.4
 
 preprocessing:

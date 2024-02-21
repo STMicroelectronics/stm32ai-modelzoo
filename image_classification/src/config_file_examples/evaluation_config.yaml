@@ -4,7 +4,7 @@ general:
 operation_mode: evaluation
 
 dataset:
-   test_path: ../datasets/flower_test_set
+   test_path: ../datasets/flower_photos_testset
 
 preprocessing:
    rescaling:

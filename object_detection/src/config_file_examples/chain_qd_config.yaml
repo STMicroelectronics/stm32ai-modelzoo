@@ -5,7 +5,7 @@ operation_mode: chain_qd
 
 dataset:
   class_names: [person]
-  quantization_path: ../datasets/coco_person_2017/
+  quantization_path: ../datasets/coco_person_2017/train
   quantization_split: 0.5
 
 preprocessing:

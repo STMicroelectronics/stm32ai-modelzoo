@@ -5,7 +5,7 @@ operation_mode: evaluation
 
 dataset:
   class_names: [person]
-  test_path: ../datasets/COCO_2017_person/
+  test_path: ../datasets/COCO_2017_person/test
 
 
 preprocessing:

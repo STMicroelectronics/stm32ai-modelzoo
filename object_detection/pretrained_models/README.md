@@ -5,7 +5,7 @@ The STM32 model zoo includes several models for object detection use case pre-tr
 Under each model directory, you can find the following model categories:
 
 - `Public_pretrainedmodel_public_dataset` contains public object detection models trained on public datasets.
-- `ST_pretrainedmodel_custom_dataset` contains different object detection models trained on ST custom datasets using our [training scripts](../src/training/README.md). 
+- `ST_pretrainedmodel_custom_dataset` contains different object detection models trained on ST custom datasets using our [training scripts](../src/training). 
 - `ST_pretrainedmodel_public_dataset` contains different object detection models trained on various public datasets following the [training section](../src/training/README.md) in STM32 model zoo.
 
 

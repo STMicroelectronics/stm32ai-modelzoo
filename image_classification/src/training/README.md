@@ -223,7 +223,7 @@ training:
          decay_steps: 170
          alpha: 0.001
 ```
-Refer to <a href="#A">Appendix A: Learning rate schedulers</a> for a list of the available learning rate schedulers.
+Refer to [Appendix A: Learning rate schedulers](#A) for a list of the available learning rate schedulers.
 
 ### <a id="2-8">2.8 Hydra and MLflow settings</a>
 

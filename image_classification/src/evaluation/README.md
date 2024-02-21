@@ -25,7 +25,7 @@ Alternatively, you can follow the tutorial below, which shows how to evaluate yo
 
 ### <a id="1-1">1.1 Setting the model and the operation mode</a>
 
-As mentioned previously, all the sections of the YAML file must be set in accordance with this **[README.md](../config_file_examples/evaluation_config.yaml)**.
+As mentioned previously, all the sections of the YAML file must be set in accordance with this **[evaluation_config.yaml](../config_file_examples/evaluation_config.yaml)**.
 In particular, `operation_mode` should be set to evaluation and the `evaluation` section should be filled as in the following example: 
 
 ```yaml

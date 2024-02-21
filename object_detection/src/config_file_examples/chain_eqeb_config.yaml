@@ -5,9 +5,9 @@ operation_mode: chain_eqeb
 
 dataset:
   class_names: [person]
-  training_path: ../datasets/coco_person_2017/
+  training_path: ../datasets/coco_person_2017/train
   validation_split: 0.1
-  quantization_path: ../datasets/coco_person_2017/
+  quantization_path: ../datasets/coco_person_2017/train
   quantization_split: 0.05
 
 preprocessing:

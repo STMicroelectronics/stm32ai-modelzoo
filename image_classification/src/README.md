@@ -211,7 +211,7 @@ data_augmentation:
 
 The data augmentation functions are applied to the input images in their order of appearance in the configuration file. If an argument of a given function is omitted, the default value is used. There are no constraints on the number of functions, types of functions and order of functions. 
 
-Please refer to [the data augmentation documentation](https://codex.cro.st.com/plugins/git/external-model-zoo/external_model_zoo?a=blob&hb=8e976faa7f22a7d9954295f0e74cdb99fbb6572a&h=27f56a5b1d5a6b96d256afbb889b8e5e1c8d196b&f=image_classification%2Fsrc%2Fdata_augmentation%2FREADME.md) for a list of functions that are available and the transforms they apply to the input images.
+Please refer to [the data augmentation documentation](data_augmentation/README.md) for a list of functions that are available and the transforms they apply to the input images.
 
 #### <a id="2-6">2.6 Set the training parameters</a>
 
@@ -354,7 +354,7 @@ Finally, in the `deployment` section, users must provide information about the h
 
 #### <a id="2-10">2.10 Hydra and MLflow settings</a>
  
-The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment directories. In the YAML code below, it is set to save the outputs as explained in the section <a id="4">visualize the chained services results</a>:
+The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment directories. In the YAML code below, it is set to save the outputs as explained in the section <a href="#4">visualize the chained services results</a> :
 
 ```yaml
 hydra:

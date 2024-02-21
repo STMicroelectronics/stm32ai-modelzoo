@@ -6,8 +6,8 @@ operation_mode: chain_eqe
 dataset:
   name: coco_2017_person
   class_names: [person]
-  test_path: ../datasets/coco_2017_person/
-  quantization_path: ../datasets/coco_2017_person/
+  test_path: ../datasets/coco_2017_person/test
+  quantization_path: ../datasets/coco_2017_person/train
 
 preprocessing:
    rescaling:
