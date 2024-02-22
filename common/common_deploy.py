@@ -279,8 +279,8 @@ def stm32ai_deploy(target: bool = False,
                 # Get footprints of the given model
                 results = cloud_analyze(ai=ai, model_path=model_path, optimization=optimization,
                                 get_model_name_output=get_model_name_output)
-                needed_ram = round(int(results["ram_size"]) / 1024, 2)
-                needed_rom = round(int(results["rom_size"]) / 1024, 2)
+                needed_ram = int(results["ram_size"])
+                needed_rom = int(results["rom_size"])
 
                 with open(os.path.join(board.config.memory_pool_path), 'r') as f:
                     memory_pool = json.load(f)

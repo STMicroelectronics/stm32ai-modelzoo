@@ -155,22 +155,12 @@ on [How to install STM32 model zoo](https://wiki.st.com/stm32mcu/index.php?title
 In [tutorials/notebooks](tutorials/notebooks/README.md) you will find a jupyter notebook that can be easily deployed on
 Colab to exercise STM32 model zoo training scripts.
 
-## Notes
 
-In this project, we are using **TensorFLow version 2.8.3** following unresolved issues with newest versions of
-TensorFlow, see [more](https://github.com/tensorflow/tensorflow/issues/56242).
+> [!IMPORTANT]
+> In this project, we are using **TensorFLow version 2.8.3** following unresolved issues with newest versions of TensorFlow, see [more](https://github.com/tensorflow/tensorflow/issues/56242).
 
-**Warnings** :
+>[!CAUTION]
+> If there are some white spaces in the paths (for Python, STM32CubeIDE, or, STM32Cube.AI local installation) this can result in errors. So avoid having paths with white spaces in them.
 
-* In this project we are using the `mlflow` library to log the results of different runs. Depending on which version of
-  Windows OS are you using or where you place the project the output log files might have a very long path which might
-  result in an error at the time of logging the results. As by default, Windows uses a path length limitation (MAX_PATH)
-  of 256 characters: Naming Files, Paths, and Namespaces. To avoid this potential error, create (or edit) a variable
-  named `LongPathsEnabled` in **Registry Editor**
-  under `Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem\` and assign it a value of `1`. This
-  will change the maximum length allowed for the file length on Windows machines and will avoid any errors resulting due
-  to this. For more details have a look at
-  this [link](https://knowledge.autodesk.com/support/autocad/learn-explore/caas/sfdcarticles/sfdcarticles/The-Windows-10-default-path-length-limitation-MAX-PATH-is-256-characters.html)
-  .
-* If there are some white spaces in the paths (for Python, STM32CubeIDE, or, STM32Cube.AI local installation) this can
-  result in errors. So avoid having paths with white spaces in them.
+>[!TIP]
+> In this project we are using the `mlflow` library to log the results of different runs. Depending on which version of Windows OS are you using or where you place the project the output log files might have a very long path which might result in an error at the time of logging the results. As by default, Windows uses a path length limitation (MAX_PATH) of 256 characters: Naming Files, Paths, and Namespaces. To avoid this potential error, create (or edit) a variable named `LongPathsEnabled` in **Registry Editor** under **Computer/HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/FileSystem/** and assign it a value of `1`. This will change the maximum length allowed for the file length on Windows machines and will avoid any errors resulting due to this. For more details have a look at this [link](https://knowledge.autodesk.com/support/autocad/learn-explore/caas/sfdcarticles/sfdcarticles/The-Windows-10-default-path-length-limitation-MAX-PATH-is-256-characters.html).
