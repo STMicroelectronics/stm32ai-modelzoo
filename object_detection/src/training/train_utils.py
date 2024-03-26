@@ -227,7 +227,7 @@ def get_callbacks(callbacks_dict: DictConfig, model_type: str = None, output_dir
     if model_type == 'st_ssd_mobilenet_v1' or model_type == 'ssd_mobilenet_v2_fpnlite':
         save_only_weights = True
         model_file_name = "best_weights.h5"
-    elif model_type == 'tiny_yolo_v2':
+    elif model_type == 'tiny_yolo_v2' or model_type == "st_yolo_lc_v1":
         save_only_weights = False
         model_file_name = "best_model.h5"
     else:

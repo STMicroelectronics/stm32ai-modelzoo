@@ -25,7 +25,7 @@ preprocessing:
       scale: 1/127.5
       offset: -1
    resizing:
-      interpolation: bilinear
+      interpolation: nearest
       aspect_ratio: False
    color_mode: rgb
 

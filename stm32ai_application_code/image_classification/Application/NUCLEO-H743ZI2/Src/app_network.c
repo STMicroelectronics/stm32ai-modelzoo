@@ -256,14 +256,10 @@ static void Output_Dequantize(AppConfig_TypeDef *App_Config_Ptr)
  */
 static void ImageResize(image_t *src, image_t *dst)
 {
-#if PP_RESIZING_ALGO == INTERPOLATION_NEAREST
   if (STM32Ipl_Downscale(src, dst, 0) != stm32ipl_err_Ok)
   {
     while (1);
   }
-#else
-  #error Resizing algo no supported in current version of Image Classification Getting Started
-#endif
 }
 
 /**

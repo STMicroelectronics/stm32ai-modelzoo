@@ -69,7 +69,7 @@ To get started, you will need to update the [user_config.yaml](user_config.yaml)
 
 #### <a id="2-1">2.1 Choose the operation mode</a>
 
-The `operation_mode` top-level attribute specifies the operations or the service you want to executed.
+The `operation_mode` top-level attribute specifies the operations or the service you want to execute.
 
 The different values of the `operation_mode` attribute and the corresponding operations are described in the table below.
 

@@ -127,15 +127,7 @@ A table containing the list of the labels for the output classes:
    "background", "person" }\
 ```
 
-The type of resizing algorithm that should be used by the preprocessing stage:
-
-```C
-#define NO_RESIZE                   (0)
-#define INTERPOLATION_NEAREST       (1)
-
-#define PP_RESIZING_ALGO       INTERPOLATION_NEAREST
-```
- In the version V1.0 of the package, only the nearest neighbor algorithm is supported.
+Concerning the type of resizing algorithm that is used by the preprocessing stage, only the nearest neighbor algorithm is supported.
 
 Input frame aspect ratio algorithms:
 ```C

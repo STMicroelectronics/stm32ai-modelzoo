@@ -62,9 +62,9 @@ data_augmentation:    # Optional section
 training:
   model:    # Use it if you want to use a model from the zoo, mutually exclusive with 'general.model_path'
     name: mobilenet
-    version: v1
-    alpha: 0.25
-    input_shape: (224, 224, 3)
+    version: v2
+    alpha: 0.35
+    input_shape: (128, 128, 3)
     pretrained_weights: imagenet   # Optional, use it if you want to use the 'imagenet' pretrained weights, available only for MobileNet models
     pretrained_model_path:         # Optional, available for transfer learning with all models, mutually exclusive with pretrained_weights
   resume_training_from: # Optional, use to resume a training from a previous experiment.

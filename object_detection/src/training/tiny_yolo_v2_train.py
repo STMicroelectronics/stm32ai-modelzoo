@@ -71,7 +71,7 @@ def train_tiny_yolo_v2(cfg = None,train_ds = None, valid_ds = None, test_ds = No
                               output_dir=output_dir,
                               saved_models_dir=saved_models_dir,
                               logs_dir=cfg.general.logs_dir)
-    checkpoint_clean = CheckpointYoloCleanCallBack(classes,anchors,int(input_shape[0]),os.path.join(output_dir, saved_models_dir))
+    checkpoint_clean = CheckpointYoloCleanCallBack(classes,anchors,int(input_shape[0]),os.path.join(output_dir, saved_models_dir), network_stride = cfg.postprocessing.network_stride)
     callbacks.append(checkpoint_clean)
 
     #yolo_map_callback = YoloMapCallBack(cfg, frq=4)

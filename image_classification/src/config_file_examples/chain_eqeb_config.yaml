@@ -1,5 +1,5 @@
 general:
-   model_path: ../pretrained_models/mobilenetv1/ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_tfs.h5
+   model_path: ../pretrained_models/mobilenetv1/ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft.h5
    
 operation_mode: chain_eqeb
 

@@ -101,7 +101,7 @@ preprocessing:
   rescaling: { scale: 1/127.5, offset: -1 }
   resizing:
     aspect_ratio: "fit"
-    interpolation: bilinear
+    interpolation: nearest
   color_mode: rgb
 ```
 

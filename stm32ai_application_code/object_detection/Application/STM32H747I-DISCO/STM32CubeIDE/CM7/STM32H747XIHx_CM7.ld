@@ -234,6 +234,7 @@ SECTIONS
     . = ALIGN(32);
     *(.RescaledImage_Buffer_SDRAM)
     *(.Out_Postproc)
+    *(.AppConfig_SDRAM)
   } >SDRAM
 
   /* Remove information from the standard libraries */

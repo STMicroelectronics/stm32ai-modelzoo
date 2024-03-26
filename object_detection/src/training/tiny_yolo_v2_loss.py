@@ -18,11 +18,11 @@ def box_iou(b1, b2, expand_dims=True):
     Return IOU tensor.
 
     Args:
-    	b1 (tensor): Tensor representing the first bounding box with shape (i1,...,iN, 4).
-    	b2 (tensor): Tensor representing the second bounding box with shape (j, 4).
-    	expand_dims (bool, default=True): If True, expand dimensions to apply broadcasting.
+        b1 (tensor): Tensor representing the first bounding box with shape (i1,...,iN, 4).
+        b2 (tensor): Tensor representing the second bounding box with shape (j, 4).
+        expand_dims (bool, default=True): If True, expand dimensions to apply broadcasting.
     Returns:
-    	iou (tensor): Tensor representing the IOU between the two bounding boxes with shape (i1,...,iN, j).
+        iou (tensor): Tensor representing the IOU between the two bounding boxes with shape (i1,...,iN, j).
     """
     if expand_dims:
         # Expand dim to apply broadcasting.
@@ -52,22 +52,22 @@ def box_iou(b1, b2, expand_dims=True):
 
     return iou
 
-def tiny_yolo_v2_loss(args, anchors, num_classes):
+def tiny_yolo_v2_loss(args, anchors, num_classes,network_stride):
     """
     YOLOv2 loss function.
 
     Args:
-    	args (tuple): A tuple containing the model output and ground truth.
-    	anchors (tensor): Anchor boxes for the model.
-    	num_classes (int): Number of object classes.
+        args (tuple): A tuple containing the model output and ground truth.
+        anchors (tensor): Anchor boxes for the model.
+        num_classes (int): Number of object classes.
     Returns:
-    	total_loss (float): Total mean YOLOv2 loss across minibatch.
+        total_loss (float): Total mean YOLOv2 loss across minibatch.
     """
     (yolo_output, y_true) = args
     num_anchors = len(anchors)
     scale_x_y = None
     yolo_output_shape = K.shape(yolo_output)
-    input_shape = K.cast(yolo_output_shape[1:3] * 32, K.dtype(y_true))
+    input_shape = K.cast(yolo_output_shape[1:3] * network_stride, K.dtype(y_true))
     grid_shape = K.cast(yolo_output_shape[1:3], K.dtype(y_true))
     batch_size_f = K.cast(yolo_output_shape[0], K.dtype(yolo_output))
     object_scale = 5

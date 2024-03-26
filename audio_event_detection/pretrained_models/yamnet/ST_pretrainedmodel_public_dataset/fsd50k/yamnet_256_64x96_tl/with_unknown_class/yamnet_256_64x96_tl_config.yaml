@@ -47,7 +47,9 @@ dataset_specific:
     csv_folder: ../datasets/FSD50K/FSD50K.ground_truth
     dev_audio_folder: ../datasets/FSD50K/FSD50K.dev_audio
     eval_audio_folder: ../datasets/FSD50K/FSD50K.eval_audio
-    audioset_ontology_path: preprocessing/dataset_utils/fsd50k/audioset_ontology.json
+    # Change this next line to the ontology path on your machine. 
+    # Download the ontology at https://github.com/audioset/ontology
+    audioset_ontology_path: preprocessing/dataset_utils/fsd50k/audioset_ontology.json 
     only_keep_monolabel: True
 
 preprocessing:

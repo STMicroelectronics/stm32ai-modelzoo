@@ -11,11 +11,13 @@ ResNet v1 uses post-activation for the residual blocks. The models below have 8 
 (source: https://keras.io/api/applications/resnet/)
 The model is quantized in int8 using tensorflow lite converter.
 
-In addition, we introduce a new model family inspired from ResNet v1 which takes benefit from hybrid quantization.
+In addition, we introduce a new model family inspired from ResNet v1 which takes benefit from hybrid quantization. 
+Later on, they are named as ST ResNet 8 Hybrid v1 and ST ResNet 8 Hybrid v2.
 By hybrid quantization, we mean that whenever it is possible, some network layers are quantized for weights and/or activations on less than 8 bits.
-These networks no longer need to be converted with tensorflow lite. They are quantized during training (Quantization Aware Training).
-STM32Cube.AI is able to import them directly and to generate the corresponding FW code.
-As it can be seen later on, these hybrid models are mainly interesting for inference time reduction.
+We used Larq library to define and train these models. In particular, in our topology some layers/activations are kept in 8 bits while others are in binary. 
+Please note that since this quantization is performed during training (Quantization Aware Training), these networks no longer need to be converted with tensorflow lite.
+STM32Cube.AI is able to import them directly in .h5 format and to generate the corresponding optimized FW code.
+Even if many layers are in binary, these models provide comparable accuracy to the full 8-bit ResNet v1 8 but have a significantly lower inference time.
 
 
 ## Network information
@@ -60,7 +62,10 @@ For an image resolution of NxM and P classes
 To train a ResNet v1 model with pretrained weights, from scratch or fine tune it on your own dataset, you need to configure
 the [user_config.yaml](../../src/user_config.yaml) file following the [tutorial](../../src/README.md) under the src section.
 
-As an example, [resnet_v1_8_tfs_config.yaml](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_config.yaml) file is used to train this model on Cifar 10 dataset.
+As an example, [resnet_v1_8_32_tfs_config.yaml](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_config.yaml) file is used to train this model on Cifar 10 dataset.
+
+For ST ResNet 8 Hybrid v1 or ST ResNet 8 Hybrid v2 please use respectively [st_resnet_8_hybrid_v1_32_tfs_config.yaml](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v1_32_tfs/st_resnet_8_hybrid_v1_32_tfs_config.yaml) 
+or [st_resnet_8_hybrid_v2_32_tfs_config.yaml](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v2_32_tfs/st_resnet_8_hybrid_v2_32_tfs_config.yaml) instead.
 
 ## Deployment
 
@@ -73,20 +78,20 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 ### Reference MCU memory footprint based on Cifar 10 dataset (see Accuracy for details on dataset)
 
-| Model                                                                                                            | Format | Resolution  | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash | STM32Cube.AI version  |
-|------------------------------------------------------------------------------------------------------------------|--------|-------------|---------|----------------|-------------|---------------|------------|-----------|-------------|-----------------------|
-| [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32H7 | 45.41 KiB      | 7.4 KiB     | 76.9 KiB      | 52.78 KiB  | 52.81 KiB | 129.68 KiB  | 8.1.0                 |
-| ST ResNet 8 Hybrid v1 tfs                                                                                        | Hybrid | 32x32x3     | STM32H7 | 72 KiB         | 18.38 KiB   | 85.79 KiB     | 70.48 KiB  | 90.38 KiB | 156.27 KiB  | 8.1.0                 |
-| ST ResNet 8 Hybrid v2 tfs                                                                                        | Hybrid | 32x32x3     | STM32H7 | 72 KiB         | 18.38 KiB   | 66.28 KiB     | 69.66 KiB  | 90.38 KiB | 135.94 KiB  | 8.1.0                 |
+| Model                                                                                                                                 | Format | Resolution  | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash | STM32Cube.AI version  |
+|---------------------------------------------------------------------------------------------------------------------------------------|--------|-------------|---------|----------------|-------------|---------------|------------|-----------|-------------|-----------------------|
+| [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite)                      | Int8   | 32x32x3     | STM32H7 | 45.41 KiB      | 7.4 KiB     | 76.9 KiB      | 52.78 KiB  | 52.81 KiB | 129.68 KiB  | 8.1.0                 |
+| [ST ResNet 8 Hybrid v1 tfs](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v1_32_tfs/st_resnet_8_hybrid_v1_32_tfs.h5) | Hybrid | 32x32x3     | STM32H7 | 72 KiB         | 18.38 KiB   | 85.79 KiB     | 70.48 KiB  | 90.38 KiB | 156.27 KiB  | 8.1.0                 |
+| [ST ResNet 8 Hybrid v2 tfs](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v2_32_tfs/st_resnet_8_hybrid_v2_32_tfs.h5) | Hybrid | 32x32x3     | STM32H7 | 72 KiB         | 18.38 KiB   | 66.28 KiB     | 69.66 KiB  | 90.38 KiB | 135.94 KiB  | 8.1.0                 |
 
 ### Reference inference time based on Cifar 10 dataset (see Accuracy for details on dataset)
 
-| Model                                                                                                            | Format | Resolution  | Board            | Execution Engine | Frequency    | Inference time (ms) | STM32Cube.AI version  |
-|------------------------------------------------------------------------------------------------------------------|--------|-------------|------------------|------------------|--------------|---------------------|-----------------------|
+| Model                            | Format | Resolution  | Board            | Execution Engine | Frequency    | Inference time (ms) | STM32Cube.AI version  |
+|----------------------------------|--------|-------------|------------------|------------------|--------------|---------------------|-----------------------|
 | [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 35.96 ms            | 8.1.0                 |
 | [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32MP157F-DK2  | 2 CPU            | 800 MHz      | 10.97 ms **         | X-LINUX-AI v5.0.0     |
-| ST ResNet 8 Hybrid v1 tfs                                                                                        | Hybrid | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 31.45 ms            | 8.1.0                 |
-| ST ResNet 8 Hybrid v2 tfs                                                                                        | Hybrid | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 27.47 ms            | 8.1.0                 |
+| [ST ResNet 8 Hybrid v1 tfs](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v1_32_tfs/st_resnet_8_hybrid_v1_32_tfs.h5) | Hybrid | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 31.45 ms            | 8.1.0                 |
+| [ST ResNet 8 Hybrid v2 tfs](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v2_32_tfs/st_resnet_8_hybrid_v2_32_tfs.h5) | Hybrid | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 27.47 ms            | 8.1.0                 |
 
 
 ** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
@@ -117,8 +122,8 @@ images: 60 000
 |------------------------------------------------------------------------------------------------------------------|----------|-------------|----------------|
 | [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs.h5)          | Float    | 32x32x3     | 87.01 %        |
 | [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite) | Int8     | 32x32x3     | 85.59 %        |
-| ST ResNet 8 Hybrid v1 tfs                                                                                        | Hybrid   | 32x32x3     | 86 %           |
-| ST ResNet 8 Hybrid v2 tfs                                                                                        | Hybrid   | 32x32x3     | 84.85 %        |
+| [ST ResNet 8 Hybrid v1 tfs](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v1_32_tfs/st_resnet_8_hybrid_v1_32_tfs.h5)                                                                                        | Hybrid   | 32x32x3     | 86 %           |
+| [ST ResNet 8 Hybrid v2 tfs](./ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v2_32_tfs/st_resnet_8_hybrid_v2_32_tfs.h5)                                                                                        | Hybrid   | 32x32x3     | 84.85 %        |
 
 
 ### Accuracy with Cifar100 dataset

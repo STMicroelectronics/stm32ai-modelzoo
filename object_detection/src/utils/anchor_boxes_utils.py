@@ -43,6 +43,67 @@ def get_sizes_ratios(input_shape: tuple = None) -> tuple:
     # Return the sizes and ratios as a tuple
     return sizes, ratios
 
+def get_sizes_ratios_ssd_v2(input_shape: tuple = None) -> tuple:
+
+    def sizes_creation(target_max_res,base_sizes,t_min_s,res_range,slope):
+
+        # target_max_res : must be in the res_range
+        # base_sizes=[[0.26,0.33], [0.42,0.49], [0.58,0.66], [0.74,0.82], [0.9,0.98]]
+        # t_min_s = [0.026,0.033]
+        # slope = 2
+        # res_range = [24,32,52]
+
+        ab_x = affine_search([base_sizes[0][0],t_min_s[0]],res_range,slope) # [a,b,c]
+        ab_y = affine_search([base_sizes[0][1],t_min_s[1]],res_range,slope) # [a,b,c]
+
+        arr_res = np.array([1/(target_max_res**slope),1])
+
+        target_max_s = np.array(base_sizes[-1])
+        target_min_s = np.stack([ab_x,ab_y]) @ arr_res
+        target_len   = len(base_sizes)
+
+        target_sizes = np.linspace(target_min_s,target_max_s,target_len)
+
+        return target_sizes
+    
+    def affine_search(s,r,slope):
+
+        r = np.array(r)
+
+        R = np.stack([1/(r**slope),np.ones_like(r)],axis=1)
+
+        # knowing that -> R@x = s then : x = R^-1 @ s
+
+        return np.linalg.inv(R) @ s
+
+    fmap_sizes_dict = {'192':[24,12,6,3,2],
+                       '224':[28,14,7,4,2],
+                       '256':[32,16,8,4,2],
+                       '288':[36,18,9,5,3],
+                       '320':[40,20,10,5,3],
+                       '352':[44,22,11,6,3],
+                       '384':[48,24,12,6,3],
+                       '416':[52,26,13,7,4]}
+
+    base_sizes = [[0.26,0.33],
+                  [0.42,0.49],
+                  [0.58,0.66],
+                  [0.74,0.82],
+                  [0.9,0.98]]
+
+    min_sizes_max_res = [0.06,0.09]
+
+    max_fmap_res = fmap_sizes_dict[str(input_shape[0])][0]
+
+    res_range    = [fmap_sizes_dict['192'][0],fmap_sizes_dict['416'][0]]
+
+    sizes  = sizes_creation(max_fmap_res, base_sizes, min_sizes_max_res, res_range, slope = 5)
+
+    ratios = [[1.0, 2.0, 0.5, 1.0 / 3]]*len(sizes)
+    
+    # Return the sizes and ratios as a tuple
+    return sizes, ratios
+
 
 def corners2centroids(bbox: tuple) -> list:
     """

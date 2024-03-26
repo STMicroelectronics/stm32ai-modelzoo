@@ -17,6 +17,7 @@ sys.path.append(os.path.abspath('../training'))
 from train_utils import set_frozen_layers
 from tensorflow.keras.layers import Input, Lambda
 from tiny_yolo_v2_loss import tiny_yolo_v2_loss
+from st_yolo_lc_v1 import st_yolo_lc_v1_body
 
 def DarknetConv2D_BN_Leaky(filters: int, x: layers.Input) -> layers.Input:
     """
@@ -95,7 +96,7 @@ def tiny_yolo_v2_transfer_learning_model(transfer_learning_model, weights_path):
         #transfer_learning_model.layers[i].trainable =False    
     return transfer_learning_model
 
-def get_tiny_yolo_v2_train_model(anchors, num_classes, weights_path=None, frozen_layers=None):
+def get_tiny_yolo_v2_train_model(anchors, num_classes, weights_path=None, frozen_layers=None,network_stride = 16):
     """
     Create the training model for YOLOv2.
 
@@ -110,14 +111,18 @@ def get_tiny_yolo_v2_train_model(anchors, num_classes, weights_path=None, frozen
     num_anchors = len(anchors)
     y_true_input = Input(shape=(None, None, num_anchors, 6))
     input_tensor = Input(shape=(None, None, 3), batch_size=None, name='image_input')
-    model_body = tiny_yolo_v2_body(input_tensor, num_anchors, num_classes)
+    if network_stride == 32 :
+        model_body = tiny_yolo_v2_body(input_tensor, num_anchors, num_classes)
+    else:
+        model_body = st_yolo_lc_v1_body(input_tensor, num_anchors, num_classes)
+
     if weights_path:
         model_body = tiny_yolo_v2_transfer_learning_model(model_body, weights_path)
 
     if frozen_layers:
         set_frozen_layers(model_body, frozen_layers=frozen_layers)
 
-    model_loss, _, _, _ = Lambda(tiny_yolo_v2_loss, name='tiny_yolo_v2_loss',arguments={'anchors': anchors, 'num_classes': num_classes})([model_body.output, y_true_input])
+    model_loss, _, _, _ = Lambda(tiny_yolo_v2_loss, name='tiny_yolo_v2_loss',arguments={'anchors': anchors, 'num_classes': num_classes, 'network_stride': network_stride})([model_body.output, y_true_input])
 
     model = Model([model_body.input, y_true_input], model_loss)
 
@@ -137,10 +142,11 @@ def tiny_yolo_v2_model(cfg):
     anchors_list = cfg.postprocessing.yolo_anchors
     anchors = np.array(anchors_list).reshape(-1, 2)
     frozen_layers = cfg.training.frozen_layers
+    network_stride = cfg.postprocessing.network_stride
 
     if cfg.training.model.pretrained_weights:
         print("[INFO] : Training Initialized with : coco weights")
-        if cfg.training.model.pretrained_weights == "coco":
+        if cfg.training.model.pretrained_weights == "coco" and cfg.general.model_type == "tiny_yolo_v2":
             current_dir = os.path.dirname(os.path.abspath(__file__))
             parent_dir = os.path.dirname(os.path.dirname(current_dir))
             weights_dir = os.path.join(parent_dir, "pretrained_models/tiny_yolo_v2/Public_pretrainedmodel_public_dataset/coco_2017/tiny_yolo_v2_416")
@@ -148,13 +154,13 @@ def tiny_yolo_v2_model(cfg):
         else:
             pretrained_weights = cfg.training.model.pretrained_weights
             
-        model = get_tiny_yolo_v2_train_model(anchors, num_classes, weights_path = pretrained_weights, frozen_layers = frozen_layers)
+        model = get_tiny_yolo_v2_train_model(anchors, num_classes, weights_path = pretrained_weights, frozen_layers = frozen_layers, network_stride = network_stride)
     elif cfg.general.model_path and Path(cfg.general.model_path).suffix == '.h5':
         print("[INFO] : Training Initialized with : {}".format(cfg.general.model_path))
-        model = get_tiny_yolo_v2_train_model(anchors, num_classes, frozen_layers = frozen_layers)
+        model = get_tiny_yolo_v2_train_model(anchors, num_classes, frozen_layers = frozen_layers, network_stride = network_stride)
         model_path = cfg.general.model_path
         old_model = tf.keras.models.load_model(model_path)
         model.set_weights(old_model.get_weights())   
     else:
-        model = get_tiny_yolo_v2_train_model(anchors, num_classes, frozen_layers = frozen_layers)
+        model = get_tiny_yolo_v2_train_model(anchors, num_classes, frozen_layers = frozen_layers, network_stride = network_stride)
     return model

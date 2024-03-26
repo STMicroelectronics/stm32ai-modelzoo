@@ -21,6 +21,7 @@ import onnxruntime
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../models'))
 sys.path.append(os.path.join(os.path.dirname(__file__), '../data_augmentation'))
+
 from utils import check_attributes
 from data_augmentation_layer import DataAugmentationLayer
 from mobilenetv1 import get_mobilenetv1
@@ -30,6 +31,9 @@ from resnetv1 import get_resnetv1
 from squeezenetv10 import get_squeezenetv10
 from squeezenetv11 import get_squeezenetv11
 from stmnist import get_stmnist
+from st_efficientnet_lc_v1 import get_st_efficientnet_lc_v1
+from st_fdmobilenet_v1 import get_st_fdmobilenet_v1
+from st_resnet_8_hybrid import get_st_resnet_8_hybrid_v1, get_st_resnet_8_hybrid_v2
 from custom_model import get_custom_model
 
 
@@ -160,6 +164,9 @@ def get_model(cfg: DictConfig = None, num_classes: int = None, dropout: float = 
         'resnet': ['v1'],
         'squeezenet': ['v10', 'v11'],
         'stmnist': None,
+        'st_efficientnet_lc': ['v1'],
+        'st_fdmobilenet': ['v1'],
+        'st_resnet_8_hybrid': ['v1', 'v2'],
         'custom': None
     }
 
@@ -273,6 +280,80 @@ def get_model(cfg: DictConfig = None, num_classes: int = None, dropout: float = 
                         end_layer_index=14,
                         target_model_name="stmnist")
     
+    # If the model is st_efficientnet_lc v1
+    if model_name == "st_efficientnet_lc" and model_version == "v1":
+        check_attributes(cfg, expected=["name", "version", "input_shape"],
+                         optional=["pretrained_model_path"], section=section)                         
+        
+        if cfg.input_shape[0] != cfg.input_shape[1]:
+            raise ValueError("Expecting image width and height to be the same. "
+                             "Received image shape {}".format(cfg.input_shape, message))
+        if (cfg.input_shape[0] % 32 > 0) or (cfg.input_shape[1] % 32 > 0):
+            raise ValueError("Expecting image width and height to be multiples of 32. "
+                             "Received image shape {}".format(cfg.input_shape, message))
+        model = get_st_efficientnet_lc_v1(
+                        input_shape=cfg.input_shape,
+                        num_classes=num_classes,
+                        dropout=dropout)
+        if cfg.pretrained_model_path:
+            transfer_pretrained_weights(
+                        model,
+                        source_model_path=cfg.pretrained_model_path,
+                        end_layer_index=276,
+                        target_model_name="st_efficientnet_lc_v1")
+    
+    # If the model is st_fdmobilenet_v1
+    if model_name == "st_fdmobilenet" and model_version == "v1":
+        check_attributes(cfg, expected=["name", "version", "input_shape"],
+                         optional=["pretrained_model_path"], section=section)                         
+
+        if (cfg.input_shape[0] % 32 > 0) or (cfg.input_shape[1] % 32 > 0):
+                raise ValueError('input_shape should be multiple of 32 in both dimensions')
+        model = get_st_fdmobilenet_v1(
+                        input_shape=cfg.input_shape,
+                        num_classes=num_classes,
+                        dropout=dropout)
+        if cfg.pretrained_model_path:
+            transfer_pretrained_weights(
+                        model,
+                        source_model_path=cfg.pretrained_model_path,
+                        end_layer_index=46,
+                        target_model_name="st_fdmobilenet_v1")
+
+    # If the model is st_resnet_8_hybrid_v1
+    if model_name == "st_resnet_8_hybrid" and model_version == "v1":
+        check_attributes(cfg, expected=["name", "version", "input_shape"],
+                         optional=["pretrained_model_path"], section=section)
+        if (cfg.input_shape[0] % 32 > 0) or (cfg.input_shape[1] % 32 > 0):
+                raise ValueError('input_shape should be multiple of 32 in both dimensions')
+        model = get_st_resnet_8_hybrid_v1(
+                        input_shape=cfg.input_shape,
+                        num_classes=num_classes,
+                        dropout=dropout)
+        if cfg.pretrained_model_path:
+            transfer_pretrained_weights(
+                        model,
+                        source_model_path=cfg.pretrained_model_path,
+                        end_layer_index=87,
+                        target_model_name="st_resnet_8_hybrid_v1")
+
+    # If the model is st_resnet_8_hybrid_v2
+    if model_name == "st_resnet_8_hybrid" and model_version == "v2":
+        check_attributes(cfg, expected=["name", "version", "input_shape"],
+                         optional=["pretrained_model_path"], section=section)
+        if (cfg.input_shape[0] % 32 > 0) or (cfg.input_shape[1] % 32 > 0):
+                raise ValueError('input_shape should be multiple of 32 in both dimensions')
+        model = get_st_resnet_8_hybrid_v2(
+                        input_shape=cfg.input_shape,
+                        num_classes=num_classes,
+                        dropout=dropout)
+        if cfg.pretrained_model_path:
+            transfer_pretrained_weights(
+                        model,
+                        source_model_path=cfg.pretrained_model_path,
+                        end_layer_index=87,
+                        target_model_name="st_resnet_8_hybrid_v2")
+
     # If the model is a custom model
     if model_name == "custom":
         check_attributes(cfg, expected=["name", "input_shape"],

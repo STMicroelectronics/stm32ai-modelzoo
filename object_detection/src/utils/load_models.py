@@ -63,6 +63,6 @@ def get_tiny_yolo_v2_model(cfg):
     Returns:
         A Keras Model object representing the YOLOv2 model.
     """
-    if cfg.general.model_type.lower() == "tiny_yolo_v2":
+    if cfg.general.model_type.lower() == "tiny_yolo_v2" or cfg.general.model_type.lower() == "st_yolo_lc_v1":
         return tiny_yolo_v2_model(cfg)
     

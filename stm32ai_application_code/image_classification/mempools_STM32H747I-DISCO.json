@@ -10,7 +10,7 @@
             {
                     "name": "AXIRAM",
                     "prop": { "throughput": "HIGH", "latency": "MID" },
-                    "size":   { "value": "474", "magnitude": "KBYTES" },
+                    "size":   { "value": "440", "magnitude": "KBYTES" },
                     "offset":   { "value": "0", "magnitude": "BYTES" }
             },
             {

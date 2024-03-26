@@ -70,3 +70,6 @@ deployment:
     board: NUCLEO-F401RE
 mlflow:
   uri: ./experiments_outputs/mlruns
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

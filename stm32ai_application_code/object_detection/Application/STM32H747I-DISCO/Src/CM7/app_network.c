@@ -56,8 +56,8 @@ void Network_Preprocess(AppConfig_TypeDef *App_Config_Ptr)
 
   src_img.data=App_Config_Ptr->camera_capture_buffer;
 #if ASPECT_RATIO_MODE == ASPECT_RATIO_PADDING
-  src_img.w=RES_WITH_BORDERS;
-  src_img.h=RES_WITH_BORDERS;
+  src_img.w=CAM_RES_WITH_BORDERS;
+  src_img.h=CAM_RES_WITH_BORDERS;
 #else
   src_img.w=CAM_RES_WIDTH;
   src_img.h=CAM_RES_HEIGHT;
@@ -285,19 +285,10 @@ static void Output_Dequantize(AppConfig_TypeDef *App_Config_Ptr)
  */
 static void ImageResize(image_t *src, image_t *dst)
 {
-#if PP_RESIZING_ALGO == INTERPOLATION_NEAREST
   if (STM32Ipl_Downscale(src, dst, 0) != stm32ipl_err_Ok)
   {
     while (1);
   }
-#elif PP_RESIZING_ALGO == INTERPOLATION_BILINEAR
-  if (STM32Ipl_Downscale_bilinear(src, dst) != stm32ipl_err_Ok)
-  {
-    while (1);
-  }
-#else
-  #error Resizing algo no supported in current version of Object Detection Getting Started
-#endif
 }
 
 /**

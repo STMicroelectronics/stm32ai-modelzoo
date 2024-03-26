@@ -65,7 +65,7 @@ def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None,
         f.write("  ******************************************************************************\n")
         f.write("  * @attention\n")
         f.write("  *\n")
-        f.write("  * Copyright (c) 2022 STMicroelectronics.\n")
+        f.write("  * Copyright (c) 2024 STMicroelectronics.\n")
         f.write("  * All rights reserved.\n")
         f.write("  *\n")
         f.write("  * This software is licensed under terms that can be found in the LICENSE file in\n")
@@ -85,20 +85,15 @@ def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None,
         f.write("\n")
         f.write("/* Classes */\n")
         f.write("#define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {}\n".format(classes))
-        f.write("\n")
-        f.write("/* Resizing configuration */\n")
-        f.write("#define NO_RESIZE              ({})\n".format(int(0 if params.preprocessing.resizing else 1)))
-        f.write("#define INTERPOLATION_NEAREST  (1)\n")
-        f.write("\n")
-        f.write("#define PP_RESIZING_ALGO       {}\n".format('INTERPOLATION_NEAREST'))
-        f.write("\n")
-        f.write("/* Cropping configuration */\n")
-        f.write("#define ASPECT_RATIO_FIT (1)\n")
-        f.write("#define ASPECT_RATIO_CROP    (2)\n")
-        f.write("#define ASPECT_RATIO_PADDING (3)\n")
-        f.write("#define ASPECT_RATIO    {}\n".format(
-            aspect_ratio_dict[params.preprocessing.resizing.aspect_ratio]))
         f.write("\n\n")
+        f.write("/***** Preprocessing configuration *****/\n\n")
+        f.write("/* Aspect Ratio configuration */\n")
+        f.write("#define ASPECT_RATIO_FIT        (1)\n")
+        f.write("#define ASPECT_RATIO_CROP       (2)\n")
+        f.write("#define ASPECT_RATIO_PADDING    (3)\n\n")
+        f.write("#define ASPECT_RATIO_MODE    {}\n".format(
+            aspect_ratio_dict[params.preprocessing.resizing.aspect_ratio]))
+        f.write("\n")
         f.write("/* Input color format configuration */\n")
         yaml_opt = ["rgb", "bgr", "grayscale"]
         opt = ["RGB_FORMAT", "BGR_FORMAT", "GRAYSCALE_FORMAT"]
@@ -110,11 +105,11 @@ def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None,
         f.write("\n")
         f.write("/* Input/Output quantization configuration */\n")
         opt = ["UINT8_FORMAT", "INT8_FORMAT", "FLOAT32_FORMAT"]
-        f.write("#define UINT8_FORMAT   (1)\n")
-        f.write("#define INT8_FORMAT    (2)\n")
-        f.write("#define FLOAT32_FORMAT (3)\n")
+        f.write("#define UINT8_FORMAT      (1)\n")
+        f.write("#define INT8_FORMAT       (2)\n")
+        f.write("#define FLOAT32_FORMAT    (3)\n")
         f.write("\n")
-        f.write("#define QUANT_INPUT_TYPE    {}\n".format(
+        f.write("#define QUANT_INPUT_TYPE     {}\n".format(
             opt[[np.uint8, np.int8, np.float32].index(input_details['dtype'])]))
         f.write("#define QUANT_OUTPUT_TYPE    {}\n".format(
             opt[[np.uint8, np.int8, np.float32].index(output_details['dtype'])]))
@@ -123,6 +118,7 @@ def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None,
             f.write("/* Display configuration */\n")
             f.write("#define DISPLAY_INTERFACE_USB (1)\n")
             f.write("#define DISPLAY_INTERFACE_SPI (2)\n")
+            f.write("\n")
             f.write("#define DISPLAY_INTERFACE    {}\n".format(
                 params.deployment.hardware_setup.output))
             f.write("\n")
@@ -130,15 +126,17 @@ def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None,
             f.write("#define CAMERA_INTERFACE_DCMI (1)\n")
             f.write("#define CAMERA_INTERFACE_USB  (2)\n")
             f.write("#define CAMERA_INTERFACE_SPI  (3)\n")
+            f.write("\n")
             f.write("#define CAMERA_INTERFACE    {}\n".format(
                 str(params.deployment.hardware_setup.input)))
             f.write("\n")
             f.write("/* Camera Sensor configuration */\n")
             f.write("#define CAMERA_SENSOR_OV5640 (1)\n")
+            f.write("\n")
             f.write("#define CAMERA_SENSOR CAMERA_SENSOR_OV5640\n")
             f.write("\n")
 
-        f.write("#endif      /* __AI_MODEL_CONFIG_H__  */\n")
+        f.write("#endif      /* __AI_MODEL_CONFIG_H__ */\n")
 
         # Code do not compile when the USB display files and USB camera files are included at the same time: this code removes the unecessary files
         if str(board).split(",")[0] == "NUCLEO-H743ZI2":

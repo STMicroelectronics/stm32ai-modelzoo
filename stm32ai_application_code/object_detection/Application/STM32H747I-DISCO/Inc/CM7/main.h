@@ -126,10 +126,10 @@
 /****Buffers size definition***/
 /******************************/
 #if ASPECT_RATIO_MODE == ASPECT_RATIO_PADDING
-  #if (RES_WITH_BORDERS * RES_WITH_BORDERS * RGB_565_BPP)%32 == 0
-    #define CAM_FRAME_BUFFER_SIZE (RES_WITH_BORDERS * RES_WITH_BORDERS * RGB_565_BPP)
+  #if (CAM_RES_WITH_BORDERS * CAM_RES_WITH_BORDERS * RGB_565_BPP)%32 == 0
+    #define CAM_FRAME_BUFFER_SIZE (CAM_RES_WITH_BORDERS * CAM_RES_WITH_BORDERS * RGB_565_BPP)
   #else
-    #define CAM_FRAME_BUFFER_SIZE (RES_WITH_BORDERS * RES_WITH_BORDERS * RGB_565_BPP + 32 - (RES_WITH_BORDERS * RES_WITH_BORDERS * RGB_565_BPP)%32)
+    #define CAM_FRAME_BUFFER_SIZE (CAM_RES_WITH_BORDERS * CAM_RES_WITH_BORDERS * RGB_565_BPP + 32 - (CAM_RES_WITH_BORDERS * CAM_RES_WITH_BORDERS * RGB_565_BPP)%32)
   #endif
 #else
   #if (CAM_RES_WIDTH * CAM_RES_HEIGHT * RGB_565_BPP)%32 == 0
@@ -199,7 +199,6 @@ typedef struct
   uint32_t nn_inference_time;
   char const* nn_top1_output_class_name;
   float nn_top1_output_class_proba;
-  int ranking[NN_OUTPUT_CLASS_NUMBER];
   
   /**Camera context**/
   volatile uint8_t new_frame_ready;

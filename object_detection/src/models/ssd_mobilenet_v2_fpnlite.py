@@ -12,7 +12,7 @@ from tensorflow.keras.layers import Conv2D, UpSampling2D, ZeroPadding2D, Activat
 from tensorflow.keras.layers import DepthwiseConv2D
 from tensorflow.keras.regularizers import L2
 from anchor_boxes_utils import gen_anchors
-from anchor_boxes_utils import get_sizes_ratios
+from anchor_boxes_utils import get_sizes_ratios_ssd_v2
 from typing import Tuple, Dict, List, Optional
 
 def bbox_predictor(fmap_channels, version, layer_in, n_anchors, n_offsets=4, kernel=(3, 3), l2_reg=0.0005, bn=False, dw=False):
@@ -184,9 +184,9 @@ def ssd_mobilenet_v2_fpnlite(l2_reg:float=0.00004, activation:str='relu6', bn_dw
                                                        include_top=False,
                                                        weights=pretrained_weights)
 
-    sizes  = [[0.26,0.33], [0.42,0.49], [0.58,0.66], [0.74,0.82], [0.9,0.98]]
-    ratios = [[1.0, 2.0, 0.5, 1.0 / 3]]*len(sizes)
 
+    sizes, ratios = get_sizes_ratios_ssd_v2(inp_shape)
+    
 
     # Block before prediction head (FPN or FPN-Lite) for MobileNetV1 & V2
     ####################################################################################

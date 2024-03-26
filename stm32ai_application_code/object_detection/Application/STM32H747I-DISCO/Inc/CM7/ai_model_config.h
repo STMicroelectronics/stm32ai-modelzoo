@@ -6,7 +6,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2023 STMicroelectronics.
+  * Copyright (c) 2024 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file in
@@ -23,9 +23,9 @@
 
 /* I/O configuration */
 #define NB_CLASSES        (21)
-#define INPUT_HEIGHT      (1)
+#define INPUT_HEIGHT      (256)
 #define INPUT_WIDTH       (256)
-#define INPUT_CHANNELS    (256)
+#define INPUT_CHANNELS    (3)
 
 /* Classes */
 #define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {\
@@ -37,28 +37,22 @@
 
 /***** Preprocessing configuration *****/
 
-/* Resizing configuration */
-#define NO_RESIZE              (0)
-#define INTERPOLATION_NEAREST  (1)
-#define INTERPOLATION_BILINEAR (2)
-
-#define PP_RESIZING_ALGO  INTERPOLATION_NEAREST
-
 /* Cropping configuration */
-#define ASPECT_RATIO_FIT 0
-#define ASPECT_RATIO_CROP    1
-#define ASPECT_RATIO_PADDING 2
+#define ASPECT_RATIO_FIT      (1)
+#define ASPECT_RATIO_CROP     (2)
+#define ASPECT_RATIO_PADDING  (3)
 
 #define ASPECT_RATIO_MODE    ASPECT_RATIO_FIT
 
-
 /***** Postprocessing configuration *****/
-/* Postprocessing type configuration */
 
-#define POSTPROCESS_CENTER_NET (0)
-#define POSTPROCESS_YOLO       (1)
-#define POSTPROCESS_SSD        (2)
-#define POSTPROCESS_TYPE POSTPROCESS_SSD
+/* Postprocessing type configuration */
+#define POSTPROCESS_CENTER_NET (1)
+#define POSTPROCESS_YOLO_V2    (2)
+#define POSTPROCESS_ST_SSD     (3)
+#define POSTPROCESS_SSD        (4)
+
+#define POSTPROCESS_TYPE    POSTPROCESS_CENTER_NET
 
 /* Postprocessing SSD configuration */
 #define AI_OBJDETECT_SSD_ST_PP_NB_CLASSES         (21)
@@ -79,7 +73,7 @@
 #define INT8_FORMAT       (2)
 #define FLOAT32_FORMAT    (3)
 
-#define QUANT_INPUT_TYPE    UINT8_FORMAT
+#define QUANT_INPUT_TYPE     UINT8_FORMAT
 #define QUANT_OUTPUT_TYPE    FLOAT32_FORMAT
 
-#endif      /* __AI_MODEL_CONFIG_H__  */
+#endif      /* __AI_MODEL_CONFIG_H__ */

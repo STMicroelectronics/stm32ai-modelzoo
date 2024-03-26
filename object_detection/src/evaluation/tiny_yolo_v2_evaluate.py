@@ -130,7 +130,7 @@ def calculate_float_map(cfg, best_model):
             predictions = best_model.predict_on_batch(image_processed)
             predictions_tensor = K.constant(predictions)
             predictions_output_shape = K.shape(predictions_tensor)
-            input_tensor_shape = K.cast(predictions_output_shape[1:3] * 32, K.dtype(predictions_tensor))
+            input_tensor_shape = K.cast(predictions_output_shape[1:3] * cfg.postprocessing.network_stride, K.dtype(predictions_tensor))
             preds_decoded = tiny_yolo_v2_decode(predictions_tensor, anchors, num_classes, input_tensor_shape, calc_loss=False)
             input_image_shape = [height, width]
             boxes, scores, classes, my_boxes = tiny_yolo_v2_nms(yolo_outputs = preds_decoded,
@@ -272,7 +272,7 @@ def calculate_quantized_map(cfg, tflite_model):
 
             predictions_tensor = K.constant(predictions)
             predictions_output_shape = K.shape(predictions_tensor)
-            input_tensor_shape = K.cast(predictions_output_shape[1:3] * 32, K.dtype(predictions_tensor))
+            input_tensor_shape = K.cast(predictions_output_shape[1:3] * cfg.postprocessing.network_stride, K.dtype(predictions_tensor))
             preds_decoded = tiny_yolo_v2_decode(predictions_tensor, anchors, num_classes, input_tensor_shape, calc_loss=False)
             input_image_shape = [height, width]
             boxes, scores, classes, my_boxes = tiny_yolo_v2_nms(yolo_outputs = preds_decoded,

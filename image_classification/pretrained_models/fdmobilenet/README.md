@@ -12,7 +12,11 @@ The hyperparameter 'alpha' controls the width of the network, also denoted as wi
 Authorized values for 'alpha' are 0.25, 0.5, 0.75, 1.0.
 The model is quantized in int8 using Tensorflow Lite converter.
 
-Performances of a ST custom model derived from Fd-MobileNet is also proposed below.
+Performances of a ST custom model derived from Fd-MobileNet is also proposed below. It is named ST FdMobileNet v1.
+It is inspired from original FdMobilenet. Instead of having one unique 'alpha' dimensioning the width of the network, we 
+use a list of 'alpha' values in order to give more or less importance to each of the individual sub-blocks.
+It is slightly more complex than FdMobilenet 0.25 due to higher number of channels for some sub-blocks but provides 
+better accuracies. We believe it is a good compromise between size, complexity and accuracy for this family of networks.
 
 ## Network information
 | Network Information     | Value                                |
@@ -51,6 +55,7 @@ For an image resolution of NxM and P classes and 0.25 alpha parameter :
 To train a FdMobileNet 0.25 model from scratch on your own dataset, you need to configure the [user_config.yaml](../../src/user_config.yaml) file following the [tutorial](../../src/README.md) under the src section.
 
 As an example, [fdmobilenet_0.25_224_config_tfs.yaml](./ST_pretrainedmodel_public_dataset/flowers/fdmobilenet_0.25_224_tfs/fdmobilenet_0.25_224_tfs_config.yaml) file is used to train this model on flowers dataset, you can copy its content in the [user_config.yaml](../../src/user_config.yaml) file provided under the src section to reproduce the results presented below.
+For ST FdMobileNet v1, just consider [st_fdmobilenet_v1_224_tfs_config.yaml](./ST_pretrainedmodel_public_dataset/flowers/st_fdmobilenet_v1_224_tfs/st_fdmobilenet_v1_224_tfs_config.yaml) instead.
 
 ## Deployment
 To deploy your trained model, you need to configure the [user_config.yaml](../../src/user_config.yaml) file following the [tutorial](../../deployment/README.md) under the deployment section.

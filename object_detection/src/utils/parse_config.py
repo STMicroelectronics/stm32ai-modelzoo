@@ -273,14 +273,19 @@ def parse_dataset_section(cfg: DictConfig, mode: str = None, mode_groups: DictCo
                              "Please check the 'dataset' section of your configuration file.")
 
 
-def parse_preprocessing_section(cfg: DictConfig) -> None:
+def parse_preprocessing_section(cfg: DictConfig,
+                                mode:str = None) -> None:
     # cfg: 'preprocessing' section of the configuration file
-
     legal = ["rescaling", "resizing", "color_mode"]
-    check_config_attributes(cfg, specs={"legal": legal, "all": legal}, section="preprocessing")
-
-    legal = ["scale", "offset"]
-    check_config_attributes(cfg.rescaling, specs={"legal": legal, "all": legal}, section="preprocessing.rescaling")
+    if mode == 'deployment':
+        # removing the obligation to have rescaling for the 'deployment' mode
+        required=["resizing", "color_mode"]
+        check_config_attributes(cfg, specs={"legal": legal, "all": required}, section="preprocessing")
+    else:
+        required=legal
+        check_config_attributes(cfg, specs={"legal": legal, "all": required}, section="preprocessing")
+        legal = ["scale", "offset"]
+        check_config_attributes(cfg.rescaling, specs={"legal": legal, "all": legal}, section="preprocessing.rescaling")
 
     legal = ["interpolation", "aspect_ratio"]
     check_config_attributes(cfg.resizing, specs={"legal": legal, "all": legal}, section="preprocessing.resizing")
@@ -469,7 +474,8 @@ def get_config(config_data: DictConfig) -> DefaultMunch:
         cfg.dataset = DefaultMunch.fromDict({})
     parse_dataset_section(cfg.dataset, mode=cfg.operation_mode, mode_groups=mode_groups)
 
-    parse_preprocessing_section(cfg.preprocessing)
+    parse_preprocessing_section(cfg.preprocessing,
+                                mode=cfg.operation_mode)
 
     if cfg.operation_mode in mode_groups.training and cfg.data_augmentation:
         parse_data_augmentation_section(cfg.data_augmentation)

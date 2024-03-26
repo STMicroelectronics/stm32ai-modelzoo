@@ -118,7 +118,7 @@ def get_ground_truth_data(annotation, max_boxes = 100):
 
     return img_rgb, box_data
 
-def preprocess_true_boxes(true_boxes, anchors_a, input_shape, num_classes):
+def preprocess_true_boxes(true_boxes, anchors_a, input_shape, num_classes,network_stride):
     '''
     Preprocesses the ground truth bounding boxes to generate the target output for the YOLOv2 model
 
@@ -135,10 +135,10 @@ def preprocess_true_boxes(true_boxes, anchors_a, input_shape, num_classes):
     height, width = input_shape
     num_anchors = len(anchors_a)
     # Downsampling factor of 5x 2-stride max_pools == 32.
-    assert height % 32 == 0, 'Image sizes in YOLO_v2 must be multiples of 32.'
-    assert width % 32 == 0, 'Image sizes in YOLO_v2 must be multiples of 32.'
-    conv_height = height // 32
-    conv_width = width // 32
+    assert height % network_stride == 0, 'Image sizes in YOLO_v2 must be multiples of {}.'.format(network_stride)
+    assert width % network_stride == 0, 'Image sizes in YOLO_v2 must be multiples of {}.'.format(network_stride)
+    conv_height = height // network_stride
+    conv_width = width // network_stride
     #and image relative coordinate.
     true_boxes = np.array(true_boxes, dtype='float32')
     input_shape = np.array(input_shape, dtype='int32')
@@ -203,7 +203,7 @@ def preprocess_true_boxes(true_boxes, anchors_a, input_shape, num_classes):
             y_true[i, j, best_anchor] = adjusted_box
     return y_true
 
-def get_y_true_data(box_data, anchors, input_shape, num_classes):
+def get_y_true_data(box_data, anchors, input_shape, num_classes,network_stride):
     '''
     Precompute y_true feature map data on a batch for training.
 
@@ -217,7 +217,7 @@ def get_y_true_data(box_data, anchors, input_shape, num_classes):
     '''
     y_true_data = [0 for i in range(len(box_data))]
     for i, boxes in enumerate(box_data):
-        y_true_data[i] = preprocess_true_boxes(boxes, anchors, input_shape, num_classes)
+        y_true_data[i] = preprocess_true_boxes(boxes, anchors, input_shape, num_classes,network_stride)
 
     return np.array(y_true_data)
 
@@ -257,6 +257,7 @@ class tiny_yolo_v2_data_geneator(tf.keras.utils.Sequence):
         self.multi_scale = multi_scale
         self.anchors_arr = anchors
         self.interpolation = cfg.preprocessing.resizing.interpolation
+        self.network_stride = cfg.postprocessing.network_stride
 
         if self.interpolation == 'bilinear':
             self.interpolation_id = 1
@@ -317,7 +318,8 @@ class tiny_yolo_v2_data_geneator(tf.keras.utils.Sequence):
         y_true_data = get_y_true_data(rescaled_labels_batch_array,
                                       self.anchors_arr,
                                       (self.input_size,self.input_size),
-                                      self.num_classes)
+                                      self.num_classes,
+                                      self.network_stride)
         return [resized_images_batch_array, y_true_data], np.zeros(self.batch_size)
 
 def count_ground_truth_data(annotation):
@@ -397,8 +399,7 @@ def tiny_yolo_v2_preprocess(cfg):
         num_classes = len(classes)
         anchors_list = cfg.postprocessing.yolo_anchors
         anchors = np.array(anchors_list).reshape(-1, 2)
-
-    assert (input_shape[0]%32 == 0 and input_shape[1]%32 == 0), 'model_input_shape should be multiples of 32'
+        assert (input_shape[0]% cfg.postprocessing.network_stride == 0 and input_shape[1]% cfg.postprocessing.network_stride == 0), 'model_input_shape should be multiples of {}'.format(cfg.postprocessing.network_stride)
 
     if validation_path and training_path:
         # Load training and validation datasets

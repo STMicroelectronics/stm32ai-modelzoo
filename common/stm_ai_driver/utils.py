@@ -193,8 +193,9 @@ class ColorFormatter(logging.Formatter):
         return logging.Formatter.format(self, record)
 
 
-def get_logger(name=_LOGGER_NAME_, level=logging.WARNING, color=True):
+def get_logger(name=_LOGGER_NAME_, level=logging.WARNING, color=False):
     """Utility function to create a logger object"""
+    # setting default value to color=False to avoid unwanted characters in terminal
 
     logger = logging.getLogger(name)
 

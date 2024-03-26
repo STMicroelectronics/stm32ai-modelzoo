@@ -28,6 +28,7 @@
 /* Global variables ----------------------------------------------------------*/
 
 /*Application context*/
+__attribute__((section(".AppConfig_SDRAM")))
 AppConfig_TypeDef App_Config;
 
 /*Table of classes for the NN model*/
@@ -92,7 +93,13 @@ uint8_t lcd_display_global_memory[SDRAM_BANK_SIZE + LCD_FRAME_BUFFER_SIZE];
 
 uint8_t pixel_conv_lut[256];
 __attribute__((section(".Out_Postproc")))
-postprocess_outBuffer_t out_postproc[1];
+#if POSTPROCESS_TYPE == POSTPROCESS_YOLO_V2
+  postprocess_outBuffer_t out_postproc[AI_OBJDETECT_YOLOV2_PP_MAX_BOXES_LIMIT];
+#elif POSTPROCESS_TYPE == POSTPROCESS_ST_SSD
+  postprocess_outBuffer_t out_postproc[AI_OBJDETECT_SSD_ST_PP_TOTAL_DETECTIONS];
+#else
+  postprocess_outBuffer_t out_postproc[];
+#endif
 
 
 /* Private variables ---------------------------------------------------------*/

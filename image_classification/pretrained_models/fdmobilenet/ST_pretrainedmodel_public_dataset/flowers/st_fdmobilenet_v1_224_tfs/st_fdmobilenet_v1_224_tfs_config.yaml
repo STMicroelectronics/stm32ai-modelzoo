@@ -1,0 +1,141 @@
+general:
+  project_name: tf_flowers
+  model_path:
+  logs_dir: logs
+  saved_models_dir: saved_models
+  global_seed: 127
+  gpu_memory_limit: 24
+
+operation_mode: chain_tqe
+#choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
+#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+
+dataset:
+  name: flowers
+  class_names: [ daisy, dandelion, roses, sunflowers, tulips ]
+  training_path: ../datasets/flower_photos/
+  validation_path:
+  validation_split: 0.2
+  test_path:
+  quantization_path:
+  quantization_split:
+  seed: 127
+
+preprocessing:
+  rescaling: { scale: 1/255.0, offset: 0 }
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+data_augmentation:
+  random_jpeg_quality:
+    jpeg_quality: (60, 100)
+    change_rate: 0.2
+  random_posterize:
+    bits: (4, 8)
+    change_rate: 0.15
+  random_hue:
+    delta: 0.05
+    change_rate: 1.0
+  random_contrast:
+    factor: 0.6
+    change_rate: 1.0
+  random_brightness:
+    factor: 0.05
+    change_rate: 1.0
+  random_rectangle_erasing:
+    nrec: (0, 10)
+    area: (0.0, 0.1)
+    wh_ratio: (0.25, 4.0)
+    fill_method: "mosaic"
+    mode: batch
+  random_flip:
+    mode: horizontal
+    change_rate: 1.0 
+  random_translation:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+    change_rate: 1.0
+  random_rotation:
+    factor: 0.125
+    fill_mode: reflect
+    interpolation: nearest
+    change_rate: 1.0
+  random_zoom:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+    change_rate: 1.0
+  random_shear:
+    factor: 0.15
+    fill_mode: wrap
+    interpolation: nearest
+    change_rate: 1.0  
+
+training:
+  model:
+    name: st_fdmobilenet
+    version: v1
+    input_shape: (224, 224, 3)
+    #pretrained_weights:
+  #frozen_layers: (0:-1)
+  dropout: 0.35
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.01
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      mode: max
+      factor: 0.5
+      patience: 60
+      min_lr: 1.0e-05
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: true
+      patience: 200
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+prediction:
+  test_images_path:
+
+tools:
+  stm32ai:
+    version: 8.1.0
+    optimization: balanced
+    on_cloud: True
+    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+  board: STM32H747I-DISCO
+
+deployment:
+  c_project_path: ../../stm32ai_application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: SPI_CAMERA
+    output: USB_DISPLAY
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

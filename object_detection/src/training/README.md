@@ -209,7 +209,7 @@ preprocessing:
     offset: -1
   resizing:
     # Image resizing parameters
-    interpolation: bilinear
+    interpolation: nearest
     aspect_ratio: fit
   color_mode: rgb
 ```

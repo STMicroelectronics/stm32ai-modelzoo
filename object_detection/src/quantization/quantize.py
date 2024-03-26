@@ -62,7 +62,7 @@ def tfite_ptq_quantizer(
 
     def fake_data_gen():
         for _ in tqdm.tqdm(range(num_fake_images)):
-            image = tf.random.uniform(image_shape, minval=0, maxval=256, dtype=tf.int8)
+            image = tf.random.uniform(image_shape, minval=0, maxval=256, dtype=tf.int32)
             image = tf.cast(image, tf.float32)
             
             # Rescale the image

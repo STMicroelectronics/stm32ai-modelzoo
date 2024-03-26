@@ -21,7 +21,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../utils'))
 from data_augment import data_aug, convert_to_iaa, convert_from_iaa
 from load_models import get_model
 from datasets import load_dataset
-from anchor_boxes_utils import get_sizes_ratios, match_gt_anchors
+from anchor_boxes_utils import get_sizes_ratios, get_sizes_ratios_ssd_v2, match_gt_anchors
 from models_mgt import get_model_name_and_its_input_shape
 
 
@@ -460,8 +460,7 @@ def preprocess(cfg: DictConfig = None) -> tuple:
         if cfg.general.model_type == 'st_ssd_mobilenet_v1':
             sizes_h, ratios_h = get_sizes_ratios(input_shape)
         elif cfg.general.model_type == 'ssd_mobilenet_v2_fpnlite':
-            sizes_h  = [[0.26,0.33], [0.42,0.49], [0.58,0.66], [0.74,0.82], [0.9,0.98]]
-            ratios_h = [[1.0, 2.0, 0.5, 1.0 / 3]]*len(sizes_h)
+            sizes_h, ratios_h = get_sizes_ratios_ssd_v2(input_shape)
         else:
             print('[ERROR] : Unsupported model type, please use "st_ssd_mobilenet_v1" or "ssd_mobilenet_v2_fpnlite"')
 

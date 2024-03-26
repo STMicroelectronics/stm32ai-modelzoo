@@ -17,6 +17,7 @@ sys.path.append(os.path.abspath('../../../common'))
 sys.path.append(os.path.abspath('../evaluation'))
 from tiny_yolo_v2_evaluate import evaluate_tiny_yolo_v2
 from tiny_yolo_v2 import tiny_yolo_v2_body
+from st_yolo_lc_v1 import st_yolo_lc_v1_body
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.layers import Input
 from common_utils import get_mem_consumption, benchmark
@@ -25,7 +26,7 @@ class CheckpointYoloCleanCallBack(Callback):
     """
     A Keras callback that replaces training checkpoints by inference checkpoints at the end of each epoch.
     """
-    def __init__(self, class_names,anchors,model_input_shape,logs_dir):
+    def __init__(self, class_names,anchors,model_input_shape,logs_dir, network_stride):
         """
         Initializes the callback.
 
@@ -39,12 +40,13 @@ class CheckpointYoloCleanCallBack(Callback):
         self.anchors = anchors
         self.model_input_shape = model_input_shape
         self.logs_dir = logs_dir
+        self.network_stride = network_stride
 
     def on_epoch_end(self, epoch, logs=None):
-        _export_tiny_yolo_v2_model(self.class_names,self.anchors,self.model_input_shape,self.logs_dir)
+        _export_tiny_yolo_v2_model(self.class_names,self.anchors,self.model_input_shape,self.logs_dir,self.network_stride)
 
 
-def _export_tiny_yolo_v2_model(class_names,anchors,model_input_shape,logs_dir):
+def _export_tiny_yolo_v2_model(class_names,anchors,model_input_shape,logs_dir,network_stride):
     """
     Export a trained Tiny YOLOv2 model to disk for inference.
     
@@ -62,7 +64,11 @@ def _export_tiny_yolo_v2_model(class_names,anchors,model_input_shape,logs_dir):
             num_classes = len(class_names)
             w = model_input_shape
             input_tensor = Input(shape=(w, w, 3), name='image_input')
-            inference_model = tiny_yolo_v2_body(input_tensor, num_anchors, num_classes)
+            if network_stride == 32 :
+                inference_model = tiny_yolo_v2_body(input_tensor, num_anchors, num_classes)
+            else:
+                inference_model = st_yolo_lc_v1_body(input_tensor, num_anchors, num_classes)
+
             inference_model.load_weights(model_path, by_name=False)
             inference_model.save(model_path)
 
@@ -130,6 +136,11 @@ def check_cfg_attributes(cfg):
     if cfg.operation_mode not in ['quantization' ,'benchmarking']:
         cfg.postprocessing.yolo_anchors = [x * cfg.training.model.input_shape[0] for x in cfg.postprocessing.yolo_anchors]
 
+        if cfg.general.model_type == "tiny_yolo_v2":
+            cfg.postprocessing.network_stride = 32
+        elif cfg.general.model_type == "st_yolo_lc_v1":
+            cfg.postprocessing.network_stride = 16
+
 def set_multi_scale_max_resolution(cfg):
     """
     Set the maximum input size for multi-scale data augmentation based on the available GPU memory.
@@ -149,19 +160,23 @@ def set_multi_scale_max_resolution(cfg):
     classes = cfg.dataset.class_names
     num_classes = len(classes)
     channels = cfg.training.model.input_shape[2]
+    network_stride = cfg.postprocessing.network_stride
 
-    sizes = list(range(min_input_size, 609, 32))
+    sizes = list(range(min_input_size, 609, cfg.postprocessing.network_stride))
     sizes = sorted(sizes, reverse=True)
     for im_sz in sizes:
         input_shape= (im_sz,im_sz,channels)
         input_tensor = Input(shape=input_shape, batch_size=batch_size, name='image_input')
-        model = tiny_yolo_v2_body(input_tensor, num_anchors, num_classes)
+        if network_stride == 32 :
+            model = tiny_yolo_v2_body(input_tensor, num_anchors, num_classes)
+        else:
+            model = st_yolo_lc_v1_body(input_tensor, num_anchors, num_classes)
         model.compile(loss=tf.keras.losses.mean_squared_error, optimizer=tf.keras.optimizers.Adam(learning_rate=0.01))
         print("[INFO] : Setting max input size to {} for multi scale data augmentation".format(im_sz))
         size_error = benchmark(gpu_limit, batch_size,input_shape,model)
         if size_error:
             print("[WRN] : Not enough GPU memory!!")
         else:
-            sizes_list = list(range(min_input_size, (im_sz+1), 32))
+            sizes_list = list(range(min_input_size, (im_sz+1), cfg.postprocessing.network_stride))
             cfg.data_augmentation.multi_scale_list = [(x, x) for x in sizes_list]
             break

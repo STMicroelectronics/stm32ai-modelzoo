@@ -36,33 +36,45 @@ def update_activation_c_code(c_project_path: str, path_network_c_graph: str, ava
     VGA_width = 640
     VGA_height = 480
 
-    if aspect_ratio == "ASPECT_RATIO_CROP":
+    if aspect_ratio == "crop":
         if network_width <= QVGA_height and network_height <= QVGA_height:
             cam_res = "CAMERA_R320x240"
             cam_res_width = "QVGA_RES_HEIGHT"
             cam_res_height = "QVGA_RES_HEIGHT"
+            cam_buffer_width = "QVGA_RES_HEIGHT"
+            cam_buffer_height = "QVGA_RES_HEIGHT"
         elif network_width <= VGA_height and network_height <= VGA_height:
             cam_res = "CAMERA_R640x480"
             cam_res_width = "VGA_RES_HEIGHT"
             cam_res_height = "VGA_RES_HEIGHT"
-    elif aspect_ratio == "ASPECT_RATIO_PADDING":
+            cam_buffer_width = "VGA_RES_HEIGHT"
+            cam_buffer_height = "VGA_RES_HEIGHT"
+    elif aspect_ratio == "padding":
         if network_width <= QVGA_width and network_height <= QVGA_width:
             cam_res = "CAMERA_R320x240"
             cam_res_width = "QVGA_RES_WIDTH"
             cam_res_height = "QVGA_RES_HEIGHT"
+            cam_buffer_width = "QVGA_RES_WIDTH"
+            cam_buffer_height = "QVGA_RES_WIDTH"
         elif network_width <= VGA_width and network_height <= VGA_width:
             cam_res = "CAMERA_R640x480"
             cam_res_width = "VGA_RES_WIDTH"
             cam_res_height = "VGA_RES_HEIGHT"
+            cam_buffer_width = "VGA_RES_WIDTH"
+            cam_buffer_height = "VGA_RES_WIDTH"
     else:
         if network_width <= QVGA_width and network_height <= QVGA_height:
             cam_res = "CAMERA_R320x240"
             cam_res_width = "QVGA_RES_WIDTH"
             cam_res_height = "QVGA_RES_HEIGHT"
+            cam_buffer_width = "QVGA_RES_WIDTH"
+            cam_buffer_height = "QVGA_RES_HEIGHT"
         elif network_width <= VGA_width and network_height <= VGA_height:
             cam_res = "CAMERA_R640x480"
             cam_res_width = "VGA_RES_WIDTH"
             cam_res_height = "VGA_RES_HEIGHT"
+            cam_buffer_width = "VGA_RES_WIDTH"
+            cam_buffer_height = "VGA_RES_HEIGHT"
     if not 'cam_res' in locals():
         ValueError("Needed camera resolution ({}x{}) exceeds VGA format. ".format(network_width,network_height))
 
@@ -78,24 +90,28 @@ def update_activation_c_code(c_project_path: str, path_network_c_graph: str, ava
             f2.write(line)
     os.replace(os.path.join(os.path.dirname(path_main_h), 'main_modify.h'), path_main_h)
 
-    if cam_res_width == "QVGA_RES_WIDTH":
-        cam_res_width = QVGA_width
-    elif cam_res_width == "QVGA_RES_HEIGHT":
-        cam_res_width = QVGA_height
-    elif cam_res_width == "VGA_RES_WIDTH":
-        cam_res_width = VGA_width
+    if cam_buffer_width == "QVGA_RES_WIDTH":
+        cam_buffer_width = QVGA_width
+    elif cam_buffer_width == "QVGA_RES_HEIGHT":
+        cam_buffer_width = QVGA_height
+    elif cam_buffer_width == "VGA_RES_WIDTH":
+        cam_buffer_width = VGA_width
     else:
-        cam_res_width = VGA_height
-    if cam_res_height == "QVGA_RES_HEIGHT":
-        cam_res_height = QVGA_height
+        cam_buffer_width = VGA_height
+    if cam_buffer_height == "QVGA_RES_WIDTH":
+        cam_buffer_height = QVGA_width
+    elif cam_buffer_height == "QVGA_RES_HEIGHT":
+        cam_buffer_height = QVGA_height
+    elif cam_buffer_height == "VGA_RES_WIDTH":
+        cam_buffer_height = VGA_width
     else:
-        cam_res_height = VGA_height
+        cam_buffer_height = VGA_height
     # Grayscale
     if network_channel == 1:
-        cam_buffer_size = cam_res_height*cam_res_width
+        cam_buffer_size = cam_buffer_height*cam_buffer_width
     # RGB565
     if network_channel == 3:
-        cam_buffer_size = cam_res_height*cam_res_width*2
+        cam_buffer_size = cam_buffer_height*cam_buffer_width*2
 
     ### Generate main.c
     with open(os.path.join(path_network_c_graph), 'r') as f:

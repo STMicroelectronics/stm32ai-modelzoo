@@ -20,6 +20,13 @@ The performances on reference STM32 MCU and MPU are provided for float and quant
 This project is organized by application, for each application you will have a step by step guide that will indicate how
 to train and deploy the models.
 
+## What's new in release 2.0:
+* An aligned and `uniform architecture` for all the use case
+* A modular design to run different operation modes (training, benchmarking, evaluation, deployment, quantization) independently or with an option of chaining multiple modes in a single launch.
+* A simple and `single entry point` to the code : a .yaml configuration file to configure all the needed services.
+* Support of the `Bring Your Own Model (BYOM)` feature to allow the user (re-)training his own model. Example is provided [here](./image_classification/src/training/README.md#51-training-your-own-model).
+* Support of the `Bring Your Own Data (BYOD)` feature to allow the user finetuning some pretrained models with his own datasets. Example is provided [here](./image_classification/src/training/README.md#23-dataset-specification).
+
 
 <div align="center" style="margin-top: 80px; padding: 20px 0;">
     <p align="center">
@@ -30,8 +37,9 @@ to train and deploy the models.
 </div>
 
 ## Available use-cases
-
-* [Image classification](image_classification)
+>[!TIP]
+> For all use-cases below, quick and easy examples are provided and can be executed for a fast ramp up (click on use cases links below)
+* [Image classification (IC)](image_classification)
     * Models: EfficientNet, MobileNet v1, MobileNet v2, Resnet v1 including with hybrid quantization, 
       SqueezeNet v1.1, STMNIST.
     * Deployment: getting started application
@@ -39,7 +47,7 @@ to train and deploy the models.
           B-CAMS-OMV camera daughter board.
         * On [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV
           camera daughter board, webcam or Arducam Mega 5MP as input and USB display or SPI display as output.
-* [Object detection](object_detection)
+* [Object detection (OD)](object_detection)
     * Models:  ST SSD MobileNet v1, Tiny YOLO v2, SSD MobileNet v2 fpn lite, ST Yolo LC v1.
     * Deployment: getting started application
         * On [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV
@@ -52,7 +60,7 @@ to train and deploy the models.
     * Models: Yamnet, MiniResnet, MiniResnet v2.
     * Deployment: getting started application
         * On [B-U585I-IOT02A](stm32ai_application_code) using RTOS, ThreadX or FreeRTOS.
-* [Hand posture recognition](hand_posture)
+* [Hand posture recognition (HPR)](hand_posture)
     * The hand posture use case is based on the ST multi-zone Time-of-Flight sensors: VL53L5CX, VL53L7CX, VL53L8CX. The
       goal of this use case is to recognize static hand posture such as a like, dislike or love sign done with user hand
       in front of the sensor. We are providing a complete workflow from data acquisition to model training, then
@@ -79,8 +87,12 @@ to train and deploy the models.
 * [stm32ai-tao](https://github.com/STMicroelectronics/stm32ai-tao): this GitHub repository provides Python scripts and
   Jupyter notebooks to manage a complete life cycle of a model from training, to compression, optimization and
   benchmarking using **NVIDIA TAO Toolkit** and STM32Cube.AI Developer Cloud.
+* [stm32ai-nota](https://github.com/STMicroelectronics/stm32ai-nota): this GitHub repository contains Jupyter notebooks that demonstrate how to use **NetsPresso** to prune pre-trained deep learning models from the model zoo and fine-tune, quantize and benchmark them by using STM32Cube.AI Developer Cloud for your specific use case. 
 
 ## Before you start
+For more in depth guide on installing and setting up the model zoo and its requirement on your PC, specially in the
+cases when you are running behind the proxy in corporate setup, follow the detailed wiki article
+on [How to install STM32 model zoo](https://wiki.st.com/stm32mcu/index.php?title=AI:How_to_install_STM32_model_zoo).
 
 * Create an account on myST and then sign in to [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) to be
   able access the service.
@@ -145,10 +157,6 @@ git clone https://github.com/STMicroelectronics/stm32ai-modelzoo.git
 ```
 pip install -r requirements.txt
 ```
-
-For more in depth guide on installing and setting up the model zoo and its requirement on your PC, specially in the
-cases when you are running behind the proxy in corporate setup, follow the detailed wiki article
-on [How to install STM32 model zoo](https://wiki.st.com/stm32mcu/index.php?title=AI:How_to_install_STM32_model_zoo).
 
 ## Jump start with Colab
 

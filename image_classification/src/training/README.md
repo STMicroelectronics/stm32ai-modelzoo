@@ -58,7 +58,8 @@ flowers/
 
 Other dataset formats are not supported. The only exceptions are the Cifar10/Cifar100 datasets. For these datasets, the official format in batches is supported.
 
-## <a id="2">2. Create your training configuration file</a>
+<a id="2"></a>
+## 2. Create your training configuration file
 
 ### <a id="2-1">2.1 Overview</a>
 
@@ -92,8 +93,8 @@ If you want your experiments to be fully reproducible, you need to activate the 
 Enabling the `deterministic_ops` attribute will restrict TensorFlow to use only deterministic operations on the device, but it may lead to a drop in training performance. It should be noted that not all operations in the used version of TensorFlow can be computed deterministically. 
 If your case involves any such operation, a warning message will be displayed and the attribute will be ignored.
 The `logs_dir` attribute is the name of the directory where the MLFlow and TensorBoard files are saved. The `saved_models_dir` attribute is the name of the directory where models are saved, which includes the trained model and the quantized model. These two directories are located under the top level <hydra> directory.
-
-### <a id="2-3">2.3 Dataset specification</a>
+<a id="2-3"></a>
+### 2.3 Dataset specification
 
 Information about the dataset you want use is provided in the `dataset` section of the configuration file, as shown in the YAML code below.
 
@@ -166,7 +167,7 @@ A script called *test_data_augment.py* is available in the **data_augmentation**
 
 Information about the model you want to train is provided in the `training` section of the configuration file.
 
-The YAML code below shows how you can use a MobileNetV2 model from the Model Zoo.
+The YAML code below shows how you can use a MobileNet V2 model from the Model Zoo.
 
 ```yaml
 training:
@@ -283,8 +284,8 @@ mlflow ui
 And open the given IP adress in your browser.
 
 ## <a id="5">5. Advanced settings</a>
-
-### <a id="5-1">5.1 Training your own model</a>
+<a id="5-1"></a>
+### 5.1 Training your own model
 
 You may want to train your own model rather than a model from the Model Zoo.
 

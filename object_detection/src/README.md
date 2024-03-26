@@ -88,7 +88,7 @@ the [user_config.yaml](user_config.yaml) file is explained in detail in the foll
 
 #### <a id="2-1">2.1 Choose the operation mode</a>
 
-The `operation_mode` top-level attribute specifies the operations or the service you want to executed. This may be
+The `operation_mode` top-level attribute specifies the operations or the service you want to execute. This may be
 single operation or a set of chained operations.
 
 The different values of the `operation_mode` attribute and the corresponding operations are described in the table
@@ -244,7 +244,7 @@ preprocessing:
     offset: -1
   resizing:
     # Image resizing parameters
-    interpolation: bilinear
+    interpolation: nearest
     aspect_ratio: fit
   color_mode: rgb
 ```
@@ -665,7 +665,7 @@ preprocessing:
     offset: -1
   resizing:
     aspect_ratio: fit
-    interpolation: bilinear
+    interpolation: nearest
 ```
 
 The code consists of a number of nested "key-value" pairs. The column character is used as a separator between the key
@@ -691,7 +691,7 @@ preprocessing:
   resizing:
     # This is a comment.
     aspect_ratio: fit
-    interpolation: bilinear
+    interpolation: nearest
   color_mode: rgb
 ```
 
@@ -722,7 +722,7 @@ This syntax:
 ```yaml
 resizing:
   aspect_ratio: fit
-  interpolation: bilinear
+  interpolation: nearest
 ```
 
 is equivalent to this one:
@@ -730,7 +730,7 @@ is equivalent to this one:
 ```yaml
 resizing:
   aspect_ratio: "fit"
-  interpolation: "bilinear"
+  interpolation: "nearest"
 ```
 
 **Strings with special characters:**

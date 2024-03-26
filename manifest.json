@@ -1,6 +1,22 @@
 // This file is used to set model zoo visibility on STM32Cube.AI Developer Cloud
 [
 	{
+		"name": "./image_classification/pretrained_models/efficientnet/ST_pretrainedmodel_public_dataset/flowers/st_efficientnet_lc_v1_128_tfs/st_efficientnet_lc_v1_128_tfs_int8.tflite",
+		"description": "ST Efficientnet low complexity 128 trained from scratch on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/pretrained_models/efficientnet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/pretrained_models/efficientnet/ST_pretrainedmodel_public_dataset/flowers/st_efficientnet_lc_v1_224_tfs/st_efficientnet_lc_v1_224_tfs_int8.tflite",
+		"description": "ST Efficientnet 224 low complexity trained from scratch on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/pretrained_models/efficientnet/README.md",
+		"visible": true
+	},	
+	{
 		"name": "./image_classification/pretrained_models/fdmobilenet/ST_pretrainedmodel_public_dataset/flowers/fdmobilenet_0.25_128_tfs/fdmobilenet_0.25_128_tfs_int8.tflite",
 		"description": "FdMobileNet 0.25 128 trained from scratch on flowers with 5 classes",
 		"usecase": "image_classification",
@@ -17,7 +33,23 @@
 		"visible": true
 	},
 	{
-		"name": "./image_classification/pretrained_models/stmnist/ST_pretrainedmodel_public_dataset/emnist_byclass/stmnist_v1_tfs/stmnist_v1_tfs_int8.tflite",
+		"name": "./image_classification/pretrained_models/fdmobilenet/ST_pretrainedmodel_public_dataset/flowers/st_fdmobilenet_v1_128_tfs/st_fdmobilenet_v1_128_tfs_int8.tflite",
+		"description": "ST FdMobileNet 128 trained from scratch on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/pretrained_models/fdmobilenet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/pretrained_models/fdmobilenet/ST_pretrainedmodel_public_dataset/flowers/st_fdmobilenet_v1_224_tfs/st_fdmobilenet_v1_224_tfs_int8.tflite",
+		"description": "ST FdMobileNet 224 trained from scratch on flowers with 5 classes",
+		"usecase": "image_classification",
+		"dataset_used": "flowers",
+		"readme": "./image_classification/pretrained_models/fdmobilenet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/pretrained_models/stmnist/ST_pretrainedmodel_public_dataset/emnist_byclass/st_mnist_v1_28_tfs/st_mnist_v1_28_tfs_int8.tflite",
 		"description": "ST MNIST trained from scratch on EMNIST-Byclass with 36 classes",
 		"usecase": "image_classification",
 		"dataset_used": "emnist_byclass",
@@ -78,7 +110,7 @@
 		"usecase": "image_classification",
 		"dataset_used": "person",
 		"readme": "./image_classification/pretrained_models/mobilenetv2/README.md",
-		"visible": true
+		"visible": false
 	},
 	{
 		"name": "./image_classification/pretrained_models/mobilenetv2/ST_pretrainedmodel_public_dataset/person/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite",
@@ -98,6 +130,22 @@
 	},
 	{
 		"name": "./image_classification/pretrained_models/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite",
+		"description": "ST Hybrid ResNet 8 32 v1 trained from scratch on Cifar10 with 10 classes",
+		"usecase": "image_classification",
+		"dataset_used": "cifar10",
+		"readme": "./image_classification/pretrained_models/resnetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/pretrained_models/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v1_32_tfs/st_resnet_8_hybrid_v1_32_tfs.h5",
+		"description": "ST Hybrid ResNet 8 32 v2 trained from scratch on Cifar10 with 10 classes",
+		"usecase": "image_classification",
+		"dataset_used": "cifar10",
+		"readme": "./image_classification/pretrained_models/resnetv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/pretrained_models/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v2_32_tfs/st_resnet_8_hybrid_v2_32_tfs.h5",
 		"description": "ResNetv1 8 32 trained from scratch on Cifar10 with 10 classes",
 		"usecase": "image_classification",
 		"dataset_used": "cifar10",
@@ -113,7 +161,7 @@
 		"visible": true
 	},
 	{
-		"name": "./image_classification/pretrained_models/squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenet_v1.1_128_tfs_int8.tflite",
+		"name": "./image_classification/pretrained_models/squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite",
 		"description": "SqueezeNetv1.1 128 trained from scratch on flowers with 5 classes",
 		"usecase": "image_classification",
 		"dataset_used": "flowers",
@@ -121,11 +169,27 @@
 		"visible": true
 	},
 	{
-		"name": "./image_classification/pretrained_models/squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenet_v1.1_224_tfs_int8.tflite",
+		"name": "./image_classification/pretrained_models/squeezenetv1.1/ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite",
 		"description": "SqueezeNetv1.1 224 trained from scratch on flowers with 5 classes",
 		"usecase": "image_classification",
 		"dataset_used": "flowers",
 		"readme": "./image_classification/pretrained_models/squeezenetv1.1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/st_ssd_mobilenet_v1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_192/st_ssd_mobilenet_v1_025_192_int8.tflite",
+		"description": "ST version of SSD Mobilenetv1 0.25 192 trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/st_ssd_mobilenet_v1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/st_ssd_mobilenet_v1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_224/st_ssd_mobilenet_v1_025_224_int8.tflite",
+		"description": "ST version of SSD Mobilenetv1 0.25 224 trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/st_ssd_mobilenet_v1/README.md",
 		"visible": true
 	},
 	{
@@ -145,12 +209,68 @@
 		"visible": true
 	},
 	{
+		"name": "./object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite",
+		"description": "SSD Mobilenetv2 0.35 224 trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite",
+		"description": "SSD Mobilenetv2 0.35 256 trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite",
+		"description": "SSD Mobilenetv2 0.35 416 trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/tiny_yolo_v2/ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_224/tiny_yolo_v2_224_int8.tflite",
+		"description": "tiny yolo v2 224 trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/tiny_yolo_v2/README.md",
+		"visible": true
+	},
+	{
 		"name": "./object_detection/pretrained_models/tiny_yolo_v2/ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_416/tiny_yolo_v2_416_int8.tflite",
 		"description": "tiny yolo v2 416 trained on COCO 2017 (Person Detection) with 1 class",
 		"usecase": "object_detection",
 		"dataset_used": "COCO 2017",
 		"readme": "./object_detection/pretrained_models/tiny_yolo_v2/README.md",
-		"visible": false
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/st_yolo_lc_v1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_lc_v1_192/st_yolo_lc_v1_192_int8.tflite",
+		"description": "ST yolo low complexity v1 192 (derived from tiny yolo v2) trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/st_yolo_lc_v1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/st_yolo_lc_v1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_lc_v1_224/st_yolo_lc_v1_224_int8.tflite",
+		"description": "ST yolo low complexity v1 224 (derived from tiny yolo v2) trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/st_yolo_lc_v1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/pretrained_models/st_yolo_lc_v1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_lc_v1_256/st_yolo_lc_v1_256_int8.tflite",
+		"description": "ST yolo low complexity v1 256 (derived from tiny yolo v2) trained on COCO 2017 (Person Detection) with 1 class",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017",
+		"readme": "./object_detection/pretrained_models/st_yolo_lc_v1/README.md",
+		"visible": true
 	},
 	{
 		"name": "./audio_event_detection/pretrained_models/miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_1stacks_64x50_tl/miniresnet_1stacks_64x50_tl_int8.tflite",
@@ -158,7 +278,7 @@
 		"usecase": "audio_event_detection",
 		"dataset_used": "esc10",
 		"readme": "./audio_event_detection/pretrained_models/miniresnet/README.md",
-		"visible": false
+		"visible": true
 	},
 	{
 		"name": "./audio_event_detection/pretrained_models/miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50_tl/miniresnet_2stacks_64x50_tl_int8.tflite",
@@ -166,7 +286,7 @@
 		"usecase": "audio_event_detection",
 		"dataset_used": "esc10",
 		"readme": "./audio_event_detection/pretrained_models/miniresnet/README.md",
-		"visible": false
+		"visible": true
 	},
 	{
 		"name": "./audio_event_detection/pretrained_models/miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite",
@@ -174,7 +294,7 @@
 		"usecase": "audio_event_detection",
 		"dataset_used": "esc10",
 		"readme": "./audio_event_detection/pretrained_models/miniresnetv2/README.md",
-		"visible": false
+		"visible": true
 	},
 	{
 		"name": "./audio_event_detection/pretrained_models/miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite",
@@ -182,7 +302,7 @@
 		"usecase": "audio_event_detection",
 		"dataset_used": "esc10",
 		"readme": "./audio_event_detection/pretrained_models/miniresnetv2/README.md",
-		"visible": false
+		"visible": true
 	},
 	{
 		"name": "./audio_event_detection/pretrained_models/yamnet/ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite",
@@ -217,23 +337,7 @@
 		"visible": true
 	},
 	{
-		"name": "./human_activity_recognition/pretrained_models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24_int8.tflite",
-		"description": "GMP 24x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/pretrained_models/gmp/README.md",
-		"visible": true
-	},
-	{
 		"name": "./human_activity_recognition/pretrained_models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5",
-		"description": "GMP 48x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/pretrained_models/gmp/README.md",
-		"visible": true
-	},
-	{
-		"name": "./human_activity_recognition/pretrained_models/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48_int8.tflite",
 		"description": "GMP 48x3 trained on WISDM with 4 classes",
 		"usecase": "human_activity_recognition",
 		"dataset_used": "WISDM",
@@ -249,23 +353,7 @@
 		"visible": true
 	},
 	{
-		"name": "./human_activity_recognition/pretrained_models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24_int8.tflite",
-		"description": "IGN 24x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/pretrained_models/ign/README.md",
-		"visible": true
-	},
-	{
 		"name": "./human_activity_recognition/pretrained_models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5",
-		"description": "IGN 48x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/pretrained_models/ign/README.md",
-		"visible": true
-	},
-	{
-		"name": "./human_activity_recognition/pretrained_models/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48_int8.tflite",
 		"description": "IGN 48x3 trained on WISDM with 4 classes",
 		"usecase": "human_activity_recognition",
 		"dataset_used": "WISDM",

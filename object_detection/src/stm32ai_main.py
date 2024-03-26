@@ -60,7 +60,7 @@ def process_mode(cfg: DictConfig = None,
     Returns:
         None
     """
-    if cfg.general.model_type == "tiny_yolo_v2":
+    if cfg.general.model_type == "tiny_yolo_v2" or cfg.general.model_type == "st_yolo_lc_v1":
         train_glob = train_tiny_yolo_v2
         quantize_glob = quantize_tiny_yolo_v2
         evaluate_glob = evaluate_tiny_yolo_v2
@@ -175,7 +175,7 @@ def main(cfg: DictConfig) -> None:
 
     # Initialize MLflow
     mlflow_ini(cfg)
-    if cfg.general.model_type == "tiny_yolo_v2":
+    if cfg.general.model_type == "tiny_yolo_v2" or cfg.general.model_type == "st_yolo_lc_v1":
         preprocess_output = tiny_yolo_v2_preprocess(cfg)
     else: 
         preprocess_output = preprocess(cfg)

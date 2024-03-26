@@ -33,7 +33,7 @@ You need to download and install the following software:
 
 - `serie` : STM32H7
 - `IDE` : GCC
-- `resizing` : bilinear
+- `resizing` : nearest
 - Supports only 8-bits quantized TFlite model, i.e. `quantize` : True if model not quantized
 - `quantization_input_type` : uint8
 - `quantization_output_type` : float

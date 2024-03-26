@@ -171,7 +171,7 @@ Environment variables can be used to avoid hardcoding in the configuration file 
 
 #### <a id="3-2">3.2 Operation mode</a>
 
-The `operation_mode` top-level attribute specifies the operations you want to executed. This may be single operation or a set of chained operations.
+The `operation_mode` top-level attribute specifies the operations you want to execute. This may be single operation or a set of chained operations.
 
 The different values of the `operation_mode` attribute and the corresponding operations are described in the table below. In the names of the chain modes, 't' stands for training, 'e' for evaluation, 'q' for quantization, 'b' for benchmark and 'd' for deployment.
 
@@ -319,7 +319,7 @@ The model zoo provides support for some publicly available datasets. However, su
 
 Currently, only ESC-10 (which does not require any dataset-specific parameters) and FSD50K are supported by the model zoo. Thus, this section only covers parameters specific to FSD50K.
 
-For more details on how to train a model using FSD50K, please consult section <a href="#7">7. Training a model on FSD50K </a>
+For more details on how to train a model using FSD50K, please consult section <a href="#8">8. Training a model on FSD50K </a>
 
 
 ```yaml
@@ -331,6 +331,8 @@ dataset_specific:
     csv_folder: ../datasets/FSD50K/FSD50K.ground_truth
     dev_audio_folder: ../datasets/FSD50K/FSD50K.dev_audio
     eval_audio_folder: ../datasets/FSD50K/FSD50K.eval_audio
+    # Change this next line to the ontology path on your machine. 
+    # Download the ontology at https://github.com/audioset/ontology
     audioset_ontology_path: preprocessing/dataset_utils/fsd50k/audioset_ontology.json
     only_keep_monolabel: True
 ```
@@ -338,7 +340,7 @@ dataset_specific:
 - `csv_folder` : *string*, Folder where the dev and eval csv files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.ground_truth`
 - `dev_audio_folder` : *string*, Folder where the dev audio files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.dev_audio`
 - `eval_audio_folder` : *string*, Folder where the eval audio files are located. The default name for this folder in the archives downloaded from Zenodo is `FSD50K.eval_audio`
-- `audioset_ontology_path` : *string*, Path to the audioset ontology JSON file. The file is provided in the model zoo [here](./preprocessing/dataset_utils/fsd50k/audioset_ontology.json), but you can also download it from https://github.com/audioset/ontology/blob/master/ontology.json
+- `audioset_ontology_path` : *string*, Path to the audioset ontology JSON file. Due to licensing issues, the file is NOT provided in the model zoo, but you can also download it from https://github.com/audioset/ontology/blob/master/ontology.json
 - `only_keep_monolabel` : *boolean*, If set to True, discard all multi-label samples. This is a comparatively small proportion of all samples. 
 
 #### <a id="3-7">3.7 Audio temporal domain preprocessing</a>
@@ -986,11 +988,16 @@ After extraction you should end up with the following folders :
 
 Strictly speaking, `FSD50K.metadata` and `FSD50K.doc` are unnecessary, so they can be deleted.
 
+Next, download the audioset ontology JSON file here : https://github.com/audioset/ontology/blob/master/ontology.json
+
+Due to licensing concerns, we cannot provide this file directly in the zoo, and you must download it yourself.
+
 **Set up the dataset-specific parameters**
 First, set `dataset.name` to `fsd50k` in the configuration file. See section<a href="3-5">3.5 Datasets</a> for more details.
 
 You will need to set some dataset-specific parameters in the configuration file.
 See <a href="3-6">3.6 Dataset-specific parameters </a> for a detailed description of each parameter.
+Don't forget to set the `audioset_ontology_path` argument to the path where you downloaded the audioset ontology JSON file.
 
 **NOTE** The regular `training_audio_path`, `training_csv_path`, `validation_audio_path`, `validation_csv_path`, `validation_split` are unused when using FSD50K. Instead, the dev set is used as the training set, and the eval set as the validation set.
 
