@@ -92,13 +92,12 @@ uint8_t lcd_display_global_memory[SDRAM_BANK_SIZE + LCD_FRAME_BUFFER_SIZE];
 
 
 uint8_t pixel_conv_lut[256];
-__attribute__((section(".Out_Postproc")))
-#if POSTPROCESS_TYPE == POSTPROCESS_YOLO_V2
-  postprocess_outBuffer_t out_postproc[AI_OBJDETECT_YOLOV2_PP_MAX_BOXES_LIMIT];
-#elif POSTPROCESS_TYPE == POSTPROCESS_ST_SSD
+#if POSTPROCESS_TYPE == POSTPROCESS_ST_SSD
+  __attribute__((section(".Out_Postproc")))
   postprocess_outBuffer_t out_postproc[AI_OBJDETECT_SSD_ST_PP_TOTAL_DETECTIONS];
-#else
-  postprocess_outBuffer_t out_postproc[];
+#elif POSTPROCESS_TYPE == POSTPROCESS_SSD
+  __attribute__((section(".Out_Postproc")))
+  postprocess_outBuffer_t out_postproc[AI_OBJDETECT_SSD_PP_TOTAL_DETECTIONS];
 #endif
 
 
@@ -243,7 +242,11 @@ static void Software_Init(AppConfig_TypeDef *App_Config_Ptr)
   /*Postproc initialization*/
   App_Config_Ptr->error = AI_OBJDETECT_POSTPROCESS_ERROR_NO;
 
-  App_Config_Ptr->output.pOutBuff = &out_postproc[0];
+#if POSTPROCESS_TYPE == POSTPROCESS_YOLO_V2
+  App_Config_Ptr->output.pOutBuff = 0;
+#else
+  App_Config_Ptr->output.pOutBuff = out_postproc;
+#endif
   App_Config_Ptr->error = app_postprocess_init( App_Config_Ptr );
 
   if (App_Config_Ptr->error != AI_OBJDETECT_POSTPROCESS_ERROR_NO)
