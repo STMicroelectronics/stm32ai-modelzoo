@@ -127,12 +127,12 @@ quantization:
   export_dir: quantized_models
 
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai:  C:/ST/STM32CubeAI/en.x-cube-ai-windows_v8.1.0/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 
 benchmarking:
   board: B-U585I-IOT02A 

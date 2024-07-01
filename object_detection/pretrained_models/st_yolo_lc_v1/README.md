@@ -44,14 +44,15 @@ For an image resolution of NxM and NC classes
 | STM32L4  | []        | []          |
 | STM32U5  | []        | []          |
 | STM32H7  | [x]       | [x]         |
-| STM32MP1 | [x]       | [x]          |
+| STM32MP1 | [x]       | [x]         |
+| STM32MP2 | [x]       | []          |
 
 
 # Performances
 ## Training
 
 
-To train a st_yolo_lc_v1 model with transfer learning or from scratch on your own dataset, you need to configure the 
+To train a st_yolo_lc_v1 model with transfer learning or from scratch on your own dataset, you need to configure the
 [user_config.yaml](../../src/user_config.yaml) file following the [tutorial](../../README.md) under the training section.
 As an example, [st_yolo_lc_v1_224_config.yaml](./ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_lc_v1_224/st_yolo_lc_v1_224_config.yaml) file is used to train this model on the person dataset, you can copy its content in the [user_config.yaml](../../src/user_config.yaml) file provided under the training section to reproduce the results presented below
 
@@ -67,29 +68,41 @@ To deploy your trained model, you need to configure the same [user_config.yaml](
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
-### Reference MCU memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
+### Reference **MCU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
-|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| st_yolo_lc_v1 | Int8   | 192x192x3    | STM32H7 | 158.73 KiB     | 8.28 KiB      | 276.72 KiB    | 177.19 KiB       | 167.01 KiB   | 453.91 KiB  | 8.1.0         |
-| st_yolo_lc_v1 | Int8   | 224x224x3    | STM32H7 | 210.81 KiB     | 8.24 KiB    | 276.72 KiB    | 222.26 KiB       | 219.05 KiB   | 498.98 KiB  | 8.1.0           |
-| st_yolo_lc_v1 | Int8   | 256x256x3    | STM32H7 | 272.06 KiB     | 8.24 KiB    | 276.72 KiB    | 274.28 KiB       | 280.30 KiB   | 551.01 KiB  | 8.1.0           |
+| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash      | Total RAM    | Total Flash | STM32Cube.AI version  |
+|-------------------|--------|------------|---------|----------------|-------------|---------------|-----------------|--------------|-------------|-----------------------|
+| st_yolo_lc_v1     | Int8   | 192x192x3  | STM32H7 | 166.29 KiB     | 8.09 KiB    | 276.73 KiB    | 53.51 KiB      | 174.38 KiB    | 330.23 KiB  | 9.1.0         |
+| st_yolo_lc_v1     | Int8   | 224x224x3  | STM32H7 | 217.29 KiB     | 8.09 KiB    | 276.73 KiB    | 53.51 KiB      | 225.38 KiB    | 330.24 KiB  | 9.1.0           |
+| st_yolo_lc_v1     | Int8   | 256x256x3  | STM32H7 | 278.29 KiB     | 8.09 KiB    | 276.73 KiB    | 53.51 KiB      | 286.38 KiB    | 330.23 KiB  | 9.1.0           |
 
 
-### Reference inference time based on COCO Person dataset (see Accuracy for details on dataset)
+### Reference **MCU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
 
 
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) | STM32Cube.AI version  |
 |-------------------|--------|------------|------------------|------------------|-------------|---------------------|-----------------------|
-| st_yolo_lc_v1     | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 202.43 ms            | 8.1.0                 |
-| st_yolo_lc_v1     | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 32.50 ms **          | X-LINUX-AI v5.0.0     |
-| st_yolo_lc_v1     | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 274.11 ms            | 8.1.0                 |
-| st_yolo_lc_v1     | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 45.00 ms **          | X-LINUX-AI v5.0.0     |
-| st_yolo_lc_v1     | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 355.64 ms            | 8.1.0                 |
-| st_yolo_lc_v1     | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz     | 58.20 ms **          | X-LINUX-AI v5.0.0     |
+| st_yolo_lc_v1     | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 179.35 ms         | 9.1.0                 |
+| st_yolo_lc_v1     | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 244.7 ms          | 9.1.0                 |
+| st_yolo_lc_v1     | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 321.23 ms         | 9.1.0                 |
 
-** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
+
+### Reference **MPU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
+
+| Model         | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|---------------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
+| st_yolo_lc_v1 | Int8   | 192x192x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 12.00 ms            | 2.62  | 97.38 |0     | v5.1.0             | OpenVX                |
+| st_yolo_lc_v1 | Int8   | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 17.92 ms            | 2.43  | 97.57 |0     | v5.1.0             | OpenVX                |
+| st_yolo_lc_v1 | Int8   | 256x256x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 14.43 ms            | 3.20  | 96.80 |0     | v5.1.0             | OpenVX                |
+| st_yolo_lc_v1 | Int8   | 192x192x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 32.84 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| st_yolo_lc_v1 | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 45.13 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| st_yolo_lc_v1 | Int8   | 256x256x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 59.38 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| st_yolo_lc_v1 | Int8   | 192x192x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 52.64 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| st_yolo_lc_v1 | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 71.26 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| st_yolo_lc_v1 | Int8   | 256x256x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 93.50 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+
+** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 
 ### AP on COCO Person dataset
 

@@ -25,14 +25,21 @@
 #include "layers_nl.h"
 #include "layers_pool.h"
 
+
+
+
 #define AI_LAYER_CONV2D_FIELDS_DECLARE \
   AI_LAYER_COMMON_FIELDS_DECLARE \
-  ai_u32      groups;            /*!< groups for separable convolution */ \
-  AI_CONST ai_array*  nl_params; /*!< array pointer to non linear parameters */ \
-  func_nl     nl_func;           /*!< function pointer to non linear transform */ \
-  ai_shape_2d filter_stride;     /*!< filter stride, how much the filter moves */ \
-  ai_shape_2d dilation;          /*!< dilation value along axis of the filter */ \
-  ai_shape    filter_pad;        /*!< filter pad 4d */
+  ai_u32      groups;                   /*!< groups for separable convolution */ \
+  AI_CONST ai_array*  nl_params;        /*!< array pointer to non linear parameters */ \
+  func_nl     nl_func;                  /*!< function pointer to non linear transform */ \
+  ai_shape_2d filter_stride;            /*!< filter stride, how much the filter moves */ \
+  ai_shape_2d dilation;                 /*!< dilation value along axis of the filter */ \
+  ai_shape    filter_pad;               /*!< filter pad 4d */ \
+  ai_layer_format_type in_ch_format;    /*!< Input format  (Channel 1st vs Channel last */ \
+  ai_layer_format_type out_ch_format;   /*!< Output format (Channel 1st vs Channel last */ 
+
+
 
 /*!
  * @defgroup layers_conv2d Convolutive Layers Definitions
@@ -90,7 +97,7 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_conv2d_nl_pool_ {
   ai_shape_2d pool_stride;  /*!< pooling stride */
   ai_shape    pool_pad;     /*!< pooling pad */
 
-  func_pool pool_func;      /*!< function pointer to pooling transform */
+  ai_handle pool_func;      /*!< function pointer to pooling transform */
 } ai_layer_conv2d_nl_pool;
 
 
@@ -107,22 +114,52 @@ void ai_dict4_dot_array_f32(ai_handle out, ai_ptr_const data0, ai_ptr_const lut,
 /******************************************************************************/
 
 /*!
- * @brief Computes the activations of a 2D convolutional layer.
+ * @brief Computes the activations of a floating point 32 2D convolutional layer.
  * @ingroup layers_conv2d
  * @param layer the convolutional (conv) layer
  */
 AI_INTERNAL_API
-void forward_conv2d(ai_layer* layer);
+void forward_conv2d_if32of32wf32(ai_layer* layer);
 
 /*!
- * @brief Computes the activations of a @ref ai_layer_conv2d_nl_pool layer
- * The @ref ai_layer_conv2d_nl_pool is a fused conv2D + optional nonlinear
- * layer + optional pooling / nonlinearity (average, max, softmax)
+ * @brief Computes the activations of a floating point 32 2D dw layer.
  * @ingroup layers_conv2d
- * @param layer see @ai_layer_conv2d_nl_pool
+ * @param layer the convolutional (conv) layer
  */
 AI_INTERNAL_API
-void forward_conv2d_nl_pool(ai_layer* layer);
+void forward_dw_if32of32wf32(ai_layer* layer);
+
+/*!
+ * @brief Computes the activations of a floating point 32 2D convolutional group layer.
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_if32of32wf32_group(ai_layer* layer);
+
+/*!
+ * @brief Computes the activations of a 2D floating point 32 pool fused convolutional layer.
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_if32of32wf32_pool(ai_layer* layer);
+
+/*!
+ * @brief Computes the activations of a 2D floating point 32 pool fused dw layer.
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_dw_if32of32wf32_pool(ai_layer* layer);
+
+/*!
+ * @brief Computes the activations of a 2D floating point 32 pool fused convolutional group layer.
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_if32of32wf32_group_pool(ai_layer* layer);
 
 /*!
  * @brief Computes the activations of a GEMM layer.
@@ -192,7 +229,7 @@ void forward_conv2d_integer_SSSA(ai_layer *pLayer);
  * @param layer the convolutional (conv) layer
  */
 AI_INTERNAL_API
-void forward_conv2d_integer_SSSA_ch(ai_layer *pLayer);
+void forward_conv2d_is8os8ws8_sssa_ch(ai_layer *pLayer);
 
 /*!
  * @brief Computes the activations of a int8 quantized DW layer
@@ -211,6 +248,16 @@ void forward_dw_sssa8_ch(ai_layer *pLayer);
  */
 AI_INTERNAL_API
 void forward_dw_3x3_sssa8_ch(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of a int8 quantized DW layer
+ *        for SSSA per channel quantized scheme, with 3x3 kernels and input are 
+ *        channel first
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_dw_3x3_ch1st_sssa8_ch(ai_layer *pLayer);
 
 /*!
  * @brief Computes the activations of a int8 quantized DW layer
@@ -255,6 +302,17 @@ void forward_conv2d_dilated_sssa8_ch(ai_layer *pLayer);
  */
 AI_INTERNAL_API
 void forward_conv2d_deep_sssa8_ch(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of a int8 non dilated Conv2d layer
+ *        for SSSA per channel quantized scheme (valid padding)
+ *        number of output channel is greater than 8
+ *        Kernels shall be 3x3 and stride is (1,1)
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_deep_3x3_sssa8_ch(ai_layer *pLayer);
 
 /*!
  * @brief Computes the activations of a int8 non dilated Conv2d layer
@@ -303,6 +361,17 @@ void forward_dw_3x3_sssa8_ch_nl_pool(ai_layer *pLayer);
 
 /*!
  * @brief Computes the activations of a int8 quantized DW layer
+ *        for SSSA per channel quantized scheme, with 3x3 kernels, 
+ *        with pooling fused
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_dw_3x3_ch1st_sssa8_ch_nl_pool(ai_layer *pLayer);
+
+
+/*!
+ * @brief Computes the activations of a int8 quantized DW layer
  *        for SSSA per channel quantized scheme with depth multiplier > 1
  *        with pooling fused
  * @ingroup layers_conv2d
@@ -345,6 +414,18 @@ void forward_conv2d_dilated_sssa8_ch_nl_pool(ai_layer *pLayer);
  */
 AI_INTERNAL_API
 void forward_conv2d_deep_sssa8_ch_nl_pool(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of a int8 non dilated Conv2d layer
+ *        for SSSA per channel quantized scheme (valid padding) and  pooling fused
+ *        number of output channel is greater than 8
+ *        Kernels shall be 3x3 and stride is (1,1)
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_deep_3x3_sssa8_ch_nl_pool(ai_layer *pLayer);
+
 
 /*!
  * @brief Computes the activations of a int8 quantized non dilated Conv2d layer

@@ -1,0 +1,39 @@
+general:
+   model_path: ../pretrained_models/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_heatmaps_192/movenet_lightning_heatmaps_192.h5
+   model_type: heatmaps_spe
+
+operation_mode: chain_qb
+
+preprocessing:
+   rescaling:
+      scale: 1/127.5
+      offset: -1
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+tools:
+   stedgeai:
+      version: 9.1.0
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking: # valid options are STM32MP257F-EV1,STM32MP157F-DK2,STM32MP135F-DK
+   board: STM32MP257F-EV1
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

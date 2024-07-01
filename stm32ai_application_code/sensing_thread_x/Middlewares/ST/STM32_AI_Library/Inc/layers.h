@@ -22,19 +22,21 @@
 #ifndef LAYERS_H
 #define LAYERS_H
 #pragma once
- 
+
 #include "layers_common.h"
 #include "layers_conv2d.h"
 #include "layers_custom.h"
 #include "layers_dense.h"
-#include "layers_dense_dqnn.h"
 #include "layers_formats_converters.h"
 #include "layers_generic.h"
 #include "layers_lite_graph.h"
 #include "layers_nl.h"
 #include "layers_norm.h"
+#include "layers_pad_dqnn.h"
+#include "layers_pad_generic.h"
 #include "layers_pool.h"
 #include "layers_rnn.h"
+#include "layers_upsample_generic.h"
 #include "layers_sm.h"
 #include "layers_ml.h"
 #include "layers_ml_iforest.h"
@@ -46,9 +48,10 @@
 #include "layers_ml_svmregressor.h"
 
 #include "layers_conv2d_dqnn.h"
+#include "layers_dense_dqnn.h"
 #include "layers_pool_dqnn.h"
 #include "layers_generic_dqnn.h"
-
+#include "layers_upsample_generic.h"
 // #include "layers_template.h"
 
 

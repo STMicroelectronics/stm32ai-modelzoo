@@ -33,9 +33,10 @@
 /*!
  * @brief platform runtime core library version
  */
-#define AI_PLATFORM_RUNTIME_MAJOR    7
-#define AI_PLATFORM_RUNTIME_MINOR    3
+#define AI_PLATFORM_RUNTIME_MAJOR    8
+#define AI_PLATFORM_RUNTIME_MINOR    1
 #define AI_PLATFORM_RUNTIME_MICRO    0
+#define AI_PLATFORM_RUNTIME_BUILD    A1-SNAPSHOT
 
 #define AI_MAGIC_CONTEXT_TOKEN       (0xA1C00100)   /*!< AI Cool! Magic Token */
 

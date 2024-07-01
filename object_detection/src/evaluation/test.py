@@ -15,20 +15,23 @@ import cv2
 import hydra
 import numpy as np
 import tensorflow as tf
-from omegaconf import DictConfig
+from omegaconf import OmegaConf, DictConfig
+from munch import DefaultMunch
 from matplotlib import pyplot as plt
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../utils/models'))
-sys.path.append(os.path.abspath('../../../common'))
-
 from metrics_utils import *
-from utils import get_config
+
 
 logger = tf.get_logger()
 logger.setLevel(logging.ERROR)
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+
+def get_config(cfg):
+    config_dict = OmegaConf.to_container(cfg)
+    configs = DefaultMunch.fromDict(config_dict)
+    return configs
 
 
 def run_quantized_model_inference(cfg):

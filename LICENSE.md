@@ -12,6 +12,8 @@ Software BOM for stm32 use cases:
 * [human_activity_recognition](./human_activity_recognition/LICENSE.md)
 * [image_classification](./image_classification/LICENSE.md)
 * [object_detection](./object_detection/LICENSE.md)
+* [semantic_segmentation](./semantic_segmentation/LICENSE.md)
+* [pose_estimation](./pose_estimation/LICENSE.md)
 
 
 Software BOM for stm32 application codes:

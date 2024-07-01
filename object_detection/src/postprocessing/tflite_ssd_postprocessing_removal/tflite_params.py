@@ -214,26 +214,26 @@ def extract_params_detection_pp(op, tensors, buffers, output, name, verbosity):
     regex = re.compile('score')
 
     if regex.search(tensors[op['inputs'][1]]['name']):
-        quant_boxes  = tensors[op['inputs'][0]]['quantization']
-        quant_scores = tensors[op['inputs'][1]]['quantization']
+        quant_boxes  = tensors[op['inputs'][0]]['quantization'] if 'quantization' in tensors[op['inputs'][0]] else None
+        quant_scores = tensors[op['inputs'][1]]['quantization'] if 'quantization' in tensors[op['inputs'][1]] else None
         #print('Scores in the second input')
         #bfirst = 1
     elif regex.search(tensors[op['inputs'][0]]['name']):
-        quant_boxes  = tensors[op['inputs'][1]]['quantization']
-        quant_scores = tensors[op['inputs'][0]]['quantization']
+        quant_boxes  = tensors[op['inputs'][1]]['quantization'] if 'quantization' in tensors[op['inputs'][1]] else None
+        quant_scores = tensors[op['inputs'][0]]['quantization'] if 'quantization' in tensors[op['inputs'][0]] else None
         #print('Scores in the first input')
         #bfirst = 0
     else:
-        quant_boxes  = tensors[op['inputs'][0]]['quantization']
-        quant_scores = tensors[op['inputs'][1]]['quantization']
+        quant_boxes  = tensors[op['inputs'][0]]['quantization'] if 'quantization' in tensors[op['inputs'][0]] else None
+        quant_scores = tensors[op['inputs'][1]]['quantization'] if 'quantization' in tensors[op['inputs'][1]] else None
         #print('The names of the tensors dont match the search so by default the scores will be the second input')
         #bfirst = 1
 
 
-    TFLite_DP_OpData["boxes_scale"]['value'] = quant_boxes['scale'][0] if 'scale' in quant_boxes else None
-    TFLite_DP_OpData["boxes_offset"]['value'] = quant_boxes['zero_point'][0] if 'zero_point' in quant_boxes else 0
-    TFLite_DP_OpData["scores_scale"]['value'] = quant_scores['scale'][0] if 'scale' in quant_scores else None
-    TFLite_DP_OpData["scores_offset"]['value'] = quant_scores['zero_point'][0] if 'zero_point' in quant_scores else 0
+    TFLite_DP_OpData["boxes_scale"]['value'] = (quant_boxes['scale'][0] if 'scale' in quant_boxes else None) if quant_boxes!=None else None
+    TFLite_DP_OpData["boxes_offset"]['value'] = (quant_boxes['zero_point'][0] if 'zero_point' in quant_boxes else 0) if quant_boxes!=None else 0
+    TFLite_DP_OpData["scores_scale"]['value'] = (quant_scores['scale'][0] if 'scale' in quant_scores else None) if quant_boxes!=None else None
+    TFLite_DP_OpData["scores_offset"]['value'] = (quant_scores['zero_point'][0] if 'zero_point' in quant_scores else 0) if quant_boxes!=None else 0
     #TFLite_DP_OpData["boxes_first"]['value'] = str(bfirst)
             
 

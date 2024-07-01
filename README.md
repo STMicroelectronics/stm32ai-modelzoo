@@ -20,17 +20,28 @@ The performances on reference STM32 MCU and MPU are provided for float and quant
 This project is organized by application, for each application you will have a step by step guide that will indicate how
 to train and deploy the models.
 
-## What's new in release 2.0:
+## What's new in releases 2.x:
+<details><summary><b>2.0:</b></summary>
+
 * An aligned and `uniform architecture` for all the use case
 * A modular design to run different operation modes (training, benchmarking, evaluation, deployment, quantization) independently or with an option of chaining multiple modes in a single launch.
 * A simple and `single entry point` to the code : a .yaml configuration file to configure all the needed services.
-* Support of the `Bring Your Own Model (BYOM)` feature to allow the user (re-)training his own model. Example is provided [here](./image_classification/src/training/README.md#51-training-your-own-model).
-* Support of the `Bring Your Own Data (BYOD)` feature to allow the user finetuning some pretrained models with his own datasets. Example is provided [here](./image_classification/src/training/README.md#23-dataset-specification).
+* Support of the `Bring Your Own Model (BYOM)` feature to allow the user (re-)training his own model. Example is provided [here](./image_classification/src/training/README.md#51-training-your-own-model), chapter 5.1.
+* Support of the `Bring Your Own Data (BYOD)` feature to allow the user finetuning some pretrained models with his own datasets. Example is provided [here](./image_classification/src/training/README.md#23-dataset-specification), chapter 2.3.
+</details>
+<details open><summary><b>2.1:</b></summary>
 
+* Included additional models compatible with the `STM32MP257F-DK2` board.
+* Added support for per-tensor quantization.
+* Integrated support for `ONNX model` quantization and evaluation.
+* Included support for `STEdgeAI` (STM32Cube.AI v9.1.0 and subsequent versions).
+* Expanded use case support to include `Pose Estimation` and `Semantic Segmentation`.
+* Standardized logging information for a unified experience.
+</details>
 
 <div align="center" style="margin-top: 80px; padding: 20px 0;">
     <p align="center">
-        <a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/badge/python-3.9%20%7C%203.10-blue" /></a>
+        <a href="https://www.python.org/downloads/" target="_blank"><img src="https://img.shields.io/badge/python-3.10-blue" /></a>
         <a href="https://www.tensorflow.org/install/pip" target="_blank"><img src="https://img.shields.io/badge/TensorFlow-2.8.3-FF6F00?style=flat&logo=tensorflow&logoColor=#FF6F00&link=https://www.tensorflow.org/install/pip"/></a>
         <a href="https://stm32ai-cs.st.com/home"><img src="https://img.shields.io/badge/STM32Cube.AI-Developer%20Cloud-FFD700?style=flat&logo=stmicroelectronics&logoColor=white"/></a>  
     </p>
@@ -39,36 +50,96 @@ to train and deploy the models.
 ## Available use-cases
 >[!TIP]
 > For all use-cases below, quick and easy examples are provided and can be executed for a fast ramp up (click on use cases links below)
-* [Image classification (IC)](image_classification)
-    * Models: EfficientNet, MobileNet v1, MobileNet v2, Resnet v1 including with hybrid quantization, 
-      SqueezeNet v1.1, STMNIST.
-    * Deployment: getting started application
-        * On [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with
-          B-CAMS-OMV camera daughter board.
-        * On [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV
-          camera daughter board, webcam or Arducam Mega 5MP as input and USB display or SPI display as output.
-* [Object detection (OD)](object_detection)
-    * Models:  ST SSD MobileNet v1, Tiny YOLO v2, SSD MobileNet v2 fpn lite, ST Yolo LC v1.
-    * Deployment: getting started application
-        * On [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV
-          camera daughter board.
-* [Human activity recognition (HAR)](human_activity_recognition/)
-    * Models: CNN IGN, and CNN GMP for different settings.
-    * Deployment: getting started application
-        * On [B-U585I-IOT02A](./stm32ai_application_code/sensing_thread_x/) using ThreadX RTOS.
-* [Audio event detection (AED)](audio_event_detection)
-    * Models: Yamnet, MiniResnet, MiniResnet v2.
-    * Deployment: getting started application
-        * On [B-U585I-IOT02A](stm32ai_application_code) using RTOS, ThreadX or FreeRTOS.
-* [Hand posture recognition (HPR)](hand_posture)
-    * The hand posture use case is based on the ST multi-zone Time-of-Flight sensors: VL53L5CX, VL53L7CX, VL53L8CX. The
-      goal of this use case is to recognize static hand posture such as a like, dislike or love sign done with user hand
-      in front of the sensor. We are providing a complete workflow from data acquisition to model training, then
-      deployment on an STM32 NUCLEO-F401RE board.
-    * Model: ST CNN 2D Hand Posture.
-    * Deployment: getting started application
-        * On [NUCLEO-F401RE](stm32ai_application_code/hand_posture) with X-NUCLEO-53LxA1 Time-of-Flight Nucleo expansion
-          board
+
+<details open><summary><b>Image classification (IC)</b></summary>
+
+[Image Classification use case](image_classification)
+| Models             | Input Resolutions | Supported Services    | Suitable Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [MobileNet v1 0.25](image_classification/pretrained_models/mobilenetv1/README.md)   | 96x96x1<br> 96x96x3<br> 224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [MobileNet v1 0.5](image_classification/pretrained_models/mobilenetv1/README.md)   | 224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   | 
+| [MobileNet v2 0.35](image_classification/pretrained_models/mobilenetv2/README.md)   | 128x128x3<br>  224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [MobileNet v2 1.0](image_classification/pretrained_models/mobilenetv2/README.md)   |  224x224x3     | Full IC Services      |  STM32MP257F-DK2<br>   |
+| [ResNet8 v1](image_classification/pretrained_models/resnetv1/README.md)   | 32x32x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [ST ResNet8](image_classification/pretrained_models/resnetv1/README.md)   | 32x32x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [ResNet32 v1](image_classification/pretrained_models/resnetv1/README.md)   | 32x32x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [SqueezeNet v1.1](image_classification/pretrained_models/squeezenetv1.1/README.md)   | 128x128x3<br>  224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [FD MobileNet 0.25](image_classification/pretrained_models/fdmobilenet/README.md)   | 128x128x3<br>  224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [ST FD MobileNet](image_classification/pretrained_models/fdmobilenet/README.md)   | 128x128x3<br>  224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [ST EfficientNet](image_classification/pretrained_models/efficientnet/README.md)   | 128x128x3<br>  224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+| [Mnist](image_classification/pretrained_models/st_mnist/README.md)   | 28x28x1<br>      | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
+
+[Full IC Services](image_classification/README.md) : training, evaluation, quantization, benchmarking, prediction, deployment
+
+</details>
+
+<details open><summary><b>Object Detection (OD)</b></summary>
+
+[Object Detection use case](object_detection)
+| Models             | Input Resolutions | Supported Services    | Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [ST SSD MobileNet v1 0.25](object_detection/pretrained_models/st_ssd_mobilenet_v1/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br>  | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>    |
+| [SSD MobileNet v2 fpn lite 0.35](object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br> 416x416x3   | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> STM32MP257F-DK2 <br>    |
+| [SSD MobileNet v2 fpn lite 1.0](object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md)   |  256x256x3<br> 416x416x3   | Full OD Services      |  STM32MP257F-DK2   |
+| [ST Yolo LC v1](object_detection/pretrained_models/st_yolo_lc_v1/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br>  | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>    |
+| [Tiny Yolo v2](object_detection/pretrained_models/tiny_yolo_v2/README.md)   |  224x224x3<br> 416x416x3<br>  | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>    |
+
+[Full OD Services](object_detection/README.md) : training, evaluation, quantization, benchmarking, prediction, deployment
+
+</details>
+
+<details open><summary><b>Pose Estimation (PE)</b></summary>
+
+[Pose Estimation use case](pose_estimation)
+| Models             | Input Resolutions | Supported Services    | Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [Yolo v8 pose](pose_estimation/pretrained_models/yolov8_pose/README.md)   |  256x256x3<br>  | Evaluation / Benchmarking / Prediction / Deployment      | STM32MP257F-DK2 <br>  |
+| [MoveNet 17 kps](pose_estimation/pretrained_models/movenet/README.md)   |  192x192x3<br> 256x256x3<br>   | Evaluation / Quantization / Benchmarking / Prediction      | [STM32H747I-DISCO](stm32ai_application_code/pose_estimation/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>|
+| [ST MoveNet 13 kps](pose_estimation/pretrained_models/movenet/README.md)   |  192x192x3<br>   | Evaluation / Quantization / Benchmarking / Prediction      | [STM32H747I-DISCO](stm32ai_application_code/pose_estimation/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>|
+
+</details>
+
+<details open><summary><b>Segmentation (Seg)</b></summary>
+
+[Segmentation use case](segmentation)
+| Models             | Input Resolutions | Supported Services    | Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [DeepLab v3](segmentation/pretrained_models/deeplab_v3/README.md)   |  512x512x3<br>  | Full Seg Services     | STM32MP257F-DK2 <br>  |
+
+[Full Seg Services](segmentation/README.md) : training, evaluation, quantization, benchmarking, prediction, deployment
+
+</details>
+
+<details open><summary><b>Human Activity Recognition (HAR)</b></summary>
+
+[Human Activity Recognition use case](human_activity_recognition)
+| Models             | Input Resolutions | Supported Services    | Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [gmp](human_activity_recognition/pretrained_models/gmp/README.md)   |  24x3x1<br> 48x3x1<br>  | training / Evaluation / Benchmarking / Deployment      | [B-U585I-IOT02A](./stm32ai_application_code/sensing_thread_x/) using ThreadX RTOS<br>    |
+| [ign](human_activity_recognition/pretrained_models/ign/README.md)   |  24x3x1<br> 48x3x1<br>  | training / Evaluation / Benchmarking / Deployment      | [B-U585I-IOT02A](./stm32ai_application_code/sensing_thread_x/) using ThreadX RTOS<br>    |
+
+</details>
+
+<details open><summary><b>Audio Event Detection (AED)</b></summary>
+
+[Audio Event Detection use case](audio_event_detection)
+| Models             | Input Resolutions | Supported Services    | Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [miniresnet](audio_event_detection/pretrained_models/miniresnet/README.md)   |  64x50x1<br>  | Full AED Services      | [B-U585I-IOT02A](stm32ai_application_code) using RTOS, ThreadX or FreeRTOS<br>    |
+| [miniresnet v2](audio_event_detection/pretrained_models/miniresnetv2/README.md)   |  64x50x1<br>  | Full AED Services      | [B-U585I-IOT02A](stm32ai_application_code) using RTOS, ThreadX or FreeRTOS<br>    |
+| [yamnet 256](audio_event_detection/pretrained_models/yamnet/README.md)   |  64x96x1<br>  | Full AED Services      | [B-U585I-IOT02A](stm32ai_application_code) using RTOS, ThreadX or FreeRTOS<br>    |
+
+[Full AED Services](audio_event_detection/README.md) : training, evaluation, quantization, benchmarking, prediction, deployment
+
+</details>
+
+<details open><summary><b>Hand Posture Recognition (HPR)</b></summary>
+
+[Hand Posture Recognition use case](hand_posture)
+| Models             | Input Resolutions | Supported Services    | Targets for deployment |
+|--------------------|------------------|-----------------------|-------------------|
+| [ST CNN 2D Hand Posture](hand_posture/pretrained_models/CNN2D_ST_HandPosture/README.md)   |  64x50x1<br>  | training / Evaluation / Benchmarking / Deployment       | [NUCLEO-F401RE](stm32ai_application_code/hand_posture) with X-NUCLEO-53LxA1 Time-of-Flight Nucleo expansion board<br>    |
+
 
 ## Available tutorials and utilities
 
@@ -103,9 +174,8 @@ on [How to install STM32 model zoo](https://wiki.st.com/stm32mcu/index.php?title
     * Alternatively, download latest version of [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html)
       for your OS, extract the package and get the path to `stm32ai` executable.
 * If you don't have python already installed, you can download and install it
-  from [here](https://www.python.org/downloads/), a **3.9 <= Python Version <= 3.10.x** is required to be able to use
-  TensorFlow later on, we recommand using **Python v3.10**. (For Windows systems make sure to check the **Add python.exe
-  to PATH** option during the installation process).
+  from [here](https://www.python.org/downloads/), a **Python Version == 3.10.x** is required to be able to run the the code 
+* (For Windows systems make sure to check the **Add python.exe to PATH** option during the installation process).
 * If using GPU make sure to install the GPU driver. For NVIDIA GPUs please refer
   to https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html to install CUDA and CUDNN. On Windows, it is
   not recommended to use WSL to get the best GPU training acceleration. If using conda, see below for installation.
@@ -171,4 +241,7 @@ Colab to exercise STM32 model zoo training scripts.
 > If there are some white spaces in the paths (for Python, STM32CubeIDE, or, STM32Cube.AI local installation) this can result in errors. So avoid having paths with white spaces in them.
 
 >[!TIP]
-> In this project we are using the `mlflow` library to log the results of different runs. Depending on which version of Windows OS are you using or where you place the project the output log files might have a very long path which might result in an error at the time of logging the results. As by default, Windows uses a path length limitation (MAX_PATH) of 256 characters: Naming Files, Paths, and Namespaces. To avoid this potential error, create (or edit) a variable named `LongPathsEnabled` in **Registry Editor** under **Computer/HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/FileSystem/** and assign it a value of `1`. This will change the maximum length allowed for the file length on Windows machines and will avoid any errors resulting due to this. For more details have a look at this [link](https://knowledge.autodesk.com/support/autocad/learn-explore/caas/sfdcarticles/sfdcarticles/The-Windows-10-default-path-length-limitation-MAX-PATH-is-256-characters.html).
+> In this project we are using the `mlflow` library to log the results of different runs. Depending on which version of Windows OS are you using or where you place the project the output log files might have a very long path which might result in an error at the time of logging the results. As by default, Windows uses a path length limitation (MAX_PATH) of 256 characters: Naming Files, Paths, and Namespaces. To avoid this potential error, create (or edit) a variable named `LongPathsEnabled` in **Registry Editor** under **Computer/HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/FileSystem/** and assign it a value of `1`. This will change the maximum length allowed for the file length on Windows machines and will avoid any errors resulting due to this. For more details have a look at this [link](https://knowledge.autodesk.com/support/autocad/learn-explore/caas/sfdcarticles/sfdcarticles/The-Windows-10-default-path-length-limitation-MAX-PATH-is-256-characters.html). Note that using GIT, line below may help solving long path issue : 
+```bash
+git config --system core.longpaths true
+```

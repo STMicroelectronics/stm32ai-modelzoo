@@ -19,13 +19,11 @@ from typing import Optional
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-sys.path.append(os.path.abspath('../src/utils'))
-sys.path.append(os.path.abspath('../common'))
+from models_utils import get_model_name_and_its_input_shape, get_model_name
+from models_mgt import AED_CUSTOM_OBJECTS
 from common_deploy import stm32ai_deploy
 from gen_h_file import gen_h_user_file
 from lookup_tables_generator import generate_mel_LUT_files
-from models_mgt import get_model_name_and_its_input_shape
-from common_benchmark import get_model_name
 
 
 def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
@@ -44,6 +42,7 @@ def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
     """
     # Build and flash Getting Started
     board = cfg.deployment.hardware_setup.board
+    stlink_serial_number = cfg.deployment.hardware_setup.stlink_serial_number
     c_project_path = cfg.deployment.c_project_path
     output_dir = HydraConfig.get().runtime.output_dir
     stm32ai_output = Path(output_dir) / "stm32ai_files"
@@ -57,7 +56,7 @@ def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
 
     # Get model name for STM32Cube.AI STATS
     model_path = model_path_to_deploy if model_path_to_deploy else cfg.general.model_path
-    model_name, input_shape = get_model_name_and_its_input_shape(model_path=model_path)
+    model_name, input_shape = get_model_name_and_its_input_shape(model_path=model_path, custom_objects=AED_CUSTOM_OBJECTS)
 
     get_model_name_output = get_model_name(model_type=str(model_name),
                                            input_shape=str(input_shape[0]),
@@ -81,6 +80,7 @@ def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
 
         # Run the deployment
         stm32ai_deploy(target=board,
+                       stlink_serial_number=stlink_serial_number,
                        stm32ai_version=stm32ai_version,
                        c_project_path=c_project_path,
                        output_dir=output_dir,
@@ -97,7 +97,8 @@ def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
                        stm32ai_serie=stm32ai_serie, 
                        credentials=credentials,
                        additional_files=additional_files, 
-                       on_cloud=cfg.tools.stm32ai.on_cloud)
+                       on_cloud=cfg.tools.stm32ai.on_cloud, 
+                       custom_objects=AED_CUSTOM_OBJECTS)
 
     else:
         raise NotImplementedError(

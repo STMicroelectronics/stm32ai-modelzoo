@@ -65,14 +65,14 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 | Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) | STM32Cube.AI version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | int8 | 64x96x1 | B-U585I-IOT02A    | 109.57               |   7.61        |   135.91           |   57.83    | 117.18 | 193.74 | 8.1.0                 |
+|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | int8 | 64x96x1 | B-U585I-IOT02A    | 109.57               |   7.61        |   135.91           |   57.74    | 117.18 | 193.65 | 9.1.0                 |
 
 ### Reference inference time based on ESC-10 dataset
 
 
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time  | STM32Cube.AI version  |
 |-------------------|--------|------------|------------------|------------------|--------------|-----------------|-----------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 300.31 ms | 8.1.0                 |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 281.95 ms | 9.1.0                 |
 
 
 ### Accuracy with ESC-10 dataset

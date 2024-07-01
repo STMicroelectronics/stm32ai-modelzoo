@@ -1,0 +1,51 @@
+general:
+   model_path: ../pretrained_models/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_192/movenet_singlepose_lightning_192_float.tflite
+   model_type: spe
+   num_threads_tflite: 8
+
+operation_mode: evaluation
+
+dataset:
+   name: coco_pose
+   keypoints: 17
+   test_path: ../datasets/coco_val_single_pose
+
+training:
+   batch_size: 1
+
+preprocessing:
+   rescaling:
+      scale: 1.
+      offset: 0.
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+postprocessing:
+   kpts_conf_thresh: 0.15
+
+quantization:
+   quantizer: TFlite_converter  # onnx_quantizer
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+tools:
+   stedgeai:
+      version: 9.1.0
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+   board: STM32H747I-DISCO
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

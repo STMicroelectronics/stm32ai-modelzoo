@@ -11,7 +11,8 @@ import sys
 import json
 import hydra
 import shutil
-
+import argparse
+from hydra.core.hydra_config import HydraConfig
 from tqdm import tqdm
 from munch import DefaultMunch
 from omegaconf import OmegaConf
@@ -19,13 +20,33 @@ from omegaconf import DictConfig
 import xml.etree.ElementTree as ET
 
 
-def get_config(cfg):
-    config_dict = OmegaConf.to_container(cfg)
-    configs = DefaultMunch.fromDict(config_dict)
-    return configs
+def get_config(config: DictConfig) -> DefaultMunch:
+    """
+    Converts the configuration data
+
+    Args:
+        config (DictConfig): dictionary containing the entire configuration file.
+
+    Returns:
+        DefaultMunch: The configuration object.
+    """
+    config_dict = OmegaConf.to_container(config)
+    cfg = DefaultMunch.fromDict(config_dict)
+    return cfg
 
 
-def classes_inspector(non_existing_classes, available_classes):
+def classes_inspector(non_existing_classes : list=None, 
+                      available_classes : list=None) -> None:
+    """
+    Ensure all defined classes are well present in the dataset
+
+    Args:
+        non_existing_classes (list) : list of non found classes from the dataset
+        available_classes (list) : list of detected classes in the dataset
+
+    Returns:
+        None
+    """
     if len(non_existing_classes) > 0:
         print("The following classes were not found: {}".format(non_existing_classes))
         print("Please make sure that your selected classes exist in the following list: {}".format(available_classes))
@@ -35,7 +56,18 @@ def classes_inspector(non_existing_classes, available_classes):
         print("Converting the dataset ...")
 
 
-def verify_voc_classes(xml_folder, classes):
+def verify_voc_classes(xml_folder : str=None, 
+                       classes : list=None) -> None:
+    """
+    Check if all expected classes are well present in the provided dataset
+
+    Args:
+        xml_folder (str) : path to the xml directory
+        classes (list) : list of the provided classes (from the yaml file)
+
+    Returns:
+        None
+    """
     print("Analyzing the dataset ...")
     available_classes = set()
     xml_files = [file for file in os.listdir(xml_folder) if file.endswith('.xml')]
@@ -49,11 +81,28 @@ def verify_voc_classes(xml_folder, classes):
                 available_classes.add(name)
 
     non_existing_classes = [c for c in classes if c not in available_classes]
-    classes_inspector(non_existing_classes, available_classes)
+    classes_inspector(non_existing_classes, 
+                      available_classes)
 
 
-def convert_voc_to_yolo(xml_folder, images_folder, classes, export_folder):
-    verify_voc_classes(xml_folder, classes)
+def convert_voc_to_yolo(xml_folder : str=None, 
+                        images_folder : str=None, 
+                        classes : list=None, 
+                        export_folder : str=None) -> None:
+    """
+    Core routine that converts voc data to yolo format and exports them
+
+    Args:
+        xml_folder (str) : path to the xml directory
+        images_folder (str) : path to the images directory
+        classes (list) : list of the provided classes (from the yaml file)
+        export_folder (str): path converted dataset will be stored
+
+    Returns:
+        None
+    """                        
+    verify_voc_classes(xml_folder, 
+                       classes)
     if not os.path.exists(export_folder):
         os.makedirs(export_folder)
     xml_files = [file for file in os.listdir(xml_folder) if file.endswith('.xml')]
@@ -93,7 +142,18 @@ def convert_voc_to_yolo(xml_folder, images_folder, classes, export_folder):
             shutil.copy(image_path, export_folder)
 
 
-def verify_coco_classes(coco_annotations_file, classes):
+def verify_coco_classes(coco_annotations_file : str=None,
+                        classes : list=None) -> None:
+    """
+    Check if all expected classes are well present in the provided dataset
+
+    Args:
+        coco_annotations_file (str) : path to the coco annotation file
+        classes (list) : list of the provided classes (from the yaml file)
+
+    Returns:
+        None
+    """
     print("Analyzing the dataset ...")
     with open(coco_annotations_file, 'r') as f:
         coco_data = json.load(f)
@@ -110,11 +170,28 @@ def verify_coco_classes(coco_annotations_file, classes):
             exceptions = e
     available_classes = list(class_names)
     non_existing_classes = [c for c in classes if c not in available_classes]
-    classes_inspector(non_existing_classes, available_classes)
+    classes_inspector(non_existing_classes, 
+                      available_classes)
 
 
-def convert_coco_to_yolo(coco_annotations_file, coco_images_dir, classes, export_folder):
-    verify_coco_classes(coco_annotations_file, classes)
+def convert_coco_to_yolo(coco_annotations_file : str=None, 
+                         coco_images_dir : str=None, 
+                         classes : list=None, 
+                         export_folder : str=None) -> None:
+    """
+    Core routine that converts coco data to yolo format and exports them
+
+    Args:
+        coco_annotations_file (str) : path to the coco annotations directory
+        coco_images_dir (str) : path to the images directory
+        classes (list) : list of the provided classes (from the yaml file)
+        export_folder (str): path converted dataset will be stored
+
+    Returns:
+        None
+    """     
+    verify_coco_classes(coco_annotations_file, 
+                        classes)
     if not os.path.exists(export_folder):
         os.makedirs(export_folder)
     with open(coco_annotations_file, 'r') as f:
@@ -153,16 +230,32 @@ def convert_coco_to_yolo(coco_annotations_file, coco_images_dir, classes, export
 
 
 @hydra.main(version_base=None, config_path="", config_name="dataset_config")
-def main(cfg: DictConfig) -> None:
-    configs = get_config(cfg)
+def main(configs: DictConfig) -> None:
+    """
+    Main entry point of the script.
+ 
+    Args:
+        cfg: Configuration dictionary.
+ 
+    Returns:
+        None
+    """
+    cfg = get_config(configs)
+    cfg.output_dir = HydraConfig.get().run.dir
 
-    if configs.dataset.format == "coco_format":
-        convert_coco_to_yolo(configs.coco_format.json_annotations_file_path, configs.coco_format.images_path,
-                             configs.dataset.class_names, configs.coco_format.export_dir)
+    # Converts COCO dataset to Yolo Darknet format
+    if cfg.dataset.format == "coco_format":
+        convert_coco_to_yolo(cfg.coco_format.json_annotations_file_path, 
+                             cfg.coco_format.images_path,
+                             cfg.dataset.class_names, 
+                             cfg.coco_format.export_dir)
 
-    elif configs.dataset.format == "pascal_voc_format":
-        convert_voc_to_yolo(configs.pascal_voc_format.xml_files_path, configs.pascal_voc_format.images_path,
-                            configs.dataset.class_names, configs.pascal_voc_format.export_dir)
+    # Converts Pascal VOC dataset to Yolo Darknet format
+    elif cfg.dataset.format == "pascal_voc_format":
+        convert_voc_to_yolo(cfg.pascal_voc_format.xml_files_path, 
+                            cfg.pascal_voc_format.images_path,
+                            cfg.dataset.class_names, 
+                            cfg.pascal_voc_format.export_dir)
 
     else:
         print("Please make sure that you selected one of the following formats: {}, {}".format("coco_format",
@@ -172,4 +265,13 @@ def main(cfg: DictConfig) -> None:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--config-path', type=str, default='', help='Path to folder containing configuration file')
+    parser.add_argument('--config-name', type=str, default='user_config', help='name of the configuration file')
+    
+    # Add arguments to the parser
+    parser.add_argument('params', nargs='*',
+                        help='List of parameters to over-ride in config.yaml')
+    args = parser.parse_args()
+
     main()

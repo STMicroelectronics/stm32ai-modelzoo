@@ -259,14 +259,14 @@ def generate_mel_LUT_files(config):
 
     hannWin = generate_hann_window_LUT(window=config.feature_extraction.window,
                                        win_length=config.feature_extraction.window_length)
-    print("[INFO] Generating LUT header file")
+    print("[INFO] : Generating LUT header file")
     generate_LUTs_header_file(path,
                               melFilterLut, 
                               melFilterStartIndices,
                               melFilterStopIndices,
                               hannWin)
-    print("[INFO] Done generating LUT header file")
-    print("[INFO] Generating LUT C file")
+    print("[INFO] : Done generating LUT header file")
+    print("[INFO] : Generating LUT C file")
     generate_LUTs_c_file(path,
                          melFilterLut,
                          melFilterStartIndices,

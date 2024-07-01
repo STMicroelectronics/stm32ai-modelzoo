@@ -18,7 +18,7 @@ from tensorflow.keras import backend
 from typing import Tuple, Dict, Optional
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import OmegaConf, DictConfig, open_dict
-from utils import aspect_ratio_dict
+from cfg_utils import aspect_ratio_dict
 
 def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None, board: str = None) -> None:
     """

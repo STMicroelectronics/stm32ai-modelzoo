@@ -8,6 +8,6 @@
 
 # from .types import Stm32AiBackend
 from .stm32ai import Stm32Ai
-from .types import CliParameters, CliParameterCompression, CliParameterType, CliParameterVerbosity, CliLibrarySerie, CliLibraryIde
+from .types import CliParameters, CliParameterCompression, CliParameterType, CliParameterVerbosity, CliLibrarySerie, CliLibraryIde, AtonParameters, AtonParametersSchema, MpuParameters, MpuEngine
 from .backend.cloud.cloud import CloudBackend
 from .errors import *

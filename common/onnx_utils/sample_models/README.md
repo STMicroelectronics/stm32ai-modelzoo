@@ -1,0 +1,2 @@
+This folder contains models generated using the ONNX model converter. The base TF models are from the pretained model zoo models.
+The models in this folder are sample models used to test the ONNX services of the zoo.

@@ -19,12 +19,9 @@ from typing import Optional
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-sys.path.append(os.path.abspath('../src/utils'))
-sys.path.append(os.path.abspath('../common'))
+from models_utils import get_model_name_and_its_input_shape, get_model_name
 from common_deploy import stm32ai_deploy
 from gen_h_file import gen_h_user_file
-from models_mgt import get_model_name_and_its_input_shape
-from common_benchmark import get_model_name
 
 
 def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
@@ -42,6 +39,7 @@ def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
     """
     # Build and flash Getting Started
     board = cfg.deployment.hardware_setup.board
+    stlink_serial_number = cfg.deployment.hardware_setup.stlink_serial_number
     c_project_path = cfg.deployment.c_project_path
     output_dir = HydraConfig.get().runtime.output_dir
     stm32ai_output = output_dir + "/stm32ai_files"
@@ -67,7 +65,7 @@ def deploy(cfg: DictConfig = None, model_path_to_deploy: Optional[str] = None,
     if stm32ai_serie.upper() == "STM32F4" and stm32ai_ide.lower() == "gcc":
 
         # Run the deployment
-        stm32ai_deploy(target=board, stm32ai_version=stm32ai_version, c_project_path=c_project_path,
+        stm32ai_deploy(target=board, stlink_serial_number=stlink_serial_number, stm32ai_version=stm32ai_version, c_project_path=c_project_path,
                        output_dir=output_dir,
                        stm32ai_output=stm32ai_output, optimization=optimization, path_to_stm32ai=path_to_stm32ai,
                        path_to_cube_ide=path_to_cube_ide, #stmaic_conf_filename=stmaic_conf_filename,

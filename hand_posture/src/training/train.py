@@ -8,48 +8,28 @@
 #  *--------------------------------------------------------------------------------------------*/
 
 import os
+import sys
 from pathlib import Path
 from timeit import default_timer as timer
 from datetime import timedelta
 from typing import Tuple, List, Dict, Optional
 
-import mlflow
 from hydra.core.hydra_config import HydraConfig
 from munch import DefaultMunch
 from omegaconf import DictConfig
 import numpy as np
 import tensorflow as tf
 
-from utils import model_summary, check_training_determinism, log_to_file, log_last_epoch_history
-from models_mgt import get_model
+from logs_utils import log_to_file, log_last_epoch_history, LRTensorBoard
+from gpu_utils import check_training_determinism
+from models_utils import model_summary
+from cfg_utils import collect_callback_args
+from common_training import set_frozen_layers, set_dropout_rate, get_optimizer
+from models_mgt import get_model, get_loss
 from data_augmentation import get_data_augmentation
 from evaluate import evaluate_h5_model
-from visualizer import vis_training_curves
+from visualize_utils import vis_training_curves
 
-import logging
-logging.getLogger('tensorflow').setLevel(logging.WARNING)
-
-class LRTensorBoard(tf.keras.callbacks.TensorBoard):
-    """
-    Custom TensorBoard callback that logs the learning rate during training.
-    """
-
-    def __init__(self, log_dir: str, **kwargs) -> None:
-        # `log_dir` is the directory where the log files will be written.
-        super().__init__(log_dir, **kwargs)
-        self.lr_writer = tf.summary.create_file_writer(os.path.join(self.log_dir, 'metrics'))
-
-    def on_epoch_end(self, epoch: int, logs=None) -> None:
-        # Write the learning rate to the TensorBoard log file
-        lr = getattr(self.model.optimizer, 'lr', None)
-        if lr is not None:
-            with self.lr_writer.as_default():
-                tf.summary.scalar('learning_rate', lr, step=epoch)
-        super().on_epoch_end(epoch, logs)
-
-    def on_train_end(self, logs=None) -> None:
-        super().on_train_end(logs)
-        self.lr_writer.close()
 
 
 def load_model_to_train(cfg, model_path=None, num_classes=None) -> tf.keras.Model:
@@ -91,53 +71,6 @@ def load_model_to_train(cfg, model_path=None, num_classes=None) -> tf.keras.Mode
     return model, input_shape
 
 
-def set_frozen_layers(model: tf.keras.Model, frozen_layers: str = None) -> None:
-    """
-    This function freezes (makes non-trainable) the layers that are 
-    specified by the `frozen_layers` attribute.
-    The indices are specified using the same syntax as in Python:
-       2                      layer 2 (3rd layer from network input)
-       (2)                    layer 2
-       (4:8)                  layers 4 to 7
-       (0:-1)                 layers 0 to before last
-       (7:13, 16, 20:28, -1)  layers 7 to 12, 16, 20 to 27, last
-    There can be any number of index slices in the attribute.
-    The attribute must be between parentheses. Using square brackets
-    would make it an array and it could be changed by the YAML loader.
-      not be left unchanged by the
-
-    Arguments:
-        model (tf.keras.Model): the model.
-        frozen_layers (str): the indices of the layers to freeze.
-
-    Returns:
-        None
-    """
-    frozen_layers = str(frozen_layers)
-    frozen_layers = frozen_layers.replace(" ", "")
-    frozen_slices = frozen_layers[1:-1] if frozen_layers[0] == "(" else frozen_layers
-
-    num_layers = len(model.layers)
-    indices = np.arange(num_layers)
-    frozen_indices = np.zeros(num_layers, dtype=bool)
-    for slice_ in frozen_slices.split(','):
-        try:
-            i = eval("indices[" + str(slice_) + "]")
-        except:
-            raise ValueError("\nInvalid syntax for `frozen_layers` attribute\nLayer index slices "
-                             "should follow the Python syntax. Received {}\nPlease check the "
-                             "'training' section of your configuration file.".format(frozen_layers))
-        frozen_indices[i] = True
-
-    # Freeze layers
-    model.trainable = True
-    num_trainable = num_layers
-    for i in range(num_layers):
-        if frozen_indices[i]:
-            num_trainable -= 1
-            model.layers[i].trainable = False
-
-
 def add_preprocessing_layers(
                 model: tf.keras.Model,
                 input_shape: Tuple = None,
@@ -172,72 +105,6 @@ def add_preprocessing_layers(
     augmented_model.summary()
 
     return augmented_model
-
-
-def get_optimizer(cfg: DictConfig) -> tf.keras.optimizers:
-    """
-    This function creates a Keras optimizer from the 'optimizer' section
-    of the config file.
-    The optimizer name, attributes and values used in the config file
-    are used to create a string that is the call to the Keras optimizer
-    with its arguments. Then, the string is evaluated. If the evaluation
-    succeeds, the optimizer object is returned. If it fails, an error
-    is thrown with a message that tells the user that the name and/or
-    arguments of the optimizer are incorrect.
-
-    Arguments:
-        cfg (DictConfig): dictionary containing the 'optimizer' section of
-                          the configuration file.
-    Returns:
-        tf.keras.optimizers: the Keras optimizer object.
-    """
-
-    message = "\nPlease check the 'training.optimizer' section of your configuration file."
-    if type(cfg) != DefaultMunch:
-        raise ValueError("\nInvalid syntax for optimizer{}".format(message))
-    optimizer_name = list(cfg.keys())[0]
-    optimizer_args = cfg[optimizer_name]
-
-    # Get the optimizer
-    if not optimizer_args:
-        # The optimizer has no arguments.
-        optimizer_text = "tf.keras.optimizers.{}()".format(optimizer_name)
-    else:
-        if type(optimizer_args) != DefaultMunch:
-            raise ValueError("\nInvalid syntax for `{}` optimizer arguments{}".format(optimizer_name, message))
-        text = "tf.keras.optimizers.{}(".format(optimizer_name)
-        # Collect the arguments
-        for k, v in optimizer_args.items():
-            if type(v) == str:
-                text += f'{k}=r"{v}", '
-            else:
-                text += f'{k}={v}, '
-        optimizer_text = text[:-2] + ')'
-
-    try:
-        optimizer = eval(optimizer_text)
-    except:
-        raise ValueError("\nThe optimizer name `{}` is unknown or the arguments are invalid, got:\n"
-                         "{}.{}".format(optimizer_name, optimizer_text, message))
-    return optimizer
-
-
-def get_loss(num_classes: int) -> tf.keras.losses:
-    """
-    Returns the appropriate loss function based on the number of classes in the dataset.
-
-    Args:
-        num_classes (int): The number of classes in the dataset.
-
-    Returns:
-        tf.keras.losses: The appropriate loss function based on the number of classes in the dataset.
-    """
-    if num_classes > 2:
-        # loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
-        loss = tf.keras.losses.CategoricalCrossentropy(from_logits=False)
-    else:
-        loss = tf.keras.losses.BinaryCrossentropy(from_logits=False)
-    return loss
 
 
 def get_callbacks(callbacks_dict: DictConfig, output_dir: str = None, logs_dir: str = None,
@@ -278,22 +145,6 @@ def get_callbacks(callbacks_dict: DictConfig, output_dir: str = None, logs_dir: 
                                            to the fit() function.
     """
 
-    def collect_callback_args(name, args=None, message=None):
-        if args:
-            if type(args) != DefaultMunch:
-                raise ValueError(f"\nInvalid syntax for `{name}` callback arguments{message}")
-            text = "("
-            for k, v in args.items():
-                if type(v) == str and v[:7] != "lambda ":
-                    text += f'{k}=r"{v}", '
-                else:
-                    text += f'{k}={v}, '
-            text = text[:-2] + ")"
-        else:
-            text = "()"
-        return text
-
-
     message = "\nPlease check the 'training.callbacks' section of your configuration file."
     num_lr_schedulers = 0
 
@@ -301,20 +152,20 @@ def get_callbacks(callbacks_dict: DictConfig, output_dir: str = None, logs_dir: 
     callback_list = []
     if callbacks_dict is not None:
         if type(callbacks_dict) != DefaultMunch:
-            raise ValueError("\nInvalid callbacks syntax{}".format(message))
+            raise ValueError(f"\nInvalid callbacks syntax{message}")
         for name in callbacks_dict.keys():
             if name in ("ModelCheckpoint", "TensorBoard", "CSVLogger"):
                 raise ValueError(f"\nThe `{name}` callback is built-in and can't be redefined.{message}")
-            text = "tf.keras.callbacks.{}".format(name)
+            text = f"tf.keras.callbacks.{name}"
 
             # Add the arguments to the callback string
             # and evaluate it to get the callback object
             text += collect_callback_args(name, args=callbacks_dict[name], message=message)
             try:
                 callback = eval(text)
-            except:
-                raise ValueError("\nThe callback name `{}` is unknown, or its arguments are incomplete "
-                                "or invalid\nReceived: {}{}".format(name, text, message))
+            except ValueError as error:
+                raise ValueError(f"\nThe callback name `{name}` is unknown, or its arguments are incomplete "
+                                 f"or invalid\nReceived: {text}{message}") from error
             callback_list.append(callback)
 
             if name in ["ReduceLROnPlateau", "LearningRateScheduler"]:
@@ -394,12 +245,12 @@ def train(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
     # Info messages about the model that was loaded
     if cfg.training.model:
         cfm = cfg.training.model
-        print(f"[INFO] Using `{cfm.name}` model")
+        print(f"[INFO] : Using `{cfm.name}` model")
         log_to_file(cfg.output_dir, (f"Model name : {cfm.name}"))
-        print("[INFO] No pretrained weights were loaded, training from randomly initialized weights.")
+        print("[INFO] : No pretrained weights were loaded, training from randomly initialized weights.")
 
     elif cfg.general.model_path:
-        print(f"[INFO] Loaded model file {cfg.general.model_path}")
+        print(f"[INFO] : Loaded model file {cfg.general.model_path}")
         log_to_file(cfg.output_dir ,(f"Model file : {cfg.general.model_path}"))
     if cfg.dataset.name: 
         log_to_file(output_dir, f"Dataset : {cfg.dataset.name}")
@@ -447,7 +298,7 @@ def train(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
                                   epochs=cfg.training.epochs,
                                   callbacks=callbacks)
     except: 
-        print('\n[INFO] :Training interrupted')  
+        print('\n[INFO] : Training interrupted')  
     #save the last epoch history in the log file
     last_epoch=log_last_epoch_history(cfg, output_dir)
     end_time = timer()
@@ -479,7 +330,7 @@ def train(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
     # Save a copy of the best model if requested
     if cfg.training.trained_model_path:
         best_model.save(cfg.training.trained_model_path)
-        print("[INFO] Saved trained model in file {}".format(cfg.training.trained_model_path))
+        print("[INFO] : Saved trained model in file {}".format(cfg.training.trained_model_path))
 
 
     # Evaluate h5 best model on the validation set
@@ -490,8 +341,5 @@ def train(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
         # Evaluate h5 best model on the test set
         best_model_test_acc = evaluate_h5_model(model_path=best_model_path, eval_ds=test_ds,
                                                 class_names=class_names, output_dir=output_dir, name_ds="test_set")
-
-    # Record the whole hydra working directory to get all info
-    mlflow.log_artifact(output_dir)
 
     return best_model_path

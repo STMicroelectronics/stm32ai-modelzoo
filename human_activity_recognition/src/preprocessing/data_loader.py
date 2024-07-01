@@ -21,6 +21,7 @@ from tensorflow.keras.utils import to_categorical
 from preprocessing import gravity_rotation
 import statistics
 
+
 def read_pkl_dataset(pkl_file_path: str,
                      class_names: List[str]):
     '''
@@ -338,10 +339,10 @@ def load_mobility_v1(train_path: str,
     train_dataset[train_dataset.columns[:3]] = train_dataset[train_dataset.columns[:3]] * 9.8
     test_dataset[test_dataset.columns[:3]] = test_dataset[test_dataset.columns[:3]] * 9.8
 
-    print('[INFO]: Building train segments!')
+    print('[INFO] : Building train segments!')
     train_segments, train_labels = get_data_segments(dataset=train_dataset,
                                                      seq_len=input_shape[0])
-    print('[INFO]: Building test segments!')
+    print('[INFO] : Building test segments!')
     train_segments = preprocess_data(train_segments, gravity_rot_sup, normalization)
     train_labels = to_categorical([class_names.index(label)
                                   for label in train_labels], num_classes=len(class_names))

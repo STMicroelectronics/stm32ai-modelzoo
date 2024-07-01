@@ -399,49 +399,6 @@ def check_dataset_integrity(dataset_root_dir: str, check_image_files: bool = Fal
                                  "Supported image file formats are JPEG, PNG, GIF and BMP.")
 
 
-def get_class_names(dataset_name: str = None, dataset_root_dir: str = None) -> List:
-    """
-    This function returns the class names of the dataset.
-      - If the dataset is cifar10, cifar100 or emnist, the class names
-        are returned by functions associated to the dataset.
-      - Otherwise the class names are inferred from the dataset. These are
-        the names of the subdirectories under the dataset root directory.
-
-    Args:
-        dataset_name (str): The name of the dataset.
-        dataset_root_dir (str): The path to the root directory of the dataset
-                if the dataset is not cifar10, cifar100 or emnist.
-
-    Returns:
-        string (List): A list of strings.
-    """
-
-    if dataset_name:
-        if dataset_name == "cifar10":
-            class_names = ["airplane","automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
-        elif dataset_name == "cifar100":
-            class_names = sorted([
-                "beaver", "dolphin", "otter", "seal", "whale", "aquarium fish", "flatfish", "ray", "shark", "trout",
-                "orchids", "poppies", "roses", "sunflowers", "tulips", "bottles", "bowls", "cans", "cups", "plates",
-                "apples", "mushrooms", "oranges", "pears", "sweet peppers", "clock", "computer keyboard", "lamp", 
-                "telephone", "television", "bed", "chair", "couch", "table", "wardrobe", "bee", "beetle", "butterfly",
-                "caterpillar", "cockroach", "bear", "leopard", "lion", "tiger", "wolf", "bridge", "castle", "house",
-                "road", "skyscraper", "cloud", "forest", "mountain", "plain", "sea", "camel", "cattle", "chimpanzee",
-                "elephant", "kangaroo", "fox", "porcupine", "possum", "raccoon", "skunk", "crab", "lobster", "snail", 
-                "spider", "worm", "baby", "boy", "girl", "man", "woman", "crocodile", "dinosaur", "lizard", "snake", 
-                "turtle", "hamster", "mouse", "rabbit", "shrew", "squirrel", "maple", "oak", "palm", "pine", "willow",
-                "bicycle", "bus", "motorcycle", "pickup truck", "train", "lawn-mower", "rocket", "streetcar", "tank",
-                "tractor"])
-        elif dataset_name == "emnist":
-            class_names = [i for i in range(10)] + list(string.ascii_uppercase)
-    else:
-        # Get the list of subdirectories. These are the class names.
-        class_names = sorted([x for x in os.listdir(dataset_root_dir) 
-                                    if os.path.isdir(os.path.join(dataset_root_dir, x))])
-
-    return class_names
-
-
 def get_path_dataset(path : str,
                      class_names : list[str],
                      seed : int,

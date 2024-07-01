@@ -1,4 +1,4 @@
-# Squeezenet v1.1 
+# Squeezenet v1.1
 
 ## **Use case** : [Image classification](../README.md)
 
@@ -47,7 +47,7 @@ For an image resolution of NxM and P classes
 | STM32U5  |[x]|[]|
 | STM32H7  |[x]|[x]|
 | STM32MP1 |[x]|[]|
-
+| STM32MP2 |[x]|[]|
 
 # Performances
 ## Training
@@ -69,25 +69,35 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
-### Reference MCU memory footprint based on Flowers dataset (see Accuracy for details on dataset)
+### Reference **MCU** memory footprint based on Flowers dataset (see Accuracy for details on dataset)
 
 
 | Model                                                                                                                               | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM     | Total Flash | STM32Cube.AI version  |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|--------------|------------|---------------|-------------|-----------------------|
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 242.19 KiB     | 16.47 KiB     | 716.71 KiB   | 78.24 KiB   | 258.66 KiB   | 794.95 KiB | 8.1.0                 |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 842.06 KiB     | 16.52 KiB    | 716.71 KiB   | 78.27 KiB   | 858.58  KiB     | 794.98 KiB    | 8.1.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 271.84 KiB     | 16.47 KiB     | 716.71 KiB   | 78.24 KiB   | 288.31 KiB   | 789.55 KiB | 9.1.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 816.86 KiB     | 16.51 KiB    | 716.71 KiB   | 71.42 KiB   | 833.37  KiB     | 788.13 KiB    | 9.1.0                 |
 
 
-### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
+### Reference **MCU** inference time based on Flowers dataset (see Accuracy for details on dataset)
 
 
 | Model                                                                                                                               | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) | STM32Cube.AI version  |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|------------------|---------------|-----------|---------------------|-----------------------|
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 261.5 ms            | 8.1.0                 |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 863.11 ms            | 8.1.0                 |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz   | 224.2 ms **         | X-LINUX-AI v5.0.0     |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 216.67 ms            | 9.1.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 693.3 ms            | 9.1.0                 |
 
-** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
+
+### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)
+| Model                                                                                                                         |  Format  | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|-------------------------------------------------------------------------------------------------------------------------------|----------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8     | 128x128x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 9.72  ms            | 8.45  | 91.55 | 0    | v5.1.0             | OpenVX                |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite) | Int8     | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 31.11 ms            | 8.23  | 91.77 | 0    | v5.1.0             | OpenVX                |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8     | 128x128x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 44.92 ms            | NA    | NA    | 100  | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite) | Int8     | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 147.80 ms           | NA    | NA    | 100  | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite) | Int8     | 128x128x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 70.16 ms            | NA    | NA    | 100  | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/flowers/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite) | Int8     | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 234.80 ms           | NA    | NA    | 100  | v5.1.0             | TensorFlowLite 2.11.0 |
+
+** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 
 ### Accuracy with Flowers dataset
 

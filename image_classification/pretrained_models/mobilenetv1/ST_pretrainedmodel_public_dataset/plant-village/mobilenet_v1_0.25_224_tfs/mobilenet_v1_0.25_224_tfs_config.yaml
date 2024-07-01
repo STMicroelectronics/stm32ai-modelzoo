@@ -121,14 +121,14 @@ quantization:
   quantization_output_type: float
   export_dir: quantized_models
 prediction:
-  test_images_path: null
+  test_files_path: null
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
-    on_cloud: true
-    path_to_stm32ai: C:/Users/XXX/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 benchmarking:
   board: STM32H747I-DISCO
 deployment:

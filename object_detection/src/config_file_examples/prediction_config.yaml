@@ -1,0 +1,31 @@
+general:
+   model_path:  ../pretrained_models/st_ssd_mobilenet_v1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_256/st_ssd_mobilenet_v1_025_256_int8.tflite
+   model_type: st_ssd_mobilenet_v1
+operation_mode: prediction
+
+dataset:
+  class_names: [ person ]
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.6
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.3
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 10
+
+prediction:
+  test_files_path: ../datasets/COCO_2017_person/test
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

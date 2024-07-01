@@ -5,10 +5,15 @@
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
 
-class InvalidCredentialsException(Exception):
+class InvalidCrendetialsException(Exception):
     "Raised when a login fails due to credentials error"
     def __init__(self) -> None:
         super().__init__('Invalid credentials. Please verify.')
+
+class BlockedAccountException(Exception):
+    "Raised when a login fails multiple times and myST account is blocked due to credentials error"
+    def __init__(self) -> None:
+        super().__init__('myST detected multiple erroneous trials. Please change your password on st.com')
 
 class LoginFailureException(Exception):
     def __init__(self, username: str, password: str, details:str='') -> None:
@@ -50,6 +55,10 @@ class BenchmarkFailure(BenchmarkError):
         super().__init__(f"Benchmark failed on board {board}: {message}")
 
 
+class GenerateNbgFailure(ServerError):
+    "Raised when  fails"
+    def __init__(self, message) -> None:
+        super().__init__(f'Optimization failed: {message}')
 class ServerRouteNotFound(ServerError):
     def __init__(self, message) -> None:
         super().__init__(f"RouteNotRoundError: {message}")

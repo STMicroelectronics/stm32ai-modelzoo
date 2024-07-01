@@ -406,8 +406,7 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_reduce_ {
 typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_reduce_log_sum_exp_ {
   AI_LAYER_COMMON_FIELDS_DECLARE
   ai_shape_dimension axis;
-}
-ai_layer_reduce_log_sum_exp;
+} ai_layer_reduce_log_sum_exp;
 
 /*!
  * @struct ai_layer_reduce l1
@@ -420,7 +419,7 @@ ai_layer_reduce_log_sum_exp;
 typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_reduce_l1_ {
   AI_LAYER_COMMON_FIELDS_DECLARE
   AI_CONST ai_array* axes;
-}ai_layer_reduce_l1;
+} ai_layer_reduce_l1;
 
 
 /*!
@@ -434,7 +433,7 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_reduce_l1_ {
 typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_reduce_l2_ {
   AI_LAYER_COMMON_FIELDS_DECLARE
   AI_CONST ai_array* axes;
-}ai_layer_reduce_l2;
+} ai_layer_reduce_l2;
 
 
 /*!
@@ -471,6 +470,14 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_reverse_ {
 /******************************************************************************/
 /* Forward Functions Section                                                  */
 /******************************************************************************/
+
+/*!
+ * @brief Dummy forward routine with no processing.
+ * @ingroup layers_generic
+ * @param generic layer handle
+ */
+AI_INTERNAL_API
+void forward_nop(ai_layer* layer);
 
 /*!
  * @brief Computes the activations of a TimeDelay layer.
@@ -758,6 +765,18 @@ void forward_add_integer_UINT8(ai_layer* layer);
  */
 AI_INTERNAL_API
 void forward_reverse(ai_layer *pLayer);
+
+
+/*!
+ * @brief Upsample an input tensors with unsigned 8-bit integer input,.
+ *        It is to be used also for other formats, since the function only
+ *        performs memory copy.
+ * @ingroup layers_generic
+ * @param layer the upsampled layer
+ */
+AI_INTERNAL_API
+void forward_upsample_generic(ai_layer* layer);
+
 
 AI_API_DECLARE_END
 

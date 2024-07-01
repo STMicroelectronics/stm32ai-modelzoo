@@ -243,6 +243,24 @@ AI_INTERNAL_API
 void forward_conv2d_dorefa_is8os1ws8(ai_layer *pLayer);
 
 /*!
+ * @brief Handles 2D convolution with 16-bits quantized input, binary weights 
+          and binary output
+ * @ingroup layers_conv2d_dqnn
+ * @param layer conv2d_dqnn layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is16os1ws1_bn_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Handles 2D convolution with 16-bits quantized input, binary weights 
+          and 16-bits quantized output
+ * @ingroup layers_conv2d_dqnn
+ * @param layer conv2d_dqnn layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is16os16ws1_fxp(ai_layer *pLayer);
+
+/*!
  * @brief Handles depth-wise convolution with binary input, binary output and 
  *        binary weights
  * @ingroup layers_conv2d_dqnn
@@ -307,6 +325,166 @@ void forward_dw_is1os1ws1_bn_pad1_optim3(ai_layer *pLayer);
 AI_INTERNAL_API
 void forward_conv2d_is8os8ws1(ai_layer *pLayer);
 
+/**
+ * @brief Handles 2D convolution with binary input, fixed point 16-bits output and
+ *        binary weights - with 0 padding (QKeras like) - Lite I/F
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is1os16ws1_bn_pad0_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Handles 2D convolution with binary input, fixed point 16-bits output and
+ *        binary weights - with +1/-1 padding (Larq like) - Lite I/F
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is1os16ws1_bn_pad1_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Handles 2D convolution with binary input, fixed point 16-bits output and
+ *        binary weights - with +1/-1 padding (Larq like) - Lite I/F
+ *        - Optimized thanks to Optim1 assumptions
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is1os16ws1_bn_pad1_optim1_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Handles 2D convolution with binary input, fixed point 16-bits unsigned output and
+ *        binary weights - with 0 padding (QKeras like) - Lite I/F
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is1ou16ws1_bn_pad0_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Handles 2D convolution with binary input, fixed point 16-bits unsigned output and
+ *        binary weights - with +1/-1 padding (Larq like) - Lite I/F
+ * @ingroup lite_conv2d_dqnn
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is1ou16ws1_bn_pad1_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Handles 2D convolution with binary input, fixed point 16-bits unsiged output and
+ *        binary weights - with +1/-1 padding (Larq like) - Lite I/F
+ *        - Optimized thanks to Optim1 assumptions
+ * @ingroup lite_conv2d_dqnn
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is1ou16ws1_bn_pad1_optim1_fxp(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of a integer quantized 2D convolutional layer
+ *        for SSSA per channel quantized RGB scheme using n_channel_in = 3
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_conv2d_is8os8ws8_sssa_ch_rgb(const ai_i8 *pData_in,
+                                          ai_i8 *pData_out,
+                                          const ai_i8 *pWeights,
+                                          const ai_i32 *pBias,
+                                          ai_u16 *pBuffer_a,
+                                          const ai_size width_in,
+                                          const ai_size height_in,
+                                          const ai_size width_out,
+                                          const ai_size height_out,
+                                          const ai_u16 n_channel_in,
+                                          const ai_u16 n_channel_out,
+                                          const ai_size filt_width,
+                                          const ai_size filt_height,
+                                          const ai_u16 filt_pad_x,
+                                          const ai_u16 filt_pad_y,
+                                          const ai_u16 filt_stride_x,
+                                          const ai_u16 filt_stride_y,
+                                          const ai_float in_scale,
+                                          const ai_float out_scale,
+                                          const ai_float *pWt_scale,
+                                          const ai_i8 in_zeropoint,
+                                          const ai_i8 out_zeropoint,
+                                          const ai_bool out_ch_format,
+                                          ai_i16 *p_out_r_shift,
+                                          ai_i32 *p_out_factor);
+
+/*!
+ * @brief Computes the activations of a point-wise integer quantized convolution
+          for SSSA per channel quantized scheme
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_pw_is8os8ws8_sssa_ch(const ai_i8 *pData_in,
+                                  ai_i8 *pData_out,
+                                  const ai_i8 *pWeights,
+                                  const ai_i32 *pBias,
+                                  ai_u16 *pBuffer_a,
+                                  const ai_size width_in,
+                                  const ai_size height_in,
+                                  const ai_size width_out,
+                                  const ai_size height_out,
+                                  const ai_u16 n_channel_in,
+                                  const ai_u16 n_channel_out,
+                                  const ai_size filt_width,
+                                  const ai_size filt_height,
+                                  const ai_u16 filt_pad_x,
+                                  const ai_u16 filt_pad_y,
+                                  const ai_u16 filt_stride_x,
+                                  const ai_u16 filt_stride_y,
+                                  const ai_u16 dilation_x,
+                                  const ai_u16 dilation_y,
+                                  const ai_float in_scale,
+                                  const ai_float out_scale,
+                                  const ai_float *pWt_scale,
+                                  const ai_i8 in_zeropoint,
+                                  const ai_i8 out_zeropoint,
+                                  ai_i16 *p_out_r_shift,
+                                  ai_i32 *p_out_factor,
+                                  ai_i32 AI_PWOverlay,
+                                  ai_i16 *bufferA,
+                                  ai_i32 scratch_size);
+                                  // st_nn_context_t context);
+
+/*!
+ * @brief Computes the activations of a depth-wise integer quantized convolution 
+          for SSSA per channel quantized scheme
+ * @ingroup layers_conv2d
+ * @param layer the convolutional (conv) layer
+ */
+AI_INTERNAL_API
+void forward_dw_is8os8ws8_sssa_ch(const ai_i8 *pData_in,
+                                  ai_i8 *pData_out,
+                                  const ai_i8 *pWeights,
+                                  const ai_i32 *pBias,
+                                  ai_u16 *pBuffer_a,
+                                  const ai_size width_in,
+                                  const ai_size height_in,
+                                  const ai_size width_out,
+                                  const ai_size height_out,
+                                  const ai_u16 n_channel_in,
+                                  const ai_u16 n_channel_out,
+                                  const ai_size filt_width,
+                                  const ai_size filt_height,
+                                  const ai_u16 filt_pad_x,
+                                  const ai_u16 filt_pad_y,
+                                  const ai_u16 filt_stride_x,
+                                  const ai_u16 filt_stride_y,
+                                  const ai_u16 dilation_x,
+                                  const ai_u16 dilation_y,
+                                  const ai_float in_scale,
+                                  const ai_float out_scale,
+                                  const ai_float *pWt_scale,
+                                  const ai_i8 in_zeropoint,
+                                  const ai_i8 out_zeropoint,
+                                  ai_i16 *p_out_r_shift,
+                                  ai_i32 *p_out_factor);
 
 
 AI_API_DECLARE_END

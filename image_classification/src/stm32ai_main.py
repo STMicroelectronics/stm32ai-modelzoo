@@ -7,52 +7,63 @@
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
 import os
-import subprocess
 import sys
-import traceback
-from omegaconf import OmegaConf
 from hydra.core.hydra_config import HydraConfig
 import hydra
-from hydra import initialize_config_dir
 import warnings
-
 warnings.filterwarnings("ignore")
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import tensorflow as tf
 from omegaconf import DictConfig
 import mlflow
 import argparse
+import logging
+from typing import Optional
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../common'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/benchmarking'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/deployment'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/quantization'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/optimization'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/evaluation'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/training'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/utils'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../deployment'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './data_augmentation'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './preprocessing'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './training'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './utils'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './evaluation'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../deployment'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './quantization'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './prediction'))
-sys.path.append(os.path.join(os.path.dirname(__file__), './benchmarking'))
+sys.path.append(os.path.join(os.path.dirname(__file__), './models'))
 
+if sys.platform.startswith('linux'):
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/optimization/linux'))
+elif sys.platform.startswith('win'):
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/optimization/windows'))
+
+from logs_utils import mlflow_ini
+from gpu_utils import set_gpu_memory_limit
+from cfg_utils import get_random_seed
 from preprocess import preprocess
-from utils import set_gpu_memory_limit, mlflow_ini
-from visualizer import display_figures
+from visualize_utils import display_figures
 from parse_config import get_config
 from train import train
 from evaluate import evaluate
-from deploy import deploy
+from deploy import deploy, deploy_mpu
 from quantize import quantize
 from predict import predict
-from benchmark import benchmark
-from typing import Optional
-from common_benchmark import cloud_connect
+from common_benchmark import benchmark, cloud_connect
+from logs_utils import log_to_file
+from models_mgt import IC_CUSTOM_OBJECTS
 
 
 def chain_qd(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf.data.Dataset = None,
-             quantization_ds: tf.data.Dataset = None) -> None:
+             quantization_ds: tf.data.Dataset = None, hardware_type: str = "MCU" ) -> None:
     """
-    Runs the chain_qd pipeline, including quantization,  and deployment
+    Runs the chain_qd pipeline, including quantization, and deployment
 
     Args:
         cfg (DictConfig): Configuration dictionary. Defaults to None.
@@ -83,7 +94,10 @@ def chain_qd(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf.
         quantized_model_path = quantize(cfg=cfg, fake=True)
     print('[INFO] : Quantization complete.')
 
-    deploy(cfg=cfg, model_path_to_deploy=quantized_model_path, credentials=credentials)
+    if hardware_type == "MCU":
+        deploy(cfg=cfg, model_path_to_deploy=quantized_model_path, credentials=credentials)
+    else:
+        deploy_mpu(cfg=cfg, model_path_to_deploy=quantized_model_path, credentials=credentials)
     print('[INFO] : Deployment complete.')
 
 
@@ -91,7 +105,7 @@ def chain_eqeb(cfg: DictConfig = None, float_model_path: str = None, train_ds: t
                valid_ds: tf.data.Dataset = None,
                quantization_ds: tf.data.Dataset = None, test_ds: tf.data.Dataset = None) -> None:
     """
-    Runs the chain_eqeb pipeline, including evaluation of the float model,  quantization , evaluation of
+    Runs the chain_eqeb pipeline, including evaluation of the float model, quantization, evaluation of
     the quantized model and benchmarking
 
     Args:
@@ -132,7 +146,7 @@ def chain_eqeb(cfg: DictConfig = None, float_model_path: str = None, train_ds: t
         evaluate(cfg=cfg, eval_ds=valid_ds, model_path_to_evaluate=quantized_model_path, name_ds="validation set")
     print('[INFO] : Evaluation complete.')
     display_figures(cfg)
-    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials, custom_objects=IC_CUSTOM_OBJECTS)
     print('[INFO] : Benchmarking complete.')
 
 
@@ -169,8 +183,7 @@ def chain_qb(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf.
               'The model performances will not be accurate.')
         quantized_model_path = quantize(cfg=cfg, fake=True)
     print('[INFO] : Quantization complete.')
-
-    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials, custom_objects=IC_CUSTOM_OBJECTS)
     print('[INFO] : Benchmarking complete.')
 
 
@@ -178,7 +191,7 @@ def chain_eqe(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf
               valid_ds: tf.data.Dataset = None,
               quantization_ds: tf.data.Dataset = None, test_ds: tf.data.Dataset = None) -> None:
     """
-    Runs the chain_eqe pipeline, including evaluation of a float model,  quantization and evaluation of
+    Runs the chain_eqe pipeline, including evaluation of a float model, quantization and evaluation of
     the quantized model
 
     Args:
@@ -218,7 +231,7 @@ def chain_eqe(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf
 def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_ds: tf.data.Dataset = None,
                 quantization_ds: tf.data.Dataset = None, test_ds: tf.data.Dataset = None) -> None:
     """
-    Runs the chain_tbqeb pipeline, including training,  benchmarking , quantization, evaluation and benchmarking.
+    Runs the chain_tbqeb pipeline, including training, benchmarking, quantization, evaluation and benchmarking.
 
     Args:
         cfg (DictConfig): Configuration dictionary. Defaults to None.
@@ -240,9 +253,8 @@ def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_
         trained_model_path = train(cfg=cfg, train_ds=train_ds, valid_ds=valid_ds, test_ds=test_ds)
     else:
         trained_model_path = train(cfg=cfg, train_ds=train_ds, valid_ds=valid_ds)
-
     print('[INFO] : Training complete.')
-    benchmark(cfg=cfg, model_path_to_benchmark=trained_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=trained_model_path, credentials=credentials, custom_objects=IC_CUSTOM_OBJECTS)
     print('[INFO] : benchmarking complete.')
     if quantization_ds:
         print('[INFO] : Using the quantization dataset to quantize the model.')
@@ -259,14 +271,14 @@ def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_
         evaluate(cfg=cfg, eval_ds=valid_ds, model_path_to_evaluate=quantized_model_path, name_ds="validation set")
     print('[INFO] : Evaluation complete.')
     display_figures(cfg)
-    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials, custom_objects=IC_CUSTOM_OBJECTS)
     print('[INFO] : Benchmarking complete.')
 
 
 def chain_tqe(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_ds: tf.data.Dataset = None,
               quantization_ds: tf.data.Dataset = None, test_ds: tf.data.Dataset = None) -> None:
     """
-    Runs the chain_tqe pipeline, including training,  quantization and evaluation.
+    Runs the chain_tqe pipeline, including training, quantization and evaluation.
 
     Args:
         cfg (DictConfig): Configuration dictionary. Defaults to None.
@@ -300,9 +312,14 @@ def chain_tqe(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_ds
     display_figures(cfg)
 
 
-def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data.Dataset = None,
-                 valid_ds: tf.data.Dataset = None, quantization_ds: tf.data.Dataset = None,
-                 test_ds: tf.data.Dataset = None, float_model_path: Optional[str] = None,fake: Optional[bool] = False) -> None:
+def process_mode(mode: str = None,
+                 configs: DictConfig = None,
+                 train_ds: tf.data.Dataset = None,
+                 valid_ds: tf.data.Dataset = None,
+                 quantization_ds: tf.data.Dataset = None,
+                 test_ds: tf.data.Dataset = None,
+                 float_model_path: Optional[str] = None,
+                 fake: Optional[bool] = False) -> None:
     """
     Process the selected mode of operation.
 
@@ -318,9 +335,10 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
     Returns:
         None
     Raises:
-        ValueError: If an invalid mode is selected or if required datasets are missing.
+        ValueError: If an invalid operation_mode is selected or if required datasets are missing.
     """
-
+    # logging the operation_mode in the output_dir/stm32ai_main.log file
+    log_to_file(configs.output_dir, f'operation_mode: {mode}')
     # Check the selected mode and perform the corresponding operation
     if mode == 'training':
         if test_ds:
@@ -337,26 +355,33 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
         display_figures(configs)
         print('[INFO] : Evaluation complete.')
     elif mode == 'deployment':
-        deploy(cfg=configs)
+        if configs.hardware_type == "MPU":
+            deploy_mpu(cfg=configs)
+        else:
+            deploy(cfg=configs)
         print('[INFO] : Deployment complete.')
     elif mode == 'quantization':
         if quantization_ds:
+            input_ds = quantization_ds
+            fake = False
             print('[INFO] : Using the quantization dataset to quantize the model.')
-            quantize(cfg=configs, quantization_ds=quantization_ds, fake=False)
         elif train_ds:
             print('[INFO] : Quantization dataset is not provided! Using the training set to quantize the model.')
-            quantize(cfg=configs, quantization_ds=train_ds, fake=False)
+            input_ds = train_ds
+            fake = False
         else:
+            input_ds = None
+            fake = True
             print(
                 '[INFO] : Neither quantization dataset or training set are provided! Using fake data to quantize the model. '
                 'The model performances will not be accurate.')
-            quantize(cfg=configs, fake=fake)
+        quantize(cfg=configs, quantization_ds=input_ds, fake=fake)
         print('[INFO] : Quantization complete.')
     elif mode == 'prediction':
         predict(cfg=configs)
         print('[INFO] : Prediction complete.')
     elif mode == 'benchmarking':
-        benchmark(cfg=configs)
+        benchmark(cfg=configs, custom_objects=IC_CUSTOM_OBJECTS)
         print('[INFO] : Benchmark complete.')
     elif mode == 'chain_tbqeb':
         chain_tbqeb(cfg=configs, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
@@ -382,17 +407,20 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
         print('[INFO] : chain_eqeb complete.')
     elif mode == 'chain_qd':
         chain_qd(cfg=configs, float_model_path=float_model_path, train_ds=train_ds,
-                 quantization_ds=quantization_ds)
+                 quantization_ds=quantization_ds, hardware_type=configs.hardware_type)
         print('[INFO] : chain_qd complete.')
     # Raise an error if an invalid mode is selected
     else:
         raise ValueError(f"Invalid mode: {mode}")
-    
+
+    # Record the whole hydra working directory to get all info
+    mlflow.log_artifact(configs.output_dir)
+    mlflow.log_param("model_path", configs.general.model_path)
     if mode in ['benchmarking', 'chain_qb', 'chain_eqeb', 'chain_tbqeb']:
-        mlflow.log_param("model_path", configs.general.model_path)
         mlflow.log_param("stm32ai_version", configs.tools.stm32ai.version)
         mlflow.log_param("target", configs.benchmarking.board)
-
+    # logging the completion of the chain
+    log_to_file(configs.output_dir, f'operation finished: {mode}')
 
 @hydra.main(version_base=None, config_path="", config_name="user_config")
 def main(cfg: DictConfig) -> None:
@@ -408,19 +436,26 @@ def main(cfg: DictConfig) -> None:
 
     # Configure the GPU (the 'general' section may be missing)
     if "general" in cfg and cfg.general:
+        # Set upper limit on usable GPU memory
         if "gpu_memory_limit" in cfg.general and cfg.general.gpu_memory_limit:
             set_gpu_memory_limit(cfg.general.gpu_memory_limit)
+            print(f"[INFO] : Setting upper limit of usable GPU memory to {int(cfg.general.gpu_memory_limit)}GBytes.")
+        else:
+            print("[WARNING] The usable GPU memory is unlimited.\n"
+                  "Please consider setting the 'gpu_memory_limit' attribute "
+                  "in the 'general' section of your configuration file.")
 
     # Parse the configuration file
     cfg = get_config(cfg)
-
     cfg.output_dir = HydraConfig.get().run.dir
     mlflow_ini(cfg)
-    # Global seed for random generators
-    seed = int(cfg.general.global_seed)
-    print(f'The random seed for this simulation is {seed}')
+
+    # Seed global seed for random generators
+    seed = get_random_seed(cfg)
+    print(f'[INFO] : The random seed for this simulation is {seed}')
     if seed is not None:
         tf.keras.utils.set_random_seed(seed)
+
     # Extract the mode from the command-line arguments
     mode = cfg.operation_mode
     valid_modes = ['training', 'evaluation', 'chain_tbqeb', 'chain_tqe']
@@ -429,7 +464,11 @@ def main(cfg: DictConfig) -> None:
         preprocess_output = preprocess(cfg=cfg)
         train_ds, valid_ds, quantization_ds, test_ds = preprocess_output
         # Process the selected mode
-        process_mode(mode=mode, configs=cfg, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
+        process_mode(mode=mode,
+                     configs=cfg,
+                     train_ds=train_ds,
+                     valid_ds=valid_ds,
+                     quantization_ds=quantization_ds,
                      test_ds=test_ds)
     elif mode == 'quantization':
         if cfg.dataset.training_path or cfg.dataset.quantization_path:
@@ -437,10 +476,16 @@ def main(cfg: DictConfig) -> None:
             preprocess_output = preprocess(cfg=cfg)
             train_ds, valid_ds, quantization_ds, test_ds = preprocess_output
             # Process the selected mode
-            process_mode(mode=mode, configs=cfg, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
+            process_mode(mode=mode,
+                         configs=cfg,
+                         train_ds=train_ds,
+                         valid_ds=valid_ds,
+                         quantization_ds=quantization_ds,
                          test_ds=test_ds)
         else:
-            process_mode(mode=mode, configs=cfg, fake=True)
+            process_mode(mode=mode,
+                         configs=cfg,
+                         fake=True)
     else:
         if mode in ['chain_eqe', 'chain_qb', 'chain_eqeb', 'chain_qd']:
             if cfg.dataset.training_path or cfg.dataset.quantization_path:
@@ -448,13 +493,17 @@ def main(cfg: DictConfig) -> None:
                 train_ds, valid_ds, quantization_ds, test_ds = preprocess_output
             else:
                 train_ds = valid_ds = quantization_ds = test_ds = None
-            process_mode(mode=mode, configs=cfg, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
-                         test_ds=test_ds, float_model_path=cfg.general.model_path)
+            process_mode(mode=mode,
+                         configs=cfg,
+                         train_ds=train_ds,
+                         valid_ds=valid_ds,
+                         quantization_ds=quantization_ds,
+                         test_ds=test_ds,
+                         float_model_path=cfg.general.model_path)
         else:
             # Process the selected mode
-            process_mode(mode=mode, configs=cfg)
-
-    # mlflow.end_run()
+            process_mode(mode=mode,
+                         configs=cfg)
 
 
 if __name__ == "__main__":

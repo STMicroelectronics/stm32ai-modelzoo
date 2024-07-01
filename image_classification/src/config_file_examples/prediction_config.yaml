@@ -16,7 +16,7 @@ preprocessing:
    color_mode: rgb
 
 prediction:
-   test_images_path: ../datasets/flower_photos/daisy
+   test_files_path: ../datasets/flower_photos/daisy
 
 mlflow:
    uri: ./experiments_outputs/mlruns

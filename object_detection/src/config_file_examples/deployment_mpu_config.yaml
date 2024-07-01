@@ -1,0 +1,36 @@
+general:
+   model_path:  ../pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite
+   model_type: ssd_mobilenet_v2_fpnlite
+operation_mode: deployment
+
+preprocessing:
+  rescaling: {scale : 127.5, offset : -1}
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+tools:
+   stedgeai:
+      version: 9.1.0
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
+
+deployment:
+   c_project_path: ../../X-LINUX-AI_application_code/object_detection/
+   label_file_path: ../../X-LINUX-AI_application_code/object_detection/Resources/labels_coco_dataset_80.txt
+   board_deploy_path: /usr/local/object-detection
+   verbosity: 1
+   hardware_setup:
+      serie: STM32MP2
+      board: STM32MP257F-EV1
+      ip_address: X.X.X.X
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

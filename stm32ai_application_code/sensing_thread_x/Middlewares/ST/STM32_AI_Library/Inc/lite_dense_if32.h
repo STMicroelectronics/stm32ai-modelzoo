@@ -1,5 +1,5 @@
-#ifndef _LITE_DENSE_IFR32_H
-#define _LITE_DENSE_IFR32_H
+#ifndef _LITE_DENSE_IF32_H
+#define _LITE_DENSE_IF32_H
 #pragma once
 
 #include "ai_lite_interface.h"
@@ -17,10 +17,10 @@
  *        the number of dense hidden neurons.
  */
 LITE_API_ENTRY
-void lite_dense_if32of32wf32(
+void forward_lite_dense_if32of32wf32(
   ai_float* output, const ai_float* input,
   const ai_float* weights, const ai_float* bias,
   const ai_u32 n_channel_in, const ai_u32 n_channel_out);
 
 
-#endif    /*_LITE_DENSE_IFR32_H*/
+#endif    /*_LITE_DENSE_IF32_H*/

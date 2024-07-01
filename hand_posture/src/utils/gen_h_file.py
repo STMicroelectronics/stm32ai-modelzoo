@@ -11,6 +11,7 @@ import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
+import sys
 import os
 import numpy as np
 import tensorflow as tf
@@ -18,8 +19,10 @@ from tensorflow.keras import backend
 from typing import Tuple, Dict, Optional
 from hydra.core.hydra_config import HydraConfig
 from omegaconf import OmegaConf, DictConfig, open_dict
+
+from models_utils import get_model_name_and_its_input_shape
 from handposture_dictionnary import hand_posture_dict
-from models_mgt import get_model_name_and_its_input_shape
+
 
 def gen_h_user_file(config: DictConfig = None, model_path: str = None) -> None:
     """

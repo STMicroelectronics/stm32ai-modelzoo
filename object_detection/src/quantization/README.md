@@ -8,29 +8,13 @@ This tutorial shows how to quantize a floating point model with real data.
 
 ## <a id="">Table of contents</a>
 
-### <a href="#1">1. Configure the yaml file</a>
-
-#### <a href="#1.1">1.1 Prepare the dataset</a>
-
-#### <a href="#1.2">1.2 Apply preprocessing</a>
-
-#### <a href="#1.3">1.3 Setting the model and quantization parameters</a>
-
-#### <a href="#1.4">1.4 Random quantization</a>
-
-#### <a href="#1.5">1.5 Hydra and MLflow settings</a>
-
-### <a href="#2">2. Quantize your model</a>
-
-__________________________________________
-
-### <a id="1">1. Configure the yaml file</a>
+<details open><summary><a href="#1"><b>1. Configure the yaml file</b></a></summary><a id="1"></a>
 
 All the sections of the YAML file must be setted like described in the **[README.md](../README.md)** with setting
 the `operation_mode` to quantization, otherwise you can precise the `operation_mode` later when running the experience
 by `python stm32ai_main.py operation_mode=quantization`.
 
-#### <a id="1-1">1.1 Prepare the dataset</a>
+<ul><details open><summary><a href="#1-1">1.1 Prepare the dataset</a></summary><a id="1-1"></a>
 
 Information about the dataset you want use for activations calibration is provided in the `dataset` section of the
 configuration file, as shown in the YAML code below.
@@ -50,7 +34,8 @@ dedicated to activations calibration.
 If you only want to quantize the model on a random part of your quantization set, simply set the percentage value in
 the `quantization_split` parameter.
 
-#### <a id="1-2">1.2 Apply preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Apply preprocessing</a></summary><a id="1-2"></a>
 
 The images from the dataset need to be preprocessed before they are presented to the network for quantization.
 This includes rescaling and resizing. In particular, they need to be rescaled exactly as they were at training step.
@@ -79,7 +64,8 @@ The `resizing` attribute specifies the image resizing methods you want to use:
 
 The `color_mode` attribute must be one of "*grayscale*", "*rgb*" or "*rgba*".
 
-#### <a id="1-3">1.3 Setting the model and quantization parameters</a>
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 Set the model and quantization parameters</a></summary><a id="1-3"></a>
 
 As mentioned previously, all the sections of the YAML file must be set in accordance with
 this **[README.md](../README.md)**.
@@ -94,6 +80,8 @@ quantization:
   quantization_type: PTQ
   quantization_input_type: uint8
   quantization_output_type: float
+  granularity: per_channel  # Optional, defaults to "per_channel".
+  optimize: False           # Optional, defaults to False.
   export_dir: quantized_models
 ```
 
@@ -107,9 +95,13 @@ quantization:
   model input.
 - `quantization_output_type` - *String*, can be "int8", "uint8" or "float", represents the quantization type for the
   model output.
+- `granularity` - String, can be "per_tensor" or "per_channel", defines the quantization granularity
+- `optimize` - String, can be either True or False, controls whether the user wants to optimize the model before 
+  attempting to quantize it "per_tensor".
 - `export_dir` - *String*, refers to directory name to save the quantized model.
 
-#### <a id="1-4">1.4 Random quantization</a>
+</details></ul>
+<ul><details open><summary><a href="#1-4">1.4 Random quantization</a></summary><a id="1-4"></a>
 
 When no path is specified neither in `quantization_path` nor in `training_path`, the model is quantized after
 calibration on random data.
@@ -117,7 +109,8 @@ There is no interest in evaluating the accuracy in this case. However, this rand
 estimate the model footprints on a target after quantization.
 We will see how to proceed in next section.
 
-### <a id="1-5">1.5 Hydra and MLflow settings</a>
+</details></ul>
+<ul><details open><summary><a href="#1-5">1.5 Hydra and MLflow settings</a></summary><a id="1-5"></a>
 
 The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used
 to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment
@@ -139,7 +132,9 @@ mlflow:
   uri: ./experiments_outputs/mlruns
 ```
 
-### <a id="2">2. Quantize your model</a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Quantize your model</b></a></summary><a id="2"></a>
 
 To launch your model quantization using a real dataset, run the following command from **src/** folder:
 
@@ -169,3 +164,4 @@ python stm32ai_main.py --config-path ./config_file_examples/ --config-name chain
 
 Chained services work whether you specify a quantization dataset or not (random quantization).
 
+</details>

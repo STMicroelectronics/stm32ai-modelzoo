@@ -17,7 +17,7 @@ import numpy as np
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), '../../../common'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../common/quantization'))
 from common_quantizers import STCustomDoReFa
 
 

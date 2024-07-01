@@ -1,7 +1,8 @@
+# <a id="">Using data augmentation</a>
 
-# Using data augmentation
+## <a id="">Table of contents</a>
 
-## 1. Introduction
+<details open><summary><a href="#1"><b>1. Introduction</b></a></summary><a id="1"></a>
 
 Data augmentation has proved an effective technique to reduce the overfit of a network and make it generalize better. It is generally useful when you have a small dataset or a dataset that is too easy for the network to learn.
 
@@ -11,7 +12,8 @@ The data augmentation transforms you want to apply to the images are specified i
 
 The Model Zoo code can be customized to implement your own data augmentation. In particular, *dynamic data augmentation*, i.e. data augmentation that changes as the training progresses instead of staying the same from beginning to end, can be easily implemented.
 
-## 2. Specifying your data augmentation
+</details>
+<details open><summary><a href="#2"><b>2. Specifying your data augmentation</b></a></summary><a id="2"></a>
 
 The data augmentation transforms to apply to the input images are specified in the configuration file using a `data_augmentation` section, as illustrated in the YAML code below:
 
@@ -61,7 +63,8 @@ In the YAML code above, only the `width_factor` and `height_factor` arguments of
 
 There are no constraints on the number of functions, types of functions and order of functions that you can use in your configuration file. However, as the YAML language does not support multiple occurrences of the same attribute in the same section, each function can only be used once.
 
-## 3. Available data augmentation functions
+</details>
+<details open><summary><a href="#3"><b>3. Available data augmentation functions</b></a></summary><a id="3"></a>
 
 Four packages of data augmentation functions are provided with the Model Zoo:
 - `random_color.py`, contains functions that alter color features, such as contrast and brightness.
@@ -106,7 +109,8 @@ These functions and their arguments are documented in the exhibits of this docum
 
 You can also refer to the source code of the data augmentation packages. They are all in the *\<MODEL-ZOO-ROOT\>/image_classification/src/data_augmentation* directory. Comments are included at the top of each function that explain what the function does and how its arguments should be used.
 
-## 4. Getting familiar with the available data augmentation functions
+</details>
+<details open><summary><a href="#4"><b>4. Getting familiar with the available data augmentation functions</b></a></summary><a id="4"></a>
 
 A script called `demo_data_augment.py` is available in the *\<MODEL-ZOO-ROOT\>/image_classification/src/data_augmentation* directory that you can use to get familiar with the available data augmentation functions.
 
@@ -130,8 +134,8 @@ A random generator is used to sample the images from the dataset. By default, di
 
 We encourage you to run this script as it is an efficient way to learn about the data augmentation functions that are provided with the Model Zoo.
 
-
-## 5. Setting the rate of change
+</details>
+<details open><summary><a href="#5"><b>5. Setting the rate of change</b></a></summary><a id="5"></a>
 
 Each data augmentation function has an argument called `change_rate` that enables you to control the average percentage of images that get changed by the function.
 
@@ -149,8 +153,8 @@ The default value of `change_rate` is set to 1.0 for all the data augmentation f
 | random_equalize | 0.25 |
 | random_autocontrast | 0.25 |
 
-
-## 6. Testing your data argumentation
+</details>
+<details open><summary><a href="#6"><b>6. Testing your data augmentation</b></a></summary><a id="6"></a>
 
 As you work on your data augmentation, we strongly recommend that you carefully examine the effects it has on the images of your dataset.
 
@@ -173,9 +177,10 @@ A random generator is used to sample the images from the dataset. By default, di
 
 We encourage you to run the `test_data_augment.py` script. No extra work is required to use it as it only needs your configuration file. It could prove instrumental in helping you develop effective data augmentation solutions.
 
-## 7. Customizing the data augmentation
+</details>
+<details open><summary><a href="#7"><b>7. Customizing the data augmentation</b></a></summary><a id="7"></a>
 
-### 7.1 The Master Data Augmentation (MDA) function
+<ul><details open><summary><a href="#7-1">7.1 The Master Data Augmentation (MDA) function</a></summary><a id="7-1"></a>
 
 Every time a new batch of images is received and needs to be augmented before it is presented to the model to train, a function gets called with the `data_augmentation` section of the configuration file passed in argument as a dictionary. The function uses this dictionary to call the specified data augmentation functions, in their order of appearance in the file. Then, it returns the augmented images.
 
@@ -208,7 +213,8 @@ When it gets called, the MDA function receives in argument the following Python 
 ```
 The MDA function uses this dictionary to successively call the `random_flip()`, `random_translation()`, `random_contrast()` and `random_brightness()` functions, in this order and with the specified arguments. Then, it returns the augmented images.
 
-### 7.2 The MDA function arguments
+</details></ul>
+<ul><details open><summary><a href="#7-2">7.2 The MDA function arguments</a></summary><a id="7-2"></a>
 
 Every time a new batch of images is received, the MDA function is called with the following arguments:
 - `images`, the images to augment. A tensor with shape [batch_size, image_width, image_height, image_channels].
@@ -226,7 +232,8 @@ The current epoch can be used to implement *dynamic data augmentation*, i.e. dat
 
 The current batch number, width and height of the images of the previous batch are useful to implement dynamic resizing of images. You can refer to the `random_periodic_resizing` function in the `random_misc.py` package for an example of how they can be used.
 
-### 7.3 Using a custom MDA function
+</details></ul>
+<ul><details open><summary><a href="#7-3">7.3 Using a custom MDA function</a></summary><a id="7-3"></a>
 
 The YAML code below shows how you can use your own MDA function instead of the MDA function that is provided with the Model Zoo.
 
@@ -253,7 +260,8 @@ config = {
 }
 ```
 
-### 7.4 Writing your own MDA function
+</details></ul>
+<ul><details open><summary><a href="#7-4">7.4 Writing your own MDA function</a></summary><a id="7-4"></a>
 
 The MDA function that is provided with the Model Zoo is called `data_augmentation()`. The source code is in file *\<MODEL-ZOO-ROOT\>/image_classification/src/data_augmentation/data_augmentation.py*.
 
@@ -266,7 +274,8 @@ The MDA function is part of the Tensorflow graph to enable fast execution on GPU
 
 You can write and use any number of custom MDA functions. As long as they are placed in the *\<MODEL-ZOO-ROOT\>/image_classification/src/data_augmentation/data_augmentation.py* package, they are all visible to the training script.
 
-### 7.5 Progressive learning, an example of custom data augmentation
+</details></ul>
+<ul><details open><summary><a href="#7-5">7.5 Progressive learning, an example of custom data augmentation</a></summary><a id="7-5"></a>
 
 In a *Progressive learning* approach, light transformations are applied at the beginning of the training. Then, transformations are made more and more aggressive as the training progresses.
 
@@ -328,9 +337,10 @@ def progressive_dataaug(images, config=None, pixels_range=None, batch_info=None)
     return images
 ```
 
-## Exhibit A: Data augmentation functions of the random_color.py package
-
-### A.1 random_contrast
+</details></ul>
+</details>
+<details open><summary><a href="#A"><b>Exhibit A: Data augmentation functions of the random_color.py package</b></a></summary><a id="A"></a>
+<ul><details open><summary><a href="#A-1">A.1 random_contrast</a></summary><a id="A-1"></a>
 
 The `random_contrast` function randomly changes the contrast of input images.
 
@@ -339,7 +349,8 @@ The `random_contrast` function randomly changes the contrast of input images.
 | `factor` | None |  A float or a tuple of 2 floats, specifies the range of values contrast factors are sampled from (one per image). If a scalar value v is used, it is equivalent to the tuple (-v, v). The contrast of an input image is decreased if the contrast factor is less than 0, increased if the contrast factor is greater than 0, unchanged if the contrast factor is equal to 0.
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.2 random_brightness
+</details></ul>
+<ul><details open><summary><a href="#A-2">A.2 random_brightness</a></summary><a id="A-2"></a>
 
 The `random_brightness` function randomly changes the brightness of input images.
 
@@ -348,7 +359,8 @@ The `random_brightness` function randomly changes the brightness of input images
 | `factor` | None |  A float or a tuple of 2 floats, specifies the range of values brightness factors are sampled from (one per image). If a scalar value v is used, it is equivalent to the tuple (-v, v). The brightness of an input image is decreased if the brightness factor is less than 0, increased if the brightness factor is greater than 0, unchanged if the brightness factor is equal to 0. |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.3 random_gamma
+</details></ul>
+<ul><details open><summary><a href="#A-3">A.3 random_gamma</a></summary><a id="A-3"></a>
 
 The `random_gamma` function randomly changes the pixels of input images according to the equation "Out = In**gamma".
 
@@ -357,7 +369,8 @@ The `random_gamma` function randomly changes the pixels of input images accordin
 | `gamma` | None | A tuple of 2 floats greater than 0.0, specifies the range of values gamma factors are sampled from (one per image). The output image is darker if the gamma factor is less than 1.0, brighter if the gamma factor is greater than 1.0, unchanged if the gamma factor is equal to 1.0 |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.4 random_hue
+</details></ul>
+<ul><details open><summary><a href="#A-4">A.4 random_hue</a></summary><a id="A-4"></a>
 
 The `random_hue` function randomly changes the hue of input RGB images.
 
@@ -370,8 +383,8 @@ This function is not applicable to grayscale images (RGB only).
 | `delta` | None | A float or a tuple of 2 floats, specifies the range of values the offsets added to the hue channel are sampled from (one per image). If a scalar value v is used, it is equivalent to the tuple (-v, v). |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-
-### A.5 random_saturation
+</details></ul>
+<ul><details open><summary><a href="#A-5">A.5 random_saturation</a></summary><a id="A-5"></a>
 
 The `random_saturation` function randomly changes the saturation of input RGB images.
 
@@ -384,7 +397,8 @@ This function is not applicable to grayscale images (RGB only).
 | `delta` | None | A float or a tuple of 2 floats, specifies the range of values the offsets added to the saturation channel are sampled from (one per image). If a scalar value v is used, it is equivalent to the tuple (-v, v). |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.6 random_value
+</details></ul>
+<ul><details open><summary><a href="#A-6">A.6 random_value</a></summary><a id="A-6"></a>
 
 The `random_value` function randomly changes the value of input RGB images.
 
@@ -397,7 +411,8 @@ This function is not applicable to grayscale images (RGB only).
 | `delta` | None | A float or a tuple of 2 floats, specifies the range of values the offsets added to the value channels are sampled from (one per image). If a scalar value v is used, it is equivalent to the tuple (-v, v). |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.7 random_hsv
+</details></ul>
+<ul><details open><summary><a href="#A-7">A.7 random_hsv</a></summary><a id="A-7"></a>
 
 The `random_hsv` function randomly changes the hue, saturation and value of input RGB images. Images are first converted to HSV (Hue, Saturation, Value) representation, then randomly chosen offsets are added to the hue, saturation and value channels. Finally the images are converted back to RGB representation.
 
@@ -410,7 +425,8 @@ This function is not applicable to grayscale images (RGB only).
 | `delta_value` | None | A float or a tuple of 2 floats, specifies the range of values the offsets added to the value channels are sampled from (one per image). If a scalar value v is used, it is equivalent to the tuple (-v, v). |
 | `change_rate` | None |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.8 random_rgb_to_hsv
+</details></ul>
+<ul><details open><summary><a href="#A-8">A.8 random_rgb_to_hsv</a></summary><a id="A-8"></a>
 
 The `random_rgb_to_hsv` function randomly converts input RGB images to HSV (Hue, Saturation, Value) representation.
 
@@ -420,7 +436,8 @@ This function is not applicable to grayscale images (RGB only).
 |:---------|:------|:------|
 | `change_rate` | 0.25 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.9 random_rgb_to_grayscale
+</details></ul>
+<ul><details open><summary><a href="#A-9">A.9 random_rgb_to_grayscale</a></summary><a id="A-9"></a>
 
 The `random_rgb_to_grayscale` function randomly converts input RGB images to grayscale.
 
@@ -428,7 +445,8 @@ The `random_rgb_to_grayscale` function randomly converts input RGB images to gra
 |:---------|:------|:------|
 | `change_rate` | 0.25 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A10. random_sharpness
+</details></ul>
+<ul><details open><summary><a href="#A-10">A10. random_sharpness</a></summary><a id="A-10"></a>
 
 The `random_sharpness` function randomly increases the sharpness of input images. Use the random_blur() function if you want to decrease the sharpness.
 
@@ -438,8 +456,8 @@ The `random_sharpness` function randomly increases the sharpness of input images
 from (one per image). If a scalar value v is used, it is equivalent to the tuple (0, v). The larger the value of the sharpness factor, the more pronounced the sharpening effect is. If the sharpness factor is equal to 0, the images are unchanged. |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-
-### A11. random_posterize
+</details></ul>
+<ul><details open><summary><a href="#A-11">A11. random_posterize</a></summary><a id="A-11"></a>
 
 The `random_posterize` function randomly reduces the number of bits used for each color channel of input images. Color contraction occurs when the number of bits is reduced.
 
@@ -448,7 +466,8 @@ The `random_posterize` function randomly reduces the number of bits used for eac
 | `bits` | None | A tuple of 2 integers in the interval [1, 8], specifies the range of values the numbers of bits used to encode pixels are sampled from (one per image). The lower the number of bits, the more degraded the image is. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.12 random_invert
+</details></ul>
+<ul><details open><summary><a href="#A-12">A.12 random_invert</a></summary><a id="A-12"></a>
 
 The `random_invert` function inverts (negates) all the pixel values of input images.
 
@@ -456,7 +475,8 @@ The `random_invert` function inverts (negates) all the pixel values of input ima
 |:---------|:------|:------|
 | `change_rate` | 0.25 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.13 random_solarize
+</details></ul>
+<ul><details open><summary><a href="#A-13">A.13 random_solarize</a></summary><a id="A-13"></a>
 
 The `random_solarize` function randomly solarizes input images. For each image, a threshold value is sampled in the interval [0, 255]. Then, all the pixels that are above the threshold are inverted (negated).
 
@@ -464,7 +484,8 @@ The `random_solarize` function randomly solarizes input images. For each image, 
 |:---------|:------|:------|
 | `change_rate` | 0.25 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.14 random_equalize
+</details></ul>
+<ul><details open><summary><a href="#A-14">A.14 random_equalize</a></summary><a id="A-14"></a>
 
 The `random_equalize` function equalizes the histogram of images by spreading out the highly populated intensity values. It usually increases the global contrast of images, especially when the image is represented by a narrow range of intensity values. It is useful in images with backgrounds and foregrounds that are both bright or both dark. 
 
@@ -472,7 +493,8 @@ The `random_equalize` function equalizes the histogram of images by spreading ou
 |:---------|:------|:------|
 | `change_rate` | 0.25 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### A.15 random_autocontrast
+</details></ul>
+<ul><details open><summary><a href="#A-15">A.15 random_autocontrast</a></summary><a id="A-15"></a>
 
 The `random_equalize` function maximizes the contrast of input images.
 
@@ -483,10 +505,10 @@ Cutoff percent of the lightest and darkest pixels are first removed from the ima
 | `cutoff` | 10 | A positive integer greater than 0, specifies the percentage of pixels to remove on the low and high ends of the pixels histogram. If `cutoff` is equal to 0, the images are unchanged. |
 | `change_rate` | 0.25 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-
-## Exhibit B: Data augmentation functions of the random_misc.py package
-
-### B.1 random_blur
+</details></ul>
+</details>
+<details open><summary><a href="#B"><b>Exhibit B: Data augmentation functions of the random_misc.py package</b></a></summary><a id="B"></a>
+<ul><details open><summary><a href="#B-1">B.1 random_blur</a></summary><a id="B-1"></a>
 
 The `random_blur` function randomly blurs input images using a mean filter. The filter is square with a size that is sampled from a specified range. The larger the filter size, the more pronounced the blur effect is.
 
@@ -497,7 +519,8 @@ The `random_blur` function randomly blurs input images using a mean filter. The 
 | `constant_values` | 0.0 | A float or integer, the pad value to use in "CONSTANT" padding mode. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### B.2 random_gaussian_noise
+</details></ul>
+<ul><details open><summary><a href="#B-2">B.2 random_gaussian_noise</a></summary><a id="B-2"></a>
 
 The `random_gaussian_noise` function adds gaussian noise to input images. The standard deviations of the gaussian distribution are sampled from a specified range. The mean of the distribution is equal to 0.
 
@@ -513,7 +536,8 @@ The image mode creates more image diversity, potentially leading to better train
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 |  `mode` | "image" | Either "image" or "batch". If set to "image", noise will be sampled using a different standard deviation for each image of the batch. If set to "batch", noise will be sampled using the same standard deviation for all the images of the batch. |
 
-### B.3 random_jpeg_quality
+</details></ul>
+<ul><details open><summary><a href="#B-3">B.3 random_jpeg_quality</a></summary><a id="B-3"></a>
 
 The `random_jpeg_quality` function randomly changes the JPEG quality of input images.
 
@@ -524,9 +548,10 @@ If the `jpeg_quality` argument is equal to 100, images are unchanged. If it is l
 | `jpeg_quality` | None | An integer or a tuple of 2 integers in the interval [0, 100], specifies the range of values the JPEG quality factor may take. A lower value means lower quality. If a tuple is used, the values of jpeg_quality will be randomly chosen within the specified range and different images will get different values. If a scalar value v is used, jpeg_quality is equal to v for all the images. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-## Exhibit C: Data augmentation functions of the random_affine.py package
-
-### C.1 random_flip
+</details></ul>
+</details>
+<details open><summary><a href="#C"><b>Exhibit C: Data augmentation functions of the random_affine.py package</b></a></summary><a id="C"></a>
+<ul><details open><summary><a href="#C-1">C.1 random_flip</a></summary><a id="C-1"></a>
 
 The `random_flip` function randomly flips input images horizontally and/or vertically.
 
@@ -537,7 +562,8 @@ The `random_flip` function randomly flips input images horizontally and/or verti
 
 The default value of `change_rate` is 0.5, meaning that 50% of images are flipped on average. This value generally gives good results although you try to tune it.
 
-### C.2 random_translation
+</details></ul>
+<ul><details open><summary><a href="#C-2">C.2 random_translation</a></summary><a id="C-2"></a>
 
 The `random_translation` function randomly translates input images horizontally and/or vertically.
 
@@ -549,7 +575,8 @@ The `random_translation` function randomly translates input images horizontally 
 | `interpolation` | 'bilinear' | A string, the interpolation method. Supported values: 'nearest', 'bilinear'. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### C.3 random_rotation
+</details></ul>
+<ul><details open><summary><a href="#C-3">C.3 random_rotation</a></summary><a id="C-3"></a>
 
 The `random_rotation` function randomly rotates input images clock-wise and counter clock-wise.
 
@@ -560,7 +587,8 @@ The `random_rotation` function randomly rotates input images clock-wise and coun
 | `interpolation` | 'bilinear' | A string, the interpolation method. Supported values: 'nearest', 'bilinear'. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### C.4 random_shear
+</details></ul>
+<ul><details open><summary><a href="#C-4">C.4 random_shear</a></summary><a id="C-4"></a>
 
 The `random_shear` function randomly shears input images.
 
@@ -570,7 +598,8 @@ The `random_shear` function randomly shears input images.
 | `fill_mode` | 'reflect' | Points outside the boundaries of the input are filled according to the given mode. One of {'constant', 'reflect', 'wrap', 'nearest'}. See Tensorflow documentation at https://tensorflow.org for more details. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### C.5 random_shear_x
+</details></ul>
+<ul><details open><summary><a href="#C-5">C.5 random_shear_x</a></summary><a id="C-5"></a>
 
 The `random_shear_x` function randomly shears input images along the x axis.
 
@@ -581,7 +610,8 @@ The `random_shear_x` function randomly shears input images along the x axis.
 | `interpolation` | 'bilinear' | A string, the interpolation method. Supported values: 'nearest', 'bilinear'. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### C.6 random_shear_y
+</details></ul>
+<ul><details open><summary><a href="#C-6">C.6 random_shear_y</a></summary><a id="C-6"></a>
 
 The `random_shear_y` function randomly shears input images along the y axis.
 
@@ -592,7 +622,8 @@ The `random_shear_y` function randomly shears input images along the y axis.
 | `interpolation` | 'bilinear' | A string, the interpolation method. Supported values: 'nearest', 'bilinear'. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-### C.7 random_zoom
+</details></ul>
+<ul><details open><summary><a href="#C-7">C.7 random_zoom</a></summary><a id="C-7"></a>
 
 The `random_zoom` function randomly zooms in/out on each axis of input images.
 
@@ -606,10 +637,10 @@ If `width_factor` and `height_factor` are both set, the images are zoomed in or 
 | `interpolation` | 'bilinear' | A string, the interpolation method. Supported values: 'nearest', 'bilinear'. |
 | `change_rate` | 1.0 | A float in the interval [0, 1], the number of changed images versus the total number of input images average ratio. For example, if `change_rate` is set to 0.25, 25% of the input images will get changed on average (75% won't get changed). If it is set to 0.0, no images are changed. If it is set to 1.0, all the images are changed. |
 
-
-## Exhibit D: Data augmentation functions of the random_erasing.py package
-
-### D.1 random_rectangle_erasing
+</details></ul>
+</details>
+<details open><summary><a href="#D"><b>Exhibit D: Data augmentation functions of the random_erasing.py package</b></a></summary><a id="D"></a>
+<ul><details open><summary><a href="#D-1">D.1 random_rectangle_erasing</a></summary><a id="D-1"></a>
 
 The `random_rectangle_erasing` function randomly erases a number of rectangular areas out of input images and fills the voids with color.
 
@@ -631,7 +662,8 @@ By default, if no arguments are specified, one random black rectangle is erased 
 | `change_rate` | 1.0 | A float in the interval [0, 1], controls the number of changed images/total number of images average ratio. The higher the value, the larger the average number of images that will get changed. If set to 0.0, no images will get changed. If set to 1.0, all images will get changed. |
 | `mode` | 'image' | Either "image" or "batch". If set to "image", different sets of rectangles are erased from the different images of the batch. If set to "batch", the same set of rectangles is erased from all the images of the batch. |
 
-### D.2 random_grid_cell_erasing
+</details></ul>
+<ul><details open><summary><a href="#D-2">D.2 random_grid_cell_erasing</a></summary><a id="D-2"></a>
 
 The `random_grid_cell_erasing` function places a grid of cells on top of input images and randomly erases some of the cells, filling the voids with color. By default, all the erased cells are black.
 
@@ -642,3 +674,6 @@ The `random_grid_cell_erasing` function places a grid of cells on top of input i
 | `fill_method` | 'uniform' | A string, one of {'uniform', 'random', 'mosaic'}. If the method is 'uniform', all the cells in all the images are filled with the same color specified using the `color` argument. If the fill method is 'random', each cell is filled with a randomly chosen RGB color if the input images are RGB images or a randomly chosen shade of gray if the input images are grayscale (all the cells will have different colors). If the fill method is 'mosaic', cells are filled with random pixels. |
 | `erasing_prob` | 0.2 | A float in the interval [0, 1], specifies the probability that a cell gets erased. The larger the value of this argument, the larger the number of cells that get erased on average. |
 | `change_rate` | 1.0 |  A float in the interval [0, 1], controls the number of changed images/total number of images average ratio. The higher the value, the larger the average number of images that will get changed. If set to 0.0, no images will get changed. If set to 1.0, all images will get changed. |
+
+</details></ul>
+</details>

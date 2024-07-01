@@ -19,7 +19,7 @@
  *        the number of dense hidden neurons.
  */
 LITE_API_ENTRY
-void lite_dense_is1of32wf32(
+void forward_lite_dense_is1of32wf32(
   ai_float *output, const ai_pbits *input, const ai_float *weights,
   const ai_float *bias, ai_float *scratch,
   const ai_u32 n_channel_in, const ai_u32 n_channel_out
@@ -45,7 +45,7 @@ void lite_dense_is1of32wf32(
  *        the number of dense hidden neurons.
  */
 LITE_API_ENTRY
-void lite_dense_is1of32wf32_bn(
+void forward_lite_dense_is1of32wf32_bn(
   ai_float *output, const ai_pbits *input, const ai_float *weights,
   const ai_float *scale, const ai_float *offset, ai_float *scratch,
   const ai_u32 n_channel_in, const ai_u32 n_channel_out

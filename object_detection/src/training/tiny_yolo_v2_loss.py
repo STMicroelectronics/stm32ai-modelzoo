@@ -10,8 +10,8 @@ import sys
 import math
 import tensorflow as tf
 from tensorflow.keras import backend as K
-sys.path.append(os.path.join(os.path.dirname(__file__), '../postprocessing'))
 from tiny_yolo_v2_postprocess import tiny_yolo_v2_decode
+
 
 def box_iou(b1, b2, expand_dims=True):
     """

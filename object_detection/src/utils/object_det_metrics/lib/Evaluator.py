@@ -360,7 +360,10 @@ class Evaluator:
         interArea = Evaluator._getIntersectionArea(boxA, boxB)
         union = Evaluator._getUnionAreas(boxA, boxB, interArea=interArea)
         # intersection over union
-        iou = interArea / union
+        if union <= 0:
+            iou = 0
+        else:    
+            iou = interArea / union
         if iou < 0:
             iou = 0
             #import ipdb; ipdb.set_trace()

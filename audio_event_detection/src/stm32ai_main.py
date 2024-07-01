@@ -7,42 +7,62 @@
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
 import os
-import subprocess
 import sys
-import traceback
 import numpy as np
-from omegaconf import OmegaConf
 from hydra.core.hydra_config import HydraConfig
 import hydra
-from hydra import initialize_config_dir
+import warnings
+warnings.filterwarnings("ignore")
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
+
 import tensorflow as tf
 from omegaconf import DictConfig
 import mlflow
-
 import argparse
+import logging
+from typing import Optional
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '../../common'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/benchmarking'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/deployment'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/quantization'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/optimization'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/evaluation'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/training'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/utils'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../deployment'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './data_augmentation'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './preprocessing'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './training'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './utils'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './evaluation'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../deployment'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './quantization'))
 sys.path.append(os.path.join(os.path.dirname(__file__), './prediction'))
-sys.path.append(os.path.join(os.path.dirname(__file__), './benchmarking'))
+sys.path.append(os.path.join(os.path.dirname(__file__), './models'))
+sys.path.append(os.path.join(os.path.dirname(__file__), './models/miniresnet'))
+sys.path.append(os.path.join(os.path.dirname(__file__), './models/miniresnetv2'))
+sys.path.append(os.path.join(os.path.dirname(__file__), './models/yamnet'))
 
+if sys.platform.startswith('linux'):
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/optimization/linux'))
+elif sys.platform.startswith('win'):
+    sys.path.append(os.path.join(os.path.dirname(__file__), '../../common/optimization/windows'))
+
+from logs_utils import mlflow_ini
+from gpu_utils import set_gpu_memory_limit
+from cfg_utils import get_random_seed
 from preprocess import preprocess
-from utils import set_gpu_memory_limit, get_random_seed, mlflow_ini
-from visualizer import display_figures
+from visualize_utils import display_figures
 from parse_config import get_config
 from train import train
 from evaluate import evaluate
 from deploy import deploy
 from quantize import quantize
 from predict import predict
-from benchmark import benchmark
-from common_benchmark import cloud_connect
-from typing import Optional
+from common_benchmark import cloud_connect, benchmark
+from logs_utils import log_to_file
+from models_utils import get_model_name_and_its_input_shape
+from models_mgt import AED_CUSTOM_OBJECTS
 
 
 def chain_qd(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf.data.Dataset = None,
@@ -105,8 +125,12 @@ def chain_eqeb(cfg: DictConfig = None, float_model_path: str = None, train_ds: t
         None
     """
 
+    # Connect to STM32Cube.AI Developer Cloud
+    credentials = None
+    if cfg.tools.stm32ai.on_cloud:
+        _, _, credentials = cloud_connect(stm32ai_version=cfg.tools.stm32ai.version)
+
     # Check for batch size both in training & general section
-    # Have to do nested ifs again unfortunately
     if cfg.training:
         if cfg.training.batch_size:
             batch_size = cfg.training.batch_size
@@ -116,12 +140,12 @@ def chain_eqeb(cfg: DictConfig = None, float_model_path: str = None, train_ds: t
         batch_size = 32
 
     if test_ds:
-            evaluate(cfg=cfg, eval_ds=test_ds,
+        evaluate(cfg=cfg, eval_ds=test_ds,
              clip_labels=test_clip_labels, multi_label=multi_label, 
              model_path_to_evaluate=float_model_path, batch_size=batch_size,
              name_ds='test_set')
     else:
-            evaluate(cfg=cfg, eval_ds=valid_ds,
+        evaluate(cfg=cfg, eval_ds=valid_ds,
             clip_labels=valid_clip_labels, multi_label=multi_label, 
             model_path_to_evaluate=float_model_path, batch_size=batch_size,
             name_ds='validation_set')
@@ -141,22 +165,19 @@ def chain_eqeb(cfg: DictConfig = None, float_model_path: str = None, train_ds: t
                                     float_model_path=float_model_path, fake=True)
     print('[INFO] : Quantization complete.')
     if test_ds:
-            evaluate(cfg=cfg, eval_ds=test_ds,
+        evaluate(cfg=cfg, eval_ds=test_ds,
              clip_labels=test_clip_labels, multi_label=multi_label, 
              model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
              name_ds='test_set')
     else:
-            evaluate(cfg=cfg, eval_ds=valid_ds,
+        evaluate(cfg=cfg, eval_ds=valid_ds,
             clip_labels=valid_clip_labels, multi_label=multi_label, 
             model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
             name_ds='validation_set')
     print('[INFO] : Evaluation complete.')
     display_figures(cfg)
 
-    credentials = None
-    if cfg.tools.stm32ai.on_cloud:
-        _, _, credentials = cloud_connect(stm32ai_version=cfg.tools.stm32ai.version)
-    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials, custom_objects=AED_CUSTOM_OBJECTS)
     print('[INFO] : Benchmarking complete.')
 
 
@@ -175,6 +196,11 @@ def chain_qb(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf.
         None
     """
 
+    # Connect to STM32Cube.AI Developer Cloud
+    credentials = None
+    if cfg.tools.stm32ai.on_cloud:
+        _, _, credentials = cloud_connect(stm32ai_version=cfg.tools.stm32ai.version)
+
     if quantization_ds:
         print('[INFO] : Using the quantization dataset to quantize the model.')
         quantized_model_path = quantize(cfg=cfg, quantization_ds=quantization_ds,
@@ -188,11 +214,8 @@ def chain_qb(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf.
               'The model performances will not be accurate.')
         quantized_model_path = quantize(cfg=cfg, fake=True)
     print('[INFO] : Quantization complete.')
-    # Connect to STM32Cube.AI Developer Cloud
-    credentials = None
-    if cfg.tools.stm32ai.on_cloud:
-        _, _, credentials = cloud_connect(stm32ai_version=cfg.tools.stm32ai.version)
-    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials)
+
+    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials, custom_objects=AED_CUSTOM_OBJECTS)
     print('[INFO] : Benchmarking complete.')
 
 
@@ -219,7 +242,6 @@ def chain_eqe(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf
     """
 
     # Check for batch size both in training & general section
-    # Have to do nested ifs again unfortunately
     if cfg.training:
         if cfg.training.batch_size:
             batch_size = cfg.training.batch_size
@@ -228,19 +250,17 @@ def chain_eqe(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf
     else:
         batch_size = 32
 
-
     if test_ds:
-            evaluate(cfg=cfg, eval_ds=test_ds,
+        evaluate(cfg=cfg, eval_ds=test_ds,
              clip_labels=test_clip_labels, multi_label=multi_label, 
              model_path_to_evaluate=float_model_path, batch_size=batch_size,
              name_ds='test_set')
     else:
-            evaluate(cfg=cfg, eval_ds=valid_ds,
+        evaluate(cfg=cfg, eval_ds=valid_ds,
             clip_labels=valid_clip_labels, multi_label=multi_label, 
             model_path_to_evaluate=float_model_path, batch_size=batch_size,
             name_ds='validation_set')
     print('[INFO] : Evaluation complete.')
-    display_figures(cfg)
     if quantization_ds:
         print('[INFO] : Using the quantization dataset to quantize the model.')
         quantized_model_path = quantize(cfg=cfg, quantization_ds=quantization_ds,
@@ -255,12 +275,12 @@ def chain_eqe(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf
                                     float_model_path=float_model_path, fake=True)
     print('[INFO] : Quantization complete.')
     if test_ds:
-            evaluate(cfg=cfg, eval_ds=test_ds,
+        evaluate(cfg=cfg, eval_ds=test_ds,
              clip_labels=test_clip_labels, multi_label=multi_label, 
              model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
              name_ds='test_set')
     else:
-            evaluate(cfg=cfg, eval_ds=valid_ds,
+        evaluate(cfg=cfg, eval_ds=valid_ds,
             clip_labels=valid_clip_labels, multi_label=multi_label, 
             model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
             name_ds='validation_set')
@@ -290,7 +310,6 @@ def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
     """
 
     # Check for batch size both in training & general section
-    # Have to do nested ifs again unfortunately
     if cfg.training:
         if cfg.training.batch_size:
             batch_size = cfg.training.batch_size
@@ -313,7 +332,7 @@ def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
         trained_model_path = train(cfg=cfg, train_ds=train_ds, valid_ds=valid_ds,
                                    val_clip_labels=valid_clip_labels)
     print('[INFO] : Training complete.')
-    benchmark(cfg=cfg, model_path_to_benchmark=trained_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=trained_model_path, credentials=credentials, custom_objects=AED_CUSTOM_OBJECTS)
     print('[INFO] : benchmarking complete.')
     if quantization_ds:
         print('[INFO] : Using the quantization dataset to quantize the model.')
@@ -331,12 +350,12 @@ def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
             name_ds='test_set')
     else:
         evaluate(cfg=cfg, eval_ds=valid_ds,
-        clip_labels=valid_clip_labels, multi_label=multi_label, 
-        model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
-        name_ds='validation_set')
+            clip_labels=valid_clip_labels, multi_label=multi_label, 
+            model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
+            name_ds='validation_set')
     print('[INFO] : Evaluation complete.')
     display_figures(cfg)
-    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials)
+    benchmark(cfg=cfg, model_path_to_benchmark=quantized_model_path, credentials=credentials, custom_objects=AED_CUSTOM_OBJECTS)
     print('[INFO] : Benchmarking complete.')
 
 
@@ -361,7 +380,6 @@ def chain_tqe(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
     """
 
     # Check for batch size both in training & general section
-    # Have to do nested ifs again unfortunately
     if cfg.training:
         if cfg.training.batch_size:
             batch_size = cfg.training.batch_size
@@ -369,7 +387,6 @@ def chain_tqe(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
         batch_size = cfg.general.batch_size
     else:
         batch_size = 32
-
 
     if test_ds:
         trained_model_path = train(cfg=cfg, train_ds=train_ds, valid_ds=valid_ds,
@@ -395,9 +412,9 @@ def chain_tqe(cfg: DictConfig = None, train_ds: tf.data.Dataset = None,
             name_ds='test_set')
     else:
         evaluate(cfg=cfg, eval_ds=valid_ds,
-        clip_labels=valid_clip_labels, multi_label=multi_label, 
-        model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
-        name_ds='validation_set')
+            clip_labels=valid_clip_labels, multi_label=multi_label, 
+            model_path_to_evaluate=quantized_model_path, batch_size=batch_size,
+            name_ds='validation_set')
     print('[INFO] : Evaluation complete.')
     display_figures(cfg)
 
@@ -428,7 +445,6 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
     """
 
     # Check for batch size both in training & general section
-    # Have to do nested ifs again unfortunately
     if configs.training:
         if configs.training.batch_size:
             batch_size = configs.training.batch_size
@@ -437,8 +453,9 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
     else:
         batch_size = 32
 
-
     # Check the selected mode and perform the corresponding operation
+    # logging the operation_mode in the output_dir/stm32ai_main.log file
+    log_to_file(configs.output_dir, f'operation_mode: {mode}')
     if mode == 'training':
         if test_ds:
             train(cfg=configs, train_ds=train_ds, valid_ds=valid_ds,
@@ -453,14 +470,14 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
     elif mode == 'evaluation':
         if test_ds:
             evaluate(cfg=configs, eval_ds=test_ds,
-             clip_labels=test_clip_labels, multi_label=multi_label, 
-             model_path_to_evaluate=None, batch_size=batch_size,
-             name_ds='test_set')
+                clip_labels=test_clip_labels, multi_label=multi_label, 
+                model_path_to_evaluate=None, batch_size=batch_size,
+                name_ds='test_set')
         else:
              evaluate(cfg=configs, eval_ds=valid_ds,
-             clip_labels=valid_clip_labels, multi_label=multi_label, 
-             model_path_to_evaluate=None, batch_size=batch_size,
-             name_ds='validation_set')
+                clip_labels=valid_clip_labels, multi_label=multi_label, 
+                model_path_to_evaluate=None, batch_size=batch_size,
+                name_ds='validation_set')
         display_figures(configs)
         print('[INFO] : Evaluation complete.')   
     elif mode == 'deployment':
@@ -468,23 +485,26 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
         print('[INFO] : Deployment complete.')
     elif mode == 'quantization':
         if quantization_ds:
+            input_ds = quantization_ds
+            fake = False
             print('[INFO] : Using the quantization dataset to quantize the model.')
-            quantize(cfg=configs, quantization_ds=quantization_ds, fake=False)
         elif train_ds:
             print('[INFO] : Quantization dataset is not provided! Using the training set to quantize the model.')
-            quantize(cfg=configs, quantization_ds=train_ds, fake=False)
+            input_ds = train_ds
+            fake = False
         else:
+            input_ds = None
+            fake = True
             print(
-                "[INFO] : Neither quantization dataset or training set are provided! \
-                Using fake data to quantize the model. \
-                The quantized model's performance may be degraded as a result.")
-            quantize(cfg=configs, fake=True)
+                '[INFO] : Neither quantization dataset or training set are provided! Using fake data to quantize the model. '
+                'The model performances will not be accurate.')
+        quantize(cfg=configs, quantization_ds=input_ds, fake=fake)
         print('[INFO] : Quantization complete.')
     elif mode == 'prediction':
         predict(cfg=configs)
         print('[INFO] : Prediction complete.')
     elif mode == 'benchmarking':
-        benchmark(cfg=configs)
+        benchmark(cfg=configs, custom_objects=AED_CUSTOM_OBJECTS)
         print('[INFO] : Benchmark complete.')
     elif mode == 'chain_tbqeb':
         chain_tbqeb(cfg=configs, train_ds=train_ds, valid_ds=valid_ds,
@@ -517,10 +537,15 @@ def process_mode(mode: str = None, configs: DictConfig = None, train_ds: tf.data
     # Raise an error if an invalid mode is selected
     else:
         raise ValueError(f"Invalid mode: {mode}")
+
+    # Record the whole hydra working directory to get all info
+    mlflow.log_artifact(configs.output_dir)
     if mode in ['benchmarking', 'chain_qb', 'chain_eqeb', 'chain_tbqeb']:
         mlflow.log_param("model_path", configs.general.model_path)
         mlflow.log_param("stm32ai_version", configs.tools.stm32ai.version)
         mlflow.log_param("target", configs.benchmarking.board)
+    # logging the completion of the chain
+    log_to_file(configs.output_dir, f'operation finished: {mode}')
 
 @hydra.main(version_base=None, config_path="", config_name="user_config")
 def main(cfg: DictConfig) -> None:
@@ -536,18 +561,26 @@ def main(cfg: DictConfig) -> None:
 
    # Configure the GPU (the 'general' section may be missing)
     if "general" in cfg and cfg.general:
+        # Set upper limit on usable GPU memory
         if "gpu_memory_limit" in cfg.general and cfg.general.gpu_memory_limit:
             set_gpu_memory_limit(cfg.general.gpu_memory_limit)
+            print(f"[INFO] : Setting upper limit of usable GPU memory to {int(cfg.general.gpu_memory_limit)}GBytes.")
+        else:
+            print("[WARNING] The usable GPU memory is unlimited.\n"
+                  "Please consider setting the 'gpu_memory_limit' attribute "
+                  "in the 'general' section of your configuration file.")
 
     # Parse the configuration file
     cfg = get_config(cfg)
-    # This shouldn't be necessary, but might avoid crashes due to legacy code
     cfg.output_dir = HydraConfig.get().run.dir
     mlflow_ini(cfg)
+
     # Seed global seed for random generators
     seed = get_random_seed(cfg)
+    print(f'[INFO] : The random seed for this simulation is {seed}')
     if seed is not None:
         tf.keras.utils.set_random_seed(seed)
+
     # Extract the mode from the command-line arguments
     mode = cfg.operation_mode
     valid_modes = ['training', 'evaluation', 'chain_tbqeb', 'chain_tqe']
@@ -557,19 +590,33 @@ def main(cfg: DictConfig) -> None:
         # Assert if dataset is multilabel
         multi_label = cfg.dataset.multi_label
         # Process the selected mode
-        process_mode(mode=mode, configs=cfg, train_ds=train_ds, valid_ds=valid_ds,
-                     valid_clip_labels=valid_clip_labels, quantization_ds=quantization_ds,
-                     test_ds=test_ds, test_clip_labels=test_clip_labels, multi_label=multi_label)
+        process_mode(mode=mode, 
+                     configs=cfg, 
+                     train_ds=train_ds, 
+                     valid_ds=valid_ds,
+                     valid_clip_labels=valid_clip_labels, 
+                     quantization_ds=quantization_ds,
+                     test_ds=test_ds, 
+                     test_clip_labels=test_clip_labels, 
+                     multi_label=multi_label)
     elif mode == 'quantization':
         if cfg.dataset.training_audio_path or cfg.dataset.quantization_audio_path:
             train_ds, valid_ds, valid_clip_labels, quantization_ds, test_ds, test_clip_labels = preprocess(cfg=cfg)
             # Process the selected mode
             multi_label = cfg.dataset.multi_label
-            process_mode(mode=mode, configs=cfg, train_ds=train_ds, valid_ds=valid_ds,
-                valid_clip_labels=valid_clip_labels, quantization_ds=quantization_ds,
-                test_ds=test_ds, test_clip_labels=test_clip_labels, multi_label=multi_label)
+            process_mode(mode=mode, 
+                         configs=cfg, 
+                         train_ds=train_ds, 
+                         valid_ds=valid_ds,
+                         valid_clip_labels=valid_clip_labels, 
+                         quantization_ds=quantization_ds,
+                         test_ds=test_ds, 
+                         test_clip_labels=test_clip_labels,
+                         multi_label=multi_label)
         else:
-            process_mode(mode=mode, configs=cfg, fake=True)
+            process_mode(mode=mode, 
+                         configs=cfg, 
+                         fake=True)
     else:
         if mode in ['chain_eqe', 'chain_qb', 'chain_eqeb', 'chain_qd']:
             if (cfg.dataset.training_audio_path or cfg.dataset.quantization_audio_path or
@@ -582,17 +629,21 @@ def main(cfg: DictConfig) -> None:
                 fake=False
             else:
                 fake=True
-            process_mode(mode=mode, configs=cfg, train_ds=train_ds, valid_ds=valid_ds,
+            process_mode(mode=mode, 
+                         configs=cfg, 
+                         train_ds=train_ds, 
+                         valid_ds=valid_ds,
                          valid_clip_labels=valid_clip_labels,
                          quantization_ds=quantization_ds,
-                         test_ds=test_ds, test_clip_labels=test_clip_labels,
+                         test_ds=test_ds, 
+                         test_clip_labels=test_clip_labels,
                          multi_label=cfg.dataset.multi_label,
                          float_model_path=cfg.general.model_path,
                          fake=fake)
         else:
             # Process the selected mode
-            process_mode(mode=mode, configs=cfg)
-
+            process_mode(mode=mode, 
+                         configs=cfg)
 
 
 if __name__ == "__main__":

@@ -31,9 +31,12 @@ class Stm32Ai(Stm32AiBackend):
     def quantize(self, options: CliParameters):
         return self.backend.quantize(options)
     
-    def benchmark(self, options: CliParameters, board_name: str): #TODO: Define options type
-        return self.backend.benchmark(options, board_name)
+    def benchmark(self, options: CliParameters, board_name: str, timeout = 600): #TODO: Define options type
+        return self.backend.benchmark(options, board_name, timeout)
     
+    def generate_nbg(self, model_name, timeout = 300):
+        return self.backend.generate_nbg(model_name, timeout)
+
     def get_benchmark_boards(self) -> typing.List[BoardData]:
         return self.backend.get_benchmark_boards()
 
@@ -61,8 +64,8 @@ class Stm32Ai(Stm32AiBackend):
     def upload_validation_output_file(self, filePath: str):
         return self.backend.upload_validation_output_file(filePath)
 
-    def download_model(self, modelPath):
-        return self.backend.download_model(modelPath)
+    def download_model(self, model_path, target):
+        return self.backend.download_model(model_path, target)
 
     def download_validation_input_file(self, filePath):
         return self.backend.download_validation_input_file(filePath)

@@ -59,17 +59,17 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 
 ## Metrics
 
-Measures are done with [STM32Cube.AI Dev Cloud version](https://stm32ai-cs.st.com/home) 8.1.0 with enabled input/output allocated options and balanced optimization. The inference time is reported is calculated using **STM32Cube.AI version 8.1.0**, on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
+Measures are done with [STM32Cube.AI Dev Cloud version](https://stm32ai-cs.st.com/home) 9.1.0 with enabled input/output allocated options and balanced optimization. The inference time is reported is calculated using **STM32Cube.AI version 9.1.0**, on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
 
 
 
 Reference memory footprint and inference times for IGN models are given in the table below. The accuracies are provided in the sections after for two datasets.
 
 
-| Model                                                                                |   Format  | Input Shape | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)| Total Flash (KiB) | Inference Time (msec) | STM32Cube.AI version  |
-|:------------------------------------------------------------------------------------:|:---------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:--------------:|:-----------------:|:---------------------:|:---------------------:|
-| [IGN wl 24](./ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5)          | FLOAT32   | 24 x 3 x 1  | STM32U5 | 2.81                 | 2.09              | 11.97               | 14.04            |  4.9          | 26.01         |   2.22    | 8.1.0                 |
-| [IGN wl 48](./ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5)          | FLOAT32   | 48 x 3 x 1  | STM32U5 | 9.84                 | 2.09              | 38.97               | 14.04            |  11.93         | 53.01          |   8.09     | 8.1.0                 |
+| Model                                                                        |   Format  | Input Shape | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)| Total Flash (KiB) | Inference Time (msec) | STM32Cube.AI version  |
+|:-----------------------------------------------------------------------------:|:---------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:--------------:|:-----------------:|:---------------------:|:---------------------:|
+| [IGN wl 24](./ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.h5) | FLOAT32   | 24 x 3 x 1  | STM32U5 | 2.03                 | 1.91              | 11.97               | 13.61            |  3.94          | 25.58          |   2.25    | 9.1.0            |
+| [IGN wl 48](./ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.h5) | FLOAT32   | 48 x 3 x 1  | STM32U5 | 4.56                 | 1.91              | 38.97               | 13.61            |  6.47          | 52.58          |   8.17    | 9.1.0            |
 
 
 

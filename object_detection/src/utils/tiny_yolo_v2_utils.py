@@ -9,18 +9,16 @@
 import os, sys, time
 import numpy as np
 import tensorflow as tf
+import onnxruntime
 from pathlib import Path
 from munch import DefaultMunch
 from hydra.core.hydra_config import HydraConfig
-sys.path.append(os.path.abspath('./models'))
-sys.path.append(os.path.abspath('../../../common'))
-sys.path.append(os.path.abspath('../evaluation'))
 from tiny_yolo_v2_evaluate import evaluate_tiny_yolo_v2
 from tiny_yolo_v2 import tiny_yolo_v2_body
 from st_yolo_lc_v1 import st_yolo_lc_v1_body
 from tensorflow.keras.callbacks import Callback
 from tensorflow.keras.layers import Input
-from common_utils import get_mem_consumption, benchmark
+from gpu_utils import gpu_benchmark
 
 class CheckpointYoloCleanCallBack(Callback):
     """
@@ -131,6 +129,17 @@ def check_cfg_attributes(cfg):
             cfg.training = DefaultMunch()
             cfg.training.model = DefaultMunch()
         cfg.training.model.input_shape = input_shape[1:]
+    elif cfg.general.model_path and Path(cfg.general.model_path).suffix == '.onnx':
+        sess = onnxruntime.InferenceSession(cfg.general.model_path)
+        inputs  = sess.get_inputs()
+        ish = inputs[0].shape
+        input_shape = [ish[2],ish[3],ish[1]]
+        if cfg.training:
+            cfg.training.model = DefaultMunch()
+        else:
+            cfg.training = DefaultMunch()
+            cfg.training.model = DefaultMunch()
+        cfg.training.model.input_shape = input_shape
     elif not cfg.general.model_path:
         cfg.training.model.input_shape = cfg.training.model.input_shape
     if cfg.operation_mode not in ['quantization' ,'benchmarking']:
@@ -173,7 +182,7 @@ def set_multi_scale_max_resolution(cfg):
             model = st_yolo_lc_v1_body(input_tensor, num_anchors, num_classes)
         model.compile(loss=tf.keras.losses.mean_squared_error, optimizer=tf.keras.optimizers.Adam(learning_rate=0.01))
         print("[INFO] : Setting max input size to {} for multi scale data augmentation".format(im_sz))
-        size_error = benchmark(gpu_limit, batch_size,input_shape,model)
+        size_error = gpu_benchmark(gpu_limit, batch_size,input_shape,model)
         if size_error:
             print("[WRN] : Not enough GPU memory!!")
         else:

@@ -49,8 +49,8 @@ For an image resolution of NxM and NC classes
 | STM32L4  | []        | []          |
 | STM32U5  | []        | []          |
 | STM32H7  | [x]       | [x]         |
-| STM32MP1 | [x]       | [x]          |
-
+| STM32MP1 | [x]       | [x]         |
+| STM32MP2 | [x]       | []          |
 
 # Performances
 ## Training
@@ -71,32 +71,60 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
-### Reference MCU memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
+### Reference **MCU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
 
 | Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3   | STM32H7 | 565.25 KiB      | 75.79 KiB       | 984.25 KiB     | 203.23 KiB    | 641.04 KiB   | 1187.48 KiB  | 8.1.0                 |              |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3   | STM32H7 | 769.12 KiB      | 76.02 KiB       | 1059.17 KiB    | 207.28 KiB    | 845.14 KiB   | 1266.45 KiB  | 8.1.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3   | STM32H7 | 1003.73 KiB     | 76.02 KiB       | 1065.32 KiB    | 207.13 KiB    | 1079.75 KiB   | 1272.45 KiB  | 8.1.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3   | STM32H7 | 2673.27 KiB     | 75.97 KiB       | 1109.27 KiB    | 205.71 KiB    | 2749.24 KiB   | 1314.98 KiB  | 8.1.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3   | STM32H7 | 711.45 KiB      | 70.3 KiB       | 984.25 KiB     | 190.26 KiB    | 781.75 KiB   | 1174.51 KiB  | 9.1.0                 |              |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3   | STM32H7 | 956.82 KiB      | 70.3 KiB       | 1007.78 KiB    | 191.45 KiB    | 1027.12 KiB   | 1199.23 KiB  | 9.1.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3   | STM32H7 | 1238.29 KiB     | 70.3 KiB       | 1032.26 KiB    | 192.68 KiB    | 1308.59 KiB   | 1224.94 KiB  | 9.1.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3   | STM32H7 | 2541.27 KiB     | 70.3 KiB       | 1109.27 KiB    | 194.22 KiB    | 2611.73 KiB   | 1303.49 KiB  | 9.1.0                 |
 
 
-### Reference inference time based on COCO Person dataset (see Accuracy for details on dataset)
+### Reference **MCU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
 
 
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) | STM32Cube.AI version  |
 |-------------------|--------|------------|------------------|------------------|-------------|---------------------|-----------------------|
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 646.4 ms      | 8.1.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 902.24 ms     | 8.1.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 1187.92 ms    | 8.1.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 3184.82 ms    | 8.1.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz      | 196.579 ms **    | X-LINUX-AI v5.0.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz      | 266.396 ms **    | X-LINUX-AI v5.0.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz      | 347.193 ms **    | X-LINUX-AI v5.0.0                 |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3    | STM32MP157F-DK2  | 2 CPU | 800 MHz      | 898.08  ms **    | X-LINUX-AI v5.0.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 512.33 ms      | 9.1.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 675.63 ms     | 9.1.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 937.87 ms    | 9.1.0                 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3    | STM32H747I-DISCO | 1 CPU | 400 MHz      | 2784.13 ms    | 9.1.0                 |
 
-** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
+
+### Reference **MPU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
+
+| Model                                                                                                                                                              | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 35.08 ms            | 6.20  | 93.80 |0     | v5.1.0             | OpenVX                |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 48.92 ms            | 6.19  | 93.81 |0     | v5.1.0             | OpenVX                |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 40.66 ms            | 7.07  | 92.93 |0     | v5.1.0             | OpenVX                |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 110.4 ms            | 4.47  | 95.53 |0     | v5.1.0             | OpenVX                |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 193.70 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 263.60 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 339.40 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 894.00 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8   | 192x192x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 287.40 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 383.40 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8   | 256x256x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 498.90 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8   | 416x416x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 1348.00  ms         | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+
+
+### Reference **MPU** inference time based on COCO 80 classes dataset (see Accuracy for details on dataset)
+
+| Model                                                                                                                                                              | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite) | Int8   | 256x256x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 100.90 ms            | 8.86  | 91.14 |0     | v5.1.0             | OpenVX                |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416_int8.tflite) | Int8   | 416x416x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 280.00 ms            | 8.68  | 91.32 |0     | v5.1.0             | OpenVX                |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite) | Int8   | 256x256x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 742.90 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416_int8.tflite) | Int8   | 416x416x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  |  2000 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite) | Int8   | 256x256x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 1112.00 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416_int8.tflite) | Int8   | 416x416x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  |  2986 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+
+
+
+** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 
 ### AP on COCO Person dataset
 
@@ -109,6 +137,20 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 | [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8 | 224x224x3   | 48.67 % |
 | [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8 | 256x256x3   | 55.56 % |
 | [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8 | 416x416x3   | 59.09 % |
+
+
+\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+
+
+### AP on COCO 80 classes dataset
+
+
+Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
+
+| Model | Format | Resolution |       AP*       |
+|-------|--------|------------|----------------|
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite) | Int8   | 256x256x3  | 32.2 % |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416_int8.tflite) | Int8   | 416x416x3  | 32.3 % |
 
 \* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
 

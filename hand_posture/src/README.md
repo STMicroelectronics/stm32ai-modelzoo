@@ -1,29 +1,9 @@
 
 # Hand posture STM32 model zoo
 
-## Table of Contents
+## <a id="">Table of contents</a>
 
-### <a href="#1">1. Hand Posture Model Zoo introduction</a>
-### <a href="#2">2. Hand Posture tutorial</a>
-#### <a href="#2-1">2.1 Choose the operation mode</a>
-#### <a href="#2-2">2.2 Global settings</a>
-#### <a href="#2-3">2.3 Dataset specification</a>
-#### <a href="#2-4">2.4 Apply Hand Posture preprocessing</a>
-#### <a href="#2-5">2.5 Use data augmentation</a>
-#### <a href="#2-6">2.6 Set the training parameters</a>
-#### <a href="#2-7">2.7 Benchmark the model</a>
-#### <a href="#2-8">2.8 Deploy the model</a>
-### <a href="#3">3. Run the Hand Posture training service</a>
-### <a href="#4">4. Visualize the services results</a>
-#### <a href="#4-1">4.1 Saved results</a></a>
-#### <a href="#4-2">4.2 Run tensorboard</a>
-#### <a href="#4-3">4.3 Run MLFlow</a>
-#### <a href="#appendix-a">Appendix A: YAML syntax</a>
-
-
-__________________________________________
-
-### <a id="1">1. Hand Posture Model Zoo introduction</a>
+<details open><summary><a href="#1"><b>1. Hand Posture Model Zoo introduction</b></a></summary><a id="1"></a>
 
 The hand posture model zoo provides a collection of independent services that can be used to perform various functions related to machine learning for Hand Posture Detection. The individual services include tasks such as training the model or evaluating the model.
 
@@ -60,14 +40,14 @@ dataset_directory/
 This tool can be downloaded on [ST.com](https://www.st.com/en/embedded-software/stsw-img035.html)
 A dedicated documentation is available for this tool and to know how to create your own ST multi-zone Time-of-Flight dataset for hand posture recognition.
 
-
-### <a id="2">2. Hand Posture tutorial</a>
+</details>
+<details open><summary><a href="#2"><b>2. Hand Posture tutorial</b></a></summary><a id="2"></a>
 
 This tutorial demonstrates how to use the `training` services to train the model. We chose to use the `CNN2D_ST_HandPosture` model and the [ST_VL53L8CX_handposture_dataset](../datasets) dataset as an example to demonstrate the workflow.
 
 To get started, you will need to update the [user_config.yaml](user_config.yaml) file, which specifies the parameters and configuration options for the services that you want to use. Each section of the [user_config.yaml](user_config.yaml) file is explained in detail in the following sections.
 
-#### <a id="2-1">2.1 Choose the operation mode</a>
+<ul><details open><summary><a href="#2-1">2.1 Choose the operation mode</a></summary><a id="2-1"></a>
 
 The `operation_mode` top-level attribute specifies the operations or the service you want to execute.
 
@@ -93,7 +73,8 @@ In this tutorial the `operation_mode` used is the `training` like shown below to
 operation_mode: training
 ```
 
-#### <a id="2-2">2.2 Global settings</a>
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2 General settings</a></summary><a id="2-2"></a>
 
 The `general` section and its attributes are shown below.
 
@@ -127,7 +108,8 @@ The `model_path` attribute is utilized to indicate the path to the model file th
 
 You can use the `model_path` attribute to train your own custom model instead of using a model from the Model Zoo. This is explained in detail in the [readme](./training/README.md) file for the train service. However, in this tutorial, the `model_path` attribute is not used since we are using a model from the Model Zoo.
 
-#### <a id="2-3">2.3 Dataset specification</a>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Dataset specification</a></summary><a id="2-3"></a>
 
 The `dataset` section and its attributes are shown in the YAML code below.
 
@@ -147,8 +129,8 @@ When a training is run, the training set is split in two to create a validation 
 
 The `validation_split` attribute specifies the training/validation set size ratio to use when splitting the training set to create a validation set. The default value is 0.2, meaning that 20% of the training set is used to create the validation set.
 
-
-#### <a id="2-4">2.4 Apply Hand Posture preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 Apply Hand Posture preprocessing</a></summary><a id="2-4"></a>
 
 The 'preprocessing' section is required in all the operation modes except for the benchmarking.
 
@@ -165,9 +147,8 @@ preprocessing: # Mandatory
 - `Min_distance` - *Integer*, *in mm*, the minimum distance of the hand from the sensor allowed for this application. If the distance is lower, the frame is filtered/removed from the dataset
 - `Background_distance` - *Integer*, *in mm*, the gap behind the hand, all zones above this gap will be removed
 
-
-
-#### <a id="2-5">2.5 Use data augmentation</a>
+</details></ul>
+<ul><details open><summary><a href="#2-5">2.5 Use data augmentation</a></summary><a id="2-5"></a>
 
 The data augmentation functions to apply to the input frames during a training are specified in the optional `data_augmentation` section of the configuration file. They are only applied to the images during training.
 
@@ -181,10 +162,10 @@ data_augmentation:
 
 Please refer to [the data augmentation documentation](data_augmentation/README.md) for a list of functions that are available and the transforms they apply to the input frames.
 
-#### <a id="2-6">2.6 Set the training parameters</a>
+</details></ul>
+<ul><details open><summary><a href="#2-6">2.6 Set the training parameters</a></summary><a id="2-6"></a>
 
 A 'training' section is required in all the operation modes that include a training.
-
 
 ```yaml
 training:
@@ -230,30 +211,31 @@ The `callbacks` subsection is optional. All the Keras callbacks are supported. N
 The best model obtained at the end of the training is saved in the 'experiments_outputs/\<date-and-time\>/saved_models' directory and is called 'best_model.h5' (see section <a href="#4">Saved results of image classification</a>). Make sure not to use the 'best_augmentation_model.h5' file as it includes the rescaling and data augmentation layers.
 If you want to save the best model to another location, you can use `trained_model_path`.
 
+</details></ul>
+<ul><details open><summary><a href="#2-7">2.7 Benchmark the model</a></summary><a id="2-7"></a>
 
-#### <a id="2-7">2.7 Benchmark the model</a>
+The [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) allows you to benchmark your model and estimate its footprints and inference time for different STM32 target devices. To use this feature, set the `on_cloud` attribute to True. Alternatively, you can use [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) to benchmark your model and estimate its footprints for STM32 target devices locally. To do this, make sure to add the path to the `stedgeai` executable under the `path_to_stedgeai` attribute and set the `on_cloud` attribute to False.
 
-The [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) allows you to benchmark your model and estimate its footprints and inference time for different STM32 target devices. To use this feature, set the `on_cloud` attribute to True. Alternatively, you can use [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) to benchmark your model and estimate its footprints for STM32 target devices locally. To do this, make sure to add the path to the `stm32ai` executable under the `path_to_stm32ai` attribute and set the `on_cloud` attribute to False.
-
-The `version` attribute to specify the **STM32Cube.AI** version used to benchmark the model, e.g. 8.1.0 and the `optimization` defines the optimization used to generate the C model, options: "balanced", "time", "ram".
+The `version` attribute to specify the **STM32Cube.AI** version used to benchmark the model, e.g. **9.1.0** and the `optimization` defines the optimization used to generate the C model, options: "balanced", "time", "ram".
 
 The `board` attribute is used to provide the name of the STM32 board to benchmark the model on. The available boards are 'STM32H747I-DISCO', 'STM32H7B3I-DK', 'STM32F469I-DISCO', 'B-U585I-IOT02A', 'STM32L4R9I-DISCO', 'NUCLEO-H743ZI2', 'STM32H747I-DISCO', 'STM32H735G-DK', 'STM32F769I-DISCO', 'NUCLEO-G474RE', 'NUCLEO-F401RE' and 'STM32F746G-DISCO'.
 
 ```yaml
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 
 benchmarking:
   board: NUCLEO-F401RE # Name of the STM32 board to benchmark the model on
 ```
 The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README.md) service.
 
-#### <a id="2-8">2.8 Deploy the model</a>
+</details></ul>
+<ul><details open><summary><a href="#2-8">2.8 Deploy the model</a></summary><a id="2-8"></a>
 
 If you want to deploy the model after running the chain, you can do so by referring to the [README](../deployment/README.md) and modifying the `deployment_config.yaml` file or by setting the `operation_mode` to `deploy` and modifying the `user_config.yaml` file as described below:
 
@@ -265,12 +247,12 @@ dataset:
    class_names: [None, Like, Dislike, FlatHand, Fist, Love, BreakTime, CrossHands] 
 
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
   c_project_path: ../../stm32ai_application_code/hand_posture/
@@ -289,7 +271,9 @@ The `tools` section includes information about the STM32AI toolchain, such as th
 
 Finally, in the `deployment` section, users must provide information about the hardware setup, such as the series and board of the STM32 device, as well as the input and output interfaces. Once all of these sections have been filled in, users can run the deployment service to deploy their model to the STM32 device.
 
-### <a id="3">3. Run the Hand Posture training service</a>
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Run the Hand Posture training service</b></a></summary><a id="3"></a>
 
 After updating the [user_config.yaml](user_config.yaml) file, please run the following command:
 
@@ -301,8 +285,8 @@ python stm32ai_main.py
 ```bash
 python stm32ai_main.py operation_mode='training'
 ```
-
-### <a id="4">4. Visualize the services results</a>
+</details>
+<details open><summary><a href="#4"><b>4. Visualize the services results</b></a></summary><a id="4"></a>
 
 Every time you run the Model Zoo, an experiment directory is created that contains all the directories and files created during the run. The names of experiment directories are all unique as they are based on the date and time of the run.
 
@@ -347,7 +331,7 @@ All the directory names, including the naming pattern of experiment directories,
 s
 The models in the 'best_augmented_model.h5' Keras files contain data augmentation layers. These model files are not intended to be used outside of the Model Zoo context.
 
-#### <a id="4-1">4.1 Saved results</a>
+<ul><details open><summary><a href="#4-1">4.1 Saved results</a></summary><a id="4-1"></a>
 
 All of the training and evaluation artifacts are saved in the current output simulation directory, which is located at **experiments_outputs/\<date-and-time\>**.
 
@@ -357,7 +341,8 @@ For example, you can retrieve the plots of the accuracy/loss curves, as well as 
 
 ![plot](./doc/img/float_model_confusion_matrix.png)
 
-#### <a id="4-2">4.2 Run tensorboard</a>
+</details></ul>
+<ul><details open><summary><a href="#4-2">4.2 Run tensorboard</a></summary><a id="4-2"></a>
  
 To visualize the training curves that were logged by TensorBoard, navigate to the **experiments_outputs/\<date-and-time\>** directory and run the following command:
 
@@ -366,7 +351,8 @@ tensorboard --logdir logs
 ```
 This will start a server and its address will be displayed. Use this address in a web browser to connect to the server. Then, using the web browser, you will able to explore the learning curves and other training metrics.
 
-#### <a id="4-3">4.3 Run MLFlow</a>
+</details></ul>
+<ul><details open><summary><a href="#4-3">4.3 Run Run MLFlow</a></summary><a id="4-3"></a>
 
 MLflow is an API that allows you to log parameters, code versions, metrics, and artifacts while running machine learning code, and provides a way to visualize the results. 
 
@@ -377,7 +363,9 @@ mlflow ui
 ```
 This will start a server and its address will be displayed. Use this address in a web browser to connect to the server. Then, using the web browser, you will be able to navigate the different experiment directories and look at the metrics they were collected. Refer to [MLflow Home](https://mlflow.org/) for more information about MLflow.
 
-### <a id="appendix-a">Appendix A: YAML syntax</a>
+</details></ul>
+</details>
+<details open><summary><a href="#A"><b>Appendix A: YAML syntax</b></a></summary><a id="A"></a>
 
 **Example and terminology:**
 
@@ -495,3 +483,4 @@ class_names:
 - Dislike
 ```
 
+</details>

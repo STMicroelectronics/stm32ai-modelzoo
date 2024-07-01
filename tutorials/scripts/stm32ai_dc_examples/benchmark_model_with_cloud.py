@@ -22,6 +22,7 @@ import os
 dir_name = os.path.dirname(__file__)
 sys.path.insert(0, os.path.abspath(os.path.join(dir_name, '..')))
 sys.path.append(os.path.abspath('../../../common'))
+from stm32ai_dc.types import MpuParameters
 from stm32ai_dc import Stm32Ai, CloudBackend, CliParameters
 from stm32ai_dc.errors import ParameterError, BenchmarkServerError
 
@@ -55,7 +56,19 @@ model_name = os.path.basename(model_path)
 
 # Start benchmark with a board name from "board" object
 try:
-    res = ai.benchmark(CliParameters(model=model_name), boards[0].name)
+    res = ai.benchmark(CliParameters(model=model_name), 'STM32H747I-DISCO')
+    # Print results
+    print("Result from cloud file:", res)
+    # Delete model
+    ai.delete_model(model_name)
+except ParameterError as e:
+    print("An error occured while benchmarking your model", e)
+except BenchmarkServerError as e:
+    print("An error occured while running your  benchmark on our server", e)
+
+# Start benchmark on MPU
+try:
+    res = ai.benchmark(MpuParameters(model=model_name), 'STM32MP257F-EV1')
     # Print results
     print("Result from cloud file:", res)
     # Delete model

@@ -1,0 +1,45 @@
+window {
+    background-color: #000000;
+  }
+
+  window#overlay_window {
+    background-color: transparent;
+  }
+
+  widget {
+    background-color: transparent;
+  }
+
+  box#gui_main_stbox {
+    background-color: #000000;
+    color: #FFFFFF;
+  }
+
+  box#gui_overlay_stbox {
+    background-color: #000000;
+    color: #FFFFFF;
+  }
+
+  box#gui_main_video {
+    background-color: #000000;
+  }
+
+  box#gui_overlay_video {
+    background-color: transparent;
+  }
+
+  box#gui_main_exit {
+    background-color: #000000;
+  }
+
+  box#gui_overlay_exit {
+    background-color: transparent;
+  }
+
+  box#gui_main {
+    background-color: #000000;
+  }
+
+  drawing_area#overlay_draw {
+    background-color: transparent;
+  }

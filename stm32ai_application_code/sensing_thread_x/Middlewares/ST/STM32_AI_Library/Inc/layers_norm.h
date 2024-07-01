@@ -196,6 +196,13 @@ void forward_lrn(ai_layer* layer);
 AI_INTERNAL_API
 void forward_norm(ai_layer* layer);
 
+/*!
+ * @brief Batch Normalization with 16-bit input, 16-bit threshold and binary output. 
+ *        It is implemented using a threshold, and this is possible because the output is binary.
+ * @param layer the batch normalization layer
+ */
+AI_INTERNAL_API
+void forward_bn_is16os1ws16(ai_layer *pLayer);
 
 AI_API_DECLARE_END
 

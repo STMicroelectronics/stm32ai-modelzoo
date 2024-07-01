@@ -7,14 +7,11 @@
 
 
 import json
-import os
 import typing
 from stm32ai_dc.backend.cloud.file_service import FileService
 from stm32ai_dc.errors import BenchmarkFailure, BenchmarkParameterError
 from stm32ai_dc.errors import ModelNotFoundError, WrongTypeError
-from stm32ai_dc.types import LOGGER_NAME, CliParameterCompression
-from stm32ai_dc.types import CliParameterVerbosity, CliParameters
-from stm32ai_dc.types import CliParameterType
+from stm32ai_dc.types import LOGGER_NAME, AtonParametersSchema, CliParameters, MpuParameters
 from .helpers import send_get, send_post
 from .endpoints import get_benchmark_boards_ep, get_benchmark_openapi_ep
 from .endpoints import get_benchmark_service_ep
@@ -63,27 +60,25 @@ class BenchmarkService:
     def _get_cloud_models(self) -> typing.List[str]:
         return list(map(lambda x: x['name'], self.file_service.list_models()))
 
-    def trigger_benchmark(self, options: CliParameters, boardName: str, version: str = None):
-        if type(options) != CliParameters:
-            raise WrongTypeError(options, CliParameters)
+    def trigger_benchmark(self, options: typing.Union[CliParameters, MpuParameters], board_name: str, version: str = None):
+        if not (isinstance(options, CliParameters) or isinstance(options, MpuParameters)):
+            raise WrongTypeError(options, typing.Union[CliParameters, MpuParameters])
 
-        def _build_arguments_dict(options: CliParameters):
+        def _build_arguments_dict(options: typing.Union[CliParameters, MpuParameters]):
             data = {}
             for field in options._fields:
                 current_value = getattr(options, field)
-                if field in ['model', 'output'] or current_value is None:
+                if field in ['model', 'output', 'atonnOptions'] or current_value is None:
                     continue
                 if version:
                     data['version'] = version
-                if isinstance(current_value, CliParameterCompression):
+                try: 
                     data[field] = current_value.value
-                elif isinstance(current_value, CliParameterType):
-                    data[field] = current_value.value
-                elif isinstance(current_value, CliParameterVerbosity):
-                    data[field] = current_value.value
-                else:
+                except Exception as _:
                     if current_value is not None:
                         data[field] = current_value
+            if (hasattr(options, 'atonnOptions')):
+                data['atonnOptions'] = AtonParametersSchema().dump(options.atonnOptions)
             return data
 
         model_name = options.model if options.model else None
@@ -100,8 +95,11 @@ class BenchmarkService:
             data_to_be_sent = data
             data_to_be_sent["model"] = model_name
 
+        route = f'{self.main_route}/benchmark'
+        if (isinstance(options, MpuParameters)):
+            route += '/mpu'
         resp = send_post(
-            f'{self.main_route}/benchmark/{boardName.lower()}',
+            f'{route}/{board_name.lower()}',
             withToken=self.auth_token,
             usingJson=data_to_be_sent)
 
@@ -124,10 +122,10 @@ class BenchmarkService:
             try:
                 json_resp = resp.json()
                 if 'errors' in json_resp:
-                    raise BenchmarkParameterError(boardName, f"Wrong parameter\
+                    raise BenchmarkParameterError(board_name, f"Wrong parameter\
                         : {json_resp.get('errors', None)}")
                 else:
-                    raise BenchmarkParameterError(boardName, f"Wrong parameter\
+                    raise BenchmarkParameterError(board_name, f"Wrong parameter\
                         : {resp.text}")
             except json.JSONDecodeError:
                 pass
@@ -180,6 +178,10 @@ class BenchmarkService:
                             'generating_sources':
                         logger.debug(f'Benchmark({benchmarkId}) status: \
                             Generating sources')
+                    elif result.get('state', '').lower() == \
+                        'copying_sources':
+                        logger.debug(f'Benchmark({benchmarkId}) status: \
+                            Copying sources')
                     elif result.get('state', '').lower() == 'loading_sources':
                         logger.debug(f'Benchmark({benchmarkId}) status: \
                             Loading sources')

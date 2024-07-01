@@ -23,6 +23,8 @@
 #pragma once
 
 #include "layers_common.h"
+#include "lite_maxpool_dqnn.h"
+#include "lite_pool_f32.h"
 
 /*!
  * @defgroup layers_pool Pooling Layers Definitions
@@ -49,49 +51,6 @@ typedef AI_ALIGNED_TYPE(struct, 4) ai_layer_pool_ {
 } ai_layer_pool;
 
 
-/*!
- * @typedef (*func_pool)
- * @ingroup layers_pool
- * @brief Fuction pointer for generic pooling transform
- * this function pointer abstracts a generic pooling layer.
- * see @ref pool_func_ap_array_f32 as examples
- */
-typedef void (*func_pool)(ai_handle in,
-                      const ai_u16 dim_im_in_x, const ai_u16 dim_im_in_y,
-                      const ai_u16 ch_im_in,
-                      const ai_u16 dim_kernel_x, const ai_u16 dim_kernel_y,
-                      const ai_u16 padding_x, const ai_u16 padding_y,
-                      const ai_u16 stride_x, const ai_u16 stride_y, 
-                      const ai_u16 dim_im_out_x, const ai_u16 dim_im_out_y, 
-                      ai_handle out);
-
-/*!
- * @brief Max Pooling on a float data array
- * @ingroup layers_pool
- * @param in  opaque handler to input data to process
- * @param dim_im_in_x  input feature map width
- * @param dim_im_in_y  input feature map height
- * @param ch_im_in  number of input channels
- * @param dim_kernel_x  kernel width
- * @param dim_kernel_y  kernel height
- * @param padding_x  right padding value
- * @param padding_y  top padding value
- * @param stride_x  stride value on x dimension
- * @param stride_y  stride value on y dimension
- * @param dim_im_out_x  output feature map width
- * @param dim_im_out_y  output feature map height
- * @param out opaque handler to scratch memory
- * @param out opaque handler to output data
- */
-AI_INTERNAL_API
-void pool_func_mp_array_f32(ai_handle in,
-                      const ai_u16 dim_im_in_x, const ai_u16 dim_im_in_y,
-                      const ai_u16 ch_im_in,
-                      const ai_u16 dim_kernel_x, const ai_u16 dim_kernel_y,
-                      const ai_u16 padding_x, const ai_u16 padding_y,
-                      const ai_u16 stride_x, const ai_u16 stride_y, 
-                      const ai_u16 dim_im_out_x, const ai_u16 dim_im_out_y,
-                      ai_handle out);
 
 /*!
  * @brief Max Pooling on a 8/16 bits fixed point data array
@@ -199,34 +158,6 @@ void pool_func_mp_array_integer_UINT8(ai_handle in,
                       const ai_u16 padding_x, const ai_u16 padding_y,
                       const ai_u16 stride_x, const ai_u16 stride_y, 
                       const ai_u16 dim_im_out_x, const ai_u16 dim_im_out_y, 
-                      ai_handle out);
-
-
-/*!
- * @brief Average Pooling on a float data array
- * @ingroup layers_pool
- * @param in  opaque handler to input data to process
- * @param dim_im_in_x  input feature map width
- * @param dim_im_in_y  input feature map height
- * @param ch_im_in  number of input channels
- * @param dim_kernel_x  kernel width
- * @param dim_kernel_y  kernel height
- * @param padding_x  right padding value
- * @param padding_y  top padding value
- * @param stride_x  stride value on x dimension
- * @param stride_y  stride value on y dimension
- * @param dim_im_out_x  output feature map width
- * @param dim_im_out_y  output feature map height
- * @param out opaque handler to scratch memory
- */
-AI_INTERNAL_API
-void pool_func_ap_array_f32(ai_handle in,
-                      const ai_u16 dim_im_in_x, const ai_u16 dim_im_in_y,
-                      const ai_u16 ch_im_in,
-                      const ai_u16 dim_kernel_x, const ai_u16 dim_kernel_y,
-                      const ai_u16 padding_x, const ai_u16 padding_y,
-                      const ai_u16 stride_x, const ai_u16 stride_y,
-                      const ai_u16 dim_im_out_x, const ai_u16 dim_im_out_y,
                       ai_handle out);
 
 /*!
@@ -382,6 +313,24 @@ void forward_mp_integer_INT8(ai_layer *pLayer);
  */
 AI_INTERNAL_API
 void forward_mp_integer_UINT8(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of an integer-quantized max pooling layer
+ *        with int16 I/O
+ * @ingroup layers_pool
+ * @param layer the pooling (pool) layer
+ */
+AI_INTERNAL_API
+void forward_mp_integer_INT16(ai_layer *pLayer);
+
+/*!
+ * @brief Computes the activations of an integer-quantized max pooling layer
+ *        with uint16 I/O
+ * @ingroup layers_pool
+ * @param layer the pooling (pool) layer
+ */
+AI_INTERNAL_API
+void forward_mp_integer_UINT16(ai_layer *pLayer);
 
 /*!
  * @brief Computes the activations of an average pooling layer.

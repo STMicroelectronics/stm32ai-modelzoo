@@ -19,12 +19,14 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from typing import List
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../preprocessing'))
-sys.path.append(os.path.abspath('../models'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../utils'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../preprocessing'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../models'))
+sys.path.append(os.path.join(os.path.dirname(__file__), '../../../common/utils'))
 
+from models_utils import get_model_name_and_its_input_shape
+from models_mgt import IC_CUSTOM_OBJECTS
 from parse_config import get_config
-from models_mgt import get_model_name_and_its_input_shape
 from data_loader import get_ds
 from random_utils import remap_pixel_values_range
 from data_augmentation import data_augmentation
@@ -116,7 +118,7 @@ def test_data_augmentation(config_file_path: str, num_images: int = 8, seed_arg:
     if cfg.training.model:
         input_shape = cfg.training.model.input_shape
     else:
-        _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path)
+        _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path, custom_objects=IC_CUSTOM_OBJECTS)
 
     if seed_arg:
         # Use the seed passed in argument

@@ -48,12 +48,12 @@ training:
       restore_best_weights: true
       patience: 60
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
-    on_cloud: true
-    path_to_stm32ai: C:/Users/XXX/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/8.1.0/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.14.0/STM32CubeIDE/stm32cubeide.exe
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 benchmarking:
   board: B-U585I-IOT02A
 deployment:

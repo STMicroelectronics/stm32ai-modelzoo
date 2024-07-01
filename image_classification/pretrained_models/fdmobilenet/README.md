@@ -13,9 +13,9 @@ Authorized values for 'alpha' are 0.25, 0.5, 0.75, 1.0.
 The model is quantized in int8 using Tensorflow Lite converter.
 
 Performances of a ST custom model derived from Fd-MobileNet is also proposed below. It is named ST FdMobileNet v1.
-It is inspired from original FdMobilenet. Instead of having one unique 'alpha' dimensioning the width of the network, we 
+It is inspired from original FdMobilenet. Instead of having one unique 'alpha' dimensioning the width of the network, we
 use a list of 'alpha' values in order to give more or less importance to each of the individual sub-blocks.
-It is slightly more complex than FdMobilenet 0.25 due to higher number of channels for some sub-blocks but provides 
+It is slightly more complex than FdMobilenet 0.25 due to higher number of channels for some sub-blocks but provides
 better accuracies. We believe it is a good compromise between size, complexity and accuracy for this family of networks.
 
 ## Network information
@@ -46,8 +46,8 @@ For an image resolution of NxM and P classes and 0.25 alpha parameter :
 | STM32L0  | []        | []          |
 | STM32L4  | [x]       | []          |
 | STM32U5  | [x]       | []          |
-| STM32H7  | [x]       | [x]         |
-| STM32MP1 | [x]       | []          |
+| STM32MP1 | [x]       | [x]         |
+| STM32MP2 | [x]       | []          |
 
 ---
 # Performances
@@ -63,31 +63,43 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 ## Metrics
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
-### Reference MCU memory footprints based on Flowers dataset (see Accuracy for details on dataset)
+### Reference **MCU** memory footprints based on Flowers dataset (see Accuracy for details on dataset)
 | Model                 | Format | Resolution   | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM  | Total Flash | STM32Cube.AI version |
 |-----------------------|--------|--------------|---------|----------------|-------------|---------------|------------|------------|-------------|----------------------|
-| FdMobileNet 0.25 tfs  | Int8   | 224x224x3    | STM32H7 | 152.05 KiB     | 14.25 KiB   | 128.32 KiB    | 61.71 KiB  | 166.3 KiB  | 190.03 KiB  | 8.1.0                |
-| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32H7 | 206.88 KiB     | 14.25 KiB   | 144.93 KiB    | 63.19 KiB  | 221.13 KiB | 208.12 KiB  | 8.1.0                |
-| FdMobileNet 0.25 tfs  | Int8   | 128x128x3    | STM32H7 | 51.18 KiB      | 14.2 KiB    | 128.32 KiB    | 61.71 KiB  | 65.38 KiB  | 190.03 KiB  | 8.1.0                |
-| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32H7 | 70.75 KiB      | 14.2 KiB    | 144.93 KiB    | 63.2 KiB   | 84.95 KiB  | 208.13 KiB  | 8.1.0                |
+| FdMobileNet 0.25 tfs  | Int8   | 224x224x3    | STM32H7 | 157.03 KiB     | 14.25 KiB   | 128.32 KiB    | 58.66 KiB  | 171.28 KiB  | 186.98 KiB  | 9.1.0                |
+| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32H7 | 211.64 KiB     | 14.25 KiB   | 144.93 KiB    | 60.17 KiB  | 225.89 KiB | 205.1 KiB    | 9.1.0                |
+| FdMobileNet 0.25 tfs  | Int8   | 128x128x3    | STM32H7 | 56.16 KiB      | 14.2 KiB    | 128.32 KiB    | 58.16 KiB  | 70.36 KiB  | 186.95 KiB   | 9.1.0                |
+| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32H7 | 74.23 KiB      | 14.2 KiB    | 144.93 KiB    | 60.12 KiB  | 88.43 KiB  | 205.05 KiB   | 9.1.0                |
 
 
-### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
+### Reference **MCU** inference time based on Flowers dataset (see Accuracy for details on dataset)
 | Model                 | Format | Resolution   | Board            | Execution Engine | Frequency     | Inference time (ms) | STM32Cube.AI version |
 |-----------------------|--------|--------------|------------------|------------------|---------------|---------------------|----------------------|
-| FdMobileNet 0.25 tfs  | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 59.96 ms            | 8.1.0                |
-| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 112.77 ms           | 8.1.0                |
-| FdMobileNet 0.25 tfs  | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 19.91 ms            | 8.1.0                |
-| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 35.74 ms            | 8.1.0                |
-| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32F769I-DISCO | 1 CPU            | 216 MHz       | 196.13 ms           | 8.1.0                |
-| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32F769I-DISCO | 1 CPU            | 216 MHz       | 65.72 ms            | 8.1.0                |
-| FdMobileNet 0.25 tfs  | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 23.55 ms **         | X-LINUX-AI v5.0.0    |
-| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 39.48 ms **         | X-LINUX-AI v5.0.0    |
-| FdMobileNet 0.25 tfs  | Int8   | 128x128x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 8.53 ms **          | X-LINUX-AI v5.0.0    |
-| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32MP157F-DK2  | 2 CPU            | 800 MHz       | 13.42 ms **         | X-LINUX-AI v5.0.0    |
+| FdMobileNet 0.25 tfs  | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 53.52 ms            | 9.1.0                |
+| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 102 ms              | 9.1.0                |
+| FdMobileNet 0.25 tfs  | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 17.73 ms            | 9.1.0                |
+| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz       | 32.14 ms            | 9.1.0                |
+| ST FdMobileNet v1 tfs | Int8   | 224x224x3    | STM32F769I-DISCO | 1 CPU            | 216 MHz       | 176.5 ms            | 9.1.0                |
+| ST FdMobileNet v1 tfs | Int8   | 128x128x3    | STM32F769I-DISCO | 1 CPU            | 216 MHz       | 59.29 ms            | 9.1.0                |
 
-** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
+### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)
+| Model                 | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|-----------------------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
+| FdMobileNet 0.25 tfs  | Int8   | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 6.60  ms            | 12.28 | 87.72 |  0   | v5.1.0             | OpenVX                |
+| ST FdMobileNet v1 tfs | Int8   | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 7.84  ms            | 10.82 | 89.19 |  0   | v5.1.0             | OpenVX                |
+| FdMobileNet 0.25 tfs  | Int8   | 128x128x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 2.17  ms            | 15.66 | 84.34 |  0   | v5.1.0             | OpenVX                |
+| ST FdMobileNet v1 tfs | Int8   | 128x128x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 2.85  ms            | 12.75 | 87.25 |  0   | v5.1.0             | OpenVX                |
+| FdMobileNet 0.25 tfs  | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 22.76 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| ST FdMobileNet v1 tfs | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 33.93 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| FdMobileNet 0.25 tfs  | Int8   | 128x128x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 8.08  ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| ST FdMobileNet v1 tfs | Int8   | 128x128x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 13.16 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| FdMobileNet 0.25 tfs  | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 33.50 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| ST FdMobileNet v1 tfs | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 61.00 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| FdMobileNet 0.25 tfs  | Int8   | 128x128x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 10.86 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+| ST FdMobileNet v1 tfs | Int8   | 128x128x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 19.43 ms            | NA    | NA    |  100 | v5.1.0             | TensorFlowLite 2.11.0 |
+
+** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 
 ### Accuracy with Flowers dataset
 Dataset details: http://download.tensorflow.org/example_images/flower_photos.tgz , License CC - BY 2.0

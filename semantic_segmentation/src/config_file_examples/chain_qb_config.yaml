@@ -1,0 +1,39 @@
+general:
+   model_path: ../pretrained_models/deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft.h5
+
+operation_mode: chain_qb
+
+preprocessing:
+   rescaling:
+      scale: 1/127.5
+      offset: -1
+   resizing:
+      aspect_ratio: fit
+      interpolation: bilinear
+   color_mode: rgb
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+tools:
+   stedgeai:
+      version: 9.1.0
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
+
+
+benchmarking:
+   board: STM32MP257F-EV1
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

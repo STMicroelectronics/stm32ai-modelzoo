@@ -22,17 +22,14 @@
 
 
 /* I/O configuration */
-#define NB_CLASSES        (21)
-#define INPUT_HEIGHT      (256)
-#define INPUT_WIDTH       (256)
+#define NB_CLASSES        (2)
+#define INPUT_HEIGHT      (192)
+#define INPUT_WIDTH       (192)
 #define INPUT_CHANNELS    (3)
 
 /* Classes */
 #define CLASSES_TABLE const char* classes_table[NB_CLASSES] = {\
-"background",   "aeroplane" ,   "bicycle" ,   "bird" ,   "boat" ,   "bottle" ,   "bus" ,\
-   "car" ,   "cat" ,   "chair" ,   "cow" ,   "diningtable" ,\
-   "dog" ,   "horse" ,   "motorbike" ,   "person" ,   "pottedplant" ,\
-   "sheep" ,   "sofa" ,   "train" ,   "tvmonitor"}\
+"background",   "person"}\
 
 
 /***** Preprocessing configuration *****/
@@ -52,14 +49,14 @@
 #define POSTPROCESS_ST_SSD     (3)
 #define POSTPROCESS_SSD        (4)
 
-#define POSTPROCESS_TYPE    POSTPROCESS_CENTER_NET
+#define POSTPROCESS_TYPE    POSTPROCESS_ST_SSD
 
-/* Postprocessing SSD configuration */
-#define AI_OBJDETECT_SSD_ST_PP_NB_CLASSES         (21)
+/* Postprocessing ST_SSD configuration */
+#define AI_OBJDETECT_SSD_ST_PP_NB_CLASSES         (2)
 #define AI_OBJDETECT_SSD_ST_PP_IOU_THRESHOLD      (0.5)
-#define AI_OBJDETECT_SSD_ST_PP_CONF_THRESHOLD     (0.001)
+#define AI_OBJDETECT_SSD_ST_PP_CONF_THRESHOLD     (0.6)
 #define AI_OBJDETECT_SSD_ST_PP_MAX_BOXES_LIMIT    (10)
-#define AI_OBJDETECT_SSD_ST_PP_TOTAL_DETECTIONS   (6825)
+#define AI_OBJDETECT_SSD_ST_PP_TOTAL_DETECTIONS   (3830)
 
 /* Input color format configuration */
 #define RGB_FORMAT          (1)

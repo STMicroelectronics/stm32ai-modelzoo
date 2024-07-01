@@ -61,7 +61,7 @@ To deploy your trained model, you need to configure the [user_config.yaml](../..
 
 ## Metrics
 
-Measures are done with default STM32Cube.AI Dev Cloud version 8.1.0 and for target board B-U585I-IOT02A. In addition the configuration were enabled input / output allocated option and `balanced` as optimization choice.
+Measures are done with default STM32Cube.AI Dev Cloud version 9.1.0 and for target board B-U585I-IOT02A. In addition the configuration were enabled input / output allocated option and `balanced` as optimization choice.
 
 The inference time is reported is calculated on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
 
@@ -69,10 +69,10 @@ The inference time is reported is calculated on STM32 board **B-U585I-IOT02A** r
 ### Reference memory footprint based on WISDM dataset (see Accuracy for details on dataset)
 
 
-| Model                                                                               | Format | Input Shape | Target Board  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)   | Total Flash (KiB) | Inference Time (ms) | STM32Cube.AI version  |
-|:-----------------------------------------------------------------------------------:|:------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:-----------------:|:-----------------:|:---------------------:|:---------------------:|
-| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5)         | FLOAT32| 24 x 3 x 1  | B-U585I-IOT02A | 4.03                 | 1.93              | 5.70                | 13.26            |  5.96             | 18.96        | 4.7    | 8.1.0                 |
-| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5)         | FLOAT32| 48 x 3 x 1  | B-U585I-IOT02A | 8.81                 | 1.93              | 5.70                | 13.26            |  10.74            | 18.96  | 11.3          | 8.1.0                 |
+| Model                                                                        | Format | Input Shape | Target Board  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)   | Total Flash (KiB) | Inference Time (ms) | STM32Cube.AI version  |
+|:----------------------------------------------------------------------------:|:------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:-----------------:|:-----------------:|:---------------------:|:---------------------:|
+| [GMP wl 24](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.h5)  | FLOAT32| 24 x 3 x 1  | B-U585I-IOT02A | 4.25          | 2.08              | 5.70                | 12.29            |  6.33             | 18.96             | 4.42      | 9.1.0     |
+| [GMP wl 48](ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.h5)  | FLOAT32| 48 x 3 x 1  | B-U585I-IOT02A | 8.83          | 2.08              | 5.70                | 12.29            |  10.91            | 18.96             | 10.64     | 9.1.0     |
 
 
 

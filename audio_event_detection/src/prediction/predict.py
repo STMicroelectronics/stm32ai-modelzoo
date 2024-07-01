@@ -14,18 +14,15 @@ from omegaconf import DictConfig
 from tabulate import tabulate
 import numpy as np
 import tensorflow as tf
-
+import onnxruntime
 import warnings
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../preprocessing'))
-sys.path.append(os.path.abspath('../evaluation'))
-
 from preprocess import preprocess_input
 from data_loader import _load_audio_sample
 from evaluate import _aggregate_predictions
+from onnx_evaluation import predict_onnx
 
 def predict(cfg: DictConfig = None) -> None:
     """
@@ -47,7 +44,6 @@ def predict(cfg: DictConfig = None) -> None:
     model_path = cfg.general.model_path
     class_names = cfg.dataset.class_names
     test_files_dir = cfg.prediction.test_files_path
-    # _, model_input_shape = get_model_name_and_its_input_shape(model_path)
     
     # Preproc and feature extraction parameters
     patch_length = cfg.feature_extraction.patch_length
@@ -80,7 +76,7 @@ def predict(cfg: DictConfig = None) -> None:
     expand_last_dim = cfg.dataset.expand_last_dim
     multi_label = cfg.dataset.multi_label
 
-    print("[INFO] Making predictions using:")
+    print("[INFO] : Making predictions using:")
     print("  model:", model_path)
     print("  files directory:", test_files_dir)
     # Sort classes alphabetically
@@ -197,7 +193,38 @@ def predict(cfg: DictConfig = None) -> None:
                                   aggregated_preds[i],
                                   aggregated_probas[i].round(decimals=2),
                                   filenames[i]])
+            
+    elif file_extension == '.onnx':
+        # We assume ONNX models need (BCHW) or (BCL) format input
+        # But X is in (BHWC) or (BLC) format
+        if X.ndim == 4:
+            axes_order = (0, 3, 1, 2)
+        elif X.ndim == 3:
+            axes_order = (0, 2, 1)
+        else:
+            raise ValueError(f"The input array must have either 3 or 4 dimensions but had {X.ndim} dimensions")
+        X = np.transpose(X, axes_order)
+        sess = onnxruntime.InferenceSession(model_path)
+        preds =  predict_onnx(sess, X)
 
+        aggregated_probas = _aggregate_predictions(preds,
+                                                  clip_labels=clip_labels,
+                                                  multi_label=multi_label,
+                                                  is_truth=False,
+                                                  return_proba=True)
+        aggregated_preds = _aggregate_predictions(preds,
+                                                  clip_labels=clip_labels,
+                                                  multi_label=multi_label,
+                                                  is_truth=False,
+                                                  return_proba=False)
+        print(aggregated_preds.shape)
+        # Add result to the table
+        for i in range(aggregated_preds.shape[0]):
+            results_table.append([class_names[np.argmax(aggregated_preds[i])],
+                                  aggregated_preds[i],
+                                  aggregated_probas[i].round(decimals=2),
+                                  filenames[i]])
+            
     else:
         raise TypeError(f"Unknown or unsupported model type. Received path {model_path}")
 

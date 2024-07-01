@@ -8,48 +8,35 @@ We strongly recommend following the [training tutorial](../src/training/README.m
 
 ## Table of contents
 
-### <a href="#1"> 1. Before you start </a>
-#### <a href="#1.1"> 1.1 Hardware setup </a>
-#### <a href="#1.2"> 1.2 Software requirements </a>
-#### <a href="#1.3"> 1.3 Specifications </a>
-### <a href="#2"> YAML file configuration </a>
-#### <a href="#2.1"> 2.1 Operation mode </a>
-#### <a href="#2.2"> 2.2 General settings </a>
-#### <a href="#2.3"> 2.3 Dataset specification </a>
-### <a href="#2.4">  2.4 Data Preparation and Preprocessing </a>
-#### <a href="#2.5"> 2.5 STM32AI Tools </a>
-#### <a href="#2.6"> 2.6 Configuring the deployment section </a>
-#### <a href="#2.7"> 2.7 MLFlow section </a>
-### <a href="#3"> 3. Running deployment </a>
-### <a href="#4"> 4. See the results on the board </a>
-### <a href="#5"> 5. Restrictions </a>
-
-## <a id="1"> 1. Before you start </a>
-<a id='prereqs'></a>
+<details open><summary><a href="#1"><b>1. Before you start</b></a></summary><a id="1"></a>
 
 Please check out [STM32 model zoo](../pretrained_models/README.md) for pretrained models accuracies and performance results.
 
-### <a id="1.1"> 1.1 Hardware setup </a>
+<ul><details open><summary><a href="#1-1">1.1 Hardware setup</a></summary><a id="1-1"></a>
 
 The [stm32 C application](../../stm32ai_application_code/sensing_thread_x/README.md) is running on an STMicroelectronics evaluation kit board called [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/b-u585i-iot02a.html). The current version of the application code only supports this board, and usage of the ISM330DHCX accelerometer.
 
-### <a id="1.2"> 1.2 Software requirements </a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Software requirements</a></summary><a id="1-2"></a>
 
-You can use the [STM32 developer cloud](https://stm32ai-cs.st.com/home) and use the STM32Cube.AI functionalities without doing any installations. However, this requires internet connection and making a free account. Or, alternatively, you can install [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally. In addition to this you will also need to install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) for building the embedded project.
+You can use the [STM32 developer cloud](https://stm32ai-cs.st.com/home) to access the STM32Cube.AI functionalities without installing the software. This requires internet connection and making a free account. Or, alternatively, you can install [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally. In addition to this you will also need to install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) for building the embedded project.
 
-For local installation : 
+For local installation :
 
 - Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html).
-- If opting for using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, download it by clicking on the [link](https://www.st.com/en/embedded-software/x-cube-ai.html), then extract both `'.zip'` and `'.pack'` files.
-The detailed instructions on installation are available in this wiki [article](https://wiki.st.com/stm32mcu/index.php?title=AI:How_to_install_STM32_model_zoo).
+- If opting for using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, download it then extract both `'.zip'` and `'.pack'` files.
+The detailed instructions on installation are available in this [wiki article](https://wiki.st.com/stm32mcu/index.php?title=AI:How_to_install_STM32_model_zoo).
 
-### <a id="1.3"> 1.3 Specifications </a>
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 Specifications</a></summary><a id="1-3"></a>
 
 - `serie` : STM32U5
 - `board`: B-U585I-IOT02A
 - `IDE` : GCC
 
- ## <a id="2"> YAML file configuration </a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. YAML file configuration</b></a></summary><a id="2"></a>
 
 The deployment of the model is driven by a configuration file written in the YAML language. This configuration file is called [user_config.yaml](../src/user_config.yaml) and is located in the [src/](../src/) directory.
 
@@ -60,7 +47,7 @@ Pretrained models can be found under the [pretrained_models](../pretrained_model
 
 In this tutorial, we will deploy an [ign_wl_24.h5](../pretrained_models/ign/ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24.h5) that has been trained on mobility_v1 a propritery dataset collected by STMicroelectronics.
 
-### <a id="2.1"> 2.1 Operation mode </a>
+<ul><details open><summary><a href="#2-1">2.1 Operation mode</a></summary><a id="2-1"></a>
 
 Executing `stm32ai_main.py` file runs different services. The `operation_mode` attribute of the configuration file lets you choose which service of the model zoo you want to use. The possible choices are:
 - `benchmarking`
@@ -77,7 +64,8 @@ operation_mode: deployment
 ```
 The settings for the other attributes are described in sections below.
 
-### <a id="2.2"> 2.2 General settings </a>
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2 General settings</a></summary><a id="2-2"></a>
 
 The first section of the configuration file is the `general` section that provides information about your project.
 
@@ -96,7 +84,8 @@ general:
    gpu_memory_limit: 5              # Maximum amount of GPU memory in GBytes that TensorFlow may use (an integer).
 ```
 
-### <a id="2.3"> 2.3 Dataset specification </a>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Dataset specification</a></summary><a id="2-3"></a>
 
 Information about the dataset you want to use (or used for the training the model) is provided in the `dataset` section of the configuration file, as shown in the YAML code below.
 
@@ -122,7 +111,8 @@ When deploying, you don't need to provide paths to any dataset. However, you do 
 
 For more details on this section, please consult section 3.5 and section 6 of the [main README](../src/README.md)
 
-### <a id="2.4"> 2.4 Data Preparation and Preprocessing </a>
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 Data Preparation and Preprocessing</a></summary><a id="2-4"></a>
 
 When performing Human Activity Recognition, the data is not processed sample by sample, rather the data is first framed using different lengths depending on how often a prediction is to be made. In this operation we are using a model which used a framing of length 24, as suggested by the name : [ign_wl_24.h5](../pretrained_models/ign/ST_pretrainedmodel_custom_dataset/mobility_v1/ign_wl_24/ign_wl_24.h5), `wl` stands for window length. The first step of the data preparation is to do the framing of the samples. This information is provided in the section `training.model` as shown below while training:
 ```yaml
@@ -147,8 +137,8 @@ The pretrained models are only trained by applying the `gravity_rot_sup` only.
 
 **NOTE**: It is important to choose the same preprocessing and data preparation settings for the deployment as were used for training to have expected results.
 
-
-### <a id="2.5"> 2.5 STM32AI Tools </a>
+</details></ul>
+<ul><details open><summary><a href="#2-5">2.5 Configuring the tools section</a></summary><a id="2-5"></a>
 
 Next, you'll want to configure the `tools` section in your configuration file. This section
 This section covers the usage of the STM32-X-CUBEAI tool, which benchmarks .tflite and .h5 models, and converts them to C code.
@@ -159,17 +149,18 @@ If you wish to use the [STM32 developer cloud](https://stm32ai-cs.st.com/home), 
 
 ```yaml
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 ```
 
 For more details on what each parameter does, please refer to section 3.14 of the [main README](../src/README.md)
 
-### <a id="2.6"> 2.6 Configuring the deployment section </a>
+</details></ul>
+<ul><details open><summary><a href="#2-6">2.6 Configuring the deployment section</a></summary><a id="2-6"></a>
 
 Finally, you need to configure the `deployment` section of your configuration file, like in the example below.
 
@@ -188,8 +179,8 @@ Currently, the C application only supports the `B-U585I-IOT02A` board. So all th
 
 The `c_project_path` has all the necessary code for the deploment of the human activity recognition model on your `B-U585I-IOT02A` board. All what is missing with be generated by launching the `stm32ai_main.py` file with the configuration file that you are preparing following this document.
 
-
-### <a id="2.7"> 2.7 Configuring the mlflow section </a>
+</details></ul>
+<ul><details open><summary><a href="#2-7">2.7 Configuring the mlflow section</a></summary><a id="2-7"></a>
 
 The model zoo uses MLFlow to record logs when running. You'll want to configure the `mlflow` section of your configuration file like in the example below
 
@@ -199,14 +190,15 @@ mlflow:
 ```
 You'll then be able to access the logs by going to `src/experiments_outputs` in your favourite shell, using the command `mlflow ui`, and accessing the provided IP address in your browser.
 
-
-## <a id="3"> 3. Running deployment </a>
-
-**3.1 Attach the board:**
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Running deployment</b></a></summary><a id="3"></a>
+<ul><details open><summary><a href="#3-1">3.1 Attach the board</a></summary><a id="3-1"></a>
 
 To run the deployment, which will build the project and flash the built binary file to the target board, connect a B-U585I-IOT02A to your computer using the microUSB port on the board.
 
-**3.2 Run stm32ai_main.py**
+</details></ul>
+<ul><details open><summary><a href="#3-2">3.2 Run stm32ai_main.py</a></summary><a id="3-2"></a>
 
 Make sure that you have configured your configuration file properly as explained in the sections below, then, navigate to [human_activity_recognition/src/](../src/).
 Do a final check to verify that you have properly set `operation_mode` to `"deployment"`, and paths to the tools are properly set also, then launch following command in the command prompt:
@@ -217,7 +209,10 @@ python stm32ai_main.py
 
 This will take care of everything. It will optimize your neural network for STM32MCU targets, generate the C code for the neural networks, copy the generated c-model files in the stm32ai application C project, build the C project, and flash the board.
 
-## <a id="4"> 4. See the results on the board </a>
+</details></ul>
+</details>
+<details open><summary><a href="#4"><b>4. See the results on the board</b></a></summary><a id="4"></a>
+
 Once flashed a serial terminal can be used to check what is happening on the board and the output of the inference can be seen in the serial terminal. 
 To connect the serial port please follow the steps shown in the figure below:
 ![plot](./doc/img/tera_term_connection.png)
@@ -231,5 +226,9 @@ Once the inference is started, each of the line in the TeraTerm terminal shows t
 Inference is run almost once a second, if model with wl_24 is used and once every two seconds if wl_48 models are used.
 The labels `"signal"` shows the signal index or number, the `"class"` has the label of the class detected and `"dist"` shows the probability distribution or the confidence of the signal to belong to any given class, with classes provided in the deployment configuration.
 
-## <a id="5"> 5. Restrictions </a>
-- In this version, application code for deployment is only supported on the [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html).
+</details>
+<details open><summary><a href="#5"><b>5. Restrictions</b></a></summary><a id="5"></a>
+
+- In current version, application code for deployment is only supported on the [B-U585I-IOT02A](https://www.st.com/en/evaluation-tools/steval-stwinkt1b.html).
+
+</details>

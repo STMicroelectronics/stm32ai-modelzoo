@@ -15,14 +15,35 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 By default, the results are provided for quantized Int8 models.
 
+Below sections contain detailed information on models memory usage and accuracies (click on the arrows to expand):
+<details><summary>Miniresnet v1</summary>
 
 | Models                     | Input shape | Implementation | Dataset    | Clip-level Accuracy (%)   | MACCs    (M) | Activation RAM (KiB) | Weights Flash (KiB) | STM32Cube.AI version  | Source
 |---------------------------|--------------|-----------------|------------|----------------------|-------------|-----------------------|----------------------|-----------------------|--------
-| Miniresnet  1 stack | 64x50 | TensorFlow     | ESC-10    | 89.9%                |   7.489        |   59.89            |   123.6        | 8.1.0                 |    [link](miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_1stacks_64x50_tl/miniresnet_1stacks_64x50_tl_int8.tflite)
-| Miniresnet  2 stacks 64x50 | 64x50x1 | TensorFlow     | ESC-10    | 93.6%                |   12.721        |   59.989            |   431.1        | 8.1.0                 |    [link](miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50_tl/miniresnet_2stacks_64x50_tl_int8.tflite)
-| Miniresnetv2 1 stack 64x50 | 64x50x1 |  TensorFlow     | ESC-10    | 91.1%                |   15.034      |   59.89            |   123.98        | 8.1.0                |    [link](miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite)
-| Miniresnetv2 2 stacks 64x50 | 64x50x1 | TensorFlow     | ESC-10    | 93.6%                |   27.501        |   59.89            |   431.98        | 8.1.0                |    [link](miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite)
-| Yamnet 256 on ESC-10| 64x96x1 | TensorFlow     | ESC-10    | 94.9%                |   23.932        |   109.57            |   135.91      | 8.1.0                 |    [link](yamnet/ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite)
-| Yamnet 256 on FSD50K without unknown class| 64x96x1 | TensorFlow     | FSD50K 5 classes   | 87.0%                |   23.931        |   109.57            |   134.64      | 8.1.0                 |    [link](yamnet/ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/without_unknown_class/yamnet_256_64x96_tl_int8.tflite)
-| Yamnet 256 on FSD50K with unknown class| 64x96x1 | TensorFlow     | FSD50K 5 classes    | 73.9%                |   23.931        |   109.57            |   134.9      | 8.1.0                 |    [link](yamnet/ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/with_unknown_class/yamnet_256_64x96_tl_int8.tflite)
+| Miniresnet  1 stack | 64x50 | TensorFlow     | ESC-10    | 89.9%                |   7.489        |   59.89            |   123.6        | 9.1.0                 |    [link](miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_1stacks_64x50_tl/miniresnet_1stacks_64x50_tl_int8.tflite)
+| Miniresnet  2 stacks 64x50 | 64x50x1 | TensorFlow     | ESC-10    | 93.6%                |   12.721        |   59.989            |   431.1        | 9.1.0                 |    [link](miniresnet/ST_pretrainedmodel_public_dataset/esc10/miniresnet_2stacks_64x50_tl/miniresnet_2stacks_64x50_tl_int8.tflite)
+
+</details>
+<details><summary>Miniresnet 2 stacks</summary>
+
+| Models                     | Input shape | Implementation | Dataset    | Clip-level Accuracy (%)   | MACCs    (M) | Activation RAM (KiB) | Weights Flash (KiB) | STM32Cube.AI version  | Source
+|---------------------------|--------------|-----------------|------------|----------------------|-------------|-----------------------|----------------------|-----------------------|--------
+| Miniresnetv2 1 stack 64x50 | 64x50x1 |  TensorFlow     | ESC-10    | 91.1%                |   15.034      |   59.89            |   123.98        | 9.1.0                |    [link](miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite)
+| Miniresnetv2 2 stacks 64x50 | 64x50x1 | TensorFlow     | ESC-10    | 93.6%                |   27.501        |   59.89            |   431.98        | 9.1.0                |    [link](miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite)
+
+</details>
+<details><summary>Yamnet</summary>
+
+| Models                     | Input shape | Implementation | Dataset    | Clip-level Accuracy (%)   | MACCs    (M) | Activation RAM (KiB) | Weights Flash (KiB) | STM32Cube.AI version  | Source
+|---------------------------|--------------|-----------------|------------|----------------------|-------------|-----------------------|----------------------|-----------------------|--------
+| Yamnet 256 on ESC-10| 64x96x1 | TensorFlow     | ESC-10    | 94.9%                |   23.932        |   109.57            |   135.91      | 9.1.0                 |    [link](yamnet/ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite)
+| Yamnet 256 on FSD50K without unknown class| 64x96x1 | TensorFlow     | FSD50K 5 classes   | 87.0%                |   23.931        |   109.57            |   134.64      | 9.1.0                 |    [link](yamnet/ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/without_unknown_class/yamnet_256_64x96_tl_int8.tflite)
+| Yamnet 256 on FSD50K with unknown class| 64x96x1 | TensorFlow     | FSD50K 5 classes    | 73.9%                |   23.931        |   109.57            |   134.9      | 9.1.0                 |    [link](yamnet/ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/with_unknown_class/yamnet_256_64x96_tl_int8.tflite)
+
+</details>
+
+You can get inference time information for each models following links below:
+- [Mini Resnet v1](./miniresnet/README.md)
+- [Mini Resnet v2](./miniresnetv2/README.md)
+- [Yamnet](./yamnet/README.md)
 

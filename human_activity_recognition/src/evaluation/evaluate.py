@@ -23,10 +23,10 @@ import tensorflow as tf
 import tqdm
 from typing import Optional
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../utils/models'))
-sys.path.append(os.path.abspath('../../common'))
-from visualizer import confusion_matrix, plot_confusion_matrix
+from models_utils import compute_confusion_matrix
+from visualize_utils import plot_confusion_matrix
+from models_mgt import get_loss
+from logs_utils import log_to_file
 
 
 def evaluate_h5_model(model_path: str = None,
@@ -49,20 +49,27 @@ def evaluate_h5_model(model_path: str = None,
 
     # Load the .h5 model
     model = tf.keras.models.load_model(model_path)
-    if len(class_names) > 2:
-        # model.compile(loss=tf.keras.losses.SparseCategoricalCrossentropy(), metrics=['accuracy'])
-        model.compile(loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
+    loss = get_loss(len(class_names))
+    model.compile(loss=loss, metrics=['accuracy'])
 
-    else:
-        model.compile(loss=tf.keras.losses.BinaryCrossentropy(), metrics=['accuracy'])
     # Evaluate the model on the test data
     tf.print(f'[INFO] : Evaluating the float model using {name_ds}...')
     loss, accuracy = model.evaluate(eval_ds)
-    confusion_matrix(test_set=eval_ds, model=model, class_names=class_names, output_dir=output_dir, name_ds=name_ds)
-    print(f"[INFO] : Accuracy of float model = {round(accuracy * 100, 2)}%")
+
+    # Calculate the confusion matrix.
+    cm, test_accuracy = compute_confusion_matrix(test_set=eval_ds, model=model)
+    ##########################################
+    # Log the confusion matrix as an image summary.
+    model_name = f"float_model_confusion_matrix_{name_ds}"
+    plot_confusion_matrix(cm=cm, class_names=class_names, model_name=model_name,
+                          title=f'{model_name}\naccuracy: {test_accuracy}', output_dir=output_dir)
+    print(f"[INFO] : Accuracy of float model = {test_accuracy}%")
     print(f"[INFO] : Loss of float model = {loss}")
-    mlflow.log_metric(f"float_acc_{name_ds}", round(accuracy * 100, 2))
+    mlflow.log_metric(f"float_acc_{name_ds}", test_accuracy)
     mlflow.log_metric(f"float_loss_{name_ds}", loss)
+    log_to_file(output_dir, f"Float model {name_ds}:")
+    log_to_file(output_dir, f"Accuracy of float model : {test_accuracy} %")
+    log_to_file(output_dir, f"Loss of float model : {round(loss,2)} ")
 
     return accuracy
 

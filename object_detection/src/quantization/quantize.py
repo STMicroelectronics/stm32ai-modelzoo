@@ -1,163 +1,209 @@
 # /*---------------------------------------------------------------------------------------------
 #  * Copyright (c) 2022 STMicroelectronics.
 #  * All rights reserved.
+#  *
 #  * This software is licensed under terms that can be found in the LICENSE file in
 #  * the root directory of this software component.
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
 
-import os
-import sys
 from pathlib import Path
-from glob import glob
-import tqdm
-from hydra.core.hydra_config import HydraConfig
-from omegaconf import DictConfig
-import random
 import numpy as np
 import tensorflow as tf
-from typing import List
+import tqdm
+import sys
+import os
+from hydra.core.hydra_config import HydraConfig
+from omegaconf import DictConfig
+from typing import Optional
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../preprocessing'))
-
-from preprocess import load_and_preprocess_image
-from models_mgt import get_model_name_and_its_input_shape
+from models_utils import get_model_name_and_its_input_shape, tf_dataset_to_np_array
+from onnx_quantizer import quantize_onnx
+from onnx_evaluation import model_is_quantized
 
 
-def tfite_ptq_quantizer(
-            cfg: DictConfig,
-            float_model: tf.keras.Model = None,
-            image_shape: List = None,
-            image_file_paths: List = None,
-            num_fake_images: int = None):
+def tflite_ptq_quantizer(model: tf.keras.Model = None, quantization_ds: tf.data.Dataset = None, fake: bool = False,
+                         output_dir: str = None, export_dir: Optional[str] = None, input_shape: tuple = None,
+                         cpp: DictConfig = None, quantization_input_type: str = None,
+                         quantization_output_type: str = None, quantization_split: str = None,
+                         quantize_with_full_dataset: bool = False, quantization_granularity: str = None) -> None:
+    """
+    Perform post-training quantization on a TensorFlow Lite model.
+
+    Args:
+        model (tf.keras.Model): The TensorFlow model to be quantized.
+        quantization_ds (tf.data.Dataset): The quantization dataset if it's provided by the user else the training
+        dataset. Defaults to None
+        fake (bool): Whether to use fake data for representative dataset generation.
+        output_dir (str): Path to the output directory. Defaults to None.
+        export_dir (str): Name of the export directory. Defaults to None.
+        input_shape (tuple: The input shape of the model. Defaults to None.
+        cpp (DictConfig): The preprocessing of the images. Defaults to None.
+        quantization_input_type (str): The quantization type for the input. Defaults to None.
+        quantization_output_type (str): The quantization type for the output. Defaults to None.
+        quantization_split (str): The Fraction of the data to use for the quantization
+        quantize_with_full_dataset : bool, set to True if you want to quantize with the full quantization_ds
+        quantization_granularity (str): 'per_tensor' or 'per_channel'. Defaults to None.
+
+    Returns:
+        None
+    """
+
+    def representative_data_gen():
+        """
+        Generate representative data for post-training quantization.
+
+        Yields:
+            List[tf.Tensor]: A list of TensorFlow tensors representing the input data.
+        """
+        if fake:
+            print("[INFO] : Quantizing using dummy data")
+            for _ in tqdm.tqdm(range(5)):
+                data = np.random.rand(1, *input_shape) * 255.
+                data = data * cpp.scale + cpp.offset
+                yield [data.astype(np.float32)]
+
+        else:
+            if quantize_with_full_dataset:
+                print("[INFO] : Quantizing by using the provided dataset fully, this will take a while.")
+                print(f"[INFO] : Using {quantization_ds.cardinality()} batches")
+                # Unfortunately we can't unbatch or rebatch prefetched datasets (such as the training set)
+                # So we have to use a nested for loop
+                for patches in tqdm.tqdm(quantization_ds, total=len(quantization_ds)):
+                    yield [patches]
+            else:
+                print(f'[INFO] : Quantizing by using {quantization_split * 100} % of the provided dataset...')
+                split_ds = quantization_ds.take(int(len(quantization_ds) * float(quantization_split)))
+                for patches in tqdm.tqdm(split_ds, total=len(split_ds)):
+                    yield [patches]
+
+    # Create the TFLite converter
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+    # Create the output directory
+    tflite_models_dir = Path(output_dir) / export_dir
+    tflite_models_dir.mkdir(exist_ok=True, parents=True)
+
+    # Set the quantization types for the input and output
+    if quantization_input_type == 'int8':
+        converter.inference_input_type = tf.int8
+    elif quantization_input_type == 'uint8':
+        converter.inference_input_type = tf.uint8
+
+    if quantization_output_type == 'int8':
+        converter.inference_output_type = tf.int8
+    elif quantization_output_type == 'uint8':
+        converter.inference_output_type = tf.uint8
+
+    # Set the optimizations and representative dataset generator
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.representative_dataset = representative_data_gen
+
+    if quantization_granularity == 'per_tensor':
+        converter._experimental_disable_per_channel = True
+
+    # Convert the model to a quantized TFLite model
+    tflite_model_quantized = converter.convert()
+    tflite_model_quantized_file = tflite_models_dir / "quantized_model.tflite"
+    tflite_model_quantized_file.write_bytes(tflite_model_quantized)
+
+
+def quantize(cfg: DictConfig = None, quant_data: Optional[tf.data.Dataset] = None, fake: Optional[bool] = False,
+             model_path: Optional[str] = None):
     """
     Quantize a Keras model using TFlite
 
     Args:
         cfg (DictConfig): Entire configuration file.
-        float_model (tf.keras.Model): The Keras float model to convert.
-        input_shape (List): Input shape of the model.
-        image_file_paths (List): Paths to the image files of the representative dataset to use.
-                If the argument is not set, no dataset is available and fake data has to be used.
-        num_fake_images: Number of random images to generate when using fake data.
+        quant_data: Optional[tf.data.Dataset]: dataset of input data when available
+        fake: Optional[bool]: specify whether we quantize on fake data or not.
+        model_path: Optional[str]: Path to the float model
 
     Returns:
-        Quantized TFlite model
+        quantized model path
     """
-
-    def representative_data_gen():
-        cpp = cfg.preprocessing
-        for path in tqdm.tqdm(image_file_paths):
-            image = load_and_preprocess_image(
-                            image_file_path=path,
-                            image_size=image_shape[:2],
-                            scale=cpp.rescaling.scale,
-                            offset=cpp.rescaling.offset,
-                            interpolation=cpp.resizing.interpolation,
-                            color_mode=cpp.color_mode)
-            image = np.expand_dims(image, axis=0)
-            yield [image]
-
-
-    def fake_data_gen():
-        for _ in tqdm.tqdm(range(num_fake_images)):
-            image = tf.random.uniform(image_shape, minval=0, maxval=256, dtype=tf.int32)
-            image = tf.cast(image, tf.float32)
-            
-            # Rescale the image
-            cpp = cfg.preprocessing.rescaling
-            image = image * cpp.scale + cpp.offset
-
-            image = tf.expand_dims(image, axis=0)
-            yield [image.numpy()]
-
-
-    converter = tf.lite.TFLiteConverter.from_keras_model(float_model)
-
-    # Set the quantization type for the input images
-    input_type = cfg.quantization.quantization_input_type
-    if input_type == 'int8':
-        converter.inference_input_type = tf.int8
-    elif input_type == 'uint8':
-        converter.inference_input_type = tf.uint8
+    if cfg.dataset.quantization_path or cfg.dataset.training_path:
+        fake = False
     else:
-        pass
+        fake = True
 
-    # Set the quantization type for the output images
-    output_type = cfg.quantization.quantization_output_type
-    if output_type == 'int8':
-        converter.inference_output_type = tf.int8
-    elif output_type == 'uint8':
-        converter.inference_output_type = tf.uint8
-    else:
-        pass
-    
-    converter.optimizations = [tf.lite.Optimize.DEFAULT]
-    if image_file_paths:
-        converter.representative_dataset = representative_data_gen
-    else:
-        converter.representative_dataset = fake_data_gen
+    model_path = model_path if model_path else cfg.general.model_path
 
-    quantized_model = converter.convert()
-    return quantized_model
+    _, input_shape = get_model_name_and_its_input_shape(model_path=model_path)
 
+    if cfg.quantization.quantizer == "TFlite_converter" and cfg.quantization.quantization_type == "PTQ":
 
-def quantize(cfg: DictConfig, model_path: str = None):
+        float_model = tf.keras.models.load_model(model_path, compile=False)
 
-    if cfg.dataset.quantization_path:
-        dataset_path = cfg.dataset.quantization_path
-    elif cfg.dataset.training_path:
-        dataset_path = cfg.dataset.training_path
-    else:
-        dataset_path = None
+        output_dir = HydraConfig.get().runtime.output_dir
+        export_dir = cfg.quantization.export_dir
+        quantization_split = cfg.dataset.quantization_split
+        cpp = cfg.preprocessing.rescaling
 
-    if dataset_path:
-        image_file_paths = glob(dataset_path + "/*.jpg")
-        random.shuffle(image_file_paths)
-        # Split the dataset if quantization_split is requested
-        if cfg.dataset.quantization_split and cfg.dataset.quantization_split < 1.0:
-            num_files = int(len(image_file_paths) * cfg.dataset.quantization_split)
-            image_file_paths = image_file_paths[:num_files]
-    else:
-        image_file_paths = None
-
-    # Display some info messages about the image data
-    print("[INFO] Quantizing float model")
-    if dataset_path:
-        if cfg.dataset.quantization_split and cfg.dataset.quantization_split < 1.0:
-            percentage_used = " {}% of".format(int(cfg.dataset.quantization_split * 100))
+        if quantization_split is None:
+            quantize_with_full_dataset = True
         else:
-            percentage_used = ""
-        num_files = len(image_file_paths)
-        if cfg.dataset.quantization_path:
-            print(f"[INFO] Using{percentage_used} the quantization set as representative data ({num_files} images)")
-        elif cfg.dataset.training_path:
-            print(f"[INFO] Using{percentage_used} the training set as representative data ({num_files} images)")
+            quantize_with_full_dataset = False
+    
+        quantization_granularity = cfg.quantization.granularity
+        quantization_optimize = cfg.quantization.optimize
+        print(f'[INFO] : Quantization granularity : {quantization_granularity}')
+        
+        # if per-tensor quantization is required some optimizations are possible on the float model
+        if quantization_granularity == 'per_tensor' and quantization_optimize:
+            try:
+                from model_formatting_ptq_per_tensor import model_formatting_ptq_per_tensor
+            except ImportError:
+                print(
+                    "[INFO] : Impossible to import model_formatting_ptq_per_tensor optimization module. "
+                    "Either the module is missing, or you are using a platform for which this module is not yet "
+                    "supported. Current support is only windows and linux...")
+                sys.exit(1)
+
+            print("[INFO] : Optimizing the model for improved per_tensor quantization...")
+            float_model = model_formatting_ptq_per_tensor(model_origin=float_model)
+            optimized_model_path = os.path.join(output_dir, export_dir, "optimized_model.h5")
+            float_model.save(optimized_model_path)
+
+        print("[INFO] : Quantizing the model ... This might take a while ...")
+        
+        if fake:
+            tflite_ptq_quantizer(model=float_model, fake=fake, output_dir=output_dir,
+                                 export_dir=export_dir, input_shape=input_shape, cpp=cpp,
+                                 quantization_input_type=cfg.quantization.quantization_input_type,
+                                 quantization_output_type=cfg.quantization.quantization_output_type,
+                                 quantization_granularity=quantization_granularity)
+        else:
+            # Quantize the model with training or user-provided data
+            tflite_ptq_quantizer(model=float_model, quantization_ds=quant_data, output_dir=output_dir,
+                                 export_dir=export_dir, input_shape=input_shape, cpp=cpp,
+                                 quantization_input_type=cfg.quantization.quantization_input_type,
+                                 quantization_output_type=cfg.quantization.quantization_output_type,
+                                 quantization_split=quantization_split,
+                                 quantize_with_full_dataset=quantize_with_full_dataset,
+                                 quantization_granularity=quantization_granularity)
+        
+        quantized_model_path = os.path.join(output_dir, export_dir, "quantized_model.tflite")
+        return quantized_model_path
+
+    elif cfg.quantization.quantizer == "onnx_quantizer" and cfg.quantization.quantization_type == "PTQ":
+        
+        if model_is_quantized(model_path):
+            print('[INFO]: The input model is already quantized!\n\tReturning the same model!')
+            return model_path
+        if fake:
+            print(f'[INFO] : Quantizing by using fake dataset...')
+            data = None
+        else:
+            quant_split = cfg.dataset.quantization_split if cfg.dataset.quantization_split else 1.0
+            print(f'[INFO] : Quantizing by using {quant_split * 100} % of the provided dataset...')
+            quantization_ds_size = quant_data.cardinality().numpy()
+            splited_ds = quant_data.take(int(quantization_ds_size * float(quant_split)))
+            data, _ = tf_dataset_to_np_array(splited_ds,labels_included=False)
+
+        quantized_model_path = quantize_onnx(quantization_samples=data,configs=cfg)
+
+        return quantized_model_path
+
     else:
-        print("[INFO] No quantization set or training set were provided, using fake image data")
-
-    # Load the float model and get its input shape
-    if not model_path:
-        model_path = cfg.general.model_path
-    _, model_input_shape = get_model_name_and_its_input_shape(model_path=model_path)
-    float_model = tf.keras.models.load_model(model_path, compile=False)
-
-    tflite_model = tfite_ptq_quantizer(cfg,
-                                       float_model=float_model,
-                                       image_shape=model_input_shape,
-                                       image_file_paths=image_file_paths,
-                                       num_fake_images=100)
-
-    # Create the export directory if it does not exist
-    export_dir = os.path.join(HydraConfig.get().runtime.output_dir, cfg.quantization.export_dir)
-    os.makedirs(export_dir, exist_ok=True)
-
-    # Save the TFlite model
-    tflite_model_path = os.path.join(export_dir, "quantized_model.tflite")
-    with open(tflite_model_path, "wb") as f:
-        f.write(tflite_model)
-
-    print("[INFO] Float model quantization complete")
-
-    return tflite_model_path
+        raise NotImplementedError("Quantizer and quantization type not supported yet!")

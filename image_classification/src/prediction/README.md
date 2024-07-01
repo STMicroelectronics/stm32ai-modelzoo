@@ -4,13 +4,7 @@ Our prediction service is a simple and efficient tool that allows users to uploa
 
 ## <a id="">Table of contents</a>
 
-### <a href="#1">1. Configure the yaml file</a>
-### <a href="#2">2. Launch the prediction</a>
-
-
-__________________________________________
-
-## <a id="1">1. Configure the yaml file</a>
+<details open><summary><a href="#1"><b>1. Configure the yaml file</b></a></summary><a id="1"></a>
 
 To use the prediction service, users must fill in the 'prediction' section of the [user_config.yaml](../user_config.yaml) file like the [prediction_config.yaml](../config_file_examples/prediction_config.yaml) or as shown in the example below:
 
@@ -33,14 +27,14 @@ dataset:
    class_names: [daisy, dandelion, roses, sunflowers, tulips]   # Names of the classes
 
 prediction:
-   test_images_path: ./datasets/flower_photos/daisy   # Path to the directory containing the images to predict
+   test_files_path: ./datasets/flower_photos/daisy   # Path to the directory containing the images to predict
 ```
 
 In the 'general' section, users must provide the path to their model file using the `model_path` attribute. This can be either a Keras model file with a '.h5' filename extension (float model) or a TensorFlow Lite model file with a '.tflite' filename extension (quantized model).
 
 The 'dataset' section requires users to provide the names of the classes using the `class_names` attribute, as there is no dataset available to infer them.
 
-Finally, in the 'prediction' section, users must provide the path to the directory containing the images to predict using the `test_images_path` attribute. Once all of these sections have been filled in, users can run the prediction service to generate predictions for their set of images.
+Finally, in the 'prediction' section, users must provide the path to the directory containing the images to predict using the `test_files_path` attribute. Once all of these sections have been filled in, users can run the prediction service to generate predictions for their set of images.
 
 **Hydra and MLflow settings**
 
@@ -59,7 +53,8 @@ mlflow:
    uri: ./experiments_outputs/mlruns
 ```
 
-## <a id="2">2. Launch the prediction
+</details>
+<details open><summary><a href="#2"><b>2. Launch the prediction</b></a></summary><a id="2"></a>
 
 If you chose to modify the [user_config.yaml](../user_config.yaml) you can evaluate the model by running the following command from the **src/** folder:
 
@@ -71,3 +66,5 @@ If you chose to update the [prediction_config.yaml](../config_file_examples/pred
 ```bash
 python stm32ai_main.py --config-path ./config_file_examples/ --config-name prediction_config.yaml
 ```
+
+</details>

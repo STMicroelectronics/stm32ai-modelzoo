@@ -21,19 +21,17 @@ warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import tqdm
+import onnxruntime
 from typing import Optional, Tuple
 from sklearn.metrics import accuracy_score
 from pathlib import Path
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../utils/models'))
-sys.path.append(os.path.abspath('../../common'))
-sys.path.append(os.path.abspath('../preprocessing'))
-sys.path.append(os.path.abspath('../training'))
-from preprocess import preprocess_input
-from visualizer import compute_confusion_matrix, plot_confusion_matrix
-from visualizer import compute_multilabel_confusion_matrices, plot_multilabel_confusion_matrices
-from utils import get_loss, log_to_file
 
+from preprocess import preprocess_input
+from visualize_utils import compute_confusion_matrix, plot_confusion_matrix
+from models_mgt import get_loss
+from logs_utils import log_to_file
+from onnx_evaluation import model_is_quantized, predict_onnx 
+from models_utils import tf_dataset_to_np_array
 
 def _majority_vote(preds: tf.Tensor, 
                    multi_label: bool = False,
@@ -105,7 +103,7 @@ def _aggregate_predictions(preds, clip_labels, multi_label=False, is_truth=False
     -------
     aggregated_preds : np.ndarray, shape (n_clips) Aggregated predictions, one prediction per clip.
     '''
-    n_clips = np.max(clip_labels)
+    n_clips = np.max(clip_labels) + 1
     aggregated_preds = np.empty((n_clips, preds.shape[1]))
     if not is_truth:
         for i in range(n_clips):
@@ -138,7 +136,8 @@ def compute_accuracy_score(y_true, y_pred, is_multilabel=False):
 def evaluate_tflite_quantized_model(quantized_model_path: str = None, eval_ds: tf.data.Dataset = None,
                                     batch_size: int = None, class_names: list = None,
                                     output_dir: str = None, clip_labels: np.ndarray = None,
-                                    multi_label: bool = None, name_ds: Optional[str] = 'test_set'):
+                                    multi_label: bool = None, name_ds: Optional[str] = 'test_set',
+                                    num_threads: Optional[int] = 1):
     """
     Evaluates the accuracy of a quantized TensorFlow Lite model using tflite.interpreter and plots the confusion matrix.
 
@@ -151,13 +150,14 @@ def evaluate_tflite_quantized_model(quantized_model_path: str = None, eval_ds: t
         clip_labels : np.ndarray or None : Clip labels associated to the test dataset.
         multi_label : bool, set to True if eval_ds is a multi-label dataset.
         name_ds (str): The name of the chosen eval_ds to be mentioned in the prints and figures.
+        num_threads (int): number of threads for the tflite interpreter
     Returns:
         patch_level_accuracy : float, patch-level accuracy of the provided model on eval_ds
         clip-level accuracy : float, clip-level accuracy of the provided model on eval_ds
     """
         
     tf.print(f'[INFO] : Evaluating the quantized model using {name_ds}...')
-    interpreter_quant = tf.lite.Interpreter(model_path=quantized_model_path)
+    interpreter_quant = tf.lite.Interpreter(model_path=quantized_model_path, num_threads=num_threads)
 
     input_details = interpreter_quant.get_input_details()[0]
     output_index_quant = interpreter_quant.get_output_details()[0]["index"]
@@ -167,8 +167,8 @@ def evaluate_tflite_quantized_model(quantized_model_path: str = None, eval_ds: t
     batch_shape[0] = batch_size
     interpreter_quant.resize_tensor_input(input_index_quant, batch_shape)
 
-    tf.print(f"[INFO] Quantization input details : {input_details['quantization']}")
-    tf.print(f"[INFO] Dtype input details : {input_details['dtype']}")
+    tf.print(f"[INFO] : Quantization input details : {input_details['quantization']}")
+    tf.print(f"[INFO] : Dtype input details : {input_details['dtype']}")
 
     interpreter_quant.allocate_tensors()
     batch_preds = []
@@ -214,7 +214,7 @@ def evaluate_tflite_quantized_model(quantized_model_path: str = None, eval_ds: t
     mlflow.log_metric(f"quant_patch_acc_{name_ds}", round(patch_level_accuracy * 100, 2))
     mlflow.log_metric(f"quant_clip_acc_{name_ds}", round(clip_level_accuracy * 100, 2))
 
-    log_to_file(output_dir,  "\n" + "Quantized model :")
+    log_to_file(output_dir,  "" + f"Quantized model {name_ds}:")
     log_to_file(output_dir, f"Patch-level accuracy of quantized model : {round(patch_level_accuracy * 100, 2)} %")
     log_to_file(output_dir, f"Clip-level accuracy of quantized model : {round(clip_level_accuracy * 100, 2)} %")
     # Compute and plot the confusion matrices
@@ -229,19 +229,19 @@ def evaluate_tflite_quantized_model(quantized_model_path: str = None, eval_ds: t
         patch_level_cm = compute_confusion_matrix(patch_labels, preds)
         clip_level_cm = compute_confusion_matrix(aggregated_labels, aggregated_preds)
 
-        patch_level_title = f"Quantized model patch-level confusion matrix \n \
-                             On dataset : {name_ds} \n \
-                             Quantized model patch-level accuracy : {patch_level_accuracy}"
-        clip_level_title = f"Quantized model clip-level confusion matrix \n \
-                             On dataset : {name_ds} \n \
-                             Quantized model clip-level accuracy : {clip_level_accuracy}"
-        plot_confusion_matrix(matrix=patch_level_cm,
+        patch_level_title = ("Quantized model patch-level confusion matrix \n"
+                             f"On dataset : {name_ds} \n"
+                             f"Quantized model patch-level accuracy : {patch_level_accuracy}")
+        clip_level_title = ("Quantized model clip-level confusion matrix \n"
+                            f"On dataset : {name_ds} \n"
+                            f"Quantized model clip-level accuracy : {clip_level_accuracy}")
+        plot_confusion_matrix(cm=patch_level_cm,
                               class_names=class_names,
                               title=patch_level_title,
                               model_name=f"quant_model_patch_confusion_matrix_{name_ds}",
                               output_dir=output_dir)
         
-        plot_confusion_matrix(matrix=clip_level_cm,
+        plot_confusion_matrix(cm=clip_level_cm,
                               class_names=class_names,
                               title=clip_level_title,
                               model_name=f"quant_model_clip_confusion_matrix_{name_ds}",
@@ -324,7 +324,7 @@ def evaluate_h5_model(model_path: str = None, eval_ds: tf.data.Dataset = None,
         mlflow.log_metric(f"float_clip_acc_{name_ds}", round(clip_level_accuracy * 100, 2))
     mlflow.log_metric(f"float_loss_{name_ds}", loss_value)
 
-    log_to_file(output_dir, "\n" + "Float model :")
+    log_to_file(output_dir, f"Float model {name_ds}:")
     log_to_file(output_dir, f"Patch-level accuracy of float model : {round(patch_level_accuracy * 100, 2)} %")
     if clip_labels is not None:
         log_to_file(output_dir, f"Clip-level accuracy of float model : {round(clip_level_accuracy * 100, 2)} %")
@@ -341,25 +341,130 @@ def evaluate_h5_model(model_path: str = None, eval_ds: tf.data.Dataset = None,
     else:
         patch_level_cm = compute_confusion_matrix(patch_labels, preds)
 
-        patch_level_title = f"Float model patch-level confusion matrix \n \
-                             On dataset : {name_ds} \n \
-                             Float model patch-level accuracy : { patch_level_accuracy}"
+        patch_level_title = (f"Float model patch-level confusion matrix \n"
+                             f"On dataset : {name_ds} \n"
+                             f"Float model patch-level accuracy : { patch_level_accuracy}")
         if clip_labels is not None:
             clip_level_cm = compute_confusion_matrix(aggregated_labels, aggregated_preds)
-            clip_level_title = f"Float model clip-level confusion matrix \n \
-                                On dataset : {name_ds} \n \
-                                Float model clip-level accuracy : {clip_level_accuracy}"
-        plot_confusion_matrix(matrix=patch_level_cm,
+            clip_level_title = (f"Float model clip-level confusion matrix \n"
+                                f"On dataset : {name_ds} \n"
+                                f"Float model clip-level accuracy : {clip_level_accuracy}")
+        plot_confusion_matrix(cm=patch_level_cm,
                               class_names=class_names,
                               title=patch_level_title,
                               model_name=f"float_model_patch_confusion_matrix_{name_ds}",
                               output_dir=output_dir)
         if clip_labels is not None:
-            plot_confusion_matrix(matrix=clip_level_cm,
+            plot_confusion_matrix(cm=clip_level_cm,
                                   class_names=class_names,
                                   title=clip_level_title,
                                   model_name=f"float_model_clip_confusion_matrix_{name_ds}",
                                   output_dir=output_dir)
+    if clip_labels is not None:
+        return patch_level_accuracy, clip_level_accuracy
+    else:
+        return patch_level_accuracy, None
+    
+def evaluate_onnx_model_aed(input_samples:np.ndarray,
+                            patch_labels:np.ndarray,
+                            clip_labels:np.ndarray,
+                            input_model_path:str,
+                            class_labels:list,
+                            output_dir:str,
+                            name_ds:str,
+                            multi_label:bool=False) -> Tuple[float,np.ndarray]:
+    """
+    Evaluates an ONNX model on a validation dataset.
+
+    Args:
+        input_samples (np.ndarray): Patches to run evaluation on.
+        input_labels (np.ndarray): Patch-level labels for the evaluation samples.
+        input_model_path (str): The path to the onnx model to be evaluated.
+        clip_labels : np.ndarray or None : Clip labels associated to the test dataset.
+            If None, clip-level accuracy & confusion matrix are not computed.
+        class_labels (List[str]): The list of the class labels.
+        output_dir(str): The name of the output directory where confusion matrix and the logs are to be saved.
+        name_ds (str) : Name of the dataset
+        multi_label : bool : Set to True if dataset is multi-label. Currently unsupported.
+    Returns:
+        patch_level_accuracy : float, patch-level accuracy of the provided model on eval_ds
+        clip-level accuracy : float or None, clip-level accuracy of the provided model on eval_ds
+            Is None if clip_labels is None.
+    """
+    if not os.path.isdir(output_dir):
+        os.makedirs(output_dir)
+
+    if multi_label:
+        raise NotImplementedError("Multi-label datasets and models are currently not supported")
+    
+    # Sort class names alphabetically just in case 
+    class_labels = sorted(class_labels)
+    
+    # onx = onnx.ModelProto()
+    # with open(input_model_path, mode='rb') as f:
+    #     content = f.read()
+    #     onx.ParseFromString(content)
+    sess = onnxruntime.InferenceSession(input_model_path)
+    model_type = 'Quantized' if model_is_quantized(input_model_path) else 'Float'
+    preds = predict_onnx(sess, input_samples)
+
+    # Convert patch labels and preds from one-hot to integer labels
+    # We still need to keep the one-hot labels for aggregation
+
+    patch_level_accuracy = round(compute_accuracy_score(patch_labels, preds) * 100, 2)
+    print(f'[INFO] : {model_type} patch-level evaluation accuracy: {patch_level_accuracy} %')
+
+    if clip_labels is not None:
+        # Compute clip-level accuracy
+        # Aggregate clip-level labels
+        aggregated_labels = _aggregate_predictions(preds=patch_labels,
+                                                clip_labels=clip_labels,
+                                                multi_label=multi_label,
+                                                is_truth=True)
+        aggregated_preds = _aggregate_predictions(preds=preds,
+                                                clip_labels=clip_labels,
+                                                multi_label=multi_label,
+                                                is_truth=False)
+
+        clip_level_accuracy = round(compute_accuracy_score(aggregated_labels, aggregated_preds) * 100, 2)
+        print(f'[INFO] : {model_type} clip-level evaluation accuracy: {clip_level_accuracy} %')
+
+    if not os.path.exists("outputs"):
+        os.makedirs("outputs")
+    log_file_name = f"{output_dir}/stm32ai_main.log"
+    with open(log_file_name, 'a', encoding='utf-8') as f:
+        f.write(f'{model_type} ONNX model\n Patch-level Evaluation accuracy: {patch_level_accuracy} %\n')
+        if clip_labels is not None:
+            f.write(f'{model_type} ONNX model\n Clip-level Evaluation accuracy: {clip_level_accuracy} %\n')
+
+    acc_metric_name = f"patch_int_acc_{name_ds}" if model_is_quantized(input_model_path) else f"patch_float_acc_{name_ds}"
+    mlflow.log_metric(acc_metric_name, patch_level_accuracy)
+    if clip_labels is not None:
+        acc_metric_name = f"clip_int_acc_{name_ds}" if model_is_quantized(input_model_path) else f"clip_float_acc_{name_ds}"
+        mlflow.log_metric(acc_metric_name, clip_level_accuracy)
+
+    patch_level_cm = compute_confusion_matrix(patch_labels, preds)
+    if clip_labels is not None:
+        clip_level_cm = compute_confusion_matrix(aggregated_labels, aggregated_preds)
+    
+
+    patch_level_title = (f"{model_type} patch-level confusion matrix \n"
+                         f"On dataset : {name_ds} \n"
+                         f"Patch-level accuracy : {patch_level_accuracy}")
+    plot_confusion_matrix(cm=patch_level_cm,
+                            class_names=class_labels,
+                            title=patch_level_title,
+                            model_name=f"{model_type.lower()}_patch_confusion_matrix_{name_ds}",
+                            output_dir=output_dir)
+    if clip_labels is not None:
+        clip_level_title = (f"{model_type} clip-level confusion matrix \n"
+                            f"On dataset : {name_ds} \n"
+                            f"Clip-level accuracy : {clip_level_accuracy}")
+        plot_confusion_matrix(cm=clip_level_cm,
+                                class_names=class_labels,
+                                title=clip_level_title,
+                                model_name=f"{model_type.lower()}_clip_confusion_matrix_{name_ds}",
+                                output_dir=output_dir)
     if clip_labels is not None:
         return patch_level_accuracy, clip_level_accuracy
     else:
@@ -403,7 +508,8 @@ def evaluate(cfg: DictConfig = None, eval_ds: tf.data.Dataset = None,
                                             output_dir=output_dir,
                                             clip_labels=clip_labels,
                                             multi_label=multi_label,
-                                            name_ds=name_ds)
+                                            name_ds=name_ds,
+                                            num_threads=cfg.general.num_threads_tflite)
 
         # Check if the model is a Keras model
         elif file_extension == '.h5':
@@ -415,6 +521,16 @@ def evaluate(cfg: DictConfig = None, eval_ds: tf.data.Dataset = None,
                               output_dir=output_dir,
                               name_ds=name_ds,
                               multi_label=multi_label)
+        elif file_extension == '.onnx':
+            data, labels = tf_dataset_to_np_array(eval_ds)
+            evaluate_onnx_model_aed(input_samples=data,
+                                    patch_labels=labels,
+                                    clip_labels=clip_labels,
+                                    input_model_path=model_path,
+                                    class_labels=class_names,
+                                    output_dir=output_dir,
+                                    name_ds=name_ds,
+                                    multi_label=multi_label)
 
     except Exception as e:
         raise ValueError(f"Model evaluation failed\n Received model path: {model_path}. Exception was {e}")

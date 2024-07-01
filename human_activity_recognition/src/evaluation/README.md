@@ -6,23 +6,13 @@ The details on how to use this service are provided in the article below.
 
 ## <a id="">Table of contents</a>
 
-### <a href="#1">1. Configure the yaml file</a>
-#### <a href="#1-1">1.1 Setting the model and the operation mode</a>
-#### <a href="#1-2">1.2 Apply preprocessing</a>
-#### <a href="#1-3">1.3 Prepare the dataset</a>
-### <a href="#2">2. Evaluate your model</a>
-### <a href="#3">3. Visualize evaluation results</a>
-
-
-__________________________________________
-
-## <a id="1">1. Configure the yaml file</a>
+<details open><summary><a href="#1"><b>1. Configure the yaml file</b></a></summary><a id="1"></a>
 
 To evaluate a pretrained HAR model using evaluation service, the users can edit the parameters provided in the main [user_config.yaml](../user_config.yaml) file, or alternatively directly update the few parameters in the minimalistic configuration file provided for the evaluation service [evaluation_config.yaml](../config_file_examples/evaluation_config.yaml).
 
 To edit the main [user_config.yaml](../user_config.yaml) file, follow the steps below, which shows how to evaluate your pre-trained HAR model trained on mobility_v1 or WISDM datasets.
 
-### <a id="1-1">1.1 Setting the model and the operation mode</a>
+<ul><details open><summary><a href="#1-1">1.1 Setting the model and the operation mode</a></summary><a id="1-1"></a>
 
 The first thing to set is the path to the pretrained model in the `general.model_path` parameter and the `operation_mode` to use the evaluate service.
 
@@ -35,7 +25,8 @@ operation_mode: evaluation # mandatory
 ```
 In this example, the path to the IGN model trained on the WISDM dataset is used for evaluation.
 
-### <a id="1-2">1.2 Prepare the dataset</a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Prepare the dataset</a></summary><a id="1-2"></a>
 
 Next the users need to provide the information about the dataset to be used for the evaluation. All the information regarding this is provided in the `dataset` section of the yaml file.
 
@@ -53,7 +44,8 @@ When evaluating the pretrained model on the WISDM dataset, the dataset path is p
 
 In case of `mobility_v1` dataset the `test.pkl` portion is used for the evaluation. 
 
-### <a id="1-3">1.3 Apply preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 Apply preprocessing</a></summary><a id="1-3"></a>
 
 The frames from the dataset need to be preprocessed before they are presented to the network for evaluation.
 
@@ -73,7 +65,9 @@ training:
 - `normalization` - *boolean*, the flag to enable the standard normalization of the frame (x_i - mu)/std 
 - `training.model.input_shape` - *(INT, INT, INT)*, *Tupple*, the shape of the input. In this case (24,3,1), shows a frame of length 24, 3-axis data.
 
-## <a id="2">2. Evaluate your model</a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Evaluate your model</b></a></summary><a id="2"></a>
 
 If you chose to modify the [user_config.yaml](../user_config.yaml) you can evaluate the model by running the following command from the **src/** folder:
 
@@ -86,7 +80,8 @@ If you chose to update the [evaluation_config.yaml](../config_file_examples/eval
 python stm32ai_main.py --config-path ./config_file_examples/ --config-name evaluation_config.yaml
 ```
 
-## <a id="3">3. Visualize the evaluation results</a>
+</details>
+<details open><summary><a href="#3"><b>3. Visualize the evaluation results</b></a></summary><a id="3"></a>
 
 Once the dataset is prepared and the model is evaluated, the accuracies are printed in the terminal and the confusion matrix is displayed. However, after you have closed the terminal and the confusion matrix image, you can still retrieve the confusion matrix generated after evaluating the model on the test dataset by navigating to the appropriate directory within **experiments_outputs/\<date-and-time\>**.
 
@@ -95,3 +90,5 @@ Once the dataset is prepared and the model is evaluated, the accuracies are prin
 You can also find the evaluation results saved in the log file **stm32ai_main.log** under **experiments_outputs/\<date-and-time\>**.
 
 You can also visualize the results also by using the mlflow by issuing the command `mlflow ui`. That will open the mlflow in the browser.
+
+</details>

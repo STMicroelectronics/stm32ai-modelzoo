@@ -14,12 +14,12 @@ import pandas as pd
 import random, math
 from typing import List
 import tensorflow as tf
+from pathlib import Path
 from imgaug import augmenters as iaa
-from imgaug.augmentables.bbs import BoundingBox, BoundingBoxesOnImage
-sys.path.append(os.path.abspath('../data_augmentation'))
-sys.path.append(os.path.abspath('../utils'))
+
 from tiny_yolo_v2_utils import check_cfg_attributes, set_multi_scale_max_resolution
 from tiny_yolo_v2_data_augment import tiny_yolo_v2_data_aug, convert_tiny_yolo_v2_to_iaa, convert_tiny_yolo_v2_from_iaa
+from models_utils import get_model_name_and_its_input_shape
 
 def parse_data(trainset: str) -> List[str]:
     """
@@ -38,6 +38,15 @@ def parse_data(trainset: str) -> List[str]:
             new_path = path+file
             annotation_lines.append(new_path)
     return annotation_lines
+
+def parse_images(sett: str) -> List[str]:
+    images_pathss = []
+    path = sett+'/'
+    for file in os.listdir(path):
+        if file.endswith(".jpg"):
+            new_path = path+file
+            images_pathss.append(new_path)
+    return images_pathss
 
 def data_resize(images_list: list, gt_labels_list: list, img_height: int, img_width: int, resizing_type: int = 1) -> tuple:
     '''
@@ -369,6 +378,45 @@ def count_max_gt(cfg, train_annotations,val_annotations):
             max_gt = num
     cfg.training.max_gt = max_gt
 
+def generate_quant(cfg=None, images_filename_list=None, batch_size=None, img_width=None, img_height=None):
+    """
+    Create a generator for model.fit_generator
+    Arguments:
+        cfg: dictionary containing configuration parameters
+        images_filename_list: list of filename of original images
+        batch_size: size of generated minibatch
+        img_width: image width
+        img_height: image height
+    Returns:
+        [images_batch, truths_batch]: a minibatch of images and encoded bounding boxes for training
+    """
+    
+    channels = 1 if cfg.preprocessing.color_mode == "grayscale" else 3
+    interpolation = cfg.preprocessing.resizing.interpolation
+
+    def parse_function(filename):
+
+        image_string = tf.io.read_file(filename)
+        image = tf.io.decode_image(image_string, channels=channels, expand_animations=False)
+        image = tf.image.resize(image, [img_height, img_width], method=interpolation)
+        image = tf.cast(image, tf.float32) * cfg.preprocessing.rescaling.scale + cfg.preprocessing.rescaling.offset
+
+        return image
+
+    # Get the number of samples
+    num_samples = len(images_filename_list)
+    # handle case when the batch size is greater or equal the dataset size
+    if batch_size >= num_samples:
+        exp = np.math.log(num_samples, 2)
+        exp = np.math.floor(exp)
+        batch_size = int(2 ** exp)
+
+    quant_dataset = tf.data.Dataset.from_tensor_slices(images_filename_list)
+    quant_dataset = quant_dataset.map(parse_function,num_parallel_calls=tf.data.AUTOTUNE)
+    quant_dataset = quant_dataset.batch(batch_size,drop_remainder=True)
+
+    return quant_dataset
+
 def tiny_yolo_v2_preprocess(cfg):
     """
     Preprocesses the data based on the provided configuration.
@@ -442,10 +490,33 @@ def tiny_yolo_v2_preprocess(cfg):
 
 
     # Load the quantization dataset if provided
-    if quantization_path:
+    if quantization_path or training_path:
+
+        if Path(cfg.general.model_path).suffix =='.onnx':
+            _, ish = get_model_name_and_its_input_shape(cfg.general.model_path)
+            input_shape = [ish[1],ish[2],ish[0]]
+        else:
+            _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path)
+
+        img_width, img_height, _ = input_shape
+        if training_path:
+            quant_annotations = parse_images(training_path)
+        else:
+            quant_annotations = parse_images(quantization_path)
+
+        if not batch_size:
+            batch_size=64
+
+        quantization_dataset = generate_quant(cfg=cfg,
+                                              images_filename_list=quant_annotations,
+                                              batch_size = batch_size,
+                                              img_width  = img_width,
+                                              img_height = img_height)
+
         tf.print("Loading Quantization dataset...")
         quantization_annotations = parse_data(quantization_path)
     else:
+        quantization_dataset = None
         quantization_annotations = None
 
     # Load the test dataset if provided
@@ -457,4 +528,4 @@ def tiny_yolo_v2_preprocess(cfg):
 
 
     # Create the training, validation, quantization, and test datasets
-    return train_annotations, val_annotations, test_dataset, quantization_annotations, train_dataset, val_dataset
+    return train_annotations, val_annotations, test_dataset, quantization_annotations, train_dataset, val_dataset, quantization_dataset

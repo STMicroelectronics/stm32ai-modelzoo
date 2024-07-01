@@ -8,6 +8,8 @@
 
 import sys
 import os
+from timeit import default_timer as timer
+from datetime import timedelta
 import logging
 import warnings
 import numpy as np
@@ -16,7 +18,8 @@ from munch import DefaultMunch
 from omegaconf import DictConfig
 import tensorflow as tf
 from typing import List, Dict, Union, Optional
-import lr_schedulers
+import mlflow
+
 
 logger = tf.get_logger()
 logger.setLevel(logging.ERROR)
@@ -24,13 +27,11 @@ logger.setLevel(logging.ERROR)
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../evaluation'))
-sys.path.append(os.path.abspath('../../../common'))
-
+from logs_utils import log_to_file, log_last_epoch_history
+from gpu_utils import check_training_determinism
 from train_utils import *
-from load_models import get_tiny_yolo_v2_model
-from train import get_optimizer, LRTensorBoard
+from models_mgt import get_tiny_yolo_v2_model
+from train import get_optimizer
 from tiny_yolo_v2_evaluate import evaluate_tiny_yolo_v2
 from tiny_yolo_v2_utils import CheckpointYoloCleanCallBack, YoloMapCallBack
 
@@ -76,19 +77,48 @@ def train_tiny_yolo_v2(cfg = None,train_ds = None, valid_ds = None, test_ds = No
 
     #yolo_map_callback = YoloMapCallBack(cfg, frq=4)
     #callbacks.append(yolo_map_callback)
+    # logging the name of the dataset used for training
+    if cfg.dataset.name: 
+        log_to_file(output_dir, f"Dataset : {cfg.dataset.name}")
 
     model = get_tiny_yolo_v2_model(cfg)
     model.compile(optimizer=optimizer, loss={'tiny_yolo_v2_loss': lambda y_true, y_pred: y_pred})
     model.summary()
+
+    # check if determinism can be enabled
+    if cfg.general.deterministic_ops:
+        sample_ds = train_gen.take(1)
+        tf.config.experimental.enable_op_determinism()
+        if not check_training_determinism(model, sample_ds):
+            print("[WARNING]: Some operations cannot be run deterministically. Setting deterministic_ops to False.")
+            tf.config.experimental.enable_op_determinism.__globals__["_pywrap_determinism"].enable(False)
+
+    # Train the model
+    print("[INFO] : Starting training...")
+    start_time = timer()
     model.fit(train_gen,
-    steps_per_epoch=max(1, num_train_samples//batch_size),
-    validation_data= valid_gen,
-    validation_steps=max(1, num_val_samples//batch_size),
-    epochs=epochs,
-    initial_epoch=0,
-    workers=1,
-    use_multiprocessing=False,
-    max_queue_size=0,
-    callbacks=callbacks)
+        steps_per_epoch=max(1, num_train_samples//batch_size),
+        validation_data= valid_gen,
+        validation_steps=max(1, num_val_samples//batch_size),
+        epochs=epochs,
+        initial_epoch=0,
+        workers=1,
+        use_multiprocessing=False,
+        max_queue_size=0,
+        callbacks=callbacks)
+    #save the last epoch history in the log file
+    last_epoch=log_last_epoch_history(cfg, output_dir)
+    end_time = timer()
+
+    #calculate and log the runtime in the log file
+    fit_run_time = int(end_time - start_time)
+    average_time_per_epoch = round(fit_run_time / (int(last_epoch) + 1),2)
+    print("Training runtime: " + str(timedelta(seconds=fit_run_time))) 
+    log_to_file(cfg.output_dir, (f"Training runtime : {fit_run_time} s\n" + f"Average time per epoch : {average_time_per_epoch} s"))
+
     evaluate_tiny_yolo_v2(cfg,model_path=os.path.join(output_dir, saved_models_dir, "best_model.h5"))
+
+    # Record the whole hydra working directory to get all info
+    mlflow.log_artifact(output_dir)
+
     return os.path.join(output_dir, saved_models_dir, "best_model.h5")

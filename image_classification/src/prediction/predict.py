@@ -19,10 +19,11 @@ import warnings
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('../preprocessing'))
-from models_mgt import get_model_name_and_its_input_shape
+from models_utils import get_model_name_and_its_input_shape
+from models_mgt import IC_CUSTOM_OBJECTS
 from preprocess import preprocess_input
+from onnx_evaluation import predict_onnx
+import onnxruntime
 
 
 def predict(cfg: DictConfig = None) -> None:
@@ -44,12 +45,12 @@ def predict(cfg: DictConfig = None) -> None:
     
     model_path = cfg.general.model_path
     class_names = cfg.dataset.class_names
-    test_images_dir = cfg.prediction.test_images_path
+    test_images_dir = cfg.prediction.test_files_path
     cpp = cfg.preprocessing
     
-    _, model_input_shape = get_model_name_and_its_input_shape(model_path)
+    _, model_input_shape = get_model_name_and_its_input_shape(model_path, custom_objects=IC_CUSTOM_OBJECTS)
     
-    print("[INFO] Making predictions using:")
+    print("[INFO] : Making predictions using:")
     print("  model:", model_path)
     print("  images directory:", test_images_dir)
 
@@ -70,7 +71,7 @@ def predict(cfg: DictConfig = None) -> None:
             raise ValueError(f"\nUnable to load image file {im_path}\n"
                              "Supported image file formats are BMP, GIF, JPEG and PNG.")
         # Resize the image            
-        width, height = model_input_shape[0:2]
+        width, height = model_input_shape[1:] if Path(model_path).suffix == '.onnx' else model_input_shape[0:2]
         if cpp.resizing.aspect_ratio == "fit":
             img = tf.image.resize(img, [height, width], method=cpp.resizing.interpolation, preserve_aspect_ratio=False)
         else:
@@ -125,9 +126,18 @@ def predict(cfg: DictConfig = None) -> None:
 
             # Add result to the table
             results_table.append([predicted_label, "{:.1f}".format(prediction_score), image_filenames[i]])
-
+    elif file_extension == ".onnx":
+        images = np.stack(images, axis=0)
+        images = images.transpose((0,3,1,2))
+        sess = onnxruntime.InferenceSession(model_path)
+        scores = predict_onnx(sess, images)
+        max_score_index = np.squeeze(np.argmax(scores, axis=1))
+        prediction_scores = 100 * np.max(scores,axis=1)
+        predicted_labels = [class_names[i] for i in max_score_index] # Add result to the table
+        for i in range(len(max_score_index)):
+            results_table.append([predicted_labels[i], f'{prediction_scores[i]:.1f}', image_filenames[i]])
     else:
         raise TypeError(f"Unknown or unsupported model type. Received path {model_path}")
 
     # Display the results table
-    print(tabulate(results_table, headers=["Prediction", "Score", "Image file"]))
+    print(tabulate(results_table, headers=["Prediction", "Score", "Image file"], colalign=("left", "left", "left")))

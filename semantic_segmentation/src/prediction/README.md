@@ -1,0 +1,87 @@
+# Semantic segmentation prediction
+
+Our prediction service is a simple and efficient tool that allows users to upload their TensorFlow Lite (.tflite), Keras (.h5) or ONNX (.onnx) model and a set of images for prediction. 
+The service then uses the model to predict the class of each pixel for each image in the set. This can be particularly useful for anyone working with semantic segmentation tasks and looking for 
+a quick and easy way to generate predictions. Our prediction service is designed to be user-friendly and accessible, making it an ideal solution for both beginners and experts alike.
+
+## <a id="">Table of contents</a>
+
+<details open><summary><a href="#1"><b>1. Configure the yaml file</b></a></summary><a id="1"></a>
+
+To use the prediction service, users must fill in the 'prediction' section of the [user_config.yaml](../user_config.yaml) file like the [prediction_config.yaml](../config_file_examples/prediction_config.yaml) or as shown in the example below:
+
+```yaml
+general:
+   model_path: <path-to-a-Keras-or-TFlite-model-or-ONNX-file>           # Path to the model to use to make predictions
+
+operation_mode: prediction
+
+preprocessing:
+   rescaling:
+      scale: 1/127.5
+      offset: -1
+   resizing:
+      interpolation: bilinear
+      aspect_ratio: False
+   color_mode: rgb
+
+dataset:
+   class_names: ["background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus",
+                "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
+                "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
+prediction:
+   test_files_path: ../datasets/my_photos/   # Path to the directory containing the images to predict
+```
+
+In the `general` section, users must provide the path to their model file using the `model_path` attribute. This can be either a Keras model file with a '.h5' filename extension (float model),
+a TensorFlow Lite model file with a '.tflite' filename extension (quantized model), or an ONNX model file (.onnx) quantized or not.
+
+The `dataset` section requires users to provide the names of the classes using the `class_names` attribute, as there is no way to infer them.
+
+Finally, in the `prediction` section, users must provide the path to the directory containing the images to predict using the `test_files_path` attribute. Once all of these sections have been filled in, 
+users can run the prediction service to generate predictions for their set of images.
+
+**Hydra and MLflow settings**
+
+The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used to specify the name of the directory where experiment directories are saved and/or the 
+pattern used to name experiment directories. With the YAML code below, every time you run the Model Zoo, an experiment directory is created that contains all the directories and files created during the run. 
+The names of experiment directories are all unique as they are based on the date and time of the run.
+
+```yaml
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+```
+
+The `mlflow` section is used to specify the location and name of the directory where MLflow files are saved, as shown below:
+
+```yaml
+mlflow:
+   uri: ./experiments_outputs/mlruns
+```
+
+</details>
+<details open><summary><a href="#2"><b>2. Launch the prediction</b></a></summary><a id="2"></a>
+
+If you chose to modify the [user_config.yaml](../user_config.yaml) you can evaluate the model by running the following command from the **src/** folder:
+
+```bash
+python stm32ai_main.py 
+```
+If you chose to update the [prediction_config.yaml](../config_file_examples/prediction_config.yaml) and use it then run the following command from the **src/** folder: 
+
+```bash
+python stm32ai_main.py --config-path ./config_file_examples/ --config-name prediction_config.yaml
+```
+
+</details>
+<details open><summary><a href="#3"><b>3. Visualize the evaluation results</b></a></summary><a id="3"></a>
+
+In the `general` section, there is an optional parameter `display_figures` set by default to False. If the user sets `display_figures` to True then a figure with the original image and the segmentation prediction 
+is displayed for each image in `test_files_path`. This allows for a visual analysis of the model behavior.
+
+Of course, if `display_figures` is kept to False, nothing is displayed on screen. However, whatever `display_figures` value, a directory called 'prediction' is created under **experiments_outputs/\<date-and-time\>**. 
+where all the output figures are saved for further analysis or comparison. 
+
+
+</details>

@@ -1,35 +1,33 @@
 # Object detection STM32 model deployment
 
-This tutorial shows how to quantize and deploy a pre-trained object detection model on an *STM32 board* using *STM32Cube.AI*.
-
+This tutorial shows how to deploy a pre-trained object detection model on an *STM32 board* using *STM32Cube.AI*.
 
 ## Table of contents
 
-* <a href='#prereqs'>Before you start</a><br>
-* <a href='#deploy'>Deploy pretrained tflite model on STM32 board</a><br>
-* <a href='#quantize'>Quantize your model before deployment</a><br>
+<details open><summary><a href="#1"><b>1. Before You Start</b></a></summary><a id="1"></a>
 
-## Before you start
-<a id='prereqs'></a>
+Please check out [STM32 model zoo](../README.md) for complete object detection information.
 
-
-Please check out [STM32 model zoo](../README.md) for object detection.
-
-### **1. Hardware setup**
+<ul><details open><summary><a href="#1-1">1.1 Hardware Setup</a></summary><a id="1-1"></a>
 
 The [application code](../../stm32ai_application_code/object_detection/README.md) is running on a hardware setup made up of an STM32 microcontroller board connected to a camera module board. This version supports the following boards only:
 
 - [STM32H747I-DISCO](https://www.st.com/en/product/stm32h747i-disco)
 - [B-CAMS-OMV](https://www.st.com/en/product/b-cams-omv)
 
-### **2. Software requirements**
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Software requirements</a></summary><a id="1-2"></a>
 
-You need to download and install the following software:
+You can use the [STM32 developer cloud](https://stm32ai-cs.st.com/home) to access the STM32Cube.AI functionalities without installing the software. This requires internet connection and making a free account. Or, alternatively, you can install [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally. In addition to this you will also need to install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) for building the embedded project.
 
-- [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html)
-- If using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, open link and download the package, then `extract here` both `'.zip'` and `'.pack'` files.
+For local installation :
 
-### **3. Specifications**
+- Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html).
+- If opting for using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, download it then extract both `'.zip'` and `'.pack'` files.
+The detailed instructions on installation are available in this [wiki article](https://wiki.st.com/stm32mcu/index.php?title=AI:How_to_install_STM32_model_zoo).
+
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 Specifications</a></summary><a id="1-3"></a>
 
 - `serie` : STM32H7
 - `IDE` : GCC
@@ -38,17 +36,15 @@ You need to download and install the following software:
 - `quantization_input_type` : uint8
 - `quantization_output_type` : float
 
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Configure the YAML File</b></a></summary><a id="2"></a>
 
-## Deploy pretrained tflite model on STM32 board
-<a id='deploy'></a>
-
-### **1. Configure the yaml file**
-
-You can run a demo using a pretrained model from [STM32 model zoo](../pretrained_models/README.md). Please refer to the YAML file provided alongside the TFlite model to fill the following sections in [user_config.yaml](../src/user_config.yaml) (namely `Dataset Configuration` and `Load model`).
+To configure the deployment YAML, you can start from a minimalistic YAML example. If you want to deploy a model that is already quantized, you can use the [minimalistic deployment YAML example](../src/config_file_examples/deployment_config.yaml). If you want to quantize a model and then deploy it, you can use the [minimalistic quantization - deployment YAML example](../src/config_file_examples/chain_qd_config.yaml). Replace the fields according to your model. You can run a demo using a [pretrained model](../pretrained_models/README.md) from STM32 model zoo. Please refer to the YAML file provided alongside the TFlite model to fill the following sections.
 
 As an example, we will show how to deploy the model [ssd_mobilenet_v2_fpnlite_035_192_int8.tflite](../pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192) pretrained on COCO dataset using the necessary parameters provided in [ssd_mobilenet_v2_fpnlite_035_192_config.yaml](../pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_config.yaml).
 
-**1.1. General settings:**
+<ul><details open><summary><a href="#2-1">2.1 Setting the Model and the Operation Mode</a></summary><a id="2-1"></a>
 
 Configure the **general** section in **[user_config.yaml](../src/user_config.yaml)** as the following:
 ```yaml
@@ -61,7 +57,7 @@ general:
 where:
 
 - `project_name` - *String*, name of the project.
-- `model_type` - *String*, model type is used to adapt the postprocessing to the model. There are three possible choices: `'st_ssd_mobilenet_v1'`, `'ssd_mobilenet_v2_fpnlite'`, `'tiny_yolo_v2'`.
+- `model_type` - *String*, model type is used to adapt the postprocessing to the model. There are three possible choices: `'st_ssd_mobilenet_v1'`, `'ssd_mobilenet_v2_fpnlite'`, `'tiny_yolo_v2'`, `'st_yolo_lc_v1'`.
 - `model_path` - *Path* to pretained model. Please check out pretrained models from STM32 model zoo [here](../pretrained_models/README.md).
 
 Configure the **operation_mode** section as follow:
@@ -69,13 +65,14 @@ Configure the **operation_mode** section as follow:
 operation_mode: deployment
 ```
 where:
-- operation_mode - *String*, operation to be executed when the stm32ai_main.py script is launched. The choices are: `'training'`, `'evaluation'`, `'deployment'`, `'quantization'`, `'benchmarking'`, or a combination of multiple operations: `'chain_tqeb'`, `'chain_tqe'`, `'chain_eqe'`, `'chain_qb'`, `'chain_eqeb'`, `'chain_qd'`. 
+- operation_mode - *String*, operation to be executed when the stm32ai_main.py script is launched. In the case of the deployment, the choices are: `'deployment'` if the model is already quantized, or `'chain_qd'` if the model is not quantized. 
 
-**1.2. Dataset configuration:**
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2 Dataset configuration</a></summary><a id="2-2"></a>
 
 You need to specify some parameters related to the dataset and the preprocessing of the data in the **[user_config.yaml](../src/user_config.yaml)** which will be parsed into a header file used to run the C application.
 
-**1.2.1. Dataset info:**
+<ul><details open><summary><a href="#2-2-1">2.2.1 Dataset info</a></summary><a id="2-2-1"></a>
 
 Configure the **dataset** section in **[user_config.yaml](../src/user_config.yaml)** as the following:
 
@@ -89,7 +86,8 @@ where:
 - `name` - Dataset name.
 - `class_names` - A list containing the classes name.
 
-**1.2.2. Preprocessing info:**
+</details></ul>
+<ul><details open><summary><a href="#2-2-2">2.2.2 Preprocessing info</a></summary><a id="2-2-2"></a>
 
 To run inference in the C application, we need to apply on the input data the same preprocessing used when training the model.
 
@@ -97,19 +95,18 @@ To do so, you need to specify the **preprocessing** configuration in **[user_con
 
 ```yaml
 preprocessing:
-  rescaling:  {scale : 127.5, offset : -1}
   resizing:
     aspect_ratio: fit
     interpolation: nearest
   color_mode: rgb
 ```
 
-- `rescaling` - A *dictonary* with keys *(scale, offset)* to rescale input values to a new range. To scale input image **[0:255]** in the range **[-1:1]** you should pass **{scale = 127.5, offset = -1}**, else in the range **[0:1]** you should pass **{scale = 255, offset = 0}**.
 - `resizing` - **nearest**, only supported option for *application C code*.
 - `aspect_ratio` - One of *fit*, *crop* or *padding*. If *crop*, resize the images without aspect ratio distortion by cropping the image as a square, if *padding*, add black borders above and below the image to make it as square, otherwise *fit*, aspect ratio may not be preserved.
 - `color_mode` - One of "*grayscale*", "*rgb*" or "*bgr*".
 
-**1.3. Post processing info:**
+</details></ul>
+<ul><details open><summary><a href="#2-2-3">2.2.3 Post processing info</a></summary><a id="2-2-3"></a>
 
 Apply post-processing by modifiying the post_processing parameters in **[user_config.yaml](../src/user_config.yaml)** as the following:
 
@@ -118,52 +115,34 @@ postprocessing:
   confidence_thresh: 0.6
   NMS_thresh: 0.5
   IoU_eval_thresh: 0.4
-  plot_metrics: true
   max_detection_boxes: 10
 ```
 
 - `confidence_thresh` - A *float* between 0.0 and 1.0, the score thresh to filter detections.
 - `NMS_thresh` - A *float* between 0.0 and 1.0, NMS thresh to filter and reduce overlapped boxes.
 - `IoU_eval_thresh` - A *float* between 0.0 and 1.0, Area of Overlap / Area of Union ratio above which two bounding boxes are detecting the same object.
-- `plot_metrics` - *Boolean*, print or not the confidence level on the bounding boxes.
 - `max_detection_boxes` - An *int* to filter the number of bounding boxes.
 
-**1.4. Load model:**
-
-You can run a demo using a pretrained model provided in [STM32 model zoo](../pretrained_models/README.md) for object detection. These models were trained and quantized on specific datasets (e.g. People...).
-
-Also, you can directly deploy your own pretrained model if quantized using *TFlite Converter* and respecting the specified [intput/output types](#3-specifications), else you can quantize your model before deploying it by following these [steps](#quantize).
-
-To do so, you need to configure the **model** section in **[user_config.yaml](../src/user_config.yaml)** as the following:
-
-```yaml
-training:
-  model:
-    input_shape: (192, 192, 3)
-```
-
-where:
-
-- `input_shape` -  A *list of int* *[H, W, C]* for the input resolution, e.g. *[224, 224, 3]*.
-
-**1.5. C project configuration:**
+</details></ul>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Deployment parameters</a></summary><a id="2-3"></a>
 
 To deploy the model in **STM32H747I-DISCO** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application and flash the board.
 
-These steps will be done automatically by configuring the **stm32ai** section in **[user_config.yaml](../src/user_config.yaml)** as the following:
+These steps will be done automatically by configuring the **tools** and **deployment** sections in the YAML file as the following:
 
 ```yaml
 tools:
-  stm32ai:
-    version: *.*.*
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
-    on_cloud: true
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/*.*.*/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.*.*/STM32CubeIDE/stm32cubeide.exe
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 deployment:
   c_project_path: ../../stm32ai_application_code/object_detection/
   IDE: GCC
-  verbosity: 1 n
+  verbosity: 1
   hardware_setup:
     serie: STM32H7
     board: STM32H747I-DISCO
@@ -171,11 +150,11 @@ deployment:
 
 where:
 
-- `tools/stm32ai`
+- `tools/stedgeai`
   - `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **8.0.1**.
   - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
   - `on_cloud` - *Boolean*, to use or not the [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home).
-  - `path_to_stm32ai` - *Path* to stm32ai executable file to use local download, else **False**.
+  - `path_to_stedgeai` - *Path* to stedgeai executable file to use local download, else **False**.
 - `tools/path_to_cubeIDE` - *Path* to stm32cubeide executable file.
 - `deployment`
   - `c_project_path` - *Path* to [application C code](../../stm32ai_application_code/object_detection/README.md) project.
@@ -184,7 +163,27 @@ where:
   - `hardware_setup/serie` - **STM32H7**, only supported option for now.
   - `hardware_setup/board` - **STM32H747I-DISCO**, only supported option for now.
 
-### **2. Run deployment:**
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 Hydra and MLflow settings</a></summary><a id="2-4"></a>
+
+The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment directories. With the YAML code below, every time you run the Model Zoo, an experiment directory is created that contains all the directories and files created during the run. The names of experiment directories are all unique as they are based on the date and time of the run.
+
+```yaml
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+```
+
+The `mlflow` section is used to specify the location and name of the directory where MLflow files are saved, as shown below:
+
+```yaml
+mlflow:
+   uri: ./experiments_outputs/mlruns
+```
+
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Deploy pretrained model on STM32 board</b></a></summary><a id="3"></a>
 
 First you need to connect the camera board to the *STM32H747I-DISCO* discovery board, then connect the discovery board to your computer using an usb cable.
 
@@ -192,15 +191,22 @@ The picture below shows how to connect the camera board to the *STM32H747I-DISCO
 
 ![plot](./doc/img/hardware_setup.JPG)
 
-Then, run the following command to build and flash the application on your board:
-
+If you chose to modify the [user_config.yaml](../src/user_config.yaml) you can deploy the model by running the following command from the **src/** folder to build and flash the application on your board::
 
 ```bash
-python stm32ai_main.py
+python stm32ai_main.py 
+```
+If you chose to update the [deployment_config.yaml](../src/config_file_examples/deployment_config.yaml) and use it then run the following command from the **src/** folder to build and flash the application on your board: 
+
+```bash
+python stm32ai_main.py --config-path ./config_file_examples/ --config-name deployment_config.yaml
 ```
 
+If you have a Keras model that has not been quantized and you want to quantize it before deploying it, you can use the `chain_qd` tool to quantize and deploy the model sequentially. To do this, update the [chain_qd_config.yaml](../src/config_file_examples/chain_qd_config.yaml) file and then run the following command from the `src/` folder to build and flash the application on your board:
 
-### **3. Run the application:**
+```bash
+python stm32ai_main.py --config-path ./config_file_examples/ --config-name chain_qd_config.yaml
+```
 
 When the application is running on the *STM32H747I-DISCO* discovery board, the LCD displays the following information:
 - Data stream from camera board
@@ -211,51 +217,4 @@ probability
 
 ![plot](./doc/img/output_application.JPG)
 
-## Quantize your model before deployment
-<a id='quantize'></a>
-
-### **1. Configure the yaml file**
-
-In addition to the [previous steps](#1-configure-the-yaml-file), you can configure the following sections to quantize your model for the [application C code](../../stm32ai_application_code/object_detection/README.md) deployment. Also, you can evaluate its accuracy after quantization if a path to the `validation set` or `test set` is provided.
-
-**1.1. Loading the dataset:**
-
-Configure the **dataset** section in **[user_config.yaml](../src/user_config.yaml)** as the following:
-
-```yaml
-dataset:
-  name: person_dataset
-  class_names: [person]
-  training_path: 
-  validation_path: 
-  test_path:
-```
-
-where:
-
-- `name` - Dataset name. Exception for *Cifar  datasets*, the name should be "*cifar10*" or "*cifar100*".
-- `class_names` - A list containing the classes name.
-- `training_path` - The directory where the training set is located, or the dataset path.
-- `validation_path` - Path to the validation set, needs to be provided to evaluate the model accuracy.
-- `test_path` - Path to the test_set, if not provided the validation set will be used for evaluation.
-
-**1.2. Model quantization:**
-
-Configure the **quantization** section in **[user_config.yaml](../src/user_config.yaml)** as the following:
-
-```yaml
-quantization:
-  quantizer: TFlite_converter
-  quantization_type: PTQ
-  quantization_input_type: uint8
-  quantization_output_type: float
-  export_dir: quantized_models
-```
-
-where:
-
-- `quantizer` - *String*, only option is "TFlite_converter" which will convert model trained weights from float to integer values. The quantized model will be saved in TensorFlow Lite format.
-- `quantization_type` - *String*, only option is "PTQ",i.e. "Post-Training Quantization".
-- `quantization_input_type` - **int8** or **uint8**, only supported options for *getting started*.
-- `quantization_output_type` - **float**, only supported option for *getting started*.
-- `export_dir` - *String*, referres to directory name to save the quantized model.
+</details>

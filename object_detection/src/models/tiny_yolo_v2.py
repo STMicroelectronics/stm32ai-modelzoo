@@ -13,8 +13,8 @@ from pathlib import Path#change
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
-sys.path.append(os.path.abspath('../training'))
-from train_utils import set_frozen_layers
+
+from common_training import set_frozen_layers, set_dropout_rate, get_optimizer
 from tensorflow.keras.layers import Input, Lambda
 from tiny_yolo_v2_loss import tiny_yolo_v2_loss
 from st_yolo_lc_v1 import st_yolo_lc_v1_body

@@ -48,9 +48,9 @@ def load_and_reformat(wave_path: str,
 
      wave, sr = librosa.load(wave_path, sr=target_rate, duration=max_length)
      if len(wave) < sr * min_length and lengthen == 'before':
-          print("[INFO] Sound wave shorter than min_length, repeating")
+          print("[INFO] : Sound wave shorter than min_length, repeating")
           n_repeats = sr * min_length // len(wave)
-          print('[INFO] Sound wave repeated {} times'.format(n_repeats))
+          print('[INFO] : Sound wave repeated {} times'.format(n_repeats))
           wave = np.tile(wave, n_repeats + 1)
           wave = wave[:min_length*target_rate]
 
@@ -67,9 +67,9 @@ def load_and_reformat(wave_path: str,
           wave = wave[:n_seconds * sr]
 
      if len(wave) < sr * min_length and lengthen == 'after':
-          print("[INFO] Sound wave shorter than min_length, repeating")
+          print("[INFO] : Sound wave shorter than min_length, repeating")
           n_repeats = sr * min_length // len(wave)
-          print('[INFO] Sound wave repeated {} times'.format(n_repeats))
+          print('[INFO] : Sound wave repeated {} times'.format(n_repeats))
           wave = np.tile(wave, n_repeats + 1)
           wave = wave[:min_length*target_rate]
 

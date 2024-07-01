@@ -65,7 +65,7 @@ def load_dataset(training_path: str = None,
 
         train_annotations, val_annotations = [annotations[i] for i in train_split], [annotations[i] for i in val_split]
 
-        print(f"[INFO]:To ensure the model is not overfitting or underfitting, it's crucial to evaluate its performance"
+        print(f"[INFO] : To ensure the model is not overfitting or underfitting, it's crucial to evaluate its performance"
               f" on a validation dataset during training. As no separate validation dataset was provided, we will split"
               f" the dataset into an {100 - 100 * validation_split}% training set and a {100 * validation_split}% "
               f"validation set. ")
@@ -80,9 +80,9 @@ def load_dataset(training_path: str = None,
         val_dataset = {'val_images_filename_ds': val_images_filename_list,
                        'val_gt_labels_ds': val_gt_labels_list, 'num_val_samples': num_val_samples}
     else:
-        print(f"[INFO]: The training path is missing, and the train_dataset variable is set to None. "
+        print(f"[INFO] : The training path is missing, and the train_dataset variable is set to None. "
               f"Please specify the path in the YAML file to proceed with the training process")
-        print(f"[INFO]: The validation path is missing, and the validation_dataset variable is set to None. "
+        print(f"[INFO] : The validation path is missing, and the validation_dataset variable is set to None. "
               f"Please specify the path in the YAML file to proceed with the training process")
         train_dataset = None
         val_dataset = None
@@ -90,9 +90,10 @@ def load_dataset(training_path: str = None,
     # Load the quantization dataset if provided
     if quantization_path:
         tf.print("Loading Quantization dataset...")
-        quantization_annotations = parse_data(quantization_path)
+        quantization_annotations = parse_data(quantization_path,no_annots=True)
+
         quantization_images_filename_list, quantization_gt_labels_list, num_quantization_samples = load_data(
-            quantization_annotations)
+            quantization_annotations,no_annots=True)
         quantization_dataset = {'quantization_images_filename_ds': quantization_images_filename_list,
                                 'quantization_gt_labels_ds': quantization_gt_labels_list,
                                 'num_quantization_samples': num_quantization_samples}
@@ -114,7 +115,7 @@ def load_dataset(training_path: str = None,
     return train_dataset, val_dataset, quantization_dataset, test_dataset
 
 
-def parse_data(train_set: str) -> list:
+def parse_data(train_set: str, no_annots: bool = False) -> list:
     """
     Parses the annotation files in a directory and returns their paths.
 
@@ -126,8 +127,12 @@ def parse_data(train_set: str) -> list:
     """
     annotation_lines = []
 
+    ext = ".txt"
+    if no_annots:
+        ext = ".jpg"
+
     for file in os.listdir(train_set):
-        if file.endswith(".txt"):
+        if file.endswith(ext):
             annotation_lines.append(os.path.join(train_set, file))
 
     return annotation_lines
@@ -158,7 +163,7 @@ def boxes_to_corners(boxes: np.ndarray, image: np.ndarray) -> list:
     return abs_boxes
 
 
-def load_data(annotations: list) -> tuple:
+def load_data(annotations: list, no_annots: bool = False) -> tuple:
     """
     Loads the image data and ground truth labels from a list of annotation files.
 
@@ -174,23 +179,26 @@ def load_data(annotations: list) -> tuple:
     image_labels = []
 
     for annotation in tqdm.tqdm(annotations):
+
         images_path = os.path.splitext(annotation)[0] + '.jpg'
-        image = tf.io.read_file(images_path)
-        image = tf.io.decode_image(image, channels=3, expand_animations=False)
-        img = image.numpy()
-
-        txt_file_size = os.path.getsize(annotation)
-
-        if txt_file_size != 0:
-            ground_truths = pd.read_csv(annotation, sep=" ", header=None)
-            ground_truths.columns = ["class_id", "x", "y", "w", "h"]
-            labels = ground_truths.values.tolist()
-            labels = boxes_to_corners(labels, img)
-        else:
-            labels = []
-
         images.append(images_path)
-        image_labels.append(labels)
+
+        if not no_annots:
+            image = tf.io.read_file(images_path)
+            image = tf.io.decode_image(image, channels=3, expand_animations=False)
+            img = image.numpy()
+
+            txt_file_size = os.path.getsize(annotation)
+
+            if txt_file_size != 0:
+                ground_truths = pd.read_csv(annotation, sep=" ", header=None)
+                ground_truths.columns = ["class_id", "x", "y", "w", "h"]
+                labels = ground_truths.values.tolist()
+                labels = boxes_to_corners(labels, img)
+            else:
+                labels = []
+
+            image_labels.append(labels)
 
     image_labels = np.array(image_labels)
     num_samples = len(images)

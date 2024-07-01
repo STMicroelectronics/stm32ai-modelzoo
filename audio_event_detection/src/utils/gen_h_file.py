@@ -14,10 +14,8 @@ from datetime import datetime
 import os
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras import backend
 from typing import Tuple, Dict, Optional
 from hydra.core.hydra_config import HydraConfig
-from omegaconf import OmegaConf, DictConfig, open_dict
 
 
 def _is_power_of_two(n):

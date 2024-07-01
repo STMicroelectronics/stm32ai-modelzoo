@@ -1,80 +1,10 @@
 
 # Audio event detection STM32 model zoo
-## Table of Contents
 
-### <a href="#1">1. Model Zoo Overview</a>
+## <a id="">Table of contents</a>
 
-#### <a href="#1-1">1.1 YAML configuration file</a>
-
-#### <a href="#1-2">1.2 Output directory structure</a>
-
-#### <a href="#1-3">1.3 MLflow</a>
-
-### <a href="#2">2. Supported dataset format</a>
-
-### <a href="#3">3. Configuration file</a>
-
-#### <a href="#3-1">3.1 YAML syntax extensions</a>
-
-#### <a href="#3-2">3.2 Operation mode</a>
-
-#### <a href="#3-3">3.3 Top-level sections</a>
-
-#### <a href="#3-4">3.4 Global settings and model path</a>
-
-#### <a href="#3-5">3.5 Datasets</a>
-
-#### <a href="#3-6"> 3.6 Dataset-specific parameters </a>
-
-#### <a href="#3-7">3.7 Audio temporal domain preprocessing</a>
-
-#### <a href="#3-8">3.8 Audio feature extraction (frequency domain preprocessing)</a>
-
-#### <a href="#3-9">3.9 Data augmentation</a>
-
-#### <a href="#3-10">3.10 Training</a>
-
-#### <a href="#3-11">3.11 Quantization</a>
-
-#### <a href="#3-12">3.12 Model accuracy evaluation</a>
-
-#### <a href="#3-13">3.13 Image class prediction</a>
-
-#### <a href="#3-14">3.14 STM32 tools</a>
-
-#### <a href="#3-15">3.15 Benchmarking</a>
-
-#### <a href="#3-16">3.16 Deployment</a>
-
-### <a href="#4">4. Training from a model file</a>
-
-#### <a href="#4-1">4.1 Training your own model</a>
-
-#### <a href="#4-2">4.2 Resuming a training</a>
-
-### <a href="#5">5. Transfer learning</a>
-
-### <a href="#6">6. Handling out-of-distribution data </a>
-
-### <a href="#7">7. Creating your own model</a>
-
-### <a href="#8">8. Training a model on FSD50K </a>
-
-### <a href="#appendix-a">Appendix-A: Models available with the Model Zoo</a>
-
-#### <a href="#a-1">A.1 Yamnet-256</a>
-
-#### <a href="#a-2">A.2 MiniResNet</a>
-
-#### <a href="#a-3">A.3 MiniResNetv2</a>
-
-### <a href="#appendix-b">Appendix B: Learning rate schedulers</a>
-
-__________________________________________
-
-### <a id="1">1. Model Zoo Overview</a>
-
-#### <a id="1-1">1.1 YAML configuration file</a>
+<details open><summary><a href="#1"><b>1. Model Zoo Overview</b></a></summary><a id="1"></a>
+<ul><details open><summary><a href="#1-1">1.1 YAML configuration file</a></summary><a id="1-1"></a>
 
 The model zoo is piloted solely from the [user_config.yaml](user_config.yaml) located in the [src/](./) directory (where this README is located.)
 
@@ -82,7 +12,8 @@ This README explains the structure and syntax used in this file, what each param
 
 Furthermore, under the [pretrained_models/](../pretrained_models/) folder, you will find several pretrained models, and next to each model you will find the configuration file that was used to obtain each of them. If you're unsure where to start from, or feel a bit overwhelmed, these can be a great starting point.
 
-#### <a id="1-2">1.2 Output directory structure</a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Output directory structure</a></summary><a id="1-2"></a>
 
 When you run the Model Zoo, the files that get created are located in the src/experiments_outputs/ by default. This behaviour can be changed. Note that this folder will not be present until you have run the model zoo at least once.
 
@@ -98,7 +29,8 @@ This directory contains the following files :
 - stm32ai_main.log is a text log of the events that happened during this run of the model zoo. 
 - Several confusion matrices, as well as plots of the loss & validation accuracy curves during training are included.
 
-#### <a id="1-3">1.3 MLflow</a>
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 MLflow</a></summary><a id="1-3"></a>
 
 MLflow is an API for logging parameters, code versions, metrics, and artifacts while running machine learning code and for visualizing results.
 The model zoo lets you use MLflow ot easily visualize the results and metrics obtained in multiple trainings.
@@ -111,7 +43,10 @@ And open the given IP adress in your browser.
 Mlflow logs for each model zoo run are stored by default under src/experiments_outputs/mlruns/
 Note that this folder will not be present until you have run the model zoo at least once.
 
-### <a id="#2">2. Supported dataset format</a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Supported dataset format</b></a></summary><a id="2"></a>
+
 By default, the model zoo expects that datasets are given in ESC format, meaning the same format as the [ESC-50](https://github.com/karolpiczak/ESC-50) dataset.
 
 This means that your dataset must be comprised of 
@@ -126,13 +61,11 @@ For example, such a .csv file (with a single row here) would look like this :
 |:---------------------------|:-----------|
 | '1-137-A-32.wav'     | 'dog' |
 
-
 The model zoo also supports specific dataset that are not provided in ESC format, such as FSD50K. For such datasets, scripts converting these datasets to the ESC format used by the model zoo are provided, so you don't need to do any of the work yourself.
 
-
-### <a id="3">3. Configuration file</a>
-
-#### <a id="3-1">3.1 YAML syntax extensions</a>
+</details>
+<details open><summary><a href="#3"><b>3. Configuration file</b></a></summary><a id="3"></a>
+<ul><details open><summary><a href="#3-1">3.1 YAML syntax extensions</a></summary><a id="3-1"></a>
 
 A description of the YAML language can be found at https://www.cloudbees.com/blog/yaml-tutorial-everything-you-need-get-started (many other sources are available on the Internet). We only cover here the extensions that have been made in the Model Zoo. 
 
@@ -169,7 +102,8 @@ Attributes with no values can be useful to list in the configuration file all th
 
 Environment variables can be used to avoid hardcoding in the configuration file the paths to directories and files. If directories or files are moved around, you only need to change the value of the environment variables and your configuration file will keep working with no edits.
 
-#### <a id="3-2">3.2 Operation mode</a>
+</details></ul>
+<ul><details open><summary><a href="#3-2">3.2 Operation mode</a></summary><a id="3-2"></a>
 
 The `operation_mode` top-level attribute specifies the operations you want to execute. This may be single operation or a set of chained operations.
 
@@ -190,7 +124,8 @@ The different values of the `operation_mode` attribute and the corresponding ope
 | 'chain_eqeb'   | Sequentially: evaluation of a float model,  quantization, evaluation of quantized model, benchmarking of quantized model |
 | 'chain_qd'     | Sequentially: quantization of a float model, deployment of quantized model |
 
-#### <a id="3-3">3.3 Top-level sections</a>
+</details></ul>
+<ul><details open><summary><a href="#3-3">3.3 Top-level sections</a></summary><a id="3-3"></a>
 
 The top-level sections of a configuration file are listed in the table below. They will be described in detail in the following sections.
 
@@ -209,7 +144,8 @@ The top-level sections of a configuration file are listed in the table below. Th
 | `mlflow` | yes | Parameters related to mlflow |
 | `hydra` | yes | Path to the directory where model zoo outputs will be stored |
 
-#### <a id="3-4">3.4 Global settings and model path</a>
+</details></ul>
+<ul><details open><summary><a href="#3-4">3.4 Global settings and model path</a></summary><a id="3-4"></a>
 
 The `general` section and its attributes are shown below.
 
@@ -224,7 +160,13 @@ general:
    display_figures: True             # Enable/disable the display of figures (training learning curves and confusion matrices).
                                      # Optional, defaults to True.
    gpu_memory_limit: 5              # Maximum amount of GPU memory in GBytes that TensorFlow may use (an integer).
+   num_threads_tflite: 4             # Number of threads for tflite interpreter. Optional, defaults to 1
 ```
+
+The `num_threads_tflite` parameter is only used as an input parameter for the tflite interpreter. Therefore, it has no effect on .h5 or .onnx models. 
+This parameter may accelerate the tflite model evaluation in the following operation modes:  `evaluation` (if a .tflite is specified in `model_path`), 
+`chain_tbqeb`, `chain_eqe`, `chain_tqe` and `chain_eqeb` (if the quantizer is the TFlite_converter). 
+However, the acceleration depends on your system resources.
 
 The `model_path` attribute is used to provide the path to the model file you want to use to run the operation mode you selected.
 
@@ -251,8 +193,8 @@ Even when random generators are seeded, it is often difficult to exactly reprodu
 
 The `gpu_memory_limit` attribute sets an upper limit in GBytes on the amount of GPU memory Tensorflow may use. This is an optional attribute with no default value. If it is not present, memory usage is unlimited. If you have several GPUs, be aware that the limit is only set on logical gpu[0].
 
-
-#### <a id="3-5">3.5 Datasets</a>
+</details></ul>
+<ul><details open><summary><a href="#3-5">3.5 Datasets</a></summary><a id="3-5"></a>
 
 The `dataset` section and its attributes are shown in the YAML code below.
 Detailed explanations of each parameter are provided at the end of this section.
@@ -313,14 +255,14 @@ Mutually exclusive with `deployment.unknown_class_threshold`. For more details, 
 - `n_samples_per_garbage_class` : **(Experimental)** *int*, number of samples of each unused class to lump into the "Other" class. Generally, when lumping all samples from all unused classes into the "Other" class, the resulting dataset is extremely unbalanced. If this parameter is not provided, the scripts will try to infer a number that results in a dataset that isn't too poorly balanced. For more details, see section <a href="#6"> 6 Handling out-of-distribution data </a>
 - `expand_last_dim` : *bool*, set to True to output patches of the shape (n_mels, n_frames, 1) instead of (n_mels, n_frames). Some models, such as Yamnet or the Miniresnets expect this input shape.
 
-#### <a id="3-6">3.6 Dataset-specific parameters </a>
+</details></ul>
+<ul><details open><summary><a href="#3-6">3.6 Dataset-specific parameters</a></summary><a id="3-6"></a>
 
 The model zoo provides support for some publicly available datasets. However, such datasets are rarely, if ever provided in the format expected by the model zoo. We have included a helpful collection of scripts to format these datasets for you. These scripts usually need a few parameters (such as the paths to various parts of the dataset), which are provided in this section of the configuration file. The parameters in this section are only used by the model zoo if the `name` argument in the dataset section is set to a specific string. (Currently, only "fsd50k").
 
 Currently, only ESC-10 (which does not require any dataset-specific parameters) and FSD50K are supported by the model zoo. Thus, this section only covers parameters specific to FSD50K.
 
 For more details on how to train a model using FSD50K, please consult section <a href="#8">8. Training a model on FSD50K </a>
-
 
 ```yaml
 dataset_specific:
@@ -343,7 +285,8 @@ dataset_specific:
 - `audioset_ontology_path` : *string*, Path to the audioset ontology JSON file. Due to licensing issues, the file is NOT provided in the model zoo, but you can also download it from https://github.com/audioset/ontology/blob/master/ontology.json
 - `only_keep_monolabel` : *boolean*, If set to True, discard all multi-label samples. This is a comparatively small proportion of all samples. 
 
-#### <a id="3-7">3.7 Audio temporal domain preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#3-7">3.7 Audio temporal domain preprocessing</a></summary><a id="3-7"></a>
 
 When performing AED, it is customary to perform some preprocessing directly on the input waveform in the temporal domain before doing any feature extraction in the frequency domain, such as converting the waveform into a spectrogram.
 
@@ -373,8 +316,8 @@ preprocessing:
 - `lengthen` : *boolean*, Valid values :  "before" or "after". If set to "before", audio repetition will be performed before silence removal. If set to "after", audio repetition will be performed after. 
 WARNING : setting this option to "before" may result in the resulting waveform being shorter than `min_length`, which can cause all manner of bugs (for example, not being able to extract at least one patch from a clip.) Set to "after" if you are unsure.
 
-
-#### <a id="3-8">3.8 Audio feature extraction (frequency domain preprocessing)</a>
+</details></ul>
+<ul><details open><summary><a href="#3-8">3.8 Audio feature extraction (frequency domain preprocessing)</a></summary><a id="3-8"></a>
 
 In a typical AED pipeline, once the temporal domain preprocessing has been performed on the input waveform, it is usually converted to a frequency-domain representation, such as a mel-spectrogram, or array of MFCC coefficients, and the model is trained on this representation.
 
@@ -422,9 +365,9 @@ feature_extraction:
 WARNING : Setting this option to True will cause errors when using models with a fixed input size !
 Leave to "False" if unsure.
 
+</details></ul>
+<ul><details open><summary><a href="#3-9">3.9 Data augmentation</a></summary><a id="3-9"></a>
 
-
-#### <a id="#3-9">3.9 Data augmentation</a>
 Data augmentation has proved an effective technique to reduce the overfit of a network and make it generalize better. It is generally useful when the dataset is small.
 
 If you want your model's performance to transfer well to real world, real-time inference, it is important to apply data augmentation during training, in order to make your model robust to various perturbations. 
@@ -475,8 +418,8 @@ Warning : This can really degrade your model performance if used improperly. Whe
   - `n_time_mask`: *int*, number of contiguous blocks to mask on the time axis
   - `mask_value` : *float*, value to replace masked values with. Be sure to set this properly relative to the scale of values in your spectrogram, unless you want to get terrible performance.
 
-
-#### <a id="3-10">3.10 Training</a>
+</details></ul>
+<ul><details open><summary><a href="#3-10">3.10 Training</a></summary><a id="3-10"></a>
 
 A 'training' section is required in all the operation modes that include a training, namely 'training', 'tqeb' and 'tqde.
 
@@ -577,10 +520,12 @@ The best model obtained at the end of the training is saved in the 'experiments_
   - `learning_rate` : *float*, initial learning rate.
 - `callbacks` : Any Keras callback, including learning rate schedulers.
 
+</details></ul>
+<ul><details open><summary><a href="#3-11">3.11 Quantization</a></summary><a id="3-11"></a>
 
-#### <a id="3-11">3.11 Quantization</a>
+This section is used to configure the quantization process, which optimizes the model for efficient deployment on embedded devices by reducing its memory usage (Flash/RAM) and accelerating its inference time, with minimal degradation in model accuracy.
 
-If you run one of the operation modes that includes a model quantization, you need to include a 'quantization' section in your configuration file, as shown in the YAML code below. You still need a dataset, preprocessing and feature_extraction section, but they are omitted here for the sake of readability.
+If you run one of the operation modes that includes a model quantization, you need to include a "quantization" section in your configuration file, as shown in the YAML code below. You still need a dataset, preprocessing and feature_extraction section, but they are omitted here for the sake of readability.
 
 ```yaml
 general:
@@ -614,18 +559,39 @@ dataset:
 operation_mode: quantization
 
 quantization:
-   quantizer: TFlite_converter
+   quantizer: TFlite_converter # onnx_quantizer for ONNX quantization.
    quantization_type: PTQ
    quantization_input_type: float
    quantization_output_type: uint8
+   granularity: per_tensor            # Optional, defaults to "per_channel".
+   optimize: True                     # Optional, defaults to False. 
+   target_opset: 17                   # Optional, defaults to 17. Used for ONNX quantization
    export_dir: quantized_models       # Optional, defaults to "quantized_models".
 ```
 
-The model file must be Keras model file (float model) with a '.h5' filename extension.
+The model zoo supports quantization of both Keras and ONNX models.
 
-The supported quantizer is 'TFLite_converter' and the supported method is 'PTQ'.
+The model file must be a Keras .h5 model file containing a float model, or a .onnx model file containing an ONNX float model.
+
+To quantize a Keras model, set `quantizer` to `TFlite_converter`, and to quantize an ONNX model, set `quantizer` to `onnx_quantizer`.
 
 By default, the quantized model is saved in the 'quantized_models' directory under the 'experiments_outputs' directory. You may use the optional `export_dir` attribute to change the name of this directory.
+
+The `quantization_type` attribute only allows the value "PTQ," which stands for Post Training Quantization. To specify the quantization type for the model input and output, use the `quantization_input_type` and `quantization_output_type` attributes, respectively. 
+
+The `quantization_input_type` attribute is a string that can be set to "int8", "uint8," or "float" to represent the quantization type for the model input. Similarly, the `quantization_output_type` attribute is a string that can be set to "int8", "uint8," or "float" to represent the quantization type for the model output. 
+
+These values are not accounted for when using `Onnx_quantizer`. As both input and output types for the model are float and only the weights and activations are quantized.
+
+The `granularity` is either "per_channel" or "per_tensor". If the parameter is not set, it will default to "per_channel". 'per channel' means all weights contributing to a given layer output channel are quantized with one unique (scale, offset) couple.
+The alternative is 'per tensor' quantization which means that the full weight tensor of a given layer is quantized with one unique (scale, offset) couple. 
+It is obviously more challenging to preserve original float model accuracy using 'per tensor' quantization. But this method is particularly well suited to fully exploit STM32MP2 platforms HW design.
+
+Some topologies can be slightly optimized to become "per_tensor" quantization friendly. Therefore, we propose to optimize the model to improve the "per-tensor" quantization. This is controlled by the `optimize` parameter. Only used when quantizing a (.h5) model using TFlite_converter.
+By default, it is False and no optimization is applied. When set to True, some modifications are applied on original network. Please note that these optimizations only apply when granularity is "per_tensor". 
+To finish, some topologies cannot be optimized. So even if `optimize` is set to True, there is no guarantee that "per_tensor" quantization will preserve the float model accuracy for all the topologies.
+
+The `target_opset` is an integer parameter. This is only needed or accounted for when using `Onnx_quantizer` and is ignored when using `TFlite_converter`. Before doing the onnx quantization, the onnx opset of the model is updated to the target_opset. If no value is provided a default value of 17 is used.
 
 With the configuration file shown above, quantization will be performed using fake data, because you did not provide a quantization dataset, or a quantization split. If you have a dataset at your disposal, it is recommended that you use it as using representative data may improve quantization results. All you need to do is to add a 'dataset' section to your configuration file and provide the path to the audio directory & the csv file associated with the dataset as shown below
 
@@ -651,8 +617,8 @@ dataset:
 
 By default, the value of the `quantization_split` attribute is set to 1.0, meaning that the whole quantization dataset is used if you leave this attribute empty. This is NOT recommended as it will take forever. 
 
-
-#### <a id="3-12">3.12 Model accuracy evaluation</a>
+</details></ul>
+<ul><details open><summary><a href="#3-12">3.12 Model accuracy evaluation</a></summary><a id="3-12"></a>
 
 The YAML code below shows how you can evaluate the accuracy of a model. You still need a dataset, preprocessing and feature_extraction section, but they are omitted here for the sake of readability.
 
@@ -671,8 +637,8 @@ The model file can a Keras model file (float model) with a '.h5' extension or a 
 
 If no test dataset is available, the validation dataset is used instead. If there is no validation dataset, then you need to provide a training set that will be split to create one. This can be specified using the `validation_path`, `training_path` and `validation_split` attribute (see the <a id="3-5">3.5 Datasets</a> section of the documentation).
 
-
-#### <a id="3-13">3.13 Audio file prediction</a>
+</details></ul>
+<ul><details open><summary><a href="#3-13">3.13 Audio file prediction</a></summary><a id="3-13"></a>
 
 You can predict the class of some audio files as shown in the YAML code below. You still need a dataset, preprocessing and feature_extraction section, but they are omitted here for the sake of readability.
 
@@ -691,29 +657,30 @@ The model file can a Keras model file (float model) with a '.h5' extension or a 
 
 The class names have to be provided as there is no dataset to infer them from.
 
-
-#### <a id="3-14">3.14 STM32 tools</a>
+</details></ul>
+<ul><details open><summary><a href="#3-14">3.14 STM32 tools</a></summary><a id="3-14"></a>
 
 This section covers the usage of the STM32-X-CUBEAI tool, which benchmarks .tflite and .h5 models, and converts them to C code
 The `tools` section in the config file looks like this : 
 
 ```yaml
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 ```
 where : 
-- `version` - The **STM32Cube.AI** version used to benchmark the model, e.g. **8.1.0**.
+- `version` - The **STM32Cube.AI** version used to benchmark the model, e.g. **9.1.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `on_cloud` : Set to True to use the STM32 developer cloud to benchmark and convert models. You will need to make an account at [https://stm32ai-cs.st.com/home](https://stm32ai-cs.st.com/home) and will be prompted for your credentials at runtime. If you use the developer cloud, you do not need to set the next two parameters.
-- `path_to_stm32ai` - *Path* to stm32ai executable file. Is only used if `on_cloud` is set to False
+- `path_to_stedgeai` - *Path* to stedgeai executable file. Is only used if `on_cloud` is set to False
 - `path_to_cubeIDE` - *Path* to CubeIDE executable file. Is only used if `on_cloud` is set to False
 
-#### <a id="3-15">3.15 Benchmarking</a>
+</details></ul>
+<ul><details open><summary><a href="#3-15">3.15 Benchmarking</a></summary><a id="3-15"></a>
 
 The YAML code below shows how to benchmark a model on an STM32 board You still need a preprocessing and feature_extraction section, but they are omitted here for the sake of readability.
 
@@ -736,8 +703,8 @@ The `board` attribute is used to provide the name of the STM32 board to benchmar
 
 For AED, the only board available for deployment is the B-U585I-IOT02A, and so we recommend setting `board` to 'B-U585I-IOT02A'
 
-
-#### <a id="3-16">3.16 Deployment</a>
+</details></ul>
+<ul><details open><summary><a href="#3-16">3.16 Deployment</a></summary><a id="3-16"></a>
 
 The YAML code below shows how to deploy a model on an STM32 board.
 Note that you need a preprocessing and feature_extraction section, even though no data is being preprocessed. This is because the parameters in these sections are being used to create look-up tables that are used by the C application to preprocess data on the board in realtime.
@@ -780,12 +747,12 @@ feature_extraction:
   include_last_patch: False
 
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai:  C:/ST/STM32CubeAI/en.x-cube-ai-windows_v8.1.0/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
 
 benchmarking:
   board: B-U585I-IOT02A
@@ -793,7 +760,7 @@ benchmarking:
 deployment:
   c_project_path: ../../stm32ai_application_code/sensing_free_rtos
   IDE: GCC
-  verbosity: 1 n
+  verbosity: 1
   hardware_setup:
     serie: STM32U5
     board: B-U585I-IOT02A
@@ -811,10 +778,10 @@ The class names have to be provided as there is no dataset to infer them from.
 - `unknown_class_threshold` : *float*, used to perform OOD detection. If > 0, thresholds the model output probabilities, and if the maximum probability is below this threshold, displays "Unknown class" instead of the model prediction.
 **WARNING : Mutually exclusive with `dataset.use_garbage_class`**. Consult the section on OOD detection in the model zoo for more details.
 
-
-### <a id="4">4. Training from a model file</a>
-
-#### <a id="4-1">4.1 Training your own model</a>
+</details></ul>
+</details>
+<details open><summary><a href="#4"><b>4. Training from a model file</b></a></summary><a id="4"></a>
+<ul><details open><summary><a href="#4-1">4.1 Training your own model</a></summary><a id="4-1"></a>
 
 You may want to train your own model rather than a model from the Model Zoo.
 
@@ -865,8 +832,8 @@ Note that:
 - If you set the `dropout` attribute but the model does not include a dropout layer, an error will be thrown. Reciprocally, an error will also occur if the model includes a dropout layer but the `dropout` attribute is not set.
 - If the model file was saved with the optimizer, its state won't be preserved as the model file is compiled before training.
 
-
-#### <a id="4-2">4.2. Resuming a training</a>
+</details></ul>
+<ul><details open><summary><a href="#4-2">4.2 Resuming a training</a></summary><a id="4-2"></a>
 
 You may want to resume a training that you interrupted or that crashed.
 
@@ -890,8 +857,9 @@ It is recommended that you restart from the same configuration file that you use
 
 There are two other model files in the same directory as the 'last_augmented_model.h5' file. The one that is called 'best_augmented_model.h5' is the best model that was obtained and can be used to resume a training. The other one that is called 'best_model.h5' is the same model but it cannot be used to resume a training as it does not include the data augmentation layers.
 
-
-### <a id="5">5. Transfer learning</a>
+</details></ul>
+</details>
+<details open><summary><a href="#5"><b>5. Transfer learning</b></a></summary><a id="5"></a>
 
 Transfer learning is a popular training technique used to take advantage of models trained on large datasets.
 
@@ -910,9 +878,8 @@ Here's a small table summarizing the available options :
 | True | True | All | Fine-tuning |
 | False | False or True | All | Training from scratch
 
-
-
-### <a id="6">6. Handling out-of-distribution data </a>
+</details>
+<details open><summary><a href="#6"><b>6. Handling out-of-distribution data</b></a></summary><a id="6"></a>
 
 A common issue in audio event detection applications is being able to reject samples which do not come from one of the classes the model is trained on.
 The model zoo provides several baseline options for doing this. 
@@ -936,7 +903,8 @@ Additionally, you can use the `dataset.n_samples_per_garbage_class`(see section<
 **IMPORTANT NOTE** These two methods are **NOT COMPATIBLE**, and cannot be used together. You must enable one or the other, or none at all.
 This means that if `dataset.use_garbage_class` is set to `True`, then `deployment.unknown_class_threshold` must be set to 0, and that if `deployment.unknown_class_threshold` is set to a float > 0, then `dataset.use_garbage_class` must be set to `False`
 
-### <a id="7">7. Creating your own model</a>
+</details>
+<details open><summary><a href="#7"><b>7. Creating your own model</b></a></summary><a id="7"></a>
 
 You can create your own custom model and get it handled as any built-in Model Zoo model. If you want to do that, you need to modify a number of Python source code files that are all located under the *<MODEL-ZOO-ROOT>/image_classification/src* directory root.
 
@@ -959,7 +927,7 @@ training:
    dropout: 0.2
 ```
 
-If you want to use transfer learning with your custom model, you need to modify the value of the argument `last_layer_index` in the call to the function `transfer_pretrained_weights()` in file *utils/models_mgt.py*. This argument needs to be set to the index of the last layer of the model backbone, i.e. the last layer before the classifier begins. Layer indices are numbered from 0 (the input layer has index 0).
+If you want to use transfer learning with your custom model, you need to modify the value of the argument `last_layer_index` in the call to the function `transfer_pretrained_weights()` in file *common/utils/models_utils.py*. This argument needs to be set to the index of the last layer of the model backbone, i.e. the last layer before the classifier begins. Layer indices are numbered from 0 (the input layer has index 0).
 
 After doing this, you will be able to use transfer learning as shown below:
 
@@ -973,7 +941,8 @@ training:
    dropout: 0.2
 ```
 
-### <a id="8">8. Training a model on FSD50K </a>
+</details>
+<details open><summary><a href="#8"><b>8. Training a model on FSD50K</b></a></summary><a id="8"></a>
 
 **Download the dataset**
 Download the dataset here : https://zenodo.org/record/4060432
@@ -1014,7 +983,8 @@ All this happens automatically if you set `dataset.name` to `fsd50k`.
 
 That's it !
 
-### <a id="appendix-a">Appendix A: Available Model Zoo models</a>
+</details>
+<details open><summary><a href="#A"><b>Appendix A: Available Model Zoo models</b></a></summary><a id="A"></a>
 
 The models that are available with the Model Zoo and their parameters are described below.
 
@@ -1024,8 +994,7 @@ When using pretrained backbones with these models, you will want to have specifi
 
 If you are fine-tuning, or training from scratch, feel free to use whichever preprocessing and feature extraction parameters you desire !
 
- 
-#### <a id="a-1">A.1 Yamnet-256</a>
+<ul><details open><summary><a href="#A-1">A.1 Yamnet-256</a></summary><a id="A-1"></a>
 
 ```yaml
 model:
@@ -1039,8 +1008,8 @@ model:
 This is a smaller version of Yamnet (https://www.kaggle.com/models/google/yamnet/) that outputs embeddings of size 256, and has been stripped of its preprocessing layers.
 Note that we only allow using Yamnet with Google's pretrained weights (otherwise it'd just be a regular MobileNetv1), hence `pretrained_weights` must be set to True.
 
-
-#### <a id="a-2">A.2 MiniResNet</a>
+</details></ul>
+<ul><details open><summary><a href="#A-2">A.2 MiniResNet</a></summary><a id="A-2"></a>
 
 ```yaml
 model:
@@ -1059,8 +1028,8 @@ These are small ResNets, based upon the Keras implementation (https://keras.io/a
 `input_shape` must be given in the format (n_mels, n_frames).
 `pretrained_weights` can be either True or False.
 
-
-#### <a id="a-3">A.3 MiniResNetV2</a>
+</details></ul>
+<ul><details open><summary><a href="#A-3">A.3 MiniResNetV2</a></summary><a id="A-3"></a>
 
 ```yaml
 model:
@@ -1079,12 +1048,14 @@ These are small ResNetv2s, based upon the Keras implementation (https://keras.io
 `input_shape` must be given in the format (n_mels, n_frames).
 `pretrained_weights` can be either True or False.
 
-
-
-### <a xid="appendix-b">Appendix B: learning rate schedulers
+</details></ul>
+</details>
+<details open><summary><a href="#B"><b>Appendix B: learning rate schedulers</b></a></summary><a id="B"></a>
 
 A number of callbacks are available that implement different learning rate decay functions. The ReduceLROnPlateau and LearningRateScheduler schedulers are Keras  schedulers, the others are provided with the Model Zoo.
 
 To use one of these learning rate schedulers, simply add it to the list of callbacks in the 'training' section of your configuration file. The learning rate is updated at the beginning of each epoch.
 
-This appendix is available in [training/lr_schedulers_README.md](training/lr_schedulers_README.md)
+This appendix is available in [common/training/lr_schedulers_README.md](../../common/training/lr_schedulers_README.md)
+
+</details>

@@ -311,6 +311,23 @@ AI_INTERFACE_ENTRY void ai_div_buffer_UINT8(ai_handle out, const ai_handle a, co
                                             const ai_handle pScale1, const ai_handle pZp1, const ai_handle pScale2, const ai_handle pZp2,
                                             const ai_handle pScaleout, const ai_handle pZpout, const ai_i32 scalar_op);
 
+AI_INTERFACE_ENTRY void ai_bitshift_right(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_right_buffer(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_right_u32(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_right_buffer_u32(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_right_u16(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_right_buffer_u16(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_right_u8(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_right_buffer_u8(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_left(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_left_buffer(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_left_u32(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_left_buffer_u32(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_left_u16(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_left_buffer_u16(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+AI_INTERFACE_ENTRY void ai_bitshift_left_u8(ai_handle out, const ai_handle a, const ai_handle b);
+AI_INTERFACE_ENTRY void ai_bitshift_left_buffer_u8(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
+
 AI_INTERFACE_ENTRY void ai_floor_div(ai_handle out, const ai_handle a, const ai_handle b);
 AI_INTERFACE_ENTRY void ai_floor_div_buffer(ai_handle out, const ai_handle a, const ai_handle b, const ai_size loop);
 AI_INTERFACE_ENTRY void ai_floor_mod(ai_handle out, const ai_handle a, const ai_handle b);

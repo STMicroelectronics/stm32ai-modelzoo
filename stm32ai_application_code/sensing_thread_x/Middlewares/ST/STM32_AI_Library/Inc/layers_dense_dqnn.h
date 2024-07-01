@@ -236,6 +236,19 @@ void forward_dense_is8os1ws1_bn(ai_layer* layer);
 
 /*!
  * @brief Forward function for a dense layer with signed 8-bit input,
+ * binary weights and binary output.
+ * The BN is fused, i.e., the layer requires weights, scale, and offset, where
+ * weights are those of the dense layer, scale is that of the BN, and the offset
+ * corresponds to dense bias * bn scale + bn offset. If the parameters do not
+ * agree with such convention, the behavior is undefined.
+ * @ingroup layers_dense_dqnn
+ * @param layer template layer as an opaque pointer
+ */
+AI_INTERNAL_API
+void forward_dense_is8os1ws1_bn_fxp(ai_layer* layer);
+
+/*!
+ * @brief Forward function for a dense layer with signed 8-bit input,
  * 8-bit signed output, and binary weights.
  * @ingroup layers_dense_dqnn
  * @param layer template layer as an opaque pointer

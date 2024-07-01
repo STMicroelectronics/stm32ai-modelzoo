@@ -85,7 +85,7 @@ void Camera_Init(AppConfig_TypeDef *App_Config_Ptr)
   hmdma.Init.DestBlockAddressOffset   = 0;
 
 #if ASPECT_RATIO_MODE == ASPECT_RATIO_PADDING
- uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer_no_borders;
+  uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer_no_borders;
 #else
   uint8_t *camera_capture_buffer = App_Config_Ptr->camera_capture_buffer;
 #endif
@@ -109,6 +109,10 @@ void Camera_Init(AppConfig_TypeDef *App_Config_Ptr)
   {
     Error_Handler();
   }
+
+#ifdef TEST_MODE
+  Camera_Enable_TestBar_Mode();
+#endif
   
   /* Modify DMA2_Stream3 configuration so to increase its priority and its 
   memory transfer size: purpose is to avoid DCMI overflow */
@@ -251,8 +255,6 @@ void BSP_CAMERA_FrameEventCallback(uint32_t Instance)
   __disable_irq();
   
   /*Notifies the backgound task about new frame available for processing*/
-  App_Config.new_frame_ready = 1;
-  
   App_Config.new_frame_ready = 1;
   
   /*Suspend acquisition of the data stream coming from camera*/

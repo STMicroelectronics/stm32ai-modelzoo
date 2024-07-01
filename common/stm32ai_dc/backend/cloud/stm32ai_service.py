@@ -13,9 +13,9 @@ import json
 import typing
 from stm32ai_dc.backend.cloud.file_service import FileService
 from stm32ai_dc.errors import ModelNotFoundError, WrongTypeError
-from stm32ai_dc.types import CliParameterCompression, CliParameterType
+from stm32ai_dc.types import AtonParametersSchema, CliParameterCompression, CliParameterType
 from stm32ai_dc.types import CliParameterVerbosity, CliParameters
-from .helpers import get_main_route_api_version, get_ssl_verify_status
+from .helpers import get_ssl_verify_status
 from .helpers import get_value_or_default, _get_env_proxy
 from .endpoints import get_stm32ai_analyze_ep, get_stm32ai_generate_ep
 from .endpoints import get_stm32ai_run, get_stm32ai_service_ep
@@ -66,13 +66,15 @@ class Stm32AiService:
             data = {}
             for field in options._fields:
                 current_value = getattr(options, field)
-                if field in ['output'] or current_value is None:
+                if field in ['output', 'atonnOptions'] or current_value is None:
                     continue
                 # if isinstance(current_value, bool):
                 #     if current_value:
                 #         data[field] = ''
                 if field == 'target_info':
                     files.update({'target.info': open(file=options.target_info, mode='rb')})
+                if field == 'model' and os.path.exists(options.model):
+                    files.update({'model': open(options.model, mode='rb')})
                 if isinstance(current_value, CliParameterCompression):
                     data[field] = current_value.value
                 elif isinstance(current_value, CliParameterType):
@@ -82,6 +84,7 @@ class Stm32AiService:
                 else:
                     if current_value is not None:
                         data[field] = current_value
+            data['atonnOptions'] = AtonParametersSchema().dump(options.atonnOptions)
             return data
 
         model_file_path = get_value_or_default(options, 'model', None)
@@ -89,12 +92,17 @@ class Stm32AiService:
         data['statsType'] = os.environ.get('STATS_TYPE', None)
 
         if os.path.exists(model_file_path):
-            uploaded = self.file_service.upload_model(modelPath=model_file_path)
+            cloud_models = self._get_cloud_models()
+            uploaded = False
+            if os.path.basename(model_file_path) not in cloud_models:
+                uploaded = self.file_service.upload_model(modelPath=model_file_path)
+            else:
+                uploaded = True
             if uploaded:
-                data['model'] = os.path.basename(model_file_path)         
+                data['model'] = os.path.basename(model_file_path)
 
         cloud_models = self._get_cloud_models()
-        if data['model'] not in cloud_models:
+        if data['model'] not in cloud_models and not os.path.exists(data['model']):
             raise ModelNotFoundError(f"model: {model_file_path} not \
                         found locally or on cloud")
 
@@ -112,6 +120,7 @@ class Stm32AiService:
                 if options.output is None:
                     print("No output directory specified, please specify one")
                     return {'status': 'ko'}
+                os.makedirs(options.output, exist_ok=True)
                 with open(
                         os.path.join(options.output, 'output.zip'), 'wb') as f:
                     f.write(resp.content)

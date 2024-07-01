@@ -21,14 +21,14 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow.keras.backend as K
 from hydra.core.hydra_config import HydraConfig
+from typing import Optional
 
-sys.path.append(os.path.abspath('../utils'))
-sys.path.append(os.path.abspath('./postprocessing'))
 from object_det_metrics.lib.BoundingBox import BoundingBox
 from object_det_metrics.lib.BoundingBoxes import BoundingBoxes
 from object_det_metrics.lib.Evaluator import Evaluator
 from object_det_metrics.lib.utils import BBFormat, BBType, CoordinatesType
 from tiny_yolo_v2_postprocess import tiny_yolo_v2_decode, tiny_yolo_v2_nms
+from typing import Optional
 
 
 def check(va):
@@ -83,7 +83,7 @@ def calculate_float_map(cfg, best_model):
         print("folder already exist")
     else:
         os.system("mkdir {}".format(ap_folder))
-    tf.print('[INFO] Starting calculating map')
+    tf.print('[INFO] : Starting calculating map')
     m_Start = time.time()
     ap_classes = []
     ap_classes_names = []
@@ -180,15 +180,18 @@ def calculate_float_map(cfg, best_model):
         tf.print("[RESULTS] AP for class {} = {:.2f} % ".format(ap_classes_names[rank], av_p*100))
         mAP = av_p*100 + mAP
     tf.print("[RESULTS] mAP = {:.2f} % ".format(round((mAP/len(ap_classes)), 2)))
-    tf.print("[INFO] Evaluation took {:.4} minutes".format(elapsed))
+    tf.print("[INFO] : Evaluation took {:.4} minutes".format(elapsed))
     return round((mAP/len(ap_classes)), 2)
-def calculate_quantized_map(cfg, tflite_model):
+
+
+def calculate_quantized_map(cfg, tflite_model, num_threads: Optional[int] = 1):
     """
     Calculates the mean average precision (mAP) for the given model on the test set.
 
     Args:
         cfg (config): The configuration file.
         tflite_model (tf.keras.Model): The model to evaluate.
+        num_threads: Optional[int]: number of threads for the tflite interpreter
     Returns:
         float: The mAP value.
     """
@@ -212,13 +215,13 @@ def calculate_quantized_map(cfg, tflite_model):
     else:
         os.system("mkdir {}".format(ap_folder))
     
-    interpreter_quant = tf.lite.Interpreter(model_path=tflite_model)
+    interpreter_quant = tf.lite.Interpreter(model_path=tflite_model, num_threads=num_threads)
     interpreter_quant.allocate_tensors()
     input_details = interpreter_quant.get_input_details()[0]
     input_index_quant = interpreter_quant.get_input_details()[0]["index"]
     output_index_quant = interpreter_quant.get_output_details()[0]["index"]
 
-    tf.print('[INFO] Starting calculating map')
+    tf.print('[INFO] : Starting calculating map')
     m_Start = time.time()
     ap_classes = []
     ap_classes_names = []
@@ -322,7 +325,7 @@ def calculate_quantized_map(cfg, tflite_model):
         tf.print("[RESULTS] AP for class {} = {:.2f} % ".format(ap_classes_names[rank], av_p*100))
         mAP = av_p*100 + mAP
     tf.print("[RESULTS] mAP = {:.2f} % ".format(round((mAP/len(ap_classes)), 2)))
-    tf.print("[INFO] Evaluation took {:.4} minutes".format(elapsed))
+    tf.print("[INFO] : Evaluation took {:.4} minutes".format(elapsed))
     return round((mAP/len(ap_classes)), 2)
 
 def evaluate_tiny_yolo_v2(cfg, valid_ds= None, test_ds = None, model_path = None) -> None:
@@ -354,12 +357,12 @@ def evaluate_tiny_yolo_v2(cfg, valid_ds= None, test_ds = None, model_path = None
     if Path(model_path).suffix == '.h5':
         # Load the model
         model = tf.keras.models.load_model(model_path)
-        print("[INFO] Evaluating the float model...")
+        print("[INFO] : Evaluating the float model...")
         mAP = calculate_float_map(cfg, model)
         mlflow.log_metric("float_model_mAP", mAP)
     # TFlite model
     if Path(model_path).suffix == '.tflite':
         # Evaluate quantized TensorFlow Lite model
-        print("[INFO] Evaluating the TFlite model...")
-        mAP = calculate_quantized_map(cfg, model_path)
+        print("[INFO] : Evaluating the TFlite model...")
+        mAP = calculate_quantized_map(cfg, model_path, num_threads=cfg.general.num_threads_tflite)
         mlflow.log_metric("int_model_mAP", mAP)

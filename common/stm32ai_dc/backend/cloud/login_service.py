@@ -16,10 +16,10 @@ import os
 import time
 from pathlib import Path
 
-from stm32ai_dc.errors import InvalidCredentialsException, LoginFailureException
+from stm32ai_dc.errors import BlockedAccountException, InvalidCrendetialsException, LoginFailureException
 
 from .helpers import get_ssl_verify_status, _get_env_proxy
-from .endpoints import get_login_authenticate_ep, get_login_service_ep
+from .endpoints import get_callback_url_ep, get_client_id_ep, get_login_authenticate_ep, get_login_service_ep, get_sso_url_ep, get_user_service_ep
 
 LOGIN_SERVICE_MIN_VERSION = 0.0
 
@@ -38,7 +38,7 @@ class LoginService:
         sso_resp = self.read_token_from_storage()
         if (sso_resp['expires_at'] != None):
             date = time.time()
-            expiration_date = sso_resp['expires_at'] * 1000
+            expiration_date = sso_resp['expires_at']
             if (expiration_date < date):
                 # is expired
                 refresh_resp = self.refresh()
@@ -59,8 +59,8 @@ class LoginService:
                 'refresh_token': sso_resp['refresh_token']
             })
             json_resp = resp.json()
-            if (json_resp['sub']):
-                self.save_token_response(json_resp)
+            if (json_resp['access_token']):
+                self.save_token_response({**sso_resp, **json_resp})
                 return json_resp
         return None
 
@@ -80,7 +80,9 @@ class LoginService:
             try:
                 self._login(username, password)
                 return self.auth_token
-            except InvalidCredentialsException as e:
+            except InvalidCrendetialsException as e:
+                raise e
+            except BlockedAccountException as e:
                 raise e
             except Exception as e:
                 print('Login issue, retry (' + str(i+1) + '/5)')
@@ -95,9 +97,9 @@ class LoginService:
         s.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv59.0) Gecko/20100101',
         })
-        provider = 'https://sso.st.com'
-        client_id = 'oidc_prod_client_app_stm32ai'
-        redirect_uri = 'https://stm32ai-cs.st.com/callback'
+        provider = get_sso_url_ep()
+        client_id = get_client_id_ep()
+        redirect_uri = get_callback_url_ep()
 
         # Get connection initialization procedure
         resp = s.get(
@@ -146,7 +148,10 @@ class LoginService:
         if (resp.status_code == 200):
             failure_regex = re.search(r'You have provided the wrong password. You have \d+ attempts left after which your account password will expire.', resp.text)
             if (failure_regex):
-                raise InvalidCredentialsException
+                raise InvalidCrendetialsException
+            blocked_regex = re.search(r'You have exceeded 5 login attempts. Please click below on Forgot Password to set a new one.', resp.text)
+            if (blocked_regex):
+                raise BlockedAccountException
 
         redirect = resp.headers['Location']
         is_ready = False
@@ -173,7 +178,7 @@ class LoginService:
         # Get tokens with POST endpoint
 
         resp = s.post(
-            url='https://stm32ai-cs.st.com/api/user_service/login/callback',
+            url=get_user_service_ep() + '/login/callback',
             data={
                 "redirect_url": redirect_uri,
                 "code": auth_code

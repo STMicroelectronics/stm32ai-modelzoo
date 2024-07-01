@@ -16,19 +16,14 @@ from pathlib import Path
 from typing import Tuple, Dict, Optional, List
 import tensorflow as tf
 from omegaconf import DictConfig
-from onnx import ModelProto
-import onnxruntime
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../models'))
-sys.path.append(os.path.join(os.path.dirname(__file__), '../data_augmentation'))
-
-from utils import check_attributes
+from models_utils import transfer_pretrained_weights, check_attribute_value, check_model_support
+from cfg_utils import check_attributes
 from data_augmentation_layer import DataAugmentationLayer
 from mobilenetv1 import get_mobilenetv1
 from mobilenetv2 import get_mobilenetv2
 from fdmobilenet import get_fdmobilenet
 from resnetv1 import get_resnetv1
-from squeezenetv10 import get_squeezenetv10
 from squeezenetv11 import get_squeezenetv11
 from stmnist import get_stmnist
 from st_efficientnet_lc_v1 import get_st_efficientnet_lc_v1
@@ -37,93 +32,7 @@ from st_resnet_8_hybrid import get_st_resnet_8_hybrid_v1, get_st_resnet_8_hybrid
 from custom_model import get_custom_model
 
 
-def check_attribute_value(attribute_value: str, values: List[str] = None,
-                          name: str = None, message: str = None) -> None:
-    """
-    Check if an attribute value is valid based on a list of supported values.
-    Args:
-        attribute_value(str): The value of the attribute to check.
-        values(List[str]): A list of supported values.
-        name(str): The name of the attribute being checked.
-        message(str): A message to print if the attribute is not supported.
-    Raises:
-        ValueError: If the attribute value is not in the list of supported values.
-    """
-    if attribute_value not in values:
-        raise ValueError("\nSupported values for `{}` attribute are {}. "
-                         "Received {}.{}".format(name, values, attribute_value, message))
-
-
-def check_model_support(model_name: str, version: Optional[str] = None,
-                        supported_models: Dict = None,
-                        message: Optional[str] = None) -> None:
-    """
-    Check if a model name and version are supported based on a dictionary of supported models and versions.
-
-    Args:
-        model_name(str): The name of the model to check.
-        version(str): The version of the model to check. May be set to None by the caller.
-        supported_models(Dict[str, List[str]]): A dictionary of supported models and their versions.
-        message(str): An error message to print.
-
-    Raises:
-        NotImplementedError: If the model name or version is not in the list of supported models or versions.
-        ValueError: If the version attribute is missing or not applicable for the given model.
-    """
-    if model_name not in supported_models:
-        x = list(supported_models.keys())
-        raise ValueError("\nSupported model names are {}. Received {}.{}".format(x, model_name, message))
-
-    model_versions = supported_models[model_name]
-    if model_versions:
-        # There are different versions of the model.
-        if not version:
-            # The version is missing.
-            raise ValueError("\nMissing `version` attribute for `{}` model.{}".format(model_name, message))
-        if version not in model_versions:
-            # The version is not a supported version.
-            raise ValueError("\nSupported versions for `{}` model are {}. "
-                             "Received {}.{}".format(model_name, model_versions, version, message))
-    else:
-        if version:
-            # A version was given but there is no version for this model.
-            raise ValueError("\nThe `version` attribute is not applicable "
-                             "to '{}' model.{}".format(model_name, message))
-
-
-def transfer_pretrained_weights(target_model: tf.keras.Model, source_model_path: str = None,
-                                end_layer_index: int = None, target_model_name: str = None) -> None:
-    """
-    Copy the weights of a source model to a target model. Only the backbone weights
-    are copied as the two models can have different classifiers.
-
-    Args:
-        target_model (tf.keras.Model): The target model.
-        source_model_path (str): Path to the source model file (h5 file).
-        end_layer_index (int): Index of the last backbone layer (the first layer of the model has index 0).
-        target_model_name (str): The name of the target model.
-
-    Raises:
-        ValueError: The source model file cannot be found.
-        ValueError: The two models are incompatible because they have different backbones.
-    """
-    if source_model_path:
-        if not os.path.isfile(source_model_path):
-            raise ValueError("Unable to find pretrained model file.\nReceived "
-                             "model path {}".format(source_model_path))
-        source_model = tf.keras.models.load_model(source_model_path, compile=False)
-
-    message = "\nUnable to transfer to model `{}` ".format(target_model_name)
-    message += "the weights from model {}\n".format(source_model_path)
-    message += "Models are incompatible (backbones are different)."
-    if len(source_model.layers) < end_layer_index + 1:
-        raise ValueError(message)
-    for i in range(end_layer_index + 1):
-        weights = source_model.layers[i].get_weights()
-        try:
-            target_model.layers[i].set_weights(weights)
-        except:
-            raise ValueError(message)
+IC_CUSTOM_OBJECTS={'DataAugmentationLayer': DataAugmentationLayer}
 
 
 def check_mobilenet(cfg: DictConfig = None, section: str =None, message: str = None):
@@ -162,7 +71,7 @@ def get_model(cfg: DictConfig = None, num_classes: int = None, dropout: float = 
         'mobilenet': ['v1', 'v2'],
         'fdmobilenet': None,
         'resnet': ['v1'],
-        'squeezenet': ['v10', 'v11'],
+        'squeezenet': ['v11'],
         'stmnist': None,
         'st_efficientnet_lc': ['v1'],
         'st_fdmobilenet': ['v1'],
@@ -244,18 +153,6 @@ def get_model(cfg: DictConfig = None, num_classes: int = None, dropout: float = 
                         source_model_path=cfg.pretrained_model_path,
                         end_layer_index=24,
                         target_model_name="resnet_v1")
-
-    # If the model is SqueezeNet V1.0
-    if model_name == "squeezenet" and model_version == "v10":
-        check_attributes(cfg, expected=["name", "version", "input_shape"],
-                         optional=["pretrained_model_path"], section=section)
-        model = get_squeezenetv10(input_shape=cfg.input_shape, num_classes=num_classes, dropout=dropout)
-        if cfg.pretrained_model_path:
-            transfer_pretrained_weights(
-                        model,
-                        source_model_path=cfg.pretrained_model_path,
-                        end_layer_index=39,
-                        target_model_name="squeezenet_v10")
 
     # If the model is SqueezeNet V1.1
     if model_name == "squeezenet" and model_version == "v11":
@@ -370,68 +267,21 @@ def get_model(cfg: DictConfig = None, num_classes: int = None, dropout: float = 
     return model
 
 
-def get_model_name_and_its_input_shape(model_path: str = None) -> Tuple:
+def get_loss(num_classes: int) -> tf.keras.losses:
     """
-    Load a model from a given file path and return the model name and
-    its input shape. Supported model formats are .h5, .tflite and .onnx.
-    The basename of the model file is used as the model name. The input
-    shape is extracted from the model.
+    Returns the appropriate loss function based on the number of classes in the dataset.
 
     Args:
-        model_path(str): A path to an .h5, .tflite or .onnx model file.
+        num_classes (int): The number of classes in the dataset.
 
     Returns:
-        Tuple: A tuple containing the loaded model name and its input shape.
-               The input shape is a tuple of length 3.
-    Raises:
-        ValueError: If the model file extension is not '.h5' or '.tflite'.
-        RuntimeError: If the input shape of the model cannot be found.
+        tf.keras.losses: The appropriate loss function based on the number of classes in the dataset.
     """
-
-    # We use the file basename as the model name.
-    model_name = Path(model_path).stem
-
-    file_extension = Path(model_path).suffix
-    if file_extension == ".h5":
-        # When we resume a training, the model includes the preprocessing layers
-        # (augmented model). Therefore, we need to declare the custom data
-        # augmentation layer as a custom object to be able to load the model.
-        model = tf.keras.models.load_model(
-                        model_path,
-                        custom_objects={
-                            'DataAugmentationLayer': DataAugmentationLayer
-                        })
-        input_shape = tuple(model.input.shape[1:])
-
-    elif file_extension == ".tflite":
-        try:
-            # Load the tflite model
-            interpreter = tf.lite.Interpreter(model_path=model_path)
-            interpreter.allocate_tensors()
-            # Get the input details
-            input_details = interpreter.get_input_details()
-            input_shape = input_details[0]['shape']
-            input_shape = tuple(input_shape)[-3:]
-        except:
-            raise RuntimeError("\nUnable to extract input shape from .tflite model file\n"
-                               f"Received path {model_path}")
-
-    elif file_extension == ".onnx":
-        try:
-            # Load the model
-            onx = ModelProto()
-            with open(model_path, "rb") as f:
-                content = f.read()
-                onx.ParseFromString(content)
-            sess = onnxruntime.InferenceSession(model_path)
-            # Get the model input shape
-            input_shape = sess.get_inputs()[0].shape
-            input_shape = tuple(input_shape)[-3:]
-        except:
-            raise RuntimeError("\nUnable to extract input shape from .onnx model file\n"
-                               f"Received path {model_path}")
-
+    # We use the sparse version of the categorical crossentropy because
+    # this is what we use to load the dataset.
+    if num_classes > 2:
+        loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
     else:
-        raise RuntimeError(f"\nUnknown/unsupported model file type.\nReceived path {model_path}")
+        loss = tf.keras.losses.BinaryCrossentropy(from_logits=False)
 
-    return model_name, input_shape
+    return loss

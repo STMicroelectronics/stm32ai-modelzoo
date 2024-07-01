@@ -60,6 +60,7 @@ For an image resolution of NxM and P classes
 | STM32U5  |[x]|[]|
 | STM32H7  |[x]|[x]|
 | STM32MP1 |[x]|[x]|
+| STM32MP2 |[x]|[x]|
 
 
 # Performances
@@ -81,27 +82,41 @@ To deploy your trained model, you need to configure the same [user_config.yaml](
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
-### Reference MCU memory footprint based on Flowers dataset (see Accuracy for details on dataset)
+### Reference **MCU** memory footprint based on Flowers and ImageNet dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
-|-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 225.17 KiB     | 32.83 KiB       | 406.86 KiB    | 115.14 KiB       | 258 KiB   | 522 KiB  | 8.1.0   |
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite) | Int8   | 224x224x3    | STM32H7 | 686.5 KiB     | 32.88 KiB       | 406.86 KiB    | 115.26 KiB    | 719.38 KiB   | 522.12 KiB  | 8.1.0    |
+| Model                                                                                                                                            | Dataset  | Format | Resolution  | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM  | Total Flash | STM32Cube.AI version |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|----------|--------|-------------|---------|----------------|-------------|---------------|------------|------------|-------------|----------------------|
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite)             | Flowers  | Int8   | 128x128x3   | STM32H7 | 237.32 KiB     | 30.14 KiB   | 406.86 KiB    | 108.29 KiB | 267.46 KiB | 515.15 KiB  | 9.1.0                |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite)             | Flowers  | Int8   | 224x224x3   | STM32H7 | 832.64 KiB     | 30.19 KiB   | 406.86 KiB    | 108.40 KiB | 862.83 KiB | 515.26 KiB  | 9.1.0                |
 
 
-### Reference inference time based on Flowers dataset (see Accuracy for details on dataset)
+### Reference **MCU** inference time based on Flowers and ImageNet dataset (see Accuracy for details on dataset)
 
 
-| Model             | Format | Resolution | Board            | Execution Engine | Frequency   | Inference time (ms) | STM32Cube.AI version  |
-|-------------------|--------|------------|------------------|------------------|-------------|---------------------|-----------------------|
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite) | Int8   | 128x128x3   | STM32H747I-DISCO | 1 CPU | 400 MHz       | 101.11  ms      | 8.1.0                 |
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite) | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU | 400 MHz       | 363.82 ms       | 8.1.0                |
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite) | Int8   | 128x128x3   | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 47.57  ms **    | X-LINUX-AI v5.0.0     |
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite) | Int8   | 224x224x3   | STM32MP157F-DK2  | 2 CPU | 800 MHz       | 141.92 ms **    | X-LINUX-AI v5.0.0     |
+| Model                                                                                                                                            | Dataset  | Format | Resolution  | Board            | Execution Engine | Frequency   | Inference time (ms) | STM32Cube.AI version  |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|----------|--------|-------------|------------------|------------------|-------------|---------------------|-----------------------|
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite)             | Flowers  | Int8   | 128x128x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 94.34  ms          | 9.1.0                 |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite)             | Flowers  | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz     | 290.75 ms           | 9.1.0                 |
 
-** The results on STM32MP157F-DK2 are obtained using TensorFlowLite 2.11.0
 
+### Reference **MPU** inference time based on Flowers and ImageNet dataset (see Accuracy for details on dataset)
+| Model                                                                                                                                            | Dataset  | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|----------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
+| [MobileNet v2 1.0_per_tensor](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8_per_tensor.tflite) | ImageNet | Int8   | 224x224x3  |  per-tensor   | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 11.92 ms            | 92.74 | 7.26  |0     | v5.1.0             | OpenVX                |
+| [MobileNet v2 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8.tflite)                       | ImageNet | Int8   | 224x224x3  |  per-channel **  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 76.29 ms            | 3.13  | 96.87 |0     | v5.1.0             | OpenVX                |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite)             | Flowers  | Int8   | 224x224x3  |  per-channel **  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 25.51 ms            | 4.37  | 95.63 |0     | v5.1.0             | OpenVX                |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite)             | Flowers  | Int8   | 128x128x3  |  per-channel **  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 9.14  ms            | 12.06 | 87.94 |0     | v5.1.0             | OpenVX                |
+| [MobileNet v2 1.0_per_tensor](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8_per_tensor.tflite) | ImageNet | Int8   | 224x224x3  |  per-tensor   | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 332.9 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8.tflite)                       | ImageNet | Int8   | 128x128x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 194.1 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite)             | Flowers  | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 54.52 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite)             | Flowers  | Int8   | 128x128x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 17.16 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 1.0_per_tensor](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8_per_tensor.tflite) | ImageNet | Int8   | 224x224x3  |  per-tensor   | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 415.7 ms            | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8.tflite)                       | ImageNet | Int8   | 128x128x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 308.80 ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_224_fft/mobilenet_v2_0.35_224_fft_int8.tflite)             | Flowers  | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 54.85  ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite)             | Flowers  | Int8   | 128x128x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 27.17  ms           | NA    | NA    |100   | v5.1.0             | TensorFlowLite 2.11.0 |
+
+** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 ### Accuracy with Flowers dataset
 
 
@@ -181,6 +196,20 @@ Dataset details: [link](https://cocodataset.org/) , License [Creative Commons At
 | [MobileNet v2 0.35 fft](../mobilenetv2/ST_pretrainedmodel_public_dataset/person/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_int8.tflite) | Int8   | 128x128x3   | 94.95 % |
 
 
+### Accuracy with ImageNet
+
+Dataset details: [link](https://www.image-net.org), License: BSD-3-Clause, Quotation[[4]](#4)
+Number of classes: 1000.
+To perform the quantization, we calibrated the activations with a random subset of the training set.
+For the sake of simplicity, the accuracy reported here was estimated on the 50000 labelled images of the validation set.
+
+
+| Model                                                                                                                                            | Format | Resolution | Top 1 Accuracy |
+|--------------------------------------------------------------------------------------------------------------------------------------------------|--------|------------|----------------|
+| [MobileNet v2 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224.h5)                                | Float  | 224x224x3  | 68.85 %        |
+| [MobileNet v2 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8.tflite)                       | Int8   | 224x224x3  | 67.97 %        |
+| [MobileNet v2 1.0_per_tensor](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224_int8_per_tensor.tflite) | Int8   | 224x224x3  | 64.53 %        |
+
 ## Retraining and code generation
 
 
@@ -205,3 +234,7 @@ J, ARUN PANDIAN; GOPAL, GEETHARAMANI (2019), "Data for: Identification of Plant 
 
 <a id="3">[3]</a>
 L. Bossard, M. Guillaumin, and L. Van Gool, "Food-101 -- Mining Discriminative Components with Random Forests." European Conference on Computer Vision, 2014.
+
+<a id="4">[4]</a>
+Olga Russakovsky*, Jia Deng*, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael Bernstein, Alexander C. Berg and Li Fei-Fei.
+(* = equal contribution) ImageNet Large Scale Visual Recognition Challenge.

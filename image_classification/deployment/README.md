@@ -3,36 +3,28 @@
 This tutorial demonstrates how to deploy a pre-trained image classification model built with TensorFlow Lite (.tflite), Keras (.h5), or (.ONNX) on an STM32 board using STM32Cube.AI.
 
 ## <a id="">Table of contents</a>
-### <a href="#1">1. Before You Start</a>
-#### <a href="#1-1">1.1 Hardware Setup</a>
-#### <a href="#1-2">1.2 Software Requirements</a>
-#### <a href="#1-3">1.3 Specifications</a>
-### <a href="#2">2. Configure the yaml file</a>
-#### <a href="#2-1">2.1 Setting the model and the operation mode</a>
-#### <a href="#2-2">2.2 Dataset Configuration</a>
-#### <a href="#2-3">2.3 Deployment Parameters</a>
-#### <a href="#2-4">2.4 Hydra and MLflow settings</a>
-### <a href="#3">3. Deploy pretrained model on STM32 board</a>
 
-
-__________________________________________
-
-## <a id="1">1. Before You Start</a>
-### <a id="1-1">1.1 Hardware Setup</a>
+<details open><summary><a href="#1"><b>1. Before You Start</b></a></summary><a id="1"></a>
+<ul><details open><summary><a href="#1-1">1.1 Hardware Setup</a></summary><a id="1-1"></a>
 
 The [stm32ai application code](../../stm32ai_application_code/image_classification/README.md) runs on a hardware setup consisting of an STM32 microcontroller board connected to a camera module board. This version supports the following boards only:
 
 - [STM32H747I-DISCO](https://www.st.com/en/product/stm32h747i-disco)
 - [B-CAMS-OMV](https://www.st.com/en/product/b-cams-omv)
 
-### <a id="1-2">1.2 Software Requirements</a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Software Requirements</a></summary><a id="1-2"></a>
 
-You need to download and install the following software:
+You can use the [STM32 developer cloud](https://stm32ai-cs.st.com/home) to access the STM32Cube.AI functionalities without installing the software. This requires internet connection and making a free account. Or, alternatively, you can install [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally. In addition to this you will also need to install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html) for building the embedded project.
 
-- [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html)
-- If using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, open the link and download the package, then extract both `.zip` and `.pack` files.
+For local installation :
 
-### <a id="1-3"> 1.3 Specifications</a>
+- Download and install [STM32CubeIDE](https://www.st.com/en/development-tools/stm32cubeide.html).
+- If opting for using [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) locally, download it then extract both `'.zip'` and `'.pack'` files.
+The detailed instructions on installation are available in this [wiki article](https://wiki.st.com/stm32mcu/index.php?title=AI:How_to_install_STM32_model_zoo).
+
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 Specifications</a></summary><a id="1-3"></a>
 
 - `serie`: STM32H7
 - `IDE`: GCC
@@ -41,13 +33,15 @@ You need to download and install the following software:
 - `quantization_input_type`: int8 or uint8
 - `quantization_output_type`: float
 
-## <a id="2"> 2. Configure the YAML File</a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Configure the YAML File</b></a></summary><a id="2"></a>
 
 You can use the deployment service by using a model zoo pre-trained model from the [STM32 model zoo](../pretrained_models/README.md) or your own image classification model. Please refer to the YAML file [deployment_config.yaml](../src/config_file_examples/deployment_config.yaml), which is a ready YAML file with all the necessary sections ready to be filled, or you can update the [user_config.yaml](../src/user_config.yaml) to use it.
 
 As an example, we will show how to deploy the model [mobilenet_v2_0.35_128_fft_int8.tflite](../pretrained_models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft) pre-trained on the Flowers dataset using the necessary parameters provided in [mobilenet_v2_0.35_128_fft_config.yaml](../pretrained_models/mobilenetv2/ST_pretrainedmodel_public_dataset/flowers/mobilenet_v2_0.35_128_fft/mobilenet_v2_0.35_128_fft_config.yaml).
 
-### <a id="2-1"> 2.1 Setting the Model and the Operation Mode
+<ul><details open><summary><a href="#2-1">2.1 Setting the Model and the Operation Mode</a></summary><a id="2-1"></a>
 
 The first section of the configuration file is the `general` section that provides information about your project and the path to the model you want to deploy. The `operation_mode` attribute should be set to `deployment` as follows:
 
@@ -63,7 +57,9 @@ In this example, the path to the MobileNet V2 model is provided in the `model_pa
 
 You must copy the `preprocessing` section to your own configuration file, to ensure you have the correct preprocessing parameters.
 
-### <a id="2-2"> 2.2 Dataset Configuration
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2 Dataset Configuration</a></summary><a id="2-2"></a>
+<ul><details open><summary><a href="#2-2-1">2.2.1 Dataset info</a></summary><a id="2-2-1"></a>
 
 Configure the **dataset** section in the YAML file as follows:
 
@@ -73,7 +69,28 @@ dataset:
 ```
 The `class_names` attribute specifies the classes that the model is trained on. This information must be provided in the YAML file, as there is no dataset from which the classes can be inferred.
 
-### <a id="2-3"> 2.3 Deployment parameters</a>
+</details></ul>
+<ul><details open><summary><a href="#2-2-2">2.2.2 Preprocessing info</a></summary><a id="2-2-2"></a>
+
+To run inference in the C application, we need to apply on the input data the same preprocessing used when training the model.
+
+To do so, you need to specify the **preprocessing** configuration in **[user_config.yaml](../src/user_config.yaml)** as the following:
+
+```yaml
+preprocessing:
+  resizing:
+    interpolation: bilinear
+    aspect_ratio: fit
+  color_mode: rgb
+```
+
+- `resizing` - **nearest**, only supported option for *application C code*.
+- `aspect_ratio` - One of *fit*, *crop* or *padding*. If *crop*, resize the images without aspect ratio distortion by cropping the image as a square, if *padding*, add black borders above and below the image to make it as square, otherwise *fit*, aspect ratio may not be preserved.
+- `color_mode` - One of "*grayscale*", "*rgb*" or "*bgr*".
+
+</details></ul>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Deployment parameters</a></summary><a id="2-3"></a>
 
 To deploy the model in **STM32H747I-DISCO** board, we will use *STM32Cube.AI* to convert the model into optimized C code and *STM32CubeIDE* to build the C application and flash the board.
 
@@ -81,12 +98,12 @@ These steps will be done automatically by configuring the **tools** and **deploy
 
 ```yaml
 tools:
-   stm32ai:
-      version: 8.1.0
+   stedgeai:
+      version: 9.1.0
       optimization: balanced
       on_cloud: True
-      path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
    c_project_path: ../../stm32ai_application_code/image_classification/
@@ -100,7 +117,7 @@ deployment:
 ```
 
 where:
-- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **8.1.0**.
+- `version` - Specify the **STM32Cube.AI** version used to benchmark the model, e.g. **9.1.0**.
 - `optimization` - *String*, define the optimization used to generate the C model, options: "*balanced*", "*time*", "*ram*".
 - `path_to_stm32ai` - *Path* to stm32ai executable file to use local download, else **False**.
 - `path_to_cubeIDE` - *Path* to stm32cubeide executable file.
@@ -112,7 +129,8 @@ where:
 - `input` - **CAMERA_INTERFACE_DCMI**, **CAMERA_INTERFACE_USB** or **CAMERA_INTERFACE_SPI**.
 - `output`- **DISPLAY_INTERFACE_USB** or **DISPLAY_INTERFACE_SPI**.
 
-#### <a id="2-4">2.4 Hydra and MLflow settings</a>
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 Hydra and MLflow settings</a></summary><a id="2-4"></a>
 
 The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment directories. With the YAML code below, every time you run the Model Zoo, an experiment directory is created that contains all the directories and files created during the run. The names of experiment directories are all unique as they are based on the date and time of the run.
 
@@ -129,7 +147,9 @@ mlflow:
    uri: ./experiments_outputs/mlruns
 ```
 
-## <a id="3">3. Deploy pretrained model on STM32 board</a>
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Deploy pretrained model on STM32 board</b></a></summary><a id="3"></a>
 
 First you need to connect the camera board to the *STM32H747I-DISCO* discovery board, then connect the discovery board to your computer using an usb cable.
 
@@ -162,3 +182,5 @@ probability (Top1)
 - The number of frames processed per second (FPS) by the model
 
 ![plot](./doc/img/output_application.JPG)
+
+</details>

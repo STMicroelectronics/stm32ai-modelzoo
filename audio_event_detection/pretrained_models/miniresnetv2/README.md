@@ -68,8 +68,8 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 | Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) | STM32Cube.AI version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89               |   6.76       |   123.98            |   63.73      | 66.65 | 187.71 | 8.1.0                 |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89                |   10.73        |   431.98            |   71.8      | 70.62 | 503.78 | 8.1.0                 |
+| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89               |   7.09       |   123.98            |   61.57      | 66.98 | 185.55 | 9.1.0                 |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89                |   11.28        |   431.98            |   69.86      | 71.17 | 501.84 | 9.1.0                 |
 
 
 ### Reference inference time based on ESC-10 dataset
@@ -77,8 +77,8 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 | Model             | Format | Resolution | Board            | Execution Engine |  Frequency   | Inference time (ms) | STM32Cube.AI version  |
 |-------------------|--------|------------|------------------|------------------|--------------|-------|-----------------------|
-| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 178.23 | 8.1.0                 |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 305.22 | 8.1.0                 |
+| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 189.72 | 9.1.0                 |
+| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 312.1 | 9.1.0                 |
 
 
 ### Accuracy with ESC-10 dataset

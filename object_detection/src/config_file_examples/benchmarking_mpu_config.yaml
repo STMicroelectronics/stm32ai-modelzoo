@@ -1,0 +1,29 @@
+general:
+  model_path:  ../pretrained_models/ssd_mobilenet_v2_fpnlite/ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite
+  model_type: ssd_mobilenet_v2_fpnlite
+operation_mode:  benchmarking
+
+preprocessing:
+  rescaling: {scale : 127.5, offset : -1}
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+tools:
+   stedgeai:
+      version: 9.1.0
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+   board: STM32MP257F-EV1
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

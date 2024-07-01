@@ -1,12 +1,11 @@
-# Yolo Darknet Dataset Converter
+# <a xid="">Yolo Darknet Dataset Converter</a>
 
-This script converts datasets in COCO or Pascal VOC format to YOLO Darknet format. It currently supports the following formats:
-
+`converter.py` converts datasets in COCO or Pascal VOC format to YOLO Darknet format. It currently supports the following formats:
 - COCO
 - Pascal VOC
 
 
-## Example
+## <a>Example</a>
 
  Suppose we have a dataset in COCO format, you can use the following configuration:
 

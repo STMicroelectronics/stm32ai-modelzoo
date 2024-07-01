@@ -3,29 +3,11 @@
 This tutorial shows how to train from scratch or apply transfer learning on an AED model.
 As an example we will demonstrate the workflow on the [ESC-10]("https://github.com/karolpiczak/ESC-50") classification dataset.
 
-`Note:` If you are training a model in order to deploy it with the [Getting Started](../../../stm32ai_application_code/sensing_free_rtos/README.md), please check out the application specifications [here](../../deployment/README.md).
+`Note:` If you are training a model in order to deploy it with the [STM32 application code](../../../stm32ai_application_code/sensing_free_rtos/README.md), please check out the application specifications [here](../../deployment/README.md).
 
-## Table of contents
+## <a id="">Table of contents</a>
 
-### <a href="#1"> 1. Download the dataset and extract it </a>
-### <a href="#2"> 2. Create your configuration file </a>
-#### <a href="#2.1"> 2.1 Overview </a>
-#### <a href="#2.2">  2.2. Using a pre-made configuration file </a>
-#### <a href="#2.3"> 2.3 Operation mode </a>
-#### <a href="#2.4"> 2.4 General settings </a>
-#### <a href="#2.5"> 2.5 Dataset specification </a>
-#### <a href="#2.6"> 2.6 Loading a model </a>
-#### <a href="#2.7"> 2.7 Audio temporal domain preprocessing </a>
-#### <a href="#2.8"> 2.8 Audio feature extraction (frequency domain preprocessing) </a>
-#### <a href="#2.9"> 2.9 Data augmentation </a>
-#### <a href="#2.10"> 2.10 Training setup </a>
-### <a href="#3"> 3. Train your model </a>
-### <a href="#4"> 4. Model evaluation </a>
-### <a href="#5"> 5. Visualize training results </a>
-### <a href="#6">6. Run tensorboard</a>
-### <a href="#7">7. Run MLFlow </a>
-
-## <a id="1"> **1. Download the dataset and extract it** </a>
+<details open><summary><a href="#1"><b>1. Download the dataset and extract it</b></a></summary><a id="1"></a>
 
 ESC-10 is distributed as part of a larger dataset, ESC-50. In this tutorial, we will download the ESC-50 dataset, but only use the ESC-10 subset for training, evaluating or performing transfer learning on the models.
 
@@ -57,10 +39,9 @@ Then, extract the several archives you have downloaded to a folder of your choic
 
 For more details on how to use FSD50K in the model zoo, please consult section 8 of the [main README](../README.md)
 
-
-## <a id="2"> 2. Create your configuration file </a>
-
-### <a id="2.1"> 2.1 Overview </a>
+</details>
+<details open><summary><a href="#2"><b>2. Create your configuration file</b></a></summary><a id="2"></a>
+<ul><details open><summary><a href="#2-1">2.1 Overview</a></summary><a id="2-1"></a>
 
 The training, evaluation, quantization and benchmarking of the model are driven by a configuration file written in the YAML language. This configuration file is called [user_config.yaml](../user_config.yaml) and is located in the [src/](../) directory.
 
@@ -80,7 +61,7 @@ A configuration file includes the following sections:
 
 This tutorial only describes enough settings for you to be able to run an example. Please refer  to the [main README](../README.md) for more information. The model zoo offers many more features than those described in this short tutorial.
 
-#### **2.1.1 TensorFlow deterministic operations**
+#### **TensorFlow deterministic operations**
 
 If you want your experiments to be fully reproducible, you need to activate the `deterministic_ops` attribute.
 
@@ -91,7 +72,8 @@ general:
 
 Enabling the `deterministic_ops` attribute will restrict TensorFlow to use only deterministic operations on the device, but it may lead to a drop in training performance. It should be noted that not all operations in the used version of TensorFlow can be computed deterministically. If your case involves any such operation, a warning message will be displayed and the attribute will be ignored.
 
-### <a id="2.2">  **2.2. Using a pre-made configuration file** </a>
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2. Using an available configuration file</a></summary><a id="2-2"></a>
 
 The [pretrained_models](../../pretrained_models/) directory contains several subfolders, one for each model architecture.
 Some of these models need quite different pre-processing, feature extraction and training parameters, and using different ones could lead to wildly varying performance.
@@ -101,11 +83,12 @@ To use these in training, copy them over to the [src/](../) folder, and rename t
 
 If using one of these configuration files, you will need to change the `operation_mode` parameter to `training`. See the next section for more information
 
-**If you want to reproduce the listed performance, we recommend you use these premade .yaml files**
+**If you want to reproduce the listed performance, we recommend you use these available .yaml files**
 
 **Performance may be quite different if you use different parameters**
 
-### <a id="2.3"> 2.3 Operation mode </a>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Operation mode</a></summary><a id="2-3"></a>
 
 The `operation_mode` attribute of the configuration file lets you choose which service of the model zoo you want to use (training, evaluation, quantization, deployment, or benchmarking). You can even chain these services together ! Refer to section 3.2 of the [main README](../README.md)
 
@@ -115,7 +98,8 @@ For this tutorial, you just need to set `operation_mode` to `"training"`, like s
 operation_mode: training
 ```
 
-### <a id="2.4"> 2.4 General settings </a>
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 General settings</a></summary><a id="2-4"></a>
 
 The first section of the configuration file is the `general` section that provides information about your project.
 
@@ -136,7 +120,8 @@ The `logs_dir` attribute is the name of the directory where the MLFlow and Tenso
 
 For more details on the structure of the output directory, please consult section 1.2 of the [main README](../README.md)
 
-### <a id="2.5"> 2.5 Dataset specification </a>
+</details></ul>
+<ul><details open><summary><a href="#2-5">2.5 Dataset specification</a></summary><a id="2-5"></a>
 
 Information about the dataset you want to use is provided in the `dataset` section of the configuration file, as shown in the YAML code below.
 
@@ -176,7 +161,8 @@ No test set path is provided in this example to evaluate the model accuracy afte
 
 For more details on this section, please consult section 3.5 and section 6 of the [main README](../README.md)
 
-### <a id="2.6"> 2.6 Loading a model </a>
+</details></ul>
+<ul><details open><summary><a href="#2-6">2.6 Loading a model</a></summary><a id="2-6"></a>
 
 Information about the model you want to train is provided in the `model` section of the configuration file.
 
@@ -215,7 +201,8 @@ training:
    model: # Use it if you want to use a model from the zoo, mutually exclusive with 'general.model_path'
    ```
 
-### <a id="2.7"> 2.7 Audio temporal domain preprocessing </a>
+</details></ul>
+<ul><details open><summary><a href="#2-7">2.7 Audio temporal domain preprocessing</a></summary><a id="2-7"></a>
 
 When performing AED, it is customary to perform some preprocessing directly on the input waveform in the temporal domain before doing any feature extraction in the frequency domain, such as converting the waveform into a spectrogram.
 
@@ -239,7 +226,8 @@ For more details on what each parameter does, please refer to section 3.7 of the
 
 Different models are trained using different set of preprocessing parameters, and using different ones may lead to poor performance. Please refer to section <a href="#2.2"> 2.2 </a> of this README for instructions on how to retrieve the configuration files used to train the different pretrained models provided in the zoo.
 
-### <a id="2.8"> 2.8 Audio feature extraction (frequency domain preprocessing) </a>
+</details></ul>
+<ul><details open><summary><a href="#2-8">2.8 Audio feature extraction (frequency domain preprocessing)</a></summary><a id="2-8"></a>
 
 In a typical AED pipeline, once the temporal domain preprocessing has been performed on the input waveform, it is usually converted to a frequency-domain representation, such as a mel-spectrogram, or array of MFCC coefficients, and the model is trained on this representation.
 
@@ -269,7 +257,8 @@ feature_extraction:
 For more details on what each parameter does, please refer to section 3.8 of the [main README](../README.md)
 Different models are trained using different set of feature extraction parameters, and using different ones may lead to poor performance. Please refer to section <a href="#2.2"> 2.2 </a> of this README for instructions on how to retrieve the configuration files used to train the different pretrained models provided in the zoo.
 
-### <a id="2.9"> 2.9 Data augmentation </a>
+</details></ul>
+<ul><details open><summary><a href="#2-9">2.9 Data augmentation</a></summary><a id="2-9"></a>
 
 Data augmentation has proved an effective technique to reduce the overfit of a network and make it generalize better. It is generally useful when the dataset is small.
 
@@ -308,7 +297,8 @@ It is worth noting that the scale of Gaussian noise applied should depend on the
 
 Using SpecAug can sometimes lead to drastic drops in performance. If unsure, we recommend leaving it disabled.
 
-### <a id="2.10"> 2.10 Training setup </a>
+</details></ul>
+<ul><details open><summary><a href="#2-10">2.10 Training setup</a></summary><a id="2-10"></a>
  
 The training setup is described in the `training` section of the configuration file, as illustrated in the example below.
 
@@ -359,13 +349,14 @@ All the Keras optimizers are supported. If you are not passing any argument to t
 
 The `callbacks` subsection is optional. All the Keras callbacks are supported. Note that several callbacks are built-in and cannot be redefined, including ModelCheckpoint, TensorBoard and CSVLogger. 
 
-A variety of learning rate schedulers are provided with the Model Zoo. If you want to use one of them, just include it in the `callbacks` subsection. Refer to [the learning rate scedulers README](lr_schedulers_README.md) for a description of the available callbacks and learning rate plotting utility.
+A variety of learning rate schedulers are provided with the Model Zoo. If you want to use one of them, just include it in the `callbacks` subsection. Refer to [the learning rate schedulers README](../../../common/training/lr_schedulers_README.md) for a description of the available callbacks and learning rate plotting utility.
 
 The best model obtained at the end of the training is saved in the 'experiments_outputs/\<date-and-time\>/saved_models' directory and is called 'best_model.h5' (see section 1.3 of the [main README](../README.md)). Make sure not to use the 'best_augmentation_model.h5' file for deployment or evaluation as it includes the data augmentation layers.
 For more details on what each parameter does, please refer to section 3.9 of the [main README](../README.md)
 
-### <a id="3"> **3. Train your model** </a>
-
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Train your model</b></a></summary><a id="3"></a>
 
 Run the following command, from the [src/](../) directory:
 
@@ -373,7 +364,8 @@ Run the following command, from the [src/](../) directory:
 python stm32ai_main.py
 ```
 
-### <a id="4"> **4. Model evaluation** </a>
+</details>
+<details open><summary><a href="#4"><b>4. Model evaluation</b></a></summary><a id="4"></a>
 
 After training is completed, your model will be evaluated on the validation set.
 Additionally, if you have provided a test set (see section <a href="2.5"> 2.5 - Dataset specification </a>), the model will also be evaluated on the provided test set.
@@ -386,7 +378,8 @@ We can also aggregate the predictions based on which audio clip each patch belon
 
 Because clip-level accuracy aggregates several predictions, is it typically higher than patch-level accuracy.
 
-### <a id="5"> 5. Visualize training results </a>
+</details>
+<details open><summary><a href="#5"><b>5. Visualize training results</b></a></summary><a id="5"></a>
 
 All training artifacts, figures, and models are saved under the output directory specified in the config file, like so : 
 
@@ -409,7 +402,8 @@ This directory contains the following files :
 
 For more details on the list of outputs, and the structure of the output directory, please consult section 1.2 of the [main README](../README.md)
 
-### <a id="6">**6. Run tensorboard** </a>
+</details>
+<details open><summary><a href="#6"><b>6. Run tensorboard</b></a></summary><a id="6"></a>
 
 To visualize the training curves logged by tensorboard, go to the output directory (by default, `src/experiments_outputs/<date_time_of_your_run>/`) and run the following command:
 
@@ -419,7 +413,8 @@ tensorboard --logdir logs
 
 And open the URL `http://localhost:6006` in your browser.
 
-### <a id="7">**7. Run MLFlow** </a>
+</details>
+<details open><summary><a href="#7"><b>7. Run MLFlow</b></a></summary><a id="7"></a>
 
 MLflow is an API for logging parameters, code versions, metrics, and artifacts while running machine learning code and for visualizing results.
 To view and examine the results of multiple trainings, you can simply access the MLFlow Webapp by running the following command:
@@ -427,3 +422,5 @@ To view and examine the results of multiple trainings, you can simply access the
 mlflow ui
 ```
 And open the given IP adress in your browser.
+
+</details>

@@ -15,10 +15,7 @@ import tensorflow as tf
 from pathlib import Path
 from keras import layers
 from keras.applications import resnet
-# Quick fix to grab functions in the ../model_utils.py module
-# As relative imports throw an error
-sys.path.append(os.path.abspath(os.path.join(__file__, "../..")))
-from model_utils import add_head
+
 
 '''NOTE : Most of this implementation is adapted from the Tensorflow implementation of ResNets.'''
 

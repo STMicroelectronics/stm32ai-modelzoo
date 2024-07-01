@@ -11,7 +11,11 @@ from omegaconf import DictConfig
 import numpy as np
 import tensorflow as tf
 from typing import Tuple
-from models_mgt import get_model_name_and_its_input_shape
+import sys
+import os
+
+from models_utils import get_model_name_and_its_input_shape
+from models_mgt import IC_CUSTOM_OBJECTS
 from data_loader import load_dataset
 
 
@@ -33,13 +37,13 @@ def preprocess(cfg: DictConfig = None) -> Tuple:
 
     # Get the model input shape
     if cfg.general.model_path:
-        _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path)
+        _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path, custom_objects=IC_CUSTOM_OBJECTS)
     else:
         # We are running a training using the 'training' section of the config file.
         if cfg.training.model:
             input_shape = cfg.training.model.input_shape
         else:
-            _, input_shape = get_model_name_and_its_input_shape(cfg.training.resume_training_from)
+            _, input_shape = get_model_name_and_its_input_shape(cfg.training.resume_training_from, custom_objects=IC_CUSTOM_OBJECTS)
 
     interpolation = cfg.preprocessing.resizing.interpolation
     aspect_ratio = cfg.preprocessing.resizing.aspect_ratio
@@ -56,7 +60,7 @@ def preprocess(cfg: DictConfig = None) -> Tuple:
         test_path=cfg.dataset.test_path,
         validation_split=cfg.dataset.validation_split,
         class_names=cfg.dataset.class_names,
-        image_size=input_shape[:2],
+        image_size= input_shape[1:] if cfg.general.model_path and cfg.general.model_path.split('.')[-1]=='onnx' else input_shape[:2],
         interpolation=interpolation,
         aspect_ratio=aspect_ratio,
         color_mode=cfg.preprocessing.color_mode,
@@ -87,6 +91,28 @@ def apply_rescaling(dataset: tf.data.Dataset = None, scale: float = None, offset
     rescaled_dataset = dataset.map(lambda x, y: (rescaling(x), y))
 
     return rescaled_dataset
+
+def apply_normalization(dataset: tf.data.Dataset = None, mean: float = None, variance: float = None):
+    """
+    Applies normalization to a dataset using a tf.keras.Sequential model.
+
+    Args:
+        dataset (tf.data.Dataset): The dataset to be rescaled.
+        mean (float): The mean of the three channels.
+        variance (float): The vairance of the three channels.
+
+    Returns:
+        The rescaled dataset.
+    """
+    # Define the rescaling model
+    noramlization = tf.keras.Sequential([
+        tf.keras.layers.Normalization(mean=mean, variance=variance)
+    ])
+
+    # Apply the rescaling to the dataset
+    normalized_dataset = dataset.map(lambda x, y: (noramlization(x), y))
+
+    return normalized_dataset
 
 
 def apply_rescaling_on_image(image: tf.Tensor = None, scale: float = None, offset: float = None) -> tf.Tensor:
@@ -152,8 +178,7 @@ def postprocess_output(output: np.ndarray, output_details: dict) -> np.ndarray:
     """
     if output_details['dtype'] in [np.uint8, np.int8]:
         # Convert the output data to float32 data type and perform the inverse quantization operation
-        predicted_label =  predicted_label.astype(np.float32)
-        predicted_label = ( predicted_label - output_details['quantization'][1]) * output_details['quantization'][0]
+        predicted_label = (output - output_details['quantization'][1]) * output_details['quantization'][0]
     if output.shape[1] > 1:
         predicted_label = np.argmax(output, axis=1)
     else:

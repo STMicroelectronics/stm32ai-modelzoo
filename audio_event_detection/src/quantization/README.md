@@ -4,26 +4,15 @@ Quantization is a good way to optimize your models before deploying.
 Quantizing your models can drastically reduce their memory footprint (both for RAM and Flash), and speed up their inference time. However, this usually comes at the cost of a small performance drop.
 Currently, the model zoo only supports Post-training quantization (PTQ) using int8 weights.
 
-This tutorial will guide you through quantizing a floating point model using the model zoo using post-training quantization.
+This tutorial will guide you through quantizing a Keras floating point model using the model zoo using post-training quantization. 
+The model zoo can also quantize floating point ONNX models. For more details, please refer to please refer to section 3.11 of the [main README](../README.md)
+
 We strongly recommend you follow the [training tutorial](../training/README.md) first. We will continue using the ESC-10 dataset for this tutorial.
 
-## Table of contents
+## <a id="">Table of contents</a>
 
-### <a href=#1> YAML file configuration </a>
-#### <a href="#1.1">  1.1. Using a pre-made configuration file </a>
-#### <a href="#1.2"> 1.2 Operation mode </a>
-#### <a href="#1.3"> 1.3 General settings </a>
-#### <a href="#1.4"> 1.4 Dataset specification </a>
-#### <a href="#1.5"> 1.5 Audio temporal domain preprocessing </a>
-#### <a href="#1.6"> 1.6 Audio feature extraction (frequency domain preprocessing) </a>
-#### <a href="#1.7"> 1.7 Quantization parameters </a>
-### <a href="#2"> Run quantization </a>
-### <a href="#3"> Results </a>
-### <a href="#4"> Run MLFlow </a>
-
-## <a id=#1> **YAML file configuration** </a>
-
-### <a id="1.1">  **1.1. Using a pre-made configuration file** </a>
+<details open><summary><a href="#1"><b>1. YAML file configuration</b></a></summary><a id="1"></a>
+<ul><details open><summary><a href="#1-1">1.1 Using an available configuration file</a></summary><a id="1-1"></a>
 
 The [pretrained_models](../../pretrained_models/) directory contains several subfolders, one for each model architecture.
 Some of these models need quite different pre-processing, feature extraction and training parameters, and using different ones could lead to wildly varying performance.
@@ -33,11 +22,12 @@ To use these in quantization, copy them over to the [src/](../) folder, and rena
 
 If using one of these configuration files, you will need to change the `operation_mode` parameter to `quantization`. See the next section for more information
 
-**If you want to reproduce the listed performance, we recommend you use these premade .yaml files**
+**If you want to reproduce the listed performance, we recommend you use these available .yaml files**
 
 **Performance may be quite different if you use different parameters**
 
-### <a id="1.2"> 1.2 Operation mode </a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Operation mode</a></summary><a id="1-2"></a>
 
 The `operation_mode` attribute of the configuration file lets you choose which service of the model zoo you want to use (training, evaluation, quantization, deployment, or benchmarking). You can even chain these services together ! Refer to section 3.2 of the [main README](../README.md)
 
@@ -47,7 +37,8 @@ For this tutorial, you just need to set `operation_mode` to `"quantization"`, li
 operation_mode: quantization
 ```
 
-### <a id="1.3"> 1.3 General settings </a>
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 General settings</a></summary><a id="1-3"></a>
 
 The first section of the configuration file is the `general` section that provides information about your project.
 
@@ -66,12 +57,12 @@ general:
    gpu_memory_limit: 5              # Maximum amount of GPU memory in GBytes that TensorFlow may use (an integer).
 ```
 
-
 The `logs_dir` attribute is the name of the directory where the MLFlow and TensorBoard files are saved. The `saved_models_dir` attribute is the name of the directory where models are saved, which includes the quantized model. These two directories are located under the top level <hydra> directory.
 
 For more details on the structure of the output directory, please consult section 1.2 of the [main README](../README.md)
 
-### <a id="1.4"> 1.4 Dataset specification </a>
+</details></ul>
+<ul><details open><summary><a href="#1-4">1.4 Dataset specification</a></summary><a id="1-4"></a>
 
 Information about the dataset you want use is provided in the `dataset` section of the configuration file, as shown in the YAML code below.
 
@@ -111,8 +102,8 @@ For quantization, the validation and test datasets do not matter.
 
 For more details on this section, please consult section 3.5 and section 6 of the [main README](../README.md)
 
-
-### <a id="1.5"> 1.5 Audio temporal domain preprocessing </a>
+</details></ul>
+<ul><details open><summary><a href="#1-5">1.5 Audio temporal domain preprocessing</a></summary><a id="1-5"></a>
 
 When performing AED, it is customary to perform some preprocessing directly on the input waveform in the temporal domain before doing any feature extraction in the frequency domain, such as converting the waveform into a spectrogram.
 
@@ -136,7 +127,8 @@ For more details on what each parameter does, please refer to section 3.7 of the
 
 Different models are trained using different set of preprocessing parameters, and using different ones may lead to poor performance. Please refer to section <a href="#2.2"> 2.2 </a> of this README for instructions on how to retrieve the configuration files used to train the different pretrained models provided in the zoo.
 
-### <a id="1.6"> 1.6 Audio feature extraction (frequency domain preprocessing) </a>
+</details></ul>
+<ul><details open><summary><a href="#1-6">1.6 Audio feature extraction (frequency domain preprocessing)</a></summary><a id="1-6"></a>
 
 In a typical AED pipeline, once the temporal domain preprocessing has been performed on the input waveform, it is usually converted to a frequency-domain representation, such as a mel-spectrogram, or array of MFCC coefficients, and the model is trained on this representation.
 
@@ -166,8 +158,8 @@ feature_extraction:
 For more details on what each parameter does, please refer to section 3.8 of the [main README](../README.md)
 Different models are trained using different set of feature extraction parameters, and using different ones may lead to poor performance. Please refer to section <a href="#2.2"> 2.2 </a> of this README for instructions on how to retrieve the configuration files used to train the different pretrained models provided in the zoo.
 
-
-### <a id="1.7"> 1.7 Quantization parameters </a>
+</details></ul>
+<ul><details open><summary><a href="#1-7">1.7 Quantization parameters</a></summary><a id="1-7"></a>
 
 You will need to include a quantization section in your configuration file, as shown in the example below.
 Note that the `quantization_input_type` and `quantization_output_type` attributes only concern the dtype of the input and output tensors respectively. The weight tensors are always quantized to int8.
@@ -184,8 +176,9 @@ quantization:
 
 For more details on what each parameter does, please refer to section 3.11 of the [main README](../README.md)
 
-
-## <a id="2"> Run quantization </a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Run quantization</b></a></summary><a id="2"></a>
 
 Once you have finished setting up your config file, run the following command from the [src/](../) directory : 
 
@@ -193,7 +186,8 @@ Once you have finished setting up your config file, run the following command fr
 python stm32ai_main.py 
 ```
 
-## <a id="3"> Results </a>
+</details>
+<details open><summary><a href="#3"><b>3. Results</b></a></summary><a id="3"></a>
 
 All quantization artifacts, figures, and models are saved under the output directory specified in the config file, like so : 
 
@@ -209,8 +203,8 @@ This directory contains the following file, among others :
 
 For more details on the list of outputs, and the structure of the output directory, please consult section 1.2 of the [main README](../README.md)
 
-
-## <a id="4"> Run MLFlow </a>
+</details>
+<details open><summary><a href="#4"><b>4. Run MLFlow</b></a></summary><a id="4"></a>
 
 MLflow is an API for logging parameters, code versions, metrics, and artifacts while running machine learning code and for visualizing results.
 To view and examine the results of multiple trainings, you can simply access the MLFlow Webapp by running the following command:
@@ -219,3 +213,5 @@ To view and examine the results of multiple trainings, you can simply access the
 mlflow ui
 ```
 And open the given IP adress in your browser.
+
+</details>

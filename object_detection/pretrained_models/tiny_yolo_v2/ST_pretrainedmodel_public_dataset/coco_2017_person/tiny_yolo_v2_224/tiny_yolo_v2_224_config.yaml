@@ -72,16 +72,16 @@ quantization:
 benchmarking:
   board: STM32H747I-DISCO
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
-    on_cloud: true
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 deployment:
   c_project_path: ../../stm32ai_application_code/object_detection/
   IDE: GCC
-  verbosity: 1 n
+  verbosity: 1
   hardware_setup:
     serie: STM32H7
     board: STM32H747I-DISCO

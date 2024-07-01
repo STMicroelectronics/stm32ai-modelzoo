@@ -9,7 +9,10 @@
 
 from omegaconf import DictConfig
 from typing import Tuple
-from models_mgt import get_model_name_and_its_input_shape
+import sys
+import os
+
+from models_utils import get_model_name_and_its_input_shape
 from data_loader import load_dataset
 
 

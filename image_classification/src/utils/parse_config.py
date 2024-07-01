@@ -11,231 +11,15 @@ import os
 from pathlib import Path
 import re
 from hydra.core.hydra_config import HydraConfig
+from cfg_utils import aspect_ratio_dict, check_attributes, postprocess_config_dict, check_config_attributes, \
+                      parse_tools_section, parse_benchmarking_section, parse_mlflow_section, parse_quantization_section, \
+                      parse_general_section, parse_top_level, parse_training_section, parse_prediction_section, \
+                      parse_deployment_section, check_hardware_type
 from omegaconf import OmegaConf, DictConfig
 from munch import DefaultMunch
 import tensorflow as tf
-from utils import check_attributes, aspect_ratio_dict
-from data_loader import check_dataset_integrity, get_class_names
+from data_loader import check_dataset_integrity
 from typing import Dict, List
-
-
-
-def expand_env_vars(string: str) -> str:
-    """
-    Expands environment variables in a string if any. The syntax for variables
-    is ${variable_name}. An error is thrown if a variable is found in the string
-    but is not set.
-
-    Args:
-        string (str): The string to expand environment variables in.
-
-    Returns:
-        string (str): The original string with expanded variables.
-    """
-    for match in re.findall('\$\{\w+\}', string):
-        var_name = match[2:-1]
-        # Get the variable value, throw an error if it is not set.
-        var_value = os.environ.get(var_name)
-        if var_value is None:
-            raise OSError("\nCould not find an environment variable named `{}`\n"
-                          "Please check your configuration file.".format(var_name))
-        match = "\\" + match
-        string = re.sub(match, var_value, string, count=1)
-    return string
-
-
-def postprocess_config_dict(config: DictConfig) -> None:
-    """
-    The YAML loader outputs some attribute values as strings although they
-    are different Python types. This function walks the config dictionary 
-    tree and restores some of these types, including booleans, integers,
-    floats and tuples.
-    For example:
-    - "True" is converted to boolean True
-    - "1./255" is converted to a float (equal to 0.00392156)
-    - "(128, 128, 3)" is converted to a tuple.
-    The function also replaces environment variables that appear in strings
-    with their values.
-
-    Arguments:
-        config (DictConfig): dictionary containing the entire configuration file.
-
-    Returns:
-        None
-    """
-
-    for k in config.keys():
-        v = config[k]
-        if type(v) == dict:
-            postprocess_config_dict(v)
-        elif type(v) == str:
-            # Expand environment variables if any
-            v_exp = expand_env_vars(v)
-            if v_exp != v:
-                config[k] = v_exp
-                v = v_exp
-            if v[:7] == "lambda ":
-                # The value is a lambda function. Remove the \n characters
-                # and multiple blanks that get inserted by the YAML loader
-                # if the function is written on several lines.
-                v = re.sub("\n", "", v)
-                config[k] = re.sub(" +", " ", v)
-            else:
-                try:
-                    v_eval = eval(v)
-                except:
-                    v_eval = v
-                if isinstance(v_eval, (bool, int, float, tuple)):
-                    config[k] = v_eval
-
-
-def check_config_attributes(cfg: DictConfig, specs: Dict = None, section: str = None) -> None:
-    """
-    This function checks that the attributes used in a given section
-    of the configuration file comply with specified requirements.
-
-    Arguments:
-        cfg (DictConfig): dictionary containing the configuration file section to check
-        specs (Dict): dictionary specifying the requirements for attribute usage in the section
-        section (str): name of the section
-
-    Returns:
-        None
-    """
-
-    specs = DefaultMunch.fromDict(specs)
-    if section == "top_level":
-        message = f"\nPlease check the top-level of your configuration file."
-    else:
-        message = f"\nPlease check the '{section}' section of your configuration file."
-
-    if specs.legal:
-        # Check that all the used attribute names are known
-        for attr in cfg.keys():
-            if attr not in specs.legal:
-                raise ValueError(f"\nUnknown attribute `{attr}`{message}")
-
-    if specs.all:
-        # Check that all the specified attributes are present and have a value
-        for attr in specs.all:
-            if attr not in cfg:
-                if section == "top_level":
-                    raise ValueError(f"\nMissing `{attr}` section{message}")
-                else:
-                    raise ValueError(f"\nMissing `{attr}` attribute{message}")
-            if cfg[attr] is None:
-                if section == "top_level":
-                    raise ValueError(f"\nMissing body of `{attr}` section{message}")
-                else:
-                    raise ValueError(f"\nExpecting a value for `{attr}` attribute{message}")
-
-    if specs.one_or_more:
-        # Check that at least one of the specified attributes is present and has a value
-        count = 0
-        for attr in specs.one_or_more:
-            if attr in cfg and cfg[attr] is not None:
-                count += 1
-        if count == 0:
-            raise ValueError(f"\nMissing one or more attributes from {specs.one_or_more}{message}")
-
-
-def parse_top_level(cfg: DictConfig, mode_groups: DictConfig = None) -> None:
-    # cfg: dictionary containing the entire configuration file
-
-    mode_choices = ["training", "evaluation", "prediction", "deployment", 
-                    "quantization", "benchmarking", "chain_tbqeb", "chain_tqe",
-                    "chain_eqe", "chain_qb", "chain_eqeb", "chain_qd"]
-    
-    # Check that operation_mode is present and has a value
-    message = "\nPlease check the top-level of your configuration file."
-    if "operation_mode" not in cfg:
-        raise ValueError(f"\nMissing `operation_mode` attribute\nSupported modes: {mode_choices}{message}")
-    if cfg.operation_mode is None:
-        raise ValueError("\nExpecting a value for `operation_mode` attribute\n"
-                         f"Supported modes: {mode_choices}{message}")
-    
-    # Check that the value of operation_mode is valid
-    mode = cfg.operation_mode
-    if mode not in mode_choices:
-        raise ValueError(f"\nUnknown value for `operation_mode` attribute. Received {mode}\n"
-                         f"Supported modes: {mode_choices}{message}")
-
-    # Attributes usable at the top level
-    legal = ["general", "operation_mode", "dataset", "preprocessing", "data_augmentation",
-             "custom_data_augmentation", "training", "quantization", "prediction", "tools",
-             "benchmarking", "deployment", "mlflow", "hydra"]
-
-    required = ["mlflow"]
-    if mode not in mode_groups.training:
-        # We need the 'general' section to provide model_path.
-        required += ["general",]
-    if mode not in ("prediction", "quantization", "benchmarking", "deployment", "chain_qb", "chain_qd"):
-        required += ["dataset",]
-    if mode in mode_groups.training:
-        required += ["training",]
-    if mode in mode_groups.quantization:
-        required += ["quantization",]
-    if mode == "prediction":
-        required += ["prediction",]
-    if mode in mode_groups.benchmarking:
-        required += ["benchmarking", "tools"]
-    if mode in mode_groups.deployment:
-        required += ["deployment", "tools"]
-
-    check_config_attributes(cfg, specs={"legal": legal, "all": required}, section="top_level")
-
-
-def parse_general_section(cfg: DictConfig, mode: str = None, mode_groups=None) -> None:
-    # cfg: dictionary containing the 'general' section of the configuration file
-
-    legal = ["project_name", "model_path", "logs_dir", "saved_models_dir", "deterministic_ops", 
-             "display_figures", "global_seed", "gpu_memory_limit"]
-
-    # Usage of the model_path attribute in training modes 
-    # is checked when parsing the 'training' section.
-    required = ["model_path"] if not mode_groups.training else []
-    check_config_attributes(cfg, specs={"legal": legal, "all": required}, section="general")
-
-    # Set default values of missing optional attributes
-    if not cfg.project_name:
-        cfg.project_name = "<unnamed>"
-    if not cfg.logs_dir:
-        cfg.logs_dir = "logs"
-    if not cfg.saved_models_dir:
-        cfg.saved_models_dir = "saved_models"
-    cfg.deterministic_ops = cfg.deterministic_ops if cfg.deterministic_ops is not None else False
-    cfg.display_figures = cfg.display_figures if cfg.display_figures is not None else True
-    if not cfg.global_seed or cfg.global_seed=='None':
-        cfg.global_seed = 123
-
-    ml_path = cfg.model_path
-    file_extension = Path(ml_path).suffix if ml_path else ""
-    m1 = "\nExpecting `model_path` to be set to a path to a "
-    m2 = f" model file when running '{mode}' operation mode\n"
-    if ml_path:
-        m2 += f"Received path: {ml_path}\n"
-    m2 += "Please check the 'general' section of your configuration file."
-    
-    if mode in mode_groups.training:
-        if ml_path and file_extension != ".h5":
-            raise ValueError(m1 + ".h5" + m2)
-    elif mode in mode_groups.quantization:
-        if not ml_path or file_extension != ".h5":
-            raise ValueError(m1 + ".h5" + m2)
-    elif mode in ("evaluation", "prediction"):
-        if not ml_path or file_extension not in (".h5", ".tflite"):
-            raise ValueError(m1 + ".h5 or .tflite" + m2)
-    elif mode in ("benchmarking"):
-        if not ml_path or file_extension not in (".h5", ".tflite", ".onnx"):
-            raise ValueError(m1 + ".h5, .tflite or .onnx" + m2)
-    elif mode in ("deployment"):
-        if not ml_path or file_extension != ".tflite":
-            raise ValueError(m1 + ".tflite" + m2)
-
-    # If model_path is set, check that the model file exists.
-    if ml_path and not os.path.isfile(ml_path):
-        raise FileNotFoundError(f"\nUnable to find file {ml_path}\nPlease check the 'general.model_path'"
-                                "attribute in your configuration file.")
 
 
 def check_dataset_paths_and_contents(cfg, mode: str = None, mode_groups: DictConfig = None) -> None:
@@ -257,7 +41,7 @@ def check_dataset_paths_and_contents(cfg, mode: str = None, mode_groups: DictCon
             dataset_paths["validation_path"] = cfg.validation_path
         else:
             dataset_paths["training_path"] = cfg.training_path
-    
+
     # Paths used in a quantization
     if mode in mode_groups.quantization:
         if cfg.quantization_path:
@@ -276,7 +60,7 @@ def check_dataset_paths_and_contents(cfg, mode: str = None, mode_groups: DictCon
                                         f"Received path: {path}\n"
                                         "Please check the 'dataset' section of your configuration file.")
             if cfg.check_image_files:
-                print(f"[INFO] Checking {path} dataset")
+                print(f"[INFO] : Checking {path} dataset")
             check_dataset_integrity(path, check_image_files=cfg.check_image_files)
         else:
             # Set to None the paths to datasets that are not needed,
@@ -284,7 +68,7 @@ def check_dataset_paths_and_contents(cfg, mode: str = None, mode_groups: DictCon
             cfg[name] = None
 
 
-def parse_dataset_section(cfg: DictConfig, mode: str = None, mode_groups: DictConfig = None) -> None:
+def parse_dataset_section(cfg: DictConfig, mode: str = None, mode_groups: DictConfig = None, hardware_type: str = None) -> None:
     # cfg: dictionary containing the 'dataset' section of the configuration file
 
     legal = ["name", "class_names", "training_path", "validation_path", "validation_split", "test_path",
@@ -296,8 +80,11 @@ def parse_dataset_section(cfg: DictConfig, mode: str = None, mode_groups: DictCo
         required += ["training_path",]
     elif mode in mode_groups.evaluation:
         one_or_more += ["training_path", "test_path"]
-    elif mode in mode_groups.deployment or mode == "prediction":
-        required += ["class_names",]
+    elif mode in mode_groups.deployment:
+        if hardware_type == "MCU":
+            required += ["class_names",]
+    elif mode == "prediction":
+         required += ["class_names",]
 
     check_config_attributes(cfg, specs={"legal": legal, "all": required, "one_or_more": one_or_more},
                             section="dataset")
@@ -329,7 +116,7 @@ def parse_dataset_section(cfg: DictConfig, mode: str = None, mode_groups: DictCo
         if split <= 0.0 or split >= 1.0:
             raise ValueError(f"\nThe value of `quantization_split` should be > 0 and < 1. Received {split}\n"
                              "Please check the 'dataset' section of your configuration file.")
-        
+
     if cfg.name not in ("emnist", "cifar10", "cifar100"):
         check_dataset_paths_and_contents(cfg, mode=mode, mode_groups=mode_groups)
 
@@ -367,11 +154,12 @@ def parse_preprocessing_section(cfg: DictConfig,
     if aspect_ratio == "fit":
         # Check resizing interpolation value
         check_config_attributes(cfg.resizing, specs={"all": ["interpolation"]}, section="preprocessing.resizing")
-        interpolation_methods = ["bilinear", "nearest", "area", "lanczos3", "lanczos5", "bicubic", "gaussian", "mitchellcubic"]
+        interpolation_methods = ["bilinear", "nearest", "area", "lanczos3", "lanczos5", "bicubic", "gaussian",
+                                 "mitchellcubic"]
         if cfg.resizing.interpolation not in interpolation_methods:
             raise ValueError(f"\nUnknown value for `interpolation` attribute. Received {cfg.resizing.interpolation}\n"
-                            f"Supported values: {interpolation_methods}\n"
-                            "Please check the 'preprocessing.resizing' section of your configuration file.")
+                             f"Supported values: {interpolation_methods}\n"
+                             "Please check the 'preprocessing.resizing' section of your configuration file.")
 
     # Check color mode value
     color_modes = ["grayscale", "rgb", "rgba"]
@@ -409,7 +197,7 @@ def parse_data_augmentation_section(cfg: DictConfig, config_dict: Dict) -> None:
 
     if cfg.custom_data_augmentation:
         check_attributes(cfg.custom_data_augmentation,
-                         required=["function_name"],
+                         expected=["function_name"],
                          optional=["config"],
                          section="custom_data_augmentation")
         cfg.data_augmentation = DefaultMunch.fromDict({})
@@ -422,122 +210,53 @@ def parse_data_augmentation_section(cfg: DictConfig, config_dict: Dict) -> None:
             cfg.data_augmentation.config = config_dict['custom_data_augmentation']['config'].copy()
         del cfg.custom_data_augmentation
 
+def get_class_names_from_file(cfg: DictConfig) -> List:
+    if cfg.deployment.label_file_path :
+        with open(cfg.deployment.label_file_path, 'r') as file:
+            class_names = [line.strip() for line in file]
+    return class_names
 
-def parse_training_section(cfg: DictConfig, mode: str = None, model_path_used: bool = None) -> None:
-    # cfg: 'training' section of the configuration file
-    # model_path: general.model_path attribute
+def get_class_names(dataset_name: str = None, dataset_root_dir: str = None) -> List:
+    """
+    This function returns the class names of the dataset.
+      - If the dataset is cifar10, cifar100 or emnist, the class names
+        are returned by functions associated to the dataset.
+      - Otherwise the class names are inferred from the dataset. These are
+        the names of the subdirectories under the dataset root directory.
 
-    legal = ["model", "batch_size", "epochs", "optimizer", "dropout", "frozen_layers",
-             "callbacks", "resume_training_from", "trained_model_path"]
-    required = ["batch_size", "epochs", "optimizer"]
+    Args:
+        dataset_name (str): The name of the dataset.
+        dataset_root_dir (str): The path to the root directory of the dataset
+                if the dataset is not cifar10, cifar100 or emnist.
 
-    check_config_attributes(cfg, specs={"legal": legal, "all": required}, section="training")
+    Returns:
+        string (List): A list of strings.
+    """
 
-    # Check that there is one and only one model source
-    count = 0
-    if cfg.model: count += 1
-    if cfg.resume_training_from: count += 1
-    if model_path_used: count += 1
-    if count == 0:
-        raise ValueError("\nExpecting either `training.model`, `training.resume_training_from` or "
-                         "`general.model_path` attribute\nPlease check your configuration file.")
-    if count > 1:
-        raise ValueError("\nThe `training.model`, `training.resume_training_from` and `general.model_path` "
-                         "attributes are mutually exclusive.\nPlease check your configuration file.")
+    if dataset_name:
+        if dataset_name == "cifar10":
+            class_names = ["airplane","automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
+        elif dataset_name == "cifar100":
+            class_names = sorted([
+                "beaver", "dolphin", "otter", "seal", "whale", "aquarium fish", "flatfish", "ray", "shark", "trout",
+                "orchids", "poppies", "roses", "sunflowers", "tulips", "bottles", "bowls", "cans", "cups", "plates",
+                "apples", "mushrooms", "oranges", "pears", "sweet peppers", "clock", "computer keyboard", "lamp",
+                "telephone", "television", "bed", "chair", "couch", "table", "wardrobe", "bee", "beetle", "butterfly",
+                "caterpillar", "cockroach", "bear", "leopard", "lion", "tiger", "wolf", "bridge", "castle", "house",
+                "road", "skyscraper", "cloud", "forest", "mountain", "plain", "sea", "camel", "cattle", "chimpanzee",
+                "elephant", "kangaroo", "fox", "porcupine", "possum", "raccoon", "skunk", "crab", "lobster", "snail",
+                "spider", "worm", "baby", "boy", "girl", "man", "woman", "crocodile", "dinosaur", "lizard", "snake",
+                "turtle", "hamster", "mouse", "rabbit", "shrew", "squirrel", "maple", "oak", "palm", "pine", "willow",
+                "bicycle", "bus", "motorcycle", "pickup truck", "train", "lawn-mower", "rocket", "streetcar", "tank",
+                "tractor"])
+        elif dataset_name == "emnist":
+            class_names = [i for i in range(10)] + list(string.ascii_uppercase)
+    else:
+        # Get the list of subdirectories. These are the class names.
+        class_names = sorted([x for x in os.listdir(dataset_root_dir)
+                                    if os.path.isdir(os.path.join(dataset_root_dir, x))])
 
-    if cfg.model:
-        required = ["name", "input_shape"]
-        check_config_attributes(cfg.model, specs={"all": required}, section="training.model")
-
-    # If resume_training_from is set, check that the model file exists
-    if cfg.resume_training_from:
-        path = cfg.resume_training_from
-        if Path(path).suffix != ".h5":
-            raise ValueError("\nExpecting `resume_training_from` attribute to be set to a path to a .h5 model path\n"
-                             f"Received path: {path}\n"
-                             "Please check the 'training' section of your configuration file.")
-        if not os.path.isfile(path):
-            raise FileNotFoundError(f"\nUnable to find file {path}\nPlease check the 'training.resume_training_from'"
-                                    "attribute in your configuration file")
-
-    # The optimizer may be written on one line. For example: "optimizer: Adam"
-    # In this case, we got a string instead of a dictionary.
-    if type(cfg.optimizer) == str:
-        cfg.optimizer = DefaultMunch.fromDict({cfg.optimizer: None})
-
-
-def parse_quantization_section(cfg: DictConfig) -> None:
-    # cfg: 'quantization' section of the configuration file
-
-    legal = ["quantizer", "quantization_type", "quantization_input_type",
-             "quantization_output_type", "export_dir"]
-    required = [x for x in legal if x != "export_dir"]
-
-    check_config_attributes(cfg, specs={"legal": legal, "all": required}, section="quantization")
-
-    # Set default values of missing optional arguments
-    if not cfg.export_dir:
-        cfg.export_dir = "quantized_models"
-
-    # Check the quantizer name
-    if cfg.quantizer != "TFlite_converter":
-        raise ValueError(f"\nUnknown or unsupported quantizer. Received `{cfg.quantizer}`\n"
-                         "Supported quantizer: TFlite_converter\n"
-                         "Please check the 'quantization.quantizer' attribute in your configuration file.")
-    
-    # Check the quantizer type
-    if cfg.quantization_type != "PTQ":
-        raise ValueError(f"\nUnknown or unsupported quantization type. Received `{cfg.quantization_type}`\n"
-                         "Supported type: PTQ\n"
-                         "Please check the 'quantization.quantization_type' attribute in your configuration file.")
-
-    
-def parse_prediction_section(cfg: DictConfig) -> None:
-    # cfg: 'prediction' section of the configuration file
-
-    legal = ["test_images_path"]
-    check_config_attributes(cfg, specs={"legal": legal, "all": legal}, section="prediction")
-
-    # Check that the directory that contains the images exist
-    if not os.path.isdir(cfg.test_images_path):
-        raise FileNotFoundError("\nUnable to find the directory containing the images to predict\n"
-                                f"Received path: {cfg.test_images_path}\nPlease check the "
-                                "'prediction.test_images_path' attribute in your configuration file.")
-
-
-def parse_tools_section(cfg: DictConfig) -> None:
-    # cfg: 'tools' section of the configuration file
-
-    legal = ["stm32ai", "path_to_cubeIDE"]
-    check_config_attributes(cfg, specs={"legal": legal, "all": legal}, section="tools")
-
-    legal = ["version", "optimization", "on_cloud", "path_to_stm32ai"]
-    check_config_attributes(cfg.stm32ai, specs={"legal": legal, "all": legal}, section="tools.stm32ai")
-
-
-def parse_benchmarking_section(cfg: DictConfig) -> None:
-    # cfg: 'benchmarking' section of the configuration file
-    
-    legal = ["board"]
-    check_config_attributes(cfg, specs={"legal": legal, "all": legal}, section="benchmarking")
-
-
-def parse_deployment_section(cfg: DictConfig) -> None:
-    # cfg: 'deployment' section of the configuration file
-
-    legal = ["c_project_path", "IDE", "verbosity", "hardware_setup"]
-    check_config_attributes(cfg, specs={"legal": legal, "all": legal}, section="deployment")
- 
-    legal = ["serie", "board", "input", "output"]
-    check_config_attributes(cfg.hardware_setup, specs={"legal": legal, "all": legal},
-                            section="deployment.hardware_setup")
-
-
-def parse_mlflow_section(cfg: DictConfig) -> None:
-    # cfg: 'mlflow' section of the configuration file
-
-    legal = ["uri"]
-    check_config_attributes(cfg, specs={"legal": legal, "all": legal}, section="mlflow")
+    return class_names
 
 
 def get_config(config_data: DictConfig) -> DefaultMunch:
@@ -558,8 +277,8 @@ def get_config(config_data: DictConfig) -> DefaultMunch:
     # Expand environment variables
     postprocess_config_dict(config_dict)
 
+    # Top level section parsing
     cfg = DefaultMunch.fromDict(config_dict)
-
     mode_groups = DefaultMunch.fromDict({
         "training": ["training", "chain_tbqeb", "chain_tqe"],
         "evaluation": ["evaluation", "chain_tbqeb", "chain_tqe", "chain_eqe", "chain_eqeb"],
@@ -568,43 +287,114 @@ def get_config(config_data: DictConfig) -> DefaultMunch:
         "benchmarking": ["benchmarking", "chain_tbqeb", "chain_qb", "chain_eqeb"],
         "deployment": ["deployment", "chain_qd"]
     })
-
-    parse_top_level(cfg, mode_groups=mode_groups)
+    mode_choices = ["training", "evaluation", "prediction", "deployment",
+                    "quantization", "benchmarking", "chain_tbqeb", "chain_tqe",
+                    "chain_eqe", "chain_qb", "chain_eqeb", "chain_qd"]
+    legal = ["general", "operation_mode", "dataset", "preprocessing", "data_augmentation",
+             "custom_data_augmentation", "training", "quantization", "prediction", "tools",
+             "benchmarking", "deployment", "mlflow", "hydra"]
+    parse_top_level(cfg,
+                    mode_groups=mode_groups,
+                    mode_choices=mode_choices,
+                    legal=legal)
     print(f"[INFO] : Running `{cfg.operation_mode}` operation mode")
 
+    # General section parsing
     if not cfg.general:
         cfg.general = DefaultMunch.fromDict({"project_name": "<unnamed>"})
-    parse_general_section(cfg.general, mode=cfg.operation_mode, mode_groups=mode_groups)
+    legal = ["project_name", "model_path", "logs_dir", "saved_models_dir", "deterministic_ops",
+             "display_figures", "global_seed", "gpu_memory_limit", "num_threads_tflite"]
+    required = []
+    parse_general_section(cfg.general,
+                          mode=cfg.operation_mode,
+                          mode_groups=mode_groups,
+                          legal=legal,
+                          required=required)
 
+    # Select hardware_type from yaml information
+    check_hardware_type(cfg,
+                        mode_groups)
+
+    # Dataset section parsing
     if not cfg.dataset:
         cfg.dataset = DefaultMunch.fromDict({})
-    parse_dataset_section(cfg.dataset, mode=cfg.operation_mode, mode_groups=mode_groups)
+    parse_dataset_section(cfg.dataset,
+                          mode=cfg.operation_mode,
+                          mode_groups=mode_groups,
+                          hardware_type=cfg.hardware_type)
 
-    parse_preprocessing_section(cfg.preprocessing, mode=cfg.operation_mode)
+    # Preprocessing section parsing
+    parse_preprocessing_section(cfg.preprocessing,
+                                mode=cfg.operation_mode)
 
+    # Training section parsing
     if cfg.operation_mode in mode_groups.training:
         if cfg.data_augmentation or cfg.custom_data_augmentation:
-            parse_data_augmentation_section(cfg, config_dict)
-        model_path_used = True if cfg.general.model_path else False
-        parse_training_section(cfg.training, mode=cfg.operation_mode, model_path_used=model_path_used)
+            parse_data_augmentation_section(cfg,
+                                            config_dict)
+        model_path_used = bool(cfg.general.model_path)
+        model_type_used = bool(cfg.general.model_type)
+        legal = ["model", "batch_size", "epochs", "optimizer", "dropout", "frozen_layers",
+            "callbacks", "resume_training_from", "trained_model_path"]
+        parse_training_section(cfg.training,
+                               model_path_used=model_path_used,
+                               model_type_used=model_type_used,
+                               legal=legal)
 
+    # Quantization section parsing
     if cfg.operation_mode in mode_groups.quantization:
-        parse_quantization_section(cfg.quantization)
+        legal = ["quantizer", "quantization_type", "quantization_input_type",
+            "quantization_output_type", "export_dir", "granularity", "target_opset", "optimize"]
+        parse_quantization_section(cfg.quantization,
+                                   legal=legal)
 
+    # Prediction section parsing
     if cfg.operation_mode == "prediction":
         parse_prediction_section(cfg.prediction)
 
+    # Tools section parsing
     if cfg.operation_mode in (mode_groups.benchmarking + mode_groups.deployment):
-        parse_tools_section(cfg.tools)
+        parse_tools_section(cfg.tools,
+                            cfg.operation_mode,
+                            cfg.hardware_type)
 
+    #For MPU, check if online benchmarking is activated
+    if cfg.operation_mode in mode_groups.benchmarking:
+        if cfg.hardware_type == "MPU" :
+            if cfg.operation_mode == "benchmarking" and not(cfg.tools.stm32ai.on_cloud):
+                print("Target selected for benchmark :", cfg.benchmarking.board)
+                print("Offline benchmarking for MPU is not yet available please use online benchmarking")
+                exit(1)
+
+    # Benchmarking section parsing
     if cfg.operation_mode in mode_groups.benchmarking:
         parse_benchmarking_section(cfg.benchmarking)
+        if cfg.hardware_type == "MPU" :
+            if not (cfg.tools.stm32ai.on_cloud):
+                print("Target selected for benchmark :", cfg.benchmarking.board)
+                print("Offline benchmarking for MPU is not yet available please use online benchmarking")
+                exit(1)
 
+    # Deployment section parsing
     if cfg.operation_mode in mode_groups.deployment:
-        parse_deployment_section(cfg.deployment)
+        if cfg.hardware_type == "MCU":
+            legal = ["c_project_path", "IDE", "verbosity", "hardware_setup"]
+            legal_hw = ["serie", "board", "input", "output", "stlink_serial_number"]
+        else:
+            legal = ["c_project_path", "label_file_path","board_deploy_path", "verbosity", "hardware_setup"]
+            legal_hw = ["serie", "board", "ip_address"]
+            if cfg.preprocessing.color_mode != "rgb":
+                raise ValueError("\n Color mode used is not supported for deployment on MPU target \n Please use RGB format")
+            if cfg.preprocessing.resizing.aspect_ratio != "fit":
+                raise ValueError("\n Aspect ratio used is not supported for deployment on MPU target \n Please use FIT aspect ratio")
+        parse_deployment_section(cfg.deployment,
+                                 legal=legal,
+                                 legal_hw=legal_hw)
 
+    # MLFlow section parsing
     parse_mlflow_section(cfg.mlflow)
 
+    # Check that all datasets have the required directory structure
     cds = cfg.dataset
     if not cds.class_names and cfg.operation_mode not in ("quantization", "benchmarking", "chain_qb"):
         # Infer the class names from a dataset
@@ -613,8 +403,14 @@ def get_config(config_data: DictConfig) -> DefaultMunch:
                 cds.class_names = get_class_names(dataset_root_dir=path)
                 print("[INFO] : Found {} classes in dataset {}".format(len(cds.class_names), path))
                 break
+
+        if not cds.class_names and cfg.operation_mode in ("deployment","chain_qd") and cfg.hardware_type == "MPU":
+            cds.class_names = get_class_names_from_file(cfg)
+            print("[INFO] : Found {} classes in label file {}".format(len(cds.class_names), cfg.deployment.label_file_path))
+
         # This should not happen. Just in case.
         if not cds.class_names:
-            raise ValueError("\nMissing `class_names` attribute\nPlease check the 'dataset' section of your configuration file.")
+            raise ValueError("\nMissing `class_names` attribute\nPlease check the 'dataset' section of your "
+                             "configuration file.")
 
     return cfg

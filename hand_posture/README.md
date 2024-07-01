@@ -25,7 +25,7 @@ You can refer to readme links below that provide typical examples of operation m
    - [training](./src/training/README.md)
    - [evaluation](./src/evaluation/README.md)
    - [benchmarking](./src/benchmarking/README.md)
-   - [deployment](../src/deployment/README.md)
+   - [deployment](./deployment/README.md)
 
 ## Guidelines
 The hand posture use case is based on the ST multi-zone Time-of-Flight sensors: [VL53L5CX](https://www.st.com/en/imaging-and-photonics-solutions/vl53l5cx.html), and [VL53L8CX](https://www.st.com/en/imaging-and-photonics-solutions/vl53l8cx.html).

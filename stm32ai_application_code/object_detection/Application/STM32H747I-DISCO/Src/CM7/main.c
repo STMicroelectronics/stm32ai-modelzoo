@@ -40,12 +40,12 @@ CLASSES_TABLE;
 /****************************************************************************/
 
 /***Buffer to store the camera captured frame***/
-__attribute__((section(".CapturedImage_Buffer_AXIRAM")))
+__attribute__((section(".CapturedImage_Buffer_SDRAM")))
 __attribute__ ((aligned (32)))
 uint8_t CapturedImage_Buffer[CAM_FRAME_BUFFER_SIZE];
 
 /***Buffer to store the rescaled frame***/
-__attribute__((section(".RescaledImage_Buffer_SDRAM")))
+__attribute__((section(".RescaledImage_Buffer_AXIRAM")))
 __attribute__ ((aligned (32)))
 uint8_t RescaledImage_Buffer[RESCALED_FRAME_BUFFER_SIZE];
 

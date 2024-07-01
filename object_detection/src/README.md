@@ -1,47 +1,8 @@
 # Object detection STM32 model zoo
-## Table of Contents
 
-### <a href="#1">1. Object detection Model Zoo introduction</a>
+## <a id="">Table of contents</a>
 
-### <a href="#2">2. Object detection  tutorial</a>
-
-#### <a href="#2-1">2.1 Choose the operation mode</a>
-
-#### <a href="#2-2">2.2 Global settings</a>
-
-#### <a href="#2-3">2.3 Dataset specification</a>
-
-#### <a href="#2-4">2.4 Apply image preprocessing</a>
-
-#### <a href="#2-5">2.5 Use data augmentation</a>
-
-#### <a href="#2-6">2.6 Set the training parameters</a>
-
-#### <a href="#2-7">2.7 Set the postprocessing parameters</a>
-
-#### <a href="#2-8">2.8 Model quantization</a>
-
-#### <a href="#2-9">2.9 Benchmark the model</a>
-
-#### <a href="#2-10">2.10 Deploy the model</a>
-
-#### <a href="#2-11">2.11 Hydra and MLflow settings</a>
-
-### <a href="#3">3. Run the Object detection chained service</a>
-
-### <a href="#4">4. Visualize chained service results</a>
-
-#### <a href="#4-1">4.1 Saved results</a></a>
-
-#### <a href="#4-2">4.2 Run tensorboard</a>
-
-#### <a href="#4-3">4.3 Run MLFlow</a>
-
-#### <a href="appendix-a">Appendix A: YAML syntax</a>
-
-__________________________________________
-
-### <a id="1">1. Object detection Model Zoo introduction</a>
+<details open><summary><a href="#1"><b>1. Object detection Model Zoo introduction</b></a></summary><a id="1"></a>
 
 The object detection model zoo provides a collection of independent services and pre-built chained services that can be
 used to perform various functions related to machine learning for Object detection. The individual services include
@@ -77,7 +38,8 @@ val/:
   val_image_2.txt
 ```
 
-### <a id="2">2. Object detection tutorial</a>
+</details>
+<details open><summary><a href="#2"><b>2. Object detection tutorial</b></a></summary><a id="2"></a>
 
 This tutorial demonstrates how to use the `chain_tqeb` services to train, benchmark, quantize, evaluate, and benchmark
 the model.
@@ -86,7 +48,7 @@ To get started, you will need to update the [user_config.yaml](user_config.yaml)
 and configuration options for the services that you want to use. Each section of
 the [user_config.yaml](user_config.yaml) file is explained in detail in the following sections.
 
-#### <a id="2-1">2.1 Choose the operation mode</a>
+<ul><details open><summary><a href="#2-1">2.1 Choose the operation mode</a></summary><a id="2-1"></a>
 
 The `operation_mode` top-level attribute specifies the operations or the service you want to execute. This may be
 single operation or a set of chained operations.
@@ -126,7 +88,8 @@ evaluate it to be later deployed in the STM32 boards.
 operation_mode: chain_tqeb
 ```
 
-#### <a id="2-2">2.2 Global settings</a>
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2 Global settings</a></summary><a id="2-2"></a>
 
 The `general` section and its attributes are shown below.
 
@@ -142,6 +105,7 @@ general:
   display_figures: True             # Enable/disable the display of figures (training learning curves and confusion matrices).
   # Optional, defaults to True.
   gpu_memory_limit: 16              # Maximum amount of GPU memory in GBytes that TensorFlow may use (an integer).
+  num_threads_tflite: 4             # Number of threads for tflite interpreter. Optional, defaults to 1
 ```
 
 The `global_seed` attribute specifies the value of the seed to use to seed the Python, numpy and Tensorflow random
@@ -159,6 +123,11 @@ documentation for more details.
 The `gpu_memory_limit` attribute sets an upper limit in GBytes on the amount of GPU memory Tensorflow may use. This is
 an optional attribute with no default value. If it is not present, memory usage is unlimited. If you have several GPUs,
 be aware that the limit is only set on logical gpu[0].
+
+The `num_threads_tflite` parameter is only used as an input parameter for the tflite interpreter. Therefore, it has no effect on .h5 or .onnx models. 
+This parameter may accelerate the tflite model evaluation in the following operation modes:  `evaluation` (if a .tflite is specified in `model_path`), 
+`chain_tbqeb`, `chain_eqe`, `chain_tqe` and `chain_eqeb` (if the quantizer is the TFlite_converter). 
+However, the acceleration depends on your system resources.
 
 The `model_path` attribute is utilized to indicate the path to the model file that you wish to use for the selected
 operation mode. The accepted formats for `model_path` are listed in the table below:
@@ -194,7 +163,8 @@ custom model instead of using a model from the Model Zoo. This is explained in d
 the [readme](./training/README.md) file for the train service. However, in this tutorial, the `model_path` attribute is
 not used since we are using a pre-trained model from the Model Zoo.
 
-#### <a id="2-3">2.3 Dataset specification</a>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Dataset specification</a></summary><a id="2-3"></a>
 
 The `dataset` section and its attributes are shown in the YAML code below.
 
@@ -227,7 +197,8 @@ provided and a training set is available, the training set is used for the quant
 quite large and the quantization process can take a long time to run. To avoid this issue, you can set
 the `quantization_split` attribute to use only a portion of the dataset for quantization.
 
-#### <a id="2-4">2.4 Apply image preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 Apply image preprocessing</a></summary><a id="2-4"></a>
 
 Object detection requires images to be preprocessed by rescaling and resizing them before they can be used. This is
 specified in the 'preprocessing' section, which is mandatory in all operation modes. Additionally, bounding boxes should
@@ -265,7 +236,8 @@ the resized images.
 
 The `color_mode` attribute can be set to either *"grayscale"*, *"rgb"* or *"rgba"*.
 
-#### <a id="2-5">2.5 Use data augmentation</a>
+</details></ul>
+<ul><details open><summary><a href="#2-5">2.5 Use data augmentation</a></summary><a id="2-5"></a>
 
 The data augmentation functions to apply to the input images during a training are specified in the
 optional `data_augmentation` section of the configuration file. They are only applied to the images during training.
@@ -287,7 +259,8 @@ When applying data augmentation for object detection, it is important to take in
 input images and the modification of the annotations file to ensure that the model is trained on accurate and
 representative data.
 
-#### <a id="2-6">2.6 Set the training parameters</a>
+</details></ul>
+<ul><details open><summary><a href="#2-6">2.6 Set the training parameters</a></summary><a id="2-6"></a>
 
 A 'training' section is required in all the operation modes that include a training, namely 'training', chain_tqeb'
 and 'chain_tqe'.
@@ -360,7 +333,8 @@ available callbacks and learning rate plotting utility.
 The best model obtained at the end of the training is saved in the 'experiments_outputs/\<date-and-time\>/saved_models'
 directory and is called 'best_model.h5' (see section <a href="#4">visualize the chained services results</a>).
 
-#### <a id="2-7">2.7 Set the postprocessing parameters</a>
+</details></ul>
+<ul><details open><summary><a href="#2-7">2.7 Set the postprocessing parameters</a></summary><a id="2-7"></a>
 
 A 'postprocessing' section is required in all operation modes for object detection models. This section includes
 parameters such as NMS threshold, confidence threshold, IoU evaluation threshold, and maximum detection boxes. These
@@ -402,7 +376,8 @@ Overall, improving object detection requires careful tuning of these post-proces
 use case. Experimenting with different values and evaluating the results can help you find the optimal values for your
 object detection model.
 
-#### <a id="2-8">2.8 Model quantization</a>
+</details></ul>
+<ul><details open><summary><a href="#2-8">2.8 Model quantization</a></summary><a id="2-8"></a>
 
 Configure the quantization section in [user_config.yaml](user_config.yaml) as the following:
 
@@ -413,6 +388,8 @@ quantization:
   quantization_type: PTQ
   quantization_input_type: float
   quantization_output_type: uint8
+  granularity: per_tensor            # Optional, defaults to "per_channel".
+  optimize: True                     # Optional, defaults to False.
   export_dir: quantized_models       # Optional, defaults to "quantized_models".
 ```
 
@@ -429,18 +406,33 @@ The `quantization_input_type` attribute is a string that can be set to "int8", "
 quantization type for the model input. Similarly, the `quantization_output_type` attribute is a string that can be set
 to "int8", "uint8," or "float" to represent the quantization type for the model output.
 
+The quantization `granularity` is either "per_channel" or "per_tensor". If the parameter is not set, it will default to 
+"per_channel". 'per channel' means all weights contributing to a given layer output channel are quantized with one 
+unique (scale, offset) couple. The alternative is 'per tensor' quantization which means that the full weight tensor of 
+a given layer is quantized with one unique (scale, offset) couple. 
+It is obviously more challenging to preserve original float model accuracy using 'per tensor' quantization. But this 
+method is particularly well suited to fully exploit STM32MP2 platforms HW design.
+
+Some topologies can be slightly optimized to become "per_tensor" quantization friendly. Therefore, we propose to 
+optimize the model to improve the "per-tensor" quantization. This is controlled by the `optimize` parameter. By default, 
+it is False and no optimization is applied. When set to True, some modifications are applied on original network. 
+Please note that these optimizations only apply when granularity is "per_tensor". To finish, some topologies cannot be 
+optimized. So even if `optimize` is set to True, there is no guarantee that "per_tensor" quantization will preserve the 
+float model accuracy for all the topologies.
+
 By default, the quantized model is saved in the 'quantized_models' directory under the 'experiments_outputs' directory.
 You may use the optional `export_dir` attribute to change the name of this directory.
 
-#### <a id="2-9">2.9 Benchmark the model</a>
+</details></ul>
+<ul><details open><summary><a href="#2-9">2.9 Benchmark the model</a></summary><a id="2-9"></a>
 
 The [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) allows you to benchmark your model and estimate its
 footprints and inference time for different STM32 target devices. To use this feature, set the `on_cloud` attribute to
 True. Alternatively, you can use [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) to benchmark
 your model and estimate its footprints for STM32 target devices locally. To do this, make sure to add the path to
-the `stm32ai` executable under the `path_to_stm32ai` attribute and set the `on_cloud` attribute to False.
+the `stedgeai` executable under the `path_to_stedgeai` attribute and set the `on_cloud` attribute to False.
 
-The `version` attribute to specify the **STM32Cube.AI** version used to benchmark the model, e.g. 8.1.0 and
+The `version` attribute to specify the **STM32Cube.AI** version used to benchmark the model, e.g. 9.1.0 and
 the `optimization` defines the optimization used to generate the C model, options: "balanced", "time", "ram".
 
 The `board` attribute is used to provide the name of the STM32 board to benchmark the model on. The available boards
@@ -449,12 +441,12 @@ STM32H747I-DISCO', 'STM32H735G-DK', 'STM32F769I-DISCO', 'NUCLEO-G474RE', 'NUCLEO
 
 ```yaml
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 benchmarking:
   board: STM32H747I-DISCO     # Name of the STM32 board to benchmark the model on
@@ -463,7 +455,8 @@ benchmarking:
 The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README.md) service which is not part the
 chain `chain_tqeb` used in this tutorial.
 
-#### <a id="2-10">2.10 Deploy the model</a>
+</details></ul>
+<ul><details open><summary><a href="#2-10">2.10 Deploy the model</a></summary><a id="2-10"></a>
 
 In this tutorial, we are using the `chain_tqeb` toolchain, which does not include the deployment service. However, if
 you want to deploy the model after running the chain, you can do so by referring to
@@ -485,12 +478,12 @@ postprocessing:
   max_detection_boxes: 10
 
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
   c_project_path: ../../stm32ai_application_code/object_detection/
@@ -514,14 +507,15 @@ these values in the postprocessing section, the object detection model can prope
 generate accurate detections. It is important to carefully tune these parameters based on your specific use case to
 achieve optimal performance.
 
-The `tools` section includes information about the STM32AI toolchain, such as the version, optimization level, and path
-to the `stm32ai.exe` file.
+The `tools` section includes information about the **stedgeai** toolchain, such as the version, optimization level, and path
+to the `stedgeai.exe` file.
 
 Finally, in the `deployment` section, users must provide information about the hardware setup, such as the series and
 board of the STM32 device, as well as the input and output interfaces. Once all of these sections have been filled in,
 users can run the deployment service to deploy their model to the STM32 device.
 
-#### <a id="2-11">2.11 Hydra and MLflow settings</a>
+</details></ul>
+<ul><details open><summary><a href="#2-11">2.11 Hydra and MLflow settings</a></summary><a id="2-11"></a>
 
 The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used
 to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment
@@ -542,7 +536,9 @@ mlflow:
   uri: ./experiments_outputs/mlruns
 ```
 
-### <a id="3">3. Run the object detection chained service</a>
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Run the object detection chained service</b></a></summary><a id="3"></a>
 
 After updating the [user_config.yaml](user_config.yaml) file, please run the following command:
 
@@ -556,7 +552,8 @@ python stm32ai_main.py
 python stm32ai_main.py operation_mode='chain_eb'
 ```
 
-### <a id="4">4. Visualize the chained services results</a>
+</details>
+<details open><summary><a href="#4"><b>4. Visualize the chained services results</b></a></summary><a id="4"></a>
 
 Every time you run the Model Zoo, an experiment directory is created that contains all the directories and files created
 during the run. The names of experiment directories are all unique as they are based on the date and time of the run.
@@ -616,7 +613,7 @@ augmentation layers. These files can be used to resume a training that you inter
 explained in section training service [README](training/README.md). These model files are not intended to be used
 outside of the Model Zoo context.
 
-#### <a id="4-1">4.1 Saved results</a>
+<ul><details open><summary><a href="#4-1">4.1 Saved results</a></summary><a id="4-1"></a>
 
 All of the training and evaluation artifacts are saved in the current output simulation directory, which is located
 at **experiments_outputs/\<date-and-time\>**.
@@ -624,7 +621,8 @@ at **experiments_outputs/\<date-and-time\>**.
 For example, you can retrieve the confusion matrix generated after evaluating the float and the quantized model on the
 test set by navigating to the appropriate directory within **experiments_outputs/\<date-and-time\>**.
 
-#### <a id="4-2">4.2 Run tensorboard</a>
+</details></ul>
+<ul><details open><summary><a href="#4-2">4.2 Run tensorboard</a></summary><a id="4-2"></a>
 
 To visualize the training curves that were logged by TensorBoard, navigate to the **
 experiments_outputs/\<date-and-time\>** directory and run the following command:
@@ -636,7 +634,8 @@ tensorboard --logdir logs
 This will start a server and its address will be displayed. Use this address in a web browser to connect to the server.
 Then, using the web browser, you will able to explore the learning curves and other training metrics.
 
-#### <a id="4-3">4.3 Run MLFlow</a>
+</details></ul>
+<ul><details open><summary><a href="#4-3">4.3 Run MLFlow</a></summary><a id="4-3"></a>
 
 MLflow is an API that allows you to log parameters, code versions, metrics, and artifacts while running machine learning
 code, and provides a way to visualize the results.
@@ -652,7 +651,9 @@ This will start a server and its address will be displayed. Use this address in 
 Then, using the web browser, you will be able to navigate the different experiment directories and look at the metrics
 they were collected. Refer to [MLflow Home](https://mlflow.org/) for more information about MLflow.
 
-### <a id="appendix-a">Appendix A: YAML syntax</a>
+</details></ul>
+</details>
+<details open><summary><a href="#A"><b>Appendix A: YAML syntax</b></a></summary><a id="A"></a>
 
 **Example and terminology:**
 
@@ -838,3 +839,5 @@ rescaling:
   scale: 1/127.5,
   offset: -1
 ```
+
+</details>

@@ -105,6 +105,52 @@ void node_convert_is1os16(ai_node *pNode);
 AI_INTERNAL_API
 void node_convert_is1of32(ai_node *pNode);
 
+
+/*!
+ * @brief Convert signed int 16 bit tensor to float
+ * @ingroup core_convert
+ * @param[in] pNode in a handler to node (layer or operator)
+ */
+AI_INTERNAL_API
+void node_convert_is16of32(ai_node *pNode);
+
+
+/*!
+ * @brief Convert unsigned int 16 bit tensor to float
+ * @ingroup core_convert
+ * @param[in] pNode in a handler to node (layer or operator)
+ */
+AI_INTERNAL_API
+void node_convert_iu16of32(ai_node *pNode);
+
+
+/*!
+ * @brief Convert float tensor to signed int 16 bit
+ * @ingroup core_convert
+ * @param[in] pNode in a handler to node (layer or operator)
+ */
+AI_INTERNAL_API
+void node_convert_if32os16(ai_node *pNode);
+
+
+/*!
+ * @brief Convert float tensor to unsigned int 16 bit
+ * @ingroup core_convert
+ * @param[in] pNode in a handler to node (layer or operator)
+ */
+AI_INTERNAL_API
+void node_convert_if32ou16(ai_node *pNode);
+
+
+/*!
+ * @brief Convert signed int 16 bit tensor to unsigned int 16 bit
+ * @ingroup core_convert
+ * @param[in] pNode in a handler to node (layer or operator)
+ */
+AI_INTERNAL_API
+void node_convert_is16ou16(ai_node *pNode);
+
+
 /*!
  * @brief Convert a shape struct into a stride struct
  * @ingroup core_convert

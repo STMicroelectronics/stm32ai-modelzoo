@@ -1,0 +1,39 @@
+general:
+   model_path: ../pretrained_models/deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft.h5
+
+operation_mode: chain_eqe
+
+dataset:
+   name: pascal_voc
+   class_names: [ "background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus",
+                 "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
+                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor" ]
+   test_path: ../datasets/VOC2012_train_val/JPEGImages
+   test_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
+   test_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/test.txt
+   quantization_path: ../datasets/VOC2012_train_val/JPEGImages
+   quantization_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
+   quantization_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/quantization.txt
+
+preprocessing:
+   rescaling:
+      scale: 1/127.5
+      offset: -1
+   resizing:
+      aspect_ratio: fit
+      interpolation: bilinear
+   color_mode: rgb
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

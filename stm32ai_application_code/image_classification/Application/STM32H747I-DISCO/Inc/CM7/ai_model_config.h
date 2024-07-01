@@ -39,7 +39,7 @@
 #define ASPECT_RATIO_CROP       (2)
 #define ASPECT_RATIO_PADDING    (3)
 
-#define ASPECT_RATIO_MODE    ASPECT_RATIO_PADDING
+#define ASPECT_RATIO_MODE    ASPECT_RATIO_FIT
 
 /* Input color format configuration */
 #define RGB_FORMAT          (1)
@@ -53,7 +53,7 @@
 #define INT8_FORMAT       (2)
 #define FLOAT32_FORMAT    (3)
 
-#define QUANT_INPUT_TYPE     INT8_FORMAT
+#define QUANT_INPUT_TYPE     UINT8_FORMAT
 #define QUANT_OUTPUT_TYPE    FLOAT32_FORMAT
 
 #endif      /* __AI_MODEL_CONFIG_H__ */

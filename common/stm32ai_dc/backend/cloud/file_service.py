@@ -79,6 +79,22 @@ class FileService:
             print(f"Error server reply with {resp.status_code} HTTP code")
             return False
 
+    def download_model(self, model_name, model_path):
+        headers = CaseInsensitiveDict()
+        headers["Accept"] = "application/json"
+        headers["Authorization"] = f"Bearer {self.auth_token}"
+
+        resp = requests.get(
+            url=f'{self.models_route}/{model_name}',
+            headers=headers,
+            verify=get_ssl_verify_status(),
+            proxies=_get_env_proxy(),
+            stream=True)
+        os.makedirs(os.path.dirname(model_path), exist_ok=True)
+        with open(model_path, mode="wb") as file:
+            for chunk in resp.iter_content(chunk_size=10 * 1024):
+                file.write(chunk)
+
     def upload_model(self, modelPath):
         return self._uploadFileTo(modelPath, toRoute=self.models_route)
 
@@ -156,6 +172,7 @@ class FileService:
 
         # If get full server path extract only filename
         base_name = os.path.basename(filename)
+        os.makedirs(os.path.dirname(to_local_path), exist_ok=True)
         return self._download_file(
             f"{self.generated_files_route}/{base_name}",
             os.path.join(to_local_path, base_name))

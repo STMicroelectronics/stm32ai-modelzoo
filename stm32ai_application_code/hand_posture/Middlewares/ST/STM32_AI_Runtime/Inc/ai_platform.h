@@ -81,6 +81,9 @@
 /*****************************************************************************/
 #define AI_FLAG_NONE            (0x0)
 
+/*****************************************************************************/
+AI_API_DECLARE_BEGIN
+
 /*!
  * @typedef ai_flags
  * @ingroup ai_platform
@@ -261,6 +264,8 @@ typedef int32_t ai_buffer_format;
 #define AI_BUFFER_META_FLAG_SCALE_FLOAT     (0x1U << 0)
 #define AI_BUFFER_META_FLAG_ZEROPOINT_U8    (0x1U << 1)
 #define AI_BUFFER_META_FLAG_ZEROPOINT_S8    (0x1U << 2)
+#define AI_BUFFER_META_FLAG_ZEROPOINT_U16    (0x1U << 3)
+#define AI_BUFFER_META_FLAG_ZEROPOINT_S16    (0x1U << 4)
 
 /*! ai_buffer format variable flags & macros *********************************/
 #define AI_BUFFER_FMT_TYPE_NONE          (0x0)
@@ -570,6 +575,9 @@ enum {
 #define SSIZET_FMT  "%" PRIu32
 #define AII32_FMT   "%" PRId32
 #define AIU32_FMT   "%" PRIu32
+#define AII64_FMT   "%" PRId64
+#define AIU64_FMT   "%" PRIu64
+
 
 #define AI_VERSION(major_, minor_, micro_) \
   (((major_)<<24) | ((minor_)<<16) | ((micro_)<<8))
@@ -588,6 +596,7 @@ typedef bool          ai_bool;
 typedef char          ai_char;
 
 typedef uint32_t      ai_size;
+typedef int16_t       ai_short_size;
 
 typedef uintptr_t     ai_uptr;
 
@@ -602,6 +611,8 @@ typedef int8_t        ai_i8;
 typedef int16_t       ai_i16;
 typedef int32_t       ai_i32;
 typedef int64_t       ai_i64;
+
+typedef uint64_t      ai_macc;
 
 typedef int32_t       ai_pbits;
 
@@ -803,7 +814,7 @@ typedef struct ai_network_report_ {
   ai_platform_version             api_version;
   ai_platform_version             interface_api_version;
 
-  ai_u32                          n_macc;
+  ai_macc                         n_macc;
 
   ai_u16                          n_inputs;
   ai_u16                          n_outputs;
@@ -866,8 +877,21 @@ typedef enum {
   AI_PAD_CONSTANT = 0x0,
   AI_PAD_REFLECT,
   AI_PAD_EDGE,
+  AI_PAD_8BIT_CH1ST_CONSTANT,
 } ai_pad_mode;
 
+#define OUTPUT_PADDING_FLAG (1 << 0)
+#define CHANNEL_FIRST_FLAG  (1 << 1)
+/* Carefull when changing those definitions
+   bit0 shall always select output padding (Valid vs Same)
+   bit1 shall always select Channel first /channel lst format
+*/
+typedef enum {
+  AI_LAYER_FORMAT_CHANNEL_LAST_VALID  = 0x0,
+  AI_LAYER_FORMAT_CHANNEL_LAST_SAME  = 0x1,
+  AI_LAYER_FORMAT_CHANNEL_FIRST_VALID = 0x2,
+  AI_LAYER_FORMAT_CHANNEL_FIRST_SAME = 0x3,
+} ai_layer_format_type;
 
 /*! ai_platform public APIs **************************************************/
 
@@ -938,5 +962,7 @@ ai_size ai_buffer_array_get_byte_size(const ai_buffer_array* barray);
 AI_API_ENTRY
 ai_bool ai_buffer_array_item_set_address(
   ai_buffer_array* barray, const ai_u32 pos, ai_handle address);
+
+AI_API_DECLARE_END
 
 #endif /*AI_PLATFORM_H*/

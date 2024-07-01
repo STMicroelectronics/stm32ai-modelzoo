@@ -1,30 +1,9 @@
 
 # Image classification STM32 model zoo
-## Table of Contents
 
-### <a href="#1">1. Image classification Model Zoo introduction</a>
-### <a href="#2">2. Image classification tutorial</a>
-#### <a href="#2-1">2.1 Choose the operation mode</a>
-#### <a href="#2-2">2.2 Global settings</a>
-#### <a href="#2-3">2.3 Dataset specification</a>
-#### <a href="#2-4">2.4 Apply image preprocessing</a>
-#### <a href="#2-5">2.5 Use data augmentation</a>
-#### <a href="#2-6">2.6 Set the training parameters</a>
-#### <a href="#2-7">2.7 Model quantization</a>
-#### <a href="#2-8">2.8 Benchmark the model</a>
-#### <a href="#2-9">2.9 Deploy the model</a>
-#### <a href="#2-10">2.10 Hydra and MLflow settings</a>
-### <a href="#3">3. Run the image classification chained service</a>
-### <a href="#4">4. Visualize chained service results</a>
-#### <a href="#4-1">4.1 Saved results</a></a>
-#### <a href="#4-2">4.2 Run tensorboard</a>
-#### <a href="#4-3">4.3 Run MLFlow</a>
-#### <a href="appendix-a">Appendix A: YAML syntax</a>
+## <a id="">Table of contents</a>
 
-
-__________________________________________
-
-### <a id="1">1. Image classification Model Zoo introduction</a>
+<details open><summary><a href="#1"><b>1. Image classification Model Zoo introduction</b></a></summary><a id="1"></a>
 
 The image classification model zoo provides a collection of independent services and pre-built chained services that can be used to perform various functions related to machine learning for image classification. The individual services include tasks such as training the model or quantizing the model, while the chained services combine multiple services to perform more complex functions, such as training the model, quantizing it, and evaluating the quantized model successively.
 
@@ -44,14 +23,14 @@ The classification datasets are expected to be structured in subdirectories for 
       b_image_1.jpg,
       b_image_2.jpg
 ```
-
-### <a id="2">2. Image classification tutorial</a>
+</details>
+<details open><summary><a href="#2"><b>2. Image classification tutorial</b></a></summary><a id="2"></a>
 
 This tutorial demonstrates how to use the `chain_tbqeb` services to train, benchmark, quantize, evaluate, and benchmark the model. Among the various available [models](../pretrained_models/) in the model zoo, we chose to use the `tf_flowers` classification dataset and apply transfer learning on the MobileNet V2 image classification model as an example to demonstrate the workflow.
 
 To get started, you will need to update the [user_config.yaml](user_config.yaml) file, which specifies the parameters and configuration options for the services that you want to use. Each section of the [user_config.yaml](user_config.yaml) file is explained in detail in the following sections.
 
-#### <a id="2-1">2.1 Choose the operation mode</a>
+<ul><details open><summary><a href="#2-1">2.1 Choose the operation mode</a></summary><a id="2-1"></a>
 
 The `operation_mode` top-level attribute specifies the operations or the service you want to execute. This may be single operation or a set of chained operations.
 
@@ -86,8 +65,8 @@ In this tutorial the `operation_mode` used is the `chain_tbqeb` like shown below
 ```yaml
 operation_mode: chain_tbqeb
 ```
-
-#### <a id="2-2">2.2 Global settings</a>
+</details></ul>
+<ul><details open><summary><a href="#2-2">2.2 Global settings</a></summary><a id="2-2"></a>
 
 The `general` section and its attributes are shown below.
 
@@ -102,6 +81,7 @@ general:
    display_figures: True             # Enable/disable the display of figures (training learning curves and confusion matrices).
                                      # Optional, defaults to True.
    gpu_memory_limit: 16              # Maximum amount of GPU memory in GBytes that TensorFlow may use (an integer).
+   num_threads_tflite: 4             # Number of threads for tflite interpreter. Optional, defaults to 1
 ```
 
 The `global_seed` attribute specifies the value of the seed to use to seed the Python, numpy and Tensorflow random generators at the beginning of the main script. This is an optional attribute, the default value being 123. 
@@ -109,6 +89,10 @@ The `global_seed` attribute specifies the value of the seed to use to seed the P
 Even when random generators are seeded, it is often difficult to exactly reproduce results when the same operation is run multiple times. This typically happens when the same training script is run on different hardware. The `deterministic_ops` operator can be used to enable the deterministic mode of Tensorflow. If enabled, an operation that uses the same inputs on the same hardware will have the exact same outputs every time it is run. However, determinism should be used carefully as it comes at the expense of longer run times. Refer to the Tensorflow documentation for more details.
 
 The `gpu_memory_limit` attribute sets an upper limit in GBytes on the amount of GPU memory Tensorflow may use. This is an optional attribute with no default value. If it is not present, memory usage is unlimited. If you have several GPUs, be aware that the limit is only set on logical gpu[0]. 
+
+The `num_threads_tflite` parameter is only used as an input parameter for the tflite interpreter. Therefore, it has no effect on .h5 or .onnx models. 
+This parameter may accelerate the tflite model evaluation in the following operation modes:  `evaluation` (if a .tflite is specified in `model_path`), `chain_tbqeb`, `chain_eqe`, `chain_tqe` and `chain_eqeb` (if the quantizer is the TFlite_converter). 
+However, the acceleration depends on your system resources.
 
 The `model_path` attribute is utilized to indicate the path to the model file that you wish to use for the selected operation mode. The accepted formats for `model_path` are listed in the table below:
 
@@ -122,7 +106,8 @@ The `model_path` attribute is utilized to indicate the path to the model file th
 
 If you are using an operation mode that involves training, you can use the `model_path` attribute to train your own custom model instead of using a model from the Model Zoo. This is explained in detail in the [readme](./training/README.md) file for the train service. However, in this tutorial, the `model_path` attribute is not used since we are using a pre-trained model from the Model Zoo.
 
-#### <a id="2-3">2.3 Dataset specification</a>
+</details></ul>
+<ul><details open><summary><a href="#2-3">2.3 Dataset specification</a></summary><a id="2-3"></a>
 
 The `dataset` section and its attributes are shown in the YAML code below.
 
@@ -150,7 +135,8 @@ The `validation_split` attribute specifies the training/validation set size rati
 
 The `quantization_path` attribute is used to specify a dataset for the quantization process. If this attribute is not provided and a training set is available, the training set is used for the quantization. However, training sets can be quite large and the quantization process can take a long time to run. To avoid this issue, you can set the `quantization_split` attribute to use only a portion of the dataset for quantization.
 
-#### <a id="2-4">2.4 Apply image preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#2-4">2.4 Apply image preprocessing</a></summary><a id="2-4"></a>
 
 Images need to be rescaled and resized before they can be used. This is specified in the 'preprocessing' section that is required in all the operation modes.
 
@@ -182,8 +168,8 @@ If some images in your dataset are larger than the resizing size and some others
 
 The `color_mode` attribute can be set to either *"grayscale"*, *"rgb"* or *"rgba"*.
 
-
-#### <a id="2-5">2.5 Use data augmentation</a>
+</details></ul>
+<ul><details open><summary><a href="#2-5">2.5 Use data augmentation</a></summary><a id="2-5"></a>
 
 The data augmentation functions to apply to the input images during a training are specified in the optional `data_augmentation` section of the configuration file. They are only applied to the images during training.
 
@@ -213,7 +199,8 @@ The data augmentation functions are applied to the input images in their order o
 
 Please refer to [the data augmentation documentation](data_augmentation/README.md) for a list of functions that are available and the transforms they apply to the input images.
 
-#### <a id="2-6">2.6 Set the training parameters</a>
+</details></ul>
+<ul><details open><summary><a href="#2-6">2.6 Set the training parameters</a></summary><a id="2-6"></a>
 
 A 'training' section is required in all the operation modes that include a training, namely 'training', chain_tbqeb' and 'chain_tqe'.
 
@@ -268,53 +255,70 @@ A variety of learning rate schedulers are provided with the Model Zoo. If you wa
 
 The best model obtained at the end of the training is saved in the 'experiments_outputs/\<date-and-time\>/saved_models' directory and is called 'best_model.h5' (see section <a href="#4">visualize the chained services results</a>). Make sure not to use the 'best_augmentation_model.h5' file as it includes the rescaling and data augmentation layers
 
-
-#### <a id="2-7">2.7 Model quantization</a>
+</details></ul>
+<ul><details open><summary><a href="#2-7">2.7 Model quantization</a></summary><a id="2-7"></a>
 
 Configure the quantization section in [user_config.yaml](user_config.yaml) as the following:
 
 ```yaml
 
 quantization:
-   quantizer: TFlite_converter
-   quantization_type: PTQ
-   quantization_input_type: float
-   quantization_output_type: uint8
+   quantizer: TFlite_converter        # or onnx_quantizer (when quantizing onnx float model)
+   quantization_type: PTQ             
+   quantization_input_type: float     # float for onnx_quantizer
+   quantization_output_type: uint8    # float for onnx_quantizer
+   granularity: per_tensor            # Optional, defaults to "per_channel".
+   optimize: True                     # Optional, defaults to False.
+   target_opset: 17                   # Optional, defaults to 17.
    export_dir: quantized_models       # Optional, defaults to "quantized_models".
 ```
 
-This section is used to configure the quantization process, which optimizes the model for efficient deployment on embedded devices by reducing its memory usage (Flash/RAM) and accelerating its inference time, with minimal degradation in model accuracy. The `quantizer` attribute expects the value "TFlite_converter", which is used to convert the trained model weights from float to integer values and transfer the model to a TensorFlow Lite format.
+This section is used to configure the quantization process, which optimizes the model for efficient deployment on embedded devices by reducing its memory usage (Flash/RAM) and accelerating its inference time, with minimal degradation in model accuracy. The `quantizer` attribute expects the value `TFlite_converter`, which is used to convert the trained model weights from float to integer values and transfer the model to a TensorFlow Lite format. Alternativey, if a float onnx model is to be quantized, the value for the `quantizer` should be set to `Onnx_quantizer`.
 
 The `quantization_type` attribute only allows the value "PTQ," which stands for Post Training Quantization. To specify the quantization type for the model input and output, use the `quantization_input_type` and `quantization_output_type` attributes, respectively. 
 
-The `quantization_input_type` attribute is a string that can be set to "int8", "uint8," or "float" to represent the quantization type for the model input. Similarly, the `quantization_output_type` attribute is a string that can be set to "int8", "uint8," or "float" to represent the quantization type for the model output.
+The `quantization_input_type` attribute is a string that can be set to "int8", "uint8," or "float" to represent the quantization type for the model input. Similarly, the `quantization_output_type` attribute is a string that can be set to "int8", "uint8," or "float" to represent the quantization type for the model output. 
+
+These values are not accounted for when using `Onnx_quantizer`. As both input and output types for the model are float and only the weights and activations are quantized.
+
+The `granularity` is either "per_channel" or "per_tensor". If the parameter is not set, it will default to "per_channel". 'per channel' means all weights contributing to a given layer output channel are quantized with one unique (scale, offset) couple.
+The alternative is 'per tensor' quantization which means that the full weight tensor of a given layer is quantized with one unique (scale, offset) couple. 
+It is obviously more challenging to preserve original float model accuracy using 'per tensor' quantization. But this method is particularly well suited to fully exploit STM32MP2 platforms HW design.
+
+Some topologies can be slightly optimized to become "per_tensor" quantization friendly. Therefore, we propose to optimize the model to improve the "per-tensor" quantization. This is controlled by the `optimize` parameter. Only used when quantizing a (.h5) model using TFlite_converter.
+By default, it is False and no optimization is applied. When set to True, some modifications are applied on original network. Please note that these optimizations only apply when granularity is "per_tensor". 
+To finish, some topologies cannot be optimized. So even if `optimize` is set to True, there is no guarantee that "per_tensor" quantization will preserve the float model accuracy for all the topologies.
+
+The `target_opset` is an integer parameter. This is only needed or accounted for when using `Onnx_quantizer` and is ignored when using `TFlite_converter`. Before doing the onnx quantization, the onnx opset of the model is updated to the target_opset. If no value is provided a default value of 17 is used.
+
 
 By default, the quantized model is saved in the 'quantized_models' directory under the 'experiments_outputs' directory. You may use the optional `export_dir` attribute to change the name of this directory.
 
+</details></ul>
+<ul><details open><summary><a href="#2-8">2.8 Benchmark the model</a></summary><a id="2-8"></a>
 
-#### <a id="2-8">2.8 Benchmark the model</a>
+The [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) allows you to benchmark your model and estimate its footprints and inference time for different STM32 target devices. To use this feature, set the `on_cloud` attribute to True. Alternatively, you can use [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) to benchmark your model and estimate its footprints for STM32 target devices locally. To do this, make sure to add the path to the `stedgeai` executable under the `path_to_stedgeai` attribute and set the `on_cloud` attribute to False.
 
-The [STM32Cube.AI Developer Cloud](https://stm32ai-cs.st.com/home) allows you to benchmark your model and estimate its footprints and inference time for different STM32 target devices. To use this feature, set the `on_cloud` attribute to True. Alternatively, you can use [STM32Cube.AI](https://www.st.com/en/embedded-software/x-cube-ai.html) to benchmark your model and estimate its footprints for STM32 target devices locally. To do this, make sure to add the path to the `stm32ai` executable under the `path_to_stm32ai` attribute and set the `on_cloud` attribute to False.
-
-The `version` attribute to specify the **STM32Cube.AI** version used to benchmark the model, e.g. 8.1.0 and the `optimization` defines the optimization used to generate the C model, options: "balanced", "time", "ram".
+The `version` attribute to specify the **STM32Cube.AI** version used to benchmark the model, e.g. 9.1.0 and the `optimization` defines the optimization used to generate the C model, options: "balanced", "time", "ram".
 
 The `board` attribute is used to provide the name of the STM32 board to benchmark the model on. The available boards are 'STM32H747I-DISCO', 'STM32H7B3I-DK', 'STM32F469I-DISCO', 'B-U585I-IOT02A', 'STM32L4R9I-DISCO', 'NUCLEO-H743ZI2', 'STM32H747I-DISCO', 'STM32H735G-DK', 'STM32F769I-DISCO', 'NUCLEO-G474RE', 'NUCLEO-F401RE' and 'STM32F746G-DISCO'.
 
 ```yaml
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 benchmarking:
    board: STM32H747I-DISCO     # Name of the STM32 board to benchmark the model on
 ```
 The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README.md) service which is not part the chain `chain_tbqeb` used in this tutorial.
 
-#### <a id="2-9">2.9 Deploy the model</a>
+</details></ul>
+<ul><details open><summary><a href="#2-9">2.9 Deploy the model</a></summary><a id="2-9"></a>
 
 In this tutorial, we are using the `chain_tbqeb` toolchain, which does not include the deployment service. However, if you want to deploy the model after running the chain, you can do so by referring to the [README](../deployment/README.md) and modifying the `deployment_config.yaml` file or by setting the `operation_mode` to `deploy` and modifying the `user_config.yaml` file as described below:
 
@@ -326,12 +330,12 @@ dataset:
    class_names: [daisy, dandelion, roses, sunflowers, tulips] 
 
 tools:
-  stm32ai:
-    version: 8.1.0
+  stedgeai:
+    version: 9.1.0
     optimization: balanced
     on_cloud: True
-    path_to_stm32ai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stm32ai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.10.1/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
   c_project_path: ../../stm32ai_application_code/image_classification/
@@ -348,11 +352,12 @@ In the `general` section, users must provide the path to the TFlite model file t
 
 The `dataset` section requires users to provide the names of the classes using the `class_names` attribute.
 
-The `tools` section includes information about the STM32AI toolchain, such as the version, optimization level, and path to the `stm32ai.exe` file.
+The `tools` section includes information about the stedgeai toolchain, such as the version, optimization level, and path to the `stedgeai.exe` file.
 
 Finally, in the `deployment` section, users must provide information about the hardware setup, such as the series and board of the STM32 device, as well as the input and output interfaces. Once all of these sections have been filled in, users can run the deployment service to deploy their model to the STM32 device.
 
-#### <a id="2-10">2.10 Hydra and MLflow settings</a>
+</details></ul>
+<ul><details open><summary><a href="#2-10">2.10 Hydra and MLflow settings</a></summary><a id="2-10"></a>
  
 The `mlflow` and `hydra` sections must always be present in the YAML configuration file. The `hydra` section can be used to specify the name of the directory where experiment directories are saved and/or the pattern used to name experiment directories. In the YAML code below, it is set to save the outputs as explained in the section <a href="#4">visualize the chained services results</a> :
 
@@ -368,7 +373,9 @@ The `mlflow` section is used to specify the location and name of the directory w
 mlflow:
    uri: ./experiments_outputs/mlruns
 ```
-### <a id="3">3. Run the image classification chained service</a>
+</details></ul>
+</details>
+<details open><summary><a href="#3"><b>3. Run the image classification chained service</b></a></summary><a id="3"></a>
 
 After updating the [user_config.yaml](user_config.yaml) file, please run the following command:
 
@@ -381,7 +388,8 @@ python stm32ai_main.py
 python stm32ai_main.py operation_mode='chain_tbqeb'
 ```
 
-### <a id="4">4. Visualize the chained services results</a>
+</details>
+<details open><summary><a href="#4"><b>4. Visualize the chained services results</b></a></summary><a id="4"></a>
 
 Every time you run the Model Zoo, an experiment directory is created that contains all the directories and files created during the run. The names of experiment directories are all unique as they are based on the date and time of the run.
 
@@ -432,7 +440,7 @@ All the directory names, including the naming pattern of experiment directories,
 s
 The models in the 'best_augmented_model.h5' and 'last_augmented_model.h5' Keras files contain rescaling and data augmentation layers. These files can be used to resume a training that you interrupted or that crashed. This will be explained in section training service [README](training/README.md). These model files are not intended to be used outside of the Model Zoo context.
 
-#### <a id="4-1">4.1 Saved results</a>
+<ul><details open><summary><a href="#4-1">4.1 Saved results</a></summary><a id="4-1"></a>
 
 All of the training and evaluation artifacts are saved in the current output simulation directory, which is located at **experiments_outputs/\<date-and-time\>**.
 
@@ -442,7 +450,8 @@ For example, you can retrieve the confusion matrix generated after evaluating th
 
 ![plot](training/doc/img/quantized_model_confusion_matrix_validation_set.png)
 
-#### <a id="4-2">4.2 Run tensorboard</a>
+</details></ul>
+<ul><details open><summary><a href="#4-2">4.2 Run tensorboard</a></summary><a id="4-2"></a>
  
 To visualize the training curves that were logged by TensorBoard, navigate to the **experiments_outputs/\<date-and-time\>** directory and run the following command:
 
@@ -451,7 +460,8 @@ tensorboard --logdir logs
 ```
 This will start a server and its address will be displayed. Use this address in a web browser to connect to the server. Then, using the web browser, you will able to explore the learning curves and other training metrics.
 
-#### <a id="4-3">4.3 Run MLFlow</a>
+</details></ul>
+<ul><details open><summary><a href="#4-3">4.3 Run MLFlow</a></summary><a id="4-3"></a>
 
 MLflow is an API that allows you to log parameters, code versions, metrics, and artifacts while running machine learning code, and provides a way to visualize the results. 
 
@@ -462,7 +472,10 @@ mlflow ui
 ```
 This will start a server and its address will be displayed. Use this address in a web browser to connect to the server. Then, using the web browser, you will be able to navigate the different experiment directories and look at the metrics they were collected. Refer to [MLflow Home](https://mlflow.org/) for more information about MLflow.
 
-### <a id="appendix-a">Appendix A: YAML syntax</a>
+</details></ul>
+</details>
+
+<details open><summary><a href="#A"><b>Appendix A: YAML syntax</b></a></summary><a id="A"></a>
 
 **Example and terminology:**
 
@@ -631,3 +644,4 @@ rescaling:
    scale: 1/127.5,
    offset: -1
 ```
+</details>

@@ -6,23 +6,13 @@ The evaluation service is designed to be fast, efficient, and accurate, making i
 
 ## <a id="">Table of contents</a>
 
-### <a href="#1">1. Configure the yaml file</a>
-#### <a href="#1-1">1.1 Setting the model and the operation mode</a>
-#### <a href="#1-2">1.2 Apply preprocessing</a>
-#### <a href="#1-3">1.3 Prepare the dataset</a>
-### <a href="#2">2. Evaluate your model</a>
-### <a href="#3">3. Visualize evaluation results</a>
-
-
-__________________________________________
-
-## <a id="1">1. Configure the yaml file</a>
+<details open><summary><a href="#1"><b>1. Configure the yaml file</b></a></summary><a id="1"></a>
 
 To use this service and achieve your goals, you can use the [user_config.yaml](../user_config.yaml) or directly update the [evaluation_config.yaml](../config_file_examples/evaluation_config.yaml) file and use it. This file provides an example of how to configure the evaluation service to meet your specific needs.
 
 Alternatively, you can follow the tutorial below, which shows how to evaluate your pre-trained image classification model using our evaluation service.
 
-### <a id="1-1">1.1 Setting the model and the operation mode</a>
+<ul><details open><summary><a href="#1-1">1.1 Setting the model and the operation mode</a></summary><a id="1-1"></a>
 
 As mentioned previously, all the sections of the YAML file must be set in accordance with this **[README.md](../config_file_examples/evaluation_config.yaml)**.
 In particular, `operation_mode` should be set to evaluation and the `evaluation` section should be filled as in the following example: 
@@ -35,7 +25,8 @@ operation_mode: evaluation
 ```
 In this example, the path to the CNN2D_ST_HandPosture_8classes model (for VL53L8CX sensor) is provided in the `model_path` parameter.
 
-### <a id="1-2">1.2 Prepare the dataset</a>
+</details></ul>
+<ul><details open><summary><a href="#1-2">1.2 Prepare the dataset</a></summary><a id="1-2"></a>
 
 Information about the dataset you want use for evaluation is provided in the `dataset` section of the configuration file, as shown in the YAML code below.
 
@@ -59,7 +50,8 @@ dataset:
    training_path: ../datasets/ST_VL53L8CX_handposture_dataset
 ```
 
-### <a id="1-3">1.3 Apply preprocessing</a>
+</details></ul>
+<ul><details open><summary><a href="#1-3">1.3 Apply preprocessing</a></summary><a id="1-3"></a>
 
 The frames from the dataset need to be preprocessed before they are presented to the network for evaluation.
 
@@ -76,9 +68,9 @@ preprocessing: # Mandatory
 - `Min_distance` - *Integer*, *in mm*, the minimum distance of the hand from the sensor allowed for this application. If the distance is lower, the frame is filtered/removed from the dataset
 - `Background_distance` - *Integer*, *in mm*, the gap behind the hand, all zones above this gap will be removed
 
-
-
-## <a id="2">2. Evaluate your model</a>
+</details></ul>
+</details>
+<details open><summary><a href="#2"><b>2. Evaluate your model</b></a></summary><a id="2"></a>
 
 If you chose to modify the [user_config.yaml](../user_config.yaml) you can evaluate the model by running the following command from the **src/** folder:
 
@@ -91,10 +83,13 @@ If you chose to update the [evaluation_config.yaml](../config_file_examples/eval
 python stm32ai_main.py --config-path ./config_file_examples/ --config-name evaluation_config.yaml
 ```
 
-## <a id="3">3. Visualize the evaluation results</a>
+</details>
+<details open><summary><a href="#3"><b>3. Visualize the evaluation results</b></a></summary><a id="3"></a>
 
 You can retrieve the confusion matrix generated after evaluating the model on the test dataset by navigating to the appropriate directory within **experiments_outputs/\<date-and-time\>**.
 
 ![plot](doc/img/float_model_confusion_matrix_evaluation.png)
 
 You can also find the evaluation results saved in the log file **stm32ai_main.log** under **experiments_outputs/\<date-and-time\>**.
+
+</details>

@@ -22,7 +22,7 @@ from postprocessing.tflite_ssd_postprocessing_removal.ssd_model_cut_function imp
 import numpy as np
 import tensorflow as tf
  
-from utils import aspect_ratio_dict
+from cfg_utils import aspect_ratio_dict
 
 
 def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None) -> None:
@@ -70,12 +70,12 @@ def gen_h_user_file(config: DictConfig = None, quantized_model_path: str = None)
 
 
         if TFLite_Detection_PostProcess_id:
-            print('[INFO]: This TFLITE model contains a post-processing layer')
+            print('[INFO] : This TFLITE model contains a post-processing layer')
             anchors_path = os.path.join(path,'anchors.h')
             path_cut_model, XY, WH = ssd_post_processing_removal(quantized_model_path, TFLite_Detection_PostProcess_id, anchors_path)
             quantized_model_path = path_cut_model
         else:
-            print('[INFO]: This TFLITE model doesnt contain a post-processing layer')
+            print('[INFO] : This TFLITE model doesnt contain a post-processing layer')
 
         classes = '{\\\n"background",'
 

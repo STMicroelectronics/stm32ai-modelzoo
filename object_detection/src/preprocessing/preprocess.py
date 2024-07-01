@@ -17,12 +17,10 @@ from datasets import *
 from imgaug import augmenters as iaa
 from typing import List, Tuple
 
-sys.path.append(os.path.join(os.path.dirname(__file__), '../utils'))
+from models_utils import get_model_name_and_its_input_shape
 from data_augment import data_aug, convert_to_iaa, convert_from_iaa
-from load_models import get_model
 from datasets import load_dataset
 from anchor_boxes_utils import get_sizes_ratios, get_sizes_ratios_ssd_v2, match_gt_anchors
-from models_mgt import get_model_name_and_its_input_shape
 
 
 def load_and_preprocess_image(image_file_path: str = None,
@@ -35,11 +33,12 @@ def load_and_preprocess_image(image_file_path: str = None,
     Loads and preprocesses an image.
 
     Args:
-        image_path: The path to the image.
-        model_input_shape: The input shape of the model.
-        rescaling_scale: The scale factor for rescaling the image.
-        rescaling_offset: The offset for rescaling the image.
+        image_file_path: The path to the image.
+        image_size: The image shape.
+        scale: The scale factor for rescaling the image.
+        offset: The offset for rescaling the image.
         interpolation: interpolation method for resizing the image.
+        color_mode: str. Used to have number of input channels
 
     Returns:
         The preprocessed image as a NumPy array.
@@ -354,6 +353,46 @@ def generate(cfg: dict = None,
         yield ret
 
 
+def generate_quant(cfg=None, images_filename_list=None, batch_size=None, img_width=None, img_height=None):
+    """
+    Create a generator for model.fit_generator
+    Arguments:
+        cfg: dictionary containing configuration parameters
+        images_filename_list: list of filename of original images
+        batch_size: size of generated minibatch
+        img_width: image width
+        img_height: image height
+    Returns:
+        [images_batch, truths_batch]: a minibatch of images and encoded bounding boxes for training
+    """
+    
+    channels = 1 if cfg.preprocessing.color_mode == "grayscale" else 3
+    interpolation = cfg.preprocessing.resizing.interpolation
+
+    def parse_function(filename):
+
+        image_string = tf.io.read_file(filename)
+        image = tf.io.decode_image(image_string, channels=channels, expand_animations=False)
+        image = tf.image.resize(image, [img_height, img_width], method=interpolation)
+        image = tf.cast(image, tf.float32) * cfg.preprocessing.rescaling.scale + cfg.preprocessing.rescaling.offset
+
+        return image
+
+    # Get the number of samples
+    num_samples = len(images_filename_list)
+    # handle case when the batch size is greater or equal the dataset size
+    if batch_size >= num_samples:
+        exp = np.math.log(num_samples, 2)
+        exp = np.math.floor(exp)
+        batch_size = int(2 ** exp)
+
+    quant_dataset = tf.data.Dataset.from_tensor_slices(images_filename_list)
+    quant_dataset = quant_dataset.map(parse_function,num_parallel_calls=tf.data.AUTOTUNE)
+    quant_dataset = quant_dataset.batch(batch_size,drop_remainder=True)
+
+    return quant_dataset
+
+
 def load_and_pre_process_image(image_path: str = None, 
                                input_shape: tuple = None,
                                scale: float = None,
@@ -367,11 +406,14 @@ def load_and_pre_process_image(image_path: str = None,
         image_path (str): The path to the image.
         scale (float, optional): The scale factor for normalization. Defaults to 1 / 125.5.
         offset (float, optional): The offset factor for normalization. Defaults to -1.
-        interpolation (int, optional): The interpolation method to use for resizing images. Defaults to cv2.INTER_LINEAR.
+        interpolation (int, optional): The interpolation method to use for resizing images.
+        Defaults to cv2.INTER_LINEAR.
         input_shape (tuple, optional): The input shape of the model. Defaults to None.
+        color_mode: (str)
 
     Returns:
-        Tuple[np.ndarray, int, int]: The preprocessed image as a NumPy array, and the height and width of the original image.
+        Tuple[np.ndarray, int, int]: The preprocessed image as a NumPy array, and the height and width of the original
+        image.
     """
     width, height = input_shape[:2]
     channels = 1 if color_mode == "grayscale" else 3
@@ -418,32 +460,47 @@ def preprocess(cfg: DictConfig = None) -> tuple:
                 test_path=cfg.dataset.test_path,
                 validation_split=cfg.dataset.validation_split)
 
-
-    fmap_sizes_dict = {'st_ssd_mobilenet_v1':{'192':[24,12,6,3,1],
-                                              '224':[32,16,8,4,2,1],
-                                              '256':[32,16,8,4,2,1]},
-                       'ssd_mobilenet_v2_fpnlite':{'192':[24,12,6,3,2],
-                                                   '224':[28,14,7,4,2],
-                                                   '256':[32,16,8,4,2],
-                                                   '288':[36,18,9,5,3],
-                                                   '320':[40,20,10,5,3],
-                                                   '352':[44,22,11,6,3],
-                                                   '384':[48,24,12,6,3],
-                                                   '416':[52,26,13,7,4]}}
-
+    fmap_sizes_dict = {'st_ssd_mobilenet_v1': {'192': [24, 12, 6, 3, 1],
+                                               '224': [32, 16, 8, 4, 2, 1],
+                                               '256': [32, 16, 8, 4, 2, 1]},
+                       'ssd_mobilenet_v2_fpnlite': {'192': [24, 12, 6, 3, 2],
+                                                    '224': [28, 14, 7, 4, 2],
+                                                    '256': [32, 16, 8, 4, 2],
+                                                    '288': [36, 18, 9, 5, 3],
+                                                    '320': [40, 20, 10, 5, 3],
+                                                    '352': [44, 22, 11, 6, 3],
+                                                    '384': [48, 24, 12, 6, 3],
+                                                    '416': [52, 26, 13, 7, 4]}}
     train_gen = None
     valid_gen = None
-    if cfg.operation_mode in ["training", "chain_tqeb", "chain_tqe"]:
-        batch_size = cfg.training.batch_size
-        # fmap_channels = 32
-        n_classes = len(cfg.dataset.class_names)
+    quant_gen = None
+
+    if cfg.general.model_path or cfg.training:
 
         # Get the model input shape and feature map sizes
-        model_path = cfg.general.model_path 
+        try:
+            batch_size = cfg.training.batch_size
+        except:
+            batch_size = 64
+
+        try:
+            n_classes = len(cfg.dataset.class_names)
+        except:
+            
+            if cfg.operation_mode in ['quantization' ,'benchmarking', 'chain_qb']:
+                n_classes = None
+            else:
+                raise AttributeError("Missing the class_names variable in the dataset section!\nCheck the dataset section of your config.yaml file.")
+        
+
+        model_path = cfg.general.model_path
         if model_path:
             if model_path[-15:] == 'best_weights.h5':
                 input_shape = cfg.training.model.input_shape
                 #_, _, fmap_sizes = get_model(cfg=cfg, class_names=cfg.dataset.class_names)
+            elif model_path[-4:]=='onnx':
+                _, ish = get_model_name_and_its_input_shape(model_path)
+                input_shape = [ish[1],ish[2],ish[0]] # because ONNX is channel first
             else:
                 # We are resuming the training.
                 #os.path.join(cfg.training.resume_training_from, cfg.general.saved_models_dir, "inference_model.h5")
@@ -451,36 +508,43 @@ def preprocess(cfg: DictConfig = None) -> tuple:
         else:
             input_shape = cfg.training.model.input_shape
 
+        img_width, img_height, _ = input_shape
         fmap_widths  = np.array(fmap_sizes_dict[cfg.general.model_type][str(input_shape[0])])
         fmap_heights = np.array(fmap_sizes_dict[cfg.general.model_type][str(input_shape[1])])
-        fmap_sizes   = np.stack([fmap_widths,fmap_heights],axis=-1) #np.load(os.path.join(cfg.training.resume_training_from, cfg.general.saved_models_dir, "fmap_sizes.npy"))
-
-        img_width, img_height, _ = input_shape
 
         if cfg.general.model_type == 'st_ssd_mobilenet_v1':
+            fmap_sizes   = np.stack([fmap_widths,fmap_heights],axis=-1)
             sizes_h, ratios_h = get_sizes_ratios(input_shape)
         elif cfg.general.model_type == 'ssd_mobilenet_v2_fpnlite':
+            fmap_sizes   = np.stack([fmap_widths,fmap_heights],axis=-1)
             sizes_h, ratios_h = get_sizes_ratios_ssd_v2(input_shape)
         else:
             print('[ERROR] : Unsupported model type, please use "st_ssd_mobilenet_v1" or "ssd_mobilenet_v2_fpnlite"')
 
-        train_gt_labels_ds = train_ds['train_gt_labels_ds']
-        train_images_filename_ds = train_ds['train_images_filename_ds']
-        val_gt_labels_ds = valid_ds['val_gt_labels_ds']
-        val_images_filename_ds = valid_ds['val_images_filename_ds']
+        if train_ds:
+            train_gt_labels_ds = train_ds['train_gt_labels_ds']
+            train_images_filename_ds = train_ds['train_images_filename_ds']
+            train_gen = generate(cfg=cfg, images_filename_list=train_images_filename_ds,
+                                 gt_labels_list=train_gt_labels_ds, batch_size=batch_size, shuffle=True,
+                                 augmentation=True if cfg.data_augmentation else False,
+                                 fmap_sizes=fmap_sizes, img_width=img_width, img_height=img_height, sizes=sizes_h,
+                                 ratios=ratios_h, n_classes=n_classes)
 
-        # Create the data generators for training and validation
-        train_gen = generate(cfg=cfg, images_filename_list=train_images_filename_ds, gt_labels_list=train_gt_labels_ds,
-                             batch_size=batch_size, shuffle=True,
-                             augmentation=True if cfg.data_augmentation else False,
-                             fmap_sizes=fmap_sizes, img_width=img_width, img_height=img_height, sizes=sizes_h,
-                             ratios=ratios_h,
-                             n_classes=n_classes)
-        valid_gen = generate(cfg=cfg, images_filename_list=val_images_filename_ds, gt_labels_list=val_gt_labels_ds,
-                             batch_size=batch_size, shuffle=False,
-                             augmentation=False,
-                             fmap_sizes=fmap_sizes, img_width=img_width, img_height=img_height, sizes=sizes_h,
-                             ratios=ratios_h,
-                             n_classes=n_classes)
+        if valid_ds:
+            val_gt_labels_ds = valid_ds['val_gt_labels_ds']
+            val_images_filename_ds = valid_ds['val_images_filename_ds']
+            # Create the data generators for training and validation
+            valid_gen = generate(cfg=cfg, images_filename_list=val_images_filename_ds, gt_labels_list=val_gt_labels_ds,
+                                 batch_size=batch_size, shuffle=False, augmentation=False, fmap_sizes=fmap_sizes,
+                                 img_width=img_width, img_height=img_height, sizes=sizes_h, ratios=ratios_h,
+                                 n_classes=n_classes)
+
+        if train_ds or quantization_ds:
+            if train_ds:
+                quant_images_filename_ds = train_ds['train_images_filename_ds']
+            else:
+                quant_images_filename_ds = quantization_ds['quantization_images_filename_ds']
+            quant_gen = generate_quant(cfg=cfg, images_filename_list=quant_images_filename_ds,
+                                       batch_size=batch_size, img_width=img_width, img_height=img_height)
         
-    return train_ds, valid_ds, test_ds, quantization_ds, train_gen, valid_gen
+    return train_ds, valid_ds, test_ds, quantization_ds, train_gen, valid_gen, quant_gen

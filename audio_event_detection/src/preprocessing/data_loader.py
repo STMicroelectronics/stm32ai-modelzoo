@@ -421,7 +421,7 @@ def _get_ds(df: pd.DataFrame,
     X = np.stack(X, axis=0)
     if expand_last_dim:
         X = np.expand_dims(X, axis=-1)
-    print(f"[INFO] Generated {n_patches_generated} patches")
+    print(f"[INFO] : Generated {n_patches_generated} patches")
     
     # One-hot encode label vectors
     vocab = df['category'].unique()
@@ -548,7 +548,7 @@ def load_ESC_10(csv: str,
     else:
         # Use fold 5
         train_esc_df, val_esc_df = esc_df[esc_df["fold"] != 5], esc_df[esc_df["fold"] == 5]
-    print("[INFO] Loading training dataset")
+    print("[INFO] : Loading training dataset")
     train_ds = _get_ds(
         df=train_esc_df,
         audio_path=audio_path,
@@ -594,7 +594,7 @@ def load_ESC_10(csv: str,
     # Use the validation dataset path if provided
     if validation_audio_path is not None:
         audio_path = validation_audio_path
-    print("[INFO] Loading validation dataset")
+    print("[INFO] : Loading validation dataset")
     val_ds, val_clip_labels =_get_ds(
         df=val_esc_df,
         audio_path=audio_path,
@@ -958,9 +958,9 @@ def load_FSD50K(dev_audio_folder: str ,
     valid_clip_labels : np.ndarray, Clip labels associated with the validation dataset.
     '''
     
-    print("[INFO] Loading FSD50K. The dev set will be used as the training set")
+    print("[INFO] : Loading FSD50K. The dev set will be used as the training set")
     print("and the eval set will be used as the validation set.")
-    print("[INFO] The dataset.training_*, and dataset.validation_* args in your config file will be ignored.")
+    print("[INFO] : The dataset.training_*, and dataset.validation_* args in your config file will be ignored.")
     if not class_names:
         raise ValueError("Argument class_names was not provided ! \
                          Please provide at least one class in class_names")
@@ -981,7 +981,7 @@ def load_FSD50K(dev_audio_folder: str ,
     # If a validation split is provided, use it
     # If none of these are provided, use fold 5 as validation set.
    
-    print("[INFO] Loading training dataset")
+    print("[INFO] : Loading training dataset")
     train_ds = _get_ds(
         df=train_df,
         audio_path=dev_audio_folder,
@@ -1023,7 +1023,7 @@ def load_FSD50K(dev_audio_folder: str ,
     
     # Load validation data 
     # Use the eval set
-    print("[INFO] Loading validation dataset, using FSD50K's eval set as validation dataset.")
+    print("[INFO] : Loading validation dataset, using FSD50K's eval set as validation dataset.")
     val_ds, val_clip_labels =_get_ds(
         df=val_df,
         audio_path=eval_audio_folder,
