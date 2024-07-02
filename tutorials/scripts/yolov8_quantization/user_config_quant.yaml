@@ -1,0 +1,14 @@
+model:
+    name: yolov8n_256
+    uc: od_coco
+    model_path: ./saved_model
+    input_shape: [256, 256, 3]
+quantization:
+    fake: False
+    quantization_type: per_channel
+    quantization_input_type: float
+    quantization_output_type: uint8
+    calib_dataset_path: ./calibration_dataset
+    export_path: ./quantized_models
+pre_processing:
+  rescaling: {scale : 255, offset : 0}

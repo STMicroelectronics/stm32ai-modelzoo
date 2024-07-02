@@ -37,7 +37,7 @@ All the information needed to install X-LINUX-AI on your board is available in t
 - X-LINUX-AI expansion package : https://wiki.st.com/stm32mpu/wiki/Category:X-LINUX-AI_expansion_package
 
 
-## __Deployment__semantic segmentation
+## __Deployment semantic segmentation__
 
 For STM32MPU, application code example is provided as python script to facilitate and accelerate the deployment on the target.
 
