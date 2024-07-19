@@ -1,5 +1,5 @@
 general:
-   model_path: ../pretrained_models/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_heatmaps_192/movenet_lightning_heatmaps_192_int8.tflite
+   model_path: ../pretrained_models/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_heatmaps_192/movenet_lightning_heatmaps_192_int8_pt.tflite
    model_type: heatmaps_spe  # spe, yolo_mpe
 
 operation_mode: benchmarking

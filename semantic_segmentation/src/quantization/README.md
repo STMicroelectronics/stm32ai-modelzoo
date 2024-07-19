@@ -41,8 +41,8 @@ dataset:
                 "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
   training_path: ../datasets/VOC2012_train_val/JPEGImages
-  training_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
-  training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/train.txt
+  training_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
+  training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/trainaug.txt
   quantization_split: 0.4
 ```
 

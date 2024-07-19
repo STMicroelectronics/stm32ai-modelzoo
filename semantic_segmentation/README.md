@@ -12,7 +12,7 @@ The `operation_mode` top-level attribute specifies the operations or the service
 
 You can refer to readme links below that provide typical examples of operation modes, and tutorials on specific services:
 
-   - [training, chain_tqe (train + quantize + evaluate), chain_tbqeb](./src/training/README.md)
+   - [training, chain_tqe (train + quantize + evaluate + benchmark), chain_tqeb](./src/training/README.md)
    - [quantization, chain_eqe, chain_qb](./src/quantization/README.md)
    - [evaluation, chain_eqeb](./src/evaluation/README.md)
    - [benchmarking](./src/benchmarking/README.md)
@@ -31,7 +31,7 @@ The different values of the `operation_mode` attribute and the corresponding ope
 | `prediction`   | Predict the classes some images belong to using a float or quantized model                                                                           |
 | `benchmarking` | Benchmark a float or quantized model on an STM32 board                                                                                               |
 | `deployment`   | Deploy a model on an STM32 board                                                                                                                     |
-| `chain_tbqeb`  | Sequentially: training, benchmarking of trained model, quantization of trained model, evaluation of quantized model, benchmarking of quantized model |
+| `chain_tqeb`  | Sequentially: training, quantization of trained model, evaluation of quantized model, benchmarking of quantized model |
 | `chain_tqe`    | Sequentially: training, quantization of trained model, evaluation of quantized model                                                                 |
 | `chain_eqe`    | Sequentially: evaluation of a float model,  quantization, evaluation of the quantized model                                                          |
 | `chain_qb`     | Sequentially: quantization of a float model, benchmarking of quantized model                                                                         |

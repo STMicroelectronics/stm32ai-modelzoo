@@ -36,7 +36,7 @@ Information about the dataset you want use for evaluation is provided in the `da
 dataset:
    name: pascal_voc   # Dataset name. Mandatory. Only 'pascal_voc' is supported for the time being
    test_path: ../datasets/VOC2012_train_val/JPEGImages                              # Path to directory containing the images of the test set.
-   test_masks_path: ../datasets/VOC2012_train_val/SegmentationClass             # Path to directory containing the masks of the test set
+   test_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug             # Path to directory containing the masks of the test set
    test_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/val.txt    # Path to file containing the list of images names to be considered in 'test_path' and 'test_mask_path' for test set 
    check_image_files: False   # Enable/disable image file checking.
 ```
@@ -61,7 +61,7 @@ dataset:
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
    training_path: ../datasets/VOC2012_train_val/JPEGImages                                 # Path to train jpeg images
    training_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug                 # Path to train masks files
-   training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/train.txt  # Path to file listing the images names for training
+   training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/trainaug.txt  # Path to file listing the images names for training
    validation_path:
    validation_split: 0.20
    test_path:

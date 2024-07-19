@@ -8,8 +8,8 @@ dataset:
                  "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
                  "person", "potted plant", "sheep", "sofa", "train", "tv/monitor" ]
   quantization_path: ../datasets/VOC2012_train_val/JPEGImages
-  quantization_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
-  quantization_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/val.txt
+  quantization_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
+  quantization_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/train.txt
 
 preprocessing:
   rescaling:

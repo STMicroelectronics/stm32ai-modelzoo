@@ -9,10 +9,10 @@ dataset:
                  "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
                  "person", "potted plant", "sheep", "sofa", "train", "tv/monitor" ]
    test_path: ../datasets/VOC2012_train_val/JPEGImages
-   test_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
+   test_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
    test_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/test.txt
    quantization_path: ../datasets/VOC2012_train_val/JPEGImages
-   quantization_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
+   quantization_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
    quantization_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/quantization.txt
 
 preprocessing:

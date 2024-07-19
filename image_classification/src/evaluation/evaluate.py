@@ -20,9 +20,10 @@ import numpy as np
 
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+import onnxruntime
 import tensorflow as tf
 import tqdm
-from typing import Optional
+from sklearn.metrics import accuracy_score, confusion_matrix
 
 from preprocess import apply_rescaling, postprocess_output, preprocess_input
 from visualize_utils import plot_confusion_matrix
@@ -157,8 +158,6 @@ def evaluate_onnx_model(input_samples:np.ndarray,
     prd_labels = predict_onnx(sess, input_samples).argmax(axis=1)
     val_acc = round(accuracy_score(input_labels, prd_labels) * 100, 2)
     print(f'[INFO] : Evaluation accuracy: {val_acc} %')
-    if not os.path.exists("outputs"):
-        os.makedirs("outputs")
     log_file_name = f"{output_dir}/stm32ai_main.log"
     with open(log_file_name, 'a', encoding='utf-8') as f:
         f.write(f'{model_type} onnx model\nEvaluation accuracy: {val_acc} %\n')

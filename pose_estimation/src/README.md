@@ -73,7 +73,7 @@ services:
 - [quantization, chain_eqe, chain_qb](./quantization/README.md)
 - [evaluation, chain_eqeb](./evaluation/README.md)
 - [benchmarking](./benchmarking/README.md)
-- [deployment, chain_qd](../deployment/README.md)
+- [deployment, chain_qd](../deployment/README_MPU.md)
 
 In this tutorial the `operation_mode` used is the `chain_eqeb` like shown below to evaluate a model, quantize,
 evaluate it to be later deployed in the STM32 boards.
@@ -356,7 +356,7 @@ benchmarking:
   board: STM32H747I-DISCO     # Name of the STM32 board to benchmark the model on
 ```
 
-The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README.md) service which is not part the
+The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README_MPU.md) service which is not part the
 chain `chain_eqeb` used in this tutorial.
 
 </details></ul>
@@ -364,7 +364,7 @@ chain `chain_eqeb` used in this tutorial.
 
 In this tutorial, we are using the `chain_eqeb` toolchain, which does not include the deployment service. However, if
 you want to deploy the model after running the chain, you can do so by referring to
-the [README](../deployment/README.md) and modifying the `deployment_config.yaml` file or by setting the `operation_mode`
+the [README](../deployment/README_MPU.md) and modifying the `deployment_config.yaml` file or by setting the `operation_mode`
 to `deploy` and modifying the `user_config.yaml` file as described below:
 
 ```yaml
@@ -500,14 +500,9 @@ below.
 All the directory names, including the naming pattern of experiment directories, can be changed using the configuration
 file. The names of the files cannot be changed.
 
-The models in the 'best_augmented_model.h5' and 'last_augmented_model.h5' Keras files contain rescaling and data
-augmentation layers. These files can be used to resume a training that you interrupted or that crashed. This will be
-explained in section training service [README](training/README.md). These model files are not intended to be used
-outside of the Model Zoo context.
-
 <ul><details open><summary><a href="#4-1">4.1 Saved results</a></summary><a id="4-1"></a>
 
-All of the training and evaluation artifacts are saved in the current output simulation directory, which is located
+All of the artifacts of the experiments are saved in the current output simulation directory, which is located
 at **experiments_outputs/\<date-and-time\>**.
 
 For example, you can retrieve the confusion matrix generated after evaluating the float and the quantized model on the

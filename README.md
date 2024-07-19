@@ -31,7 +31,7 @@ to train and deploy the models.
 </details>
 <details open><summary><b>2.1:</b></summary>
 
-* Included additional models compatible with the `STM32MP257F-DK2` board.
+* Included additional models compatible with the [STM32MP257F-EV1](https://www.st.com/en/evaluation-tools/stm32mp257f-ev1) board.
 * Added support for per-tensor quantization.
 * Integrated support for `ONNX model` quantization and evaluation.
 * Included support for `STEdgeAI` (STM32Cube.AI v9.1.0 and subsequent versions).
@@ -59,7 +59,7 @@ to train and deploy the models.
 | [MobileNet v1 0.25](image_classification/pretrained_models/mobilenetv1/README.md)   | 96x96x1<br> 96x96x3<br> 224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
 | [MobileNet v1 0.5](image_classification/pretrained_models/mobilenetv1/README.md)   | 224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   | 
 | [MobileNet v2 0.35](image_classification/pretrained_models/mobilenetv2/README.md)   | 128x128x3<br>  224x224x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
-| [MobileNet v2 1.0](image_classification/pretrained_models/mobilenetv2/README.md)   |  224x224x3     | Full IC Services      |  STM32MP257F-DK2<br>   |
+| [MobileNet v2 1.0](image_classification/pretrained_models/mobilenetv2/README.md)   |  224x224x3     | Full IC Services      |  [STM32MP257F-EV1](./X-LINUX-AI_application_code/image_classification/STM32MP2/README.md)<br>   |
 | [ResNet8 v1](image_classification/pretrained_models/resnetv1/README.md)   | 32x32x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
 | [ST ResNet8](image_classification/pretrained_models/resnetv1/README.md)   | 32x32x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
 | [ResNet32 v1](image_classification/pretrained_models/resnetv1/README.md)   | 32x32x3     | Full IC Services      | [STM32H747I-DISCO](stm32ai_application_code/image_classification/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> [NUCLEO-H743ZI2](stm32ai_application_code/image_classification/Application/NUCLEO-H743ZI2) with B-CAMS-OMV camera daughter board<br>   |
@@ -79,8 +79,8 @@ to train and deploy the models.
 | Models             | Input Resolutions | Supported Services    | Targets for deployment |
 |--------------------|------------------|-----------------------|-------------------|
 | [ST SSD MobileNet v1 0.25](object_detection/pretrained_models/st_ssd_mobilenet_v1/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br>  | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>    |
-| [SSD MobileNet v2 fpn lite 0.35](object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br> 416x416x3   | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> STM32MP257F-DK2 <br>    |
-| [SSD MobileNet v2 fpn lite 1.0](object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md)   |  256x256x3<br> 416x416x3   | Full OD Services      |  STM32MP257F-DK2   |
+| [SSD MobileNet v2 fpn lite 0.35](object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br> 416x416x3   | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br> or <br>[STM32MP257F-EV1](./X-LINUX-AI_application_code/object_detection/STM32MP2/README.md) <br>    |
+| [SSD MobileNet v2 fpn lite 1.0](object_detection/pretrained_models/ssd_mobilenet_v2_fpnlite/README.md)   |  256x256x3<br> 416x416x3   | Full OD Services      |  [STM32MP257F-EV1](./X-LINUX-AI_application_code/object_detection/STM32MP2/README.md)   |
 | [ST Yolo LC v1](object_detection/pretrained_models/st_yolo_lc_v1/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br>  | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>    |
 | [Tiny Yolo v2](object_detection/pretrained_models/tiny_yolo_v2/README.md)   |  224x224x3<br> 416x416x3<br>  | Full OD Services      | [STM32H747I-DISCO](stm32ai_application_code/object_detection/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>    |
 
@@ -93,20 +93,20 @@ to train and deploy the models.
 [Pose Estimation use case](pose_estimation)
 | Models             | Input Resolutions | Supported Services    | Targets for deployment |
 |--------------------|------------------|-----------------------|-------------------|
-| [Yolo v8 pose](pose_estimation/pretrained_models/yolov8_pose/README.md)   |  256x256x3<br>  | Evaluation / Benchmarking / Prediction / Deployment      | STM32MP257F-DK2 <br>  |
-| [MoveNet 17 kps](pose_estimation/pretrained_models/movenet/README.md)   |  192x192x3<br> 256x256x3<br>   | Evaluation / Quantization / Benchmarking / Prediction      | [STM32H747I-DISCO](stm32ai_application_code/pose_estimation/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>|
-| [ST MoveNet 13 kps](pose_estimation/pretrained_models/movenet/README.md)   |  192x192x3<br>   | Evaluation / Quantization / Benchmarking / Prediction      | [STM32H747I-DISCO](stm32ai_application_code/pose_estimation/Application/STM32H747I-DISCO) with B-CAMS-OMV camera daughter board<br>|
+| [Yolo v8 n pose](pose_estimation/pretrained_models/yolov8n_pose/README.md)   |  256x256x3<br>  | Evaluation / Benchmarking / Prediction / Deployment      | [STM32MP257F-EV1](./X-LINUX-AI_application_code/pose_estimation/STM32MP2/README.md) <br>  |
+| [MoveNet 17 kps](pose_estimation/pretrained_models/movenet/README.md)   |  192x192x3<br> 224x224x3<br> 256x256x3<br>   | Evaluation / Quantization / Benchmarking / Prediction      | N/A <br>|
+| [ST MoveNet 13 kps](pose_estimation/pretrained_models/movenet/README.md)   |  192x192x3<br>   | Evaluation / Quantization / Benchmarking / Prediction      | N/A <br>|
 
 </details>
 
 <details open><summary><b>Segmentation (Seg)</b></summary>
 
-[Segmentation use case](segmentation)
+[Segmentation use case](./semantic_segmentation/)
 | Models             | Input Resolutions | Supported Services    | Targets for deployment |
 |--------------------|------------------|-----------------------|-------------------|
-| [DeepLab v3](segmentation/pretrained_models/deeplab_v3/README.md)   |  512x512x3<br>  | Full Seg Services     | STM32MP257F-DK2 <br>  |
+| [DeepLab v3](./semantic_segmentation/pretrained_models/deeplab_v3/README.md)   |  512x512x3<br>  | Full Seg Services     | [STM32MP257F-EV1](./X-LINUX-AI_application_code/semantic_segmentation/STM32MP2/README.md) <br>  |
 
-[Full Seg Services](segmentation/README.md) : training, evaluation, quantization, benchmarking, prediction, deployment
+[Full Seg Services](./semantic_segmentation/README.md) : training, evaluation, quantization, benchmarking, prediction, deployment
 
 </details>
 

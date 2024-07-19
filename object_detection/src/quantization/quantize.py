@@ -186,7 +186,7 @@ def quantize(cfg: DictConfig = None, quant_data: Optional[tf.data.Dataset] = Non
         quantized_model_path = os.path.join(output_dir, export_dir, "quantized_model.tflite")
         return quantized_model_path
 
-    elif cfg.quantization.quantizer == "onnx_quantizer" and cfg.quantization.quantization_type == "PTQ":
+    elif (cfg['quantization']['quantizer'].lower() == "onnx_quantizer" and cfg.quantization.quantization_type == "PTQ"):
         
         if model_is_quantized(model_path):
             print('[INFO]: The input model is already quantized!\n\tReturning the same model!')

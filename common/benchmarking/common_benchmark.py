@@ -178,9 +178,9 @@ def analyze_footprints(offline: bool = True, results: dict = None, stm32ai_outpu
             log_file.write(f'Model Name : {model_name} \n' + f'Tool version : {version_strings} \n'+ f'Model Size : {model_size} KiB \n' + f'Peak Ram usage : {peak_ram} KiB\n')
         if inference_res:
             inference_time = round(results["duration_ms"], 2)
-            npu_percent = 100*results["npu_percent"]
-            gpu_percent = 100*results["gpu_percent"]
-            cpu_percent = 100*results["cpu_percent"]
+            npu_percent = round(100*results["npu_percent"],2)
+            gpu_percent = round(100*results["gpu_percent"],2)
+            cpu_percent = round(100*results["cpu_percent"],2)
             print("[INFO] : Inference Time : {} (ms)".format(inference_time))
             print("[INFO] : Execution engine repartition : ")
             print("[INFO] :     NPU usage : {}".format(npu_percent))

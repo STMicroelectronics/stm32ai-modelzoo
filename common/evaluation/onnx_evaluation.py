@@ -5,16 +5,10 @@
 #  * the root directory of this software component.
 #  * If no LICENSE file comes with this software, it is provided AS-IS.
 #  *--------------------------------------------------------------------------------------------*/
-import onnxruntime
 import numpy as np
 import os
-from typing import Tuple, Optional, List, Dict
 import onnx
-import sys
 
-from visualize_utils import plot_confusion_matrix
-from sklearn.metrics import accuracy_score, confusion_matrix
-import mlflow
 
 def predict_onnx(sess: onnx.ModelProto, data: np.ndarray) -> np.ndarray:
     """
@@ -29,7 +23,15 @@ def predict_onnx(sess: onnx.ModelProto, data: np.ndarray) -> np.ndarray:
     """
     input_name = sess.get_inputs()[0].name
     label_name = sess.get_outputs()[0].name
-    onx_pred = sess.run([label_name], {input_name: data.astype(np.float32)})[0]
+    # Process each image individually
+    predictions = []
+    for i in range(data.shape[0]):
+        single_data = data[i:i + 1]  # Set batch size to 1
+        single_predictions = sess.run([label_name], {input_name: single_data.astype(np.float32)})[0]
+        predictions.append(single_predictions)
+    
+    # Concatenate all predictions
+    onx_pred = np.concatenate(predictions, axis=0)
     return onx_pred
 
 

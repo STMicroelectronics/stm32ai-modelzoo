@@ -22,7 +22,7 @@ More details are given later in this README.
 </details>
 <details open><summary><a href="#2"><b>2. Semantic segmentation tutorial</b></a></summary><a id="2"></a>
 
-This tutorial demonstrates how to use the `chain_tbqeb` services to train, benchmark, quantize, evaluate, and benchmark the model. Among the various available [models](../pretrained_models/) in the model zoo.
+This tutorial demonstrates how to use the `chain_tqeb` services to train, quantize, evaluate, and benchmark the model. Among the various available [models](../pretrained_models/) in the model zoo.
 
 To get started, you will need to update the [user_config.yaml](user_config.yaml) file, which specifies the parameters and configuration options for the services that you want to use. 
 Each section of the [user_config.yaml](user_config.yaml) file is explained in detail in the following sections.
@@ -42,7 +42,7 @@ The different values of the `operation_mode` attribute and the corresponding ope
 | `prediction`   | Predict the classes some images belong to using a float or quantized model |
 | `benchmarking` | Benchmark a float or quantized model on an STM32 board |
 | `deployment`   | Deploy a model on an STM32 board |
-| `chain_tbqeb`  | Sequentially: training, benchmarking of trained model, quantization of trained model, evaluation of quantized model, benchmarking of quantized model |
+| `chain_tqeb`  | Sequentially: training, quantization of trained model, evaluation of quantized model, benchmarking of quantized model |
 | `chain_tqe`    | Sequentially: training, quantization of trained model, evaluation of quantized model |
 | `chain_eqe`    | Sequentially: evaluation of a float model,  quantization, evaluation of the quantized model |
 | `chain_qb`     | Sequentially: quantization of a float model, benchmarking of quantized model |
@@ -51,17 +51,17 @@ The different values of the `operation_mode` attribute and the corresponding ope
 
 You can refer to readme links below that provide typical examples of operation modes, and tutorials on specific services:
 
-   - [training, chain_tqe, chain_tbqeb](./training/README.md)
+   - [training, chain_tqe, chain_tqeb](./training/README.md)
    - [quantization, chain_eqe, chain_qb](./quantization/README.md)
    - [evaluation, chain_eqeb](./evaluation/README.md)
    - [benchmarking](./benchmarking/README.md)
    - [prediction](./prediction/README.md)
    - [deployment, chain_qd](../deployment/README.md)
 
-In this tutorial the `operation_mode` used is the `chain_tbqeb` like shown below to train a model, benchmark, quantize, evaluate it to be later deployed in the STM32 boards.
+In this tutorial the `operation_mode` used is the `chain_tqeb` like shown below to train a model, benchmark, quantize, evaluate it to be later deployed in the STM32 boards.
 
 ```yaml
-operation_mode: chain_tbqeb
+operation_mode: chain_tqeb
 ```
 </details></ul>
 <ul><details open><summary><a href="#2-2">2.2 Global settings</a></summary><a id="2-2"></a>
@@ -93,7 +93,7 @@ The `gpu_memory_limit` attribute sets an upper limit in GBytes on the amount of 
 If you have several GPUs, be aware that the limit is only set on logical gpu[0]. 
 
 The `num_threads_tflite` parameter is only used as an input parameter for the tflite interpreter. Therefore, it has no effect on .h5 or .onnx models. 
-This parameter may accelerate the tflite model evaluation in the following operation modes: `evaluation` (if a .tflite is specified in `model_path`), `chain_tbqeb`, `chain_eqe`, `chain_tqe` and `chain_eqeb` (if the quantizer is the TFlite_converter). 
+This parameter may accelerate the tflite model evaluation in the following operation modes: `evaluation` (if a .tflite is specified in `model_path`), `chain_tqeb`, `chain_eqe`, `chain_tqe` and `chain_eqeb` (if the quantizer is the TFlite_converter). 
 However, the acceleration depends on your system resources.
 
 The `model_path` attribute is utilized to indicate the path to the model file that you wish to use for the selected operation mode. The accepted formats for `model_path` are listed in the table below:
@@ -222,7 +222,7 @@ Please refer to [the data augmentation documentation](data_augmentation/README.m
 </details></ul>
 <ul><details open><summary><a href="#2-6">2.6 Set the training parameters</a></summary><a id="2-6"></a>
 
-A 'training' section is required in all the operation modes that include a training, namely 'training', chain_tbqeb' and 'chain_tqe'.
+A 'training' section is required in all the operation modes that include a training, namely 'training', chain_tqeb' and 'chain_tqe'.
 
 In this tutorial, we consider the training of deeplab_v3 (with ASPP head) as defined in [models](./models/deeplabv3.py). It uses a MobileNet V2 model as backbone, pre-trained on the ImageNet dataset, a large dataset consisting of 1.4M images and 1000 classes. 
 As an example we will use a MobileNet V2 with alpha = 0.5, to do so we will need to configure the model section in [user_config.yaml](user_config.yaml) as the following:
@@ -350,12 +350,12 @@ tools:
 benchmarking:
    board: STM32MP257F-EV1     # Name of the STM32 board to benchmark the model on
 ```
-The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README.md) service which is not part the chain `chain_tbqeb` used in this tutorial.
+The `path_to_cubeIDE` attribute is for the [deployment](../deployment/README.md) service which is not part the chain `chain_tqeb` used in this tutorial.
 
 </details></ul>
 <ul><details open><summary><a href="#2-9">2.9 Deploy the model</a></summary><a id="2-9"></a>
 
-In this tutorial, we are using the `chain_tbqeb` toolchain, which does not include the deployment service. 
+In this tutorial, we are using the `chain_tqeb` toolchain, which does not include the deployment service. 
 However, if you want to deploy the model after running the chain, you can do so by referring to the [README](../deployment/README.md) and modifying the `deployment_config.yaml` file 
 or by setting the `operation_mode` to `deploy` and modifying the `user_config.yaml` file as described below:
 
@@ -425,7 +425,7 @@ python stm32ai_main.py
 * Note that you can provide YAML attributes as arguments in the command, as shown below:
 
 ```bash
-python stm32ai_main.py operation_mode='chain_tbqeb'
+python stm32ai_main.py operation_mode='chain_tqeb'
 ```
 
 </details>

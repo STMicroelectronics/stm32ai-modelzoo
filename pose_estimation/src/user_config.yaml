@@ -2,7 +2,8 @@ general:
   model_path: ../pretrained_models/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_heatmaps_192/movenet_lightning_heatmaps_192.h5
   model_type: heatmaps_spe  # spe, yolo_mpe, heatmaps_spe
   num_threads_tflite: 8
-#
+  # gpu_memory_limit: 8
+
 operation_mode: chain_eqeb
 #choices=['evaluation', 'quantization', 'benchmarking',
 #         'chain_eqe','chain_qb','chain_eqeb']
@@ -22,10 +23,10 @@ preprocessing:
 
 postprocessing:
   kpts_conf_thresh: 0.15
-  confidence_thresh: 0.001
-  NMS_thresh: 0.1
-  plot_metrics: true
-  max_detection_boxes: 100
+  # confidence_thresh: 0.001
+  # NMS_thresh: 0.1
+  # plot_metrics: true
+  # max_detection_boxes: 100
 
 training:
   batch_size: 32
@@ -36,6 +37,8 @@ quantization:
   quantization_input_type: uint8
   quantization_output_type: float
   export_dir: quantized_models
+  # optimize: True
+  # granularity: per_tensor
 
 prediction:
   test_files_path: ../datasets/coco_test_single_pose

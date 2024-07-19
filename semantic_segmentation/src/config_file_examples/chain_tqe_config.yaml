@@ -6,7 +6,7 @@ general:
   global_seed: 127
   display_figures: False
 
-operation_mode: training
+operation_mode: chain_tqe
 
 dataset:
   name: pascal_voc
@@ -72,6 +72,13 @@ training:
       mode: max
       restore_best_weights: true
       patience: 60
+      
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
 
 mlflow:
   uri: ./experiments_outputs/mlruns

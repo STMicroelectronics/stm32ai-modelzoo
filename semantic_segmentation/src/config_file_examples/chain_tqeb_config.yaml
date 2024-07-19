@@ -1,17 +1,12 @@
 general:
   project_name: segmentation
   model_type : deeplab_v3
-  model_path: 
-  logs_dir: logs
   saved_models_dir: saved_models
   gpu_memory_limit: 12
   global_seed: 127
   display_figures: False
-  num_threads_tflite: 8
 
-operation_mode: training 
-#choices=['training' , 'evaluation', 'deployment', 'quantization', 'benchmarking',
-#        'chain_tbqeb','chain_tqe','chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+operation_mode: chain_tqeb
 
 dataset:
   name: pascal_voc
@@ -20,28 +15,19 @@ dataset:
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
 
   training_path: ../datasets/VOC2012_train_val/JPEGImages
-  training_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
-  training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/train.txt
+  training_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
+  training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/trainaug.txt
 
   validation_path: ../datasets/VOC2012_train_val/JPEGImages
-  validation_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
+  validation_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
   validation_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/val.txt
   validation_split: 
   
-  test_path: 
-  test_masks_path: 
-  test_files_path: 
-  
-  quantization_path: 
-  quantization_masks_path:
-  quantization_files_path:
-  quantization_split: 0.2
-
 preprocessing:
   rescaling: {scale: 1/127.5, offset: -1}
   resizing:
     aspect_ratio: fit
-    interpolation: bilinear #nearest
+    interpolation: bilinear 
   color_mode: rgb
 
 data_augmentation:   
@@ -60,57 +46,39 @@ data_augmentation:
     factor: 0.05
     change_rate: 1.0
 
-training: 
+training:
   model: 
     name: mobilenet
-    version: v2
+    version: v2 
     alpha: 0.5
     output_stride: 16  # the only supported for now 
     input_shape: (512, 512, 3)
-    pretrained_weights: imagenet # or null 
-    pretrained_model_path:
-  resume_training_from: 
-  frozen_layers: None # not supported yet 
+    pretrained_weights: null
   dropout: 0.6
   batch_size: 16
-  epochs: 500
+  epochs: 1
   optimizer:
     Adam:
       learning_rate: 0.005
-  callbacks:          # Optional section
+  callbacks:          
     ReduceLROnPlateau:
       monitor: val_accuracy
       mode: max
       factor: 0.5
       patience: 40
       min_lr: 1.0e-05
-    # LRWarmupCosineDecay:
-    #   initial_lr: 0.0001
-    #   warmup_steps: 100
-    #   max_lr: 0.005
-    #   hold_steps: 100
-    #   decay_steps: 800
-    #   end_lr: 5.0e-05
     EarlyStopping:
       monitor: val_accuracy
       mode: max
       restore_best_weights: true
       patience: 60
-
+      
 quantization:
-  quantizer: TFlite_converter
-  quantization_type: PTQ
-  quantization_input_type: uint8
-  quantization_output_type: float
-  granularity: per_channel   #per_tensor
-  optimize: False   #can be True if per_tensor
-  export_dir: quantized_models
-
-prediction:
-   test_files_path: ../datasets/VOC2012_test
-
-benchmarking:
-  board: STM32MP257F-EV1
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
 
 tools:
    stedgeai:
@@ -118,16 +86,11 @@ tools:
       optimization: balanced
       on_cloud: True
       path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
-   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.15.0/STM32CubeIDE/stm32cubeide.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
-deployment:
-  c_project_path: ../../stm32ai_application_code/semantic_segmentation/
-  IDE: GCC
-  verbosity: 1
-  hardware_setup:
-    serie: STM32MP2
-    board: STM32MP257F-EV1
-
+benchmarking:
+   board: STM32MP257F-EV1
+   
 mlflow:
   uri: ./experiments_outputs/mlruns
 

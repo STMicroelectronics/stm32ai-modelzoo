@@ -26,6 +26,8 @@ quantization:
    quantization_input_type: uint8
    quantization_output_type: float
    export_dir: quantized_models
+   optimize: True
+   granularity: per_tensor
 
 tools:
    stedgeai:

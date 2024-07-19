@@ -23,7 +23,8 @@ Also, the following naming convention is used to specify the training technique 
 - `tl` stands for "transfer learning", meaning that the model backbone weights were initialized from a pre-trained model, then only the last layer was unfrozen during the training.
 - `fft` stands for "full fine-tuning", meaning that the full model weights were initialized from a transfer learning pre-trained model, and all the layers were unfrozen during the training.
 
-When none of the above suffixes are used it means the floating point model was downloaded on tensorflow and kept unchanged. However, quantization was performed with our scripts available in the [quantization](../src/quantization/README.md) section.
+The model, without any of the above suffixes, was downloaded from [the
+TensorFlow DeepLabV3 page on Kaggle](https://www.kaggle.com/models/tensorflow/deeplabv3/).
 
 Below sections contain detailed information on models memory usage and accuracies (click on the arrows to expand). Accuracies and IoU are evaluated on PASCAL VOC 2012 validation list of images.
 IoU are averaged on all classes including background.
@@ -32,10 +33,10 @@ IoU are averaged on all classes including background.
 
 | Models                                                | Implementation | Dataset                | Input Resolution | Accuracy (%) | average IoU | Activation RAM (MiB) | Weights Flash (MiB) | STM32Cube.AI version      | Source                                                                                                                                                               |
 |-------------------------------------------------------|----------------|------------------------|------------------|--------------|-------------|----------------------|---------------------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| deeplabv3_257_int8_per_tensor                         | TensorFlow     | PASCAL VOC + COCO 2012 | 257x257x3        | 88.66        | 59.06       |       25.7            |       0.86        | 9.1.0                     | Available in X-LINUX-AI package [link](www.st.com/en/embedded-software/x-linux-ai.html)                                                                              |
-| deeplab_v3_mobilenetv2_05_fft_float32 | Tensorflow     | PASCAL VOC + COCO 2012        | 512x512x3        | 93.29       | 73.44       | /                | /              | 9.1.0                     | [link](./deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_fft.h5) 
-| deeplab_v3_mobilenetv2_05_fft_per_channel | Tensorflow     | PASCAL VOC + COCO 2012        | 512x512x3        | 91.3        | 67.32       |     57.38        | 7.63             | 9.1.0                     | [link](./deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_fft_int8.tflite) |
-deeplab_v3_mobilenetv2_05_fft_int8_f32_per_channel | Tensorflow     | PASCAL VOC + COCO 2012        | 512x512x3        |    92.83     |   71.93     |      55.91       |       6.2        | 9.1.0                     | [link](./deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_fft/deeplab_v3_mobilenetv2_05_fft_int8_f32.tflite) |
+| deeplabv3_257_int8_per_tensor                         | TensorFlow     | PASCAL VOC + COCO 2012 | 257x257x3        | 88.66        | 59.06       |       25.7            |       0.86        | 9.1.0                     | Available in X-LINUX-AI package [link](https://www.st.com/en/embedded-software/x-linux-ai.html)                                                                              |
+| deeplab_v3_mobilenetv2_05_fft_float32 | Tensorflow     | PASCAL VOC + COCO 2012        | 512x512x3        | 93.29       | 73.44       | /                | /              | 9.1.0                     | [link](./deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft.h5) 
+| deeplab_v3_mobilenetv2_05_fft_per_channel | Tensorflow     | PASCAL VOC + COCO 2012        | 512x512x3        | 91.3        | 67.32       |     57.38        | 7.63             | 9.1.0                     | [link](./deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite) |
+deeplab_v3_mobilenetv2_05_fft_int8_f32_per_channel | Tensorflow     | PASCAL VOC + COCO 2012        | 512x512x3        |    92.83     |   71.93     |      55.91       |       6.2        | 9.1.0                     | [link](./deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8_f32.tflite) |
 </details>
 
 

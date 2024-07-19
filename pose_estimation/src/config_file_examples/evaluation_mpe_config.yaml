@@ -1,12 +1,13 @@
 general:
-   model_path: ../pretrained_models/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_heatmaps_192/movenet_lightning_heatmaps_192_int8_pc.tflite
-   model_type: heatmaps_spe  # spe
+   model_path: ../pretrained_models/yolov8n_pose/yolov8n_pose_256_int8.tflite
+   model_type: yolo_mpe
+   num_threads_tflite: 8
 
 operation_mode: evaluation
 
 dataset:
    keypoints: 17
-   test_path: ../datasets/coco_val_single_pose
+   test_path: ../datasets/COCO_val_dataset_multi_pose
 
 preprocessing:
    rescaling:
@@ -16,6 +17,13 @@ preprocessing:
       interpolation: bilinear
       aspect_ratio: fit
    color_mode: rgb
+
+postprocessing:
+  kpts_conf_thresh: 0.15
+  confidence_thresh: 0.001
+  NMS_thresh: 0.1
+  plot_metrics: false
+  max_detection_boxes: 100
 
 mlflow:
    uri: ./experiments_outputs/mlruns

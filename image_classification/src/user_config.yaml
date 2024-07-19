@@ -9,7 +9,7 @@ general:
 
 operation_mode: chain_tbqeb
 #choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
-#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+#        'chain_tbqeb','chain_tqe','chain_eqe','chain_qb','chain_eqeb','chain_qd ']
 
 dataset:
   name: flowers

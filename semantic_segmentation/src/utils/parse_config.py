@@ -351,15 +351,15 @@ def get_config(config_data: DictConfig) -> DefaultMunch:
     # Top level section parsing
     cfg = DefaultMunch.fromDict(config_dict)
     mode_groups = DefaultMunch.fromDict({
-        "training": ["training", "chain_tbqeb", "chain_tqe"],
-        "evaluation": ["evaluation", "chain_tbqeb", "chain_tqe", "chain_eqe", "chain_eqeb"],
-        "quantization": ["quantization", "chain_tbqeb", "chain_tqe", "chain_eqe",
+        "training": ["training", "chain_tqeb", "chain_tqe"],
+        "evaluation": ["evaluation", "chain_tqeb", "chain_tqe", "chain_eqe", "chain_eqeb"],
+        "quantization": ["quantization", "chain_tqeb", "chain_tqe", "chain_eqe",
                          "chain_qb", "chain_eqeb", "chain_qd"],
-        "benchmarking": ["benchmarking", "chain_tbqeb", "chain_qb", "chain_eqeb"],
+        "benchmarking": ["benchmarking", "chain_tqeb", "chain_qb", "chain_eqeb"],
         "deployment": ["deployment", "chain_qd"]
     })
     mode_choices = ["training", "evaluation", "prediction", "deployment",
-                    "quantization", "benchmarking", "chain_tbqeb", "chain_tqe",
+                    "quantization", "benchmarking", "chain_tqeb", "chain_tqe",
                     "chain_eqe", "chain_qb", "chain_eqeb", "chain_qd"]
     legal = ["general", "operation_mode", "dataset", "preprocessing", "data_augmentation",
              "custom_data_augmentation", "training", "quantization", "prediction", "tools",

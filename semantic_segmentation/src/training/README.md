@@ -84,11 +84,11 @@ dataset:
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
 
   training_path: ../datasets/VOC2012_train_val/JPEGImages
-  training_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
-  training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/train.txt
+  training_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
+  training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/trainaug.txt
 
   validation_path: ../datasets/VOC2012_train_val/JPEGImages
-  validation_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
+  validation_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
   validation_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/val.txt
   validation_split: 
   
@@ -517,9 +517,9 @@ python stm32ai_main.py --config-path ./config_file_examples/ --config-name chain
 ```
 This specific example trains a mobilenet v2 model with imagenet pre-trained weights, fine tunes it by retraining latest seven layers but the fifth one (this only as an example), aand quantizes it 8-bits using quantization_split (30% in this example) of the train dataset for calibration before evaluating the quantized model.
 
-In case you also want to execute a benchmark on top of training and quantize services, it is recommended to launch the chain service called [chain_tbqeb](../config_file_examples/chain_tbqeb_config.yaml) that stands for train, benchmark, quantize, evaluate, benchmark like the example with command below:
+In case you also want to execute a benchmark on top of training and quantize services, it is recommended to launch the chain service called [chain_tqeb](../config_file_examples/chain_tqeb_config.yaml) that stands for train, quantize, evaluate, benchmark like the example with command below:
 ```bash
-python stm32ai_main.py --config-path ./config_file_examples/ --config-name chain_tbqeb_config.yaml
+python stm32ai_main.py --config-path ./config_file_examples/ --config-name chain_tqeb_config.yaml
 ```
 
 </details></ul>

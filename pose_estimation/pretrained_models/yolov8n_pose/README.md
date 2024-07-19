@@ -1,11 +1,11 @@
-# Yolov8 Pose quantized
+# Yolov8n Pose quantized
 
 ## **Use case** : [Pose estimation](../../../pose_estimation/README.md)
 
 # Model description
 
 
-Yolov8 Pose is a multi pose estimation model targeted for real-time processing implemented in Pytorch by Ultralytics.
+Yolov8n Pose is a multi pose estimation model targeted for real-time processing implemented in Pytorch by Ultralytics.
 
 The model is quantized in int8 format using tensorflow lite converter.
 
@@ -23,15 +23,13 @@ The model is quantized in int8 format using tensorflow lite converter.
 
 With an image resolution of NxM with K keypoints to detect :
 
-- For heatmaps models
-
 | Input Shape | Description |
 | ----- | ----------- |
 | (1, N, M, 3) | Single NxM RGB image with UINT8 values between 0 and 255 |
 
 | Output Shape | Description |
 | ----- | ----------- |
-| (1, Kx3, WxH) | FLOAT values Where WxH=(N/8)^2 + (N/16)^2 + (N/32)^2 is the output heatmaps and K is the number of keypoints|
+| (1, Kx3, F) | FLOAT values Where F = (N/8)^2 + (N/16)^2 + (N/32)^2 is the 3 concatenated feature maps and K is the number of keypoints|
 
 
 ## Recommended Platforms
@@ -52,7 +50,7 @@ With an image resolution of NxM with K keypoints to detect :
 ## Deployment
 
 
-To deploy your model, you need to configure the [user_config.yaml](../../src/user_config.yaml) file following the [tutorial](../../deployment/README.md).
+To deploy your model, you need to configure the [user_config.yaml](../../src/user_config.yaml) file following the [tutorial](../../deployment/README_MPU.md).
 
 
 ## Metrics
@@ -70,10 +68,12 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 ** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 
-### AP on COCO Person dataset
+### AP0.5 on COCO Person dataset
 
 
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
+
+To build the multi pose validation dataset we used this [script](../../datasets/dataset_converter/converter.py), following the [tutorial](../../datasets/dataset_converter/README.md).
 
 | Model | Format | Resolution |       AP0.5*   |
 |-------|--------|------------|----------------|
@@ -87,7 +87,7 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 ### Integration in a simple example
 
 
-Please refer to the generic guideline [here](../../deployment/README.md)
+Please refer to the generic guideline [here](../../deployment/README_MPU.md)
 
 
 # References

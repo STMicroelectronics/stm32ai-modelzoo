@@ -2,7 +2,7 @@
 
 ## Directory Components:
 * [datasets](datasets/README.md) placeholder for the pose estimation datasets.
-* [deployment](deployment/README.md) contains the necessary files for the deployment service.
+* [deployment](./deployment/README_MPU.md) contains the necessary files for the deployment service.
 * [pretrained_models ](pretrained_models/README.md) a collection of optimized pretrained models for different pose estimation use cases.
 * [src](src/README.md) contains tools to evaluate, benchmark and quantize your model on your STM32 target.
 
@@ -15,7 +15,7 @@ You can refer to readme links below that provide typical examples of operation m
    - [evaluation, chain_eqeb](./src/evaluation/README.md)
    - [benchmarking](./src/benchmarking/README.md)
    - [prediction](./src/prediction/README.md)
-   - [deployment, chain_qd](./deployment/README.md)
+   - [deployment, chain_qd](./deployment/README_MPU.md)
 
 All .yaml configuration examples are located in [config_file_examples](./src/config_file_examples/) folder.
 

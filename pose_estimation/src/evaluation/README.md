@@ -56,7 +56,7 @@ validation set. By default, 80% of the data is used for training and the remaini
 the evaluation service.
 
 If you want to use a different split ratio, you need to specify the percentage to be used for the validation set in
-the `validation_split` parameter (to ensure consistency in the [training](../training/README.md) and evaluation process,
+the `validation_split` parameter,
 you must specify the same validation_split parameter value in both the training and evaluation services), as shown in
 the YAML example below:
 

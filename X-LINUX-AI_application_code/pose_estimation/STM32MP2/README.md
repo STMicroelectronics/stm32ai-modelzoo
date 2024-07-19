@@ -45,7 +45,7 @@ For STM32MPU, application code example is provided as python script to facilitat
 
 You should use the deploy.py script to automatically deploy the program on the target (if the hardware is connected to the network).
 
-The [deployment script](../../../pose_estimation/deployment/README.md) of the model zoo is used to directly populate the target with all the needed files, resources and NN model. The script use
+The [deployment script](../../../pose_estimation/deployment/README_MPU.md) of the model zoo is used to directly populate the target with all the needed files, resources and NN model. The script use
 the IP address provided in the configuration yaml file. The application source code is available `Application\` directory and can be modified easily.
 
 ### __Deploy NN model__

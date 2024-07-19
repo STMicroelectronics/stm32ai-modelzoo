@@ -6,9 +6,11 @@ operation_mode: chain_eqeb
 dataset:
    name: pascal_voc
    training_path: ../datasets/VOC2012_train_val/JPEGImages
-   training_masks_path: ../datasets/VOC2012_train_val/SegmentationClass
-   training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/train.txt
-   validation_split: 0.005
+   training_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
+   training_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/trainaug.txt
+   test_path: ../datasets/VOC2012_train_val/JPEGImages
+   test_masks_path: ../datasets/VOC2012_train_val/SegmentationClassAug
+   test_files_path: ../datasets/VOC2012_train_val/ImageSets/Segmentation/test.txt
    quantization_split: 0.004
 
 preprocessing:

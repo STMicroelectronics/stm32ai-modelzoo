@@ -216,10 +216,10 @@ def chain_eqe(cfg: DictConfig = None, float_model_path: str = None, train_ds: tf
     display_figures(cfg)
 
 
-def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_ds: tf.data.Dataset = None,
+def chain_tqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_ds: tf.data.Dataset = None,
                 quantization_ds: tf.data.Dataset = None, test_ds: tf.data.Dataset = None) -> None:
     """
-    Runs the chain_tbqeb pipeline, including training, benchmarking, quantization, evaluation and benchmarking.
+    Runs the chain_tqeb pipeline, including training, quantization, evaluation and benchmarking.
 
     Args:
         cfg (DictConfig): Configuration dictionary. Defaults to None.
@@ -242,9 +242,6 @@ def chain_tbqeb(cfg: DictConfig = None, train_ds: tf.data.Dataset = None, valid_
     else:
         trained_model_path = train(cfg=cfg, train_ds=train_ds, valid_ds=valid_ds)
     print('[INFO] : Training complete.')
-
-    benchmark(cfg=cfg, model_path_to_benchmark=trained_model_path, credentials=credentials, custom_objects=None)
-    print('[INFO] : benchmarking complete.')
 
     # whether data are coming from train set or quantization set, they end up in quantization_ds
     source_image = cfg.dataset.quantization_path if cfg.dataset.quantization_path else cfg.dataset.training_path
@@ -360,10 +357,10 @@ def process_mode(mode: str = None,
     elif mode == 'benchmarking':
         benchmark(cfg=configs, custom_objects=None)
         print('[INFO] : Benchmark complete.')
-    elif mode == 'chain_tbqeb':
-        chain_tbqeb(cfg=configs, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
+    elif mode == 'chain_tqeb':
+        chain_tqeb(cfg=configs, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
                     test_ds=test_ds)
-        print('[INFO] : chain_tbqeb complete.')
+        print('[INFO] : chain_tqeb complete.')
     elif mode == 'chain_tqe':
         chain_tqe(cfg=configs, train_ds=train_ds, valid_ds=valid_ds, quantization_ds=quantization_ds,
                   test_ds=test_ds)
@@ -393,7 +390,7 @@ def process_mode(mode: str = None,
     # Record the whole hydra working directory to get all info
     mlflow.log_artifact(configs.output_dir)
     mlflow.log_param("model_path", configs.general.model_path)
-    if mode in ['benchmarking', 'chain_qb', 'chain_eqeb', 'chain_tbqeb']:
+    if mode in ['benchmarking', 'chain_qb', 'chain_eqeb', 'chain_tqeb']:
         mlflow.log_param("stm32ai_version", configs.tools.stm32ai.version)
         mlflow.log_param("target", configs.benchmarking.board)
     # logging the completion of the chain

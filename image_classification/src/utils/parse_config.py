@@ -210,7 +210,17 @@ def parse_data_augmentation_section(cfg: DictConfig, config_dict: Dict) -> None:
             cfg.data_augmentation.config = config_dict['custom_data_augmentation']['config'].copy()
         del cfg.custom_data_augmentation
 
-def get_class_names_from_file(cfg: DictConfig) -> List:
+def get_class_names_from_file(cfg: DictConfig) -> List[str]:
+    """
+    Reads class names from a file specified in the configuration and returns them as a list.
+    Args:
+        cfg (DictConfig): Configuration object containing the path to the label file.
+    Returns:
+        List[str]: A list of class names read from the file.
+    Raises:
+        FileNotFoundError: If the file specified in the configuration does not exist.
+        IOError: If there is an error reading the file.
+    """
     if cfg.deployment.label_file_path :
         with open(cfg.deployment.label_file_path, 'r') as file:
             class_names = [line.strip() for line in file]
@@ -396,21 +406,13 @@ def get_config(config_data: DictConfig) -> DefaultMunch:
 
     # Check that all datasets have the required directory structure
     cds = cfg.dataset
-    if not cds.class_names and cfg.operation_mode not in ("quantization", "benchmarking", "chain_qb"):
+    if not cds.class_names and cfg.operation_mode not in ("benchmarking"):
         # Infer the class names from a dataset
         for path in [cds.training_path, cds.validation_path, cds.test_path, cds.quantization_path]:
             if path:
                 cds.class_names = get_class_names(dataset_root_dir=path)
                 print("[INFO] : Found {} classes in dataset {}".format(len(cds.class_names), path))
-                break
-
         if not cds.class_names and cfg.operation_mode in ("deployment","chain_qd") and cfg.hardware_type == "MPU":
             cds.class_names = get_class_names_from_file(cfg)
             print("[INFO] : Found {} classes in label file {}".format(len(cds.class_names), cfg.deployment.label_file_path))
-
-        # This should not happen. Just in case.
-        if not cds.class_names:
-            raise ValueError("\nMissing `class_names` attribute\nPlease check the 'dataset' section of your "
-                             "configuration file.")
-
     return cfg
