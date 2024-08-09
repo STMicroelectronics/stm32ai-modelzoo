@@ -59,7 +59,7 @@ For an image resolution of NxM and P classes
 To train the deeplab_v3 with backbone MobileNet v2 model with pretrained weights, from scratch or fine-tune it on your own dataset, you need to configure the [user_config.yaml](../../src/user_config.yaml) file following the
 [tutorial](../../README.md) under the src section.
 
-As an example, [deeplab_v3_mobilenetv2_05_16_512_fft.yaml](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_config.yaml) file is used to train on PASCAL VOC + COCO 2012 dataset. You can copy its content in the [user_config.yaml](../../src/user_config.yaml) file provided under 
+As an example, [deeplab_v3_mobilenetv2_05_16_512_fft.yaml](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_config.yaml) file is used to train on COCO 2017 + PASCAL VOC 2012 dataset. You can copy its content in the [user_config.yaml](../../src/user_config.yaml) file provided under 
 the src section to reproduce the results presented below.
 
 ## Deployment
@@ -73,16 +73,16 @@ To deploy your trained model, you need to configure the same [user_config.yaml](
 Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 
 
-### Reference **MPU** inference time based on PASCAL VOC + COCO 2012  segmentation dataset 21 classes (see Accuracy for details on dataset)
+### Reference **MPU** inference time based on COCO 2017 + PASCAL VOC 2012  segmentation dataset 21 classes (see Accuracy for details on dataset)
 | Model                                                                                                                                                                                                          | Dataset     | Format | Resolution | Quantization   | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU   | %CPU | X-LINUX-AI version |       Framework       |
 |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|--------|------------|----------------|-------------------|------------------|-----------|---------------------|-------|--------|------|--------------------|-----------------------|
-| [DeepLabV3 per tensor (no ASPP)](https://www.st.com/en/embedded-software/x-linux-ai.html)                                                                                                                       | PASCAL VOC + COCO 2012  | Int8   | 257x257x3  | per-tensor     | STM32MP257F-DK2   | NPU/GPU          | 1500  MHz | 52.75           | 99.2 | 0.80  | 0 | v5.1.0             | OpenVX                |                |       |        |      | v5.1.0 
-| [DeepLabV3 per channel](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite) | PASCAL VOC + COCO 2012  | Int8   | 512x512x3  | per-channel ** | STM32MP257F-DK2   | NPU/GPU          | 1500  MHz | 806.12            | 8.73| 91.27 | 0   | v5.1.0             | OpenVX                |
-| [DeepLabV3 mixed precision](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8_f32.tflite) | PASCAL VOC + COCO 2012  | Int8 & float32  | 512x512x3  | per-channel ** | STM32MP257F-DK2   | NPU/GPU          | 1500  MHz |  894.56  | 7.67 | 92.33 | 0  | v5.1.0             | OpenVX                |
+| [DeepLabV3 per tensor (no ASPP)](https://www.st.com/en/embedded-software/x-linux-ai.html)                                                                                                                       | COCO 2017 + PASCAL VOC 2012 | Int8   | 257x257x3  | per-tensor     | STM32MP257F-DK2   | NPU/GPU          | 1500  MHz | 52.75           | 99.2 | 0.80  | 0 | v5.1.0             | OpenVX                |                |       |        |      | v5.1.0 
+| [DeepLabV3 per channel](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite) | COCO 2017 + PASCAL VOC 2012 | Int8   | 512x512x3  | per-channel ** | STM32MP257F-DK2   | NPU/GPU          | 1500  MHz | 806.12            | 8.73| 91.27 | 0   | v5.1.0             | OpenVX                |
+| [DeepLabV3 mixed precision](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8_f32.tflite) | COCO 2017 + PASCAL VOC 2012 | Int8 & float32  | 512x512x3  | per-channel ** | STM32MP257F-DK2   | NPU/GPU          | 1500  MHz |  894.56  | 7.67 | 92.33 | 0  | v5.1.0             | OpenVX                |
 
 ** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
 
-### Accuracy with PASCAL VOC + COCO 2012 
+### Accuracy with COCO 2017 + PASCAL VOC 2012
 
 Dataset details: [link](http://host.robots.ox.ac.uk/pascal/VOC/voc2012/), License [Database Contents License (DbCL) v1.0](https://opendatacommons.org/licenses/dbcl/1-0/) , Number of classes: 21, Number of images: 11530
 Please note, that the following accuracies are evaluated on Pascal VOC 2012 validation set (val.txt), and with a preprocessing resize with interpolation method 'bilinear'.
@@ -91,9 +91,9 @@ Moreover, IoU are averaged on all classes including background.
 | Model Description                                                                                                                                            | Resolution | Format     | Accuracy | Averaged IoU |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|------------|----------|--------------|
 | [DeepLabV3 per tensor (no ASPP)](https://www.st.com/en/embedded-software/x-linux-ai.html)                                                            | 257x257x3  | Int8       | 88.6%    | 59.33%       |
-| [DeepLabV3 float precision](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft.h5) | 512x512x3  | Float      | 93.29%   | 73.44%       |
-| [DeepLabV3 per channel](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite) | 512x512x3  | Int8       | 91.3%    | 67.32%       |
-| [DeepLabV3 mixed precision](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8_f32.tflite) | 512x512x3  | Int8/Float | 92.83%   | 71.93%       |
+| [DeepLabV3 float precision](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft.h5) | 512x512x3  | Float      | 93.29%   | 73.44%       |
+| [DeepLabV3 per channel](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite) | 512x512x3  | Int8       | 91.3%    | 67.32%       |
+| [DeepLabV3 mixed precision](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8_f32.tflite) | 512x512x3  | Int8/Float | 92.83%   | 71.93%       |
 
 ## Retraining and code generation
 
@@ -101,7 +101,7 @@ Moreover, IoU are averaged on all classes including background.
    This model, which does not include ASPP (Atrous Spatial Pyramid Pooling), was downloaded from the TensorFlow DeepLabV3 page on[Kaggle](https://www.kaggle.com/models/tensorflow/deeplabv3/).
 
 - **DeepLabV3 float precision**:
-   This model is the result of using the [deeplab_v3_mobilenetv2_05_16_512_fft.yaml](./ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_config.yaml) configuration file to train the model on the PASCAL VOC + COCO 2012 dataset.
+   This model is the result of using the [deeplab_v3_mobilenetv2_05_16_512_fft.yaml](./ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_config.yaml) configuration file to train the model on the COCO 2017 + PASCAL VOC 2012 dataset.
 
 - **DeepLabV3 Per channel**:
    This model is quantized `per channel` version of DeepLabV3 float precision. It is generated using the quantization service with the [the quantization_config.yaml](../../src/config_file_examples/quantization_config.yaml) configuration file.

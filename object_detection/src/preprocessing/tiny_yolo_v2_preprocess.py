@@ -492,11 +492,12 @@ def tiny_yolo_v2_preprocess(cfg):
     # Load the quantization dataset if provided
     if quantization_path or training_path:
 
-        if Path(cfg.general.model_path).suffix =='.onnx':
-            _, ish = get_model_name_and_its_input_shape(cfg.general.model_path)
-            input_shape = [ish[1],ish[2],ish[0]]
-        else:
-            _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path)
+        if cfg.general.model_path:
+            if Path(cfg.general.model_path).suffix =='.onnx':
+                _, ish = get_model_name_and_its_input_shape(cfg.general.model_path)
+                input_shape = [ish[1],ish[2],ish[0]]
+            else:
+                _, input_shape = get_model_name_and_its_input_shape(cfg.general.model_path)
 
         img_width, img_height, _ = input_shape
         if training_path:

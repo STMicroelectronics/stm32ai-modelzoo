@@ -16,7 +16,7 @@ In particular, `operation_mode` should be set to evaluation and the `benchmarkin
 
 ```yaml
 general:
-   model_path: ../pretrained_models/deeplab_v3/ST_pretrainedmodel_public_dataset/pascal_voc_coco_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite
+   model_path: ../pretrained_models/deeplab_v3/ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512_fft/deeplab_v3_mobilenetv2_05_16_512_fft_int8.tflite
 
 operation_mode: benchmarking
 ```

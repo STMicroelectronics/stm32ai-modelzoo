@@ -13,13 +13,13 @@ dataset:
                 "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
 
-  training_path: ../datasets/VOC2012_COCO_train_val/JPEGImages
-  training_masks_path: ../datasets/VOC2012_COCO_train_val/SegmentationClassAug
-  training_files_path: ../datasets/VOC2012_COCO_train_val/ImageSets/Segmentation/trainaug.txt
+  training_path: ../datasets/COCO2017_VOC2012/JPEGImages
+  training_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
+  training_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/trainaug.txt
 
-  validation_path: ../datasets/VOC2012_COCO_train_val/JPEGImages
-  validation_masks_path: ../datasets/VOC2012_COCO_train_val/SegmentationClassAug
-  validation_files_path: ../datasets/VOC2012_COCO_train_val/ImageSets/Segmentation/val.txt
+  validation_path: ../datasets/COCO2017_VOC2012/JPEGImages
+  validation_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
+  validation_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/val.txt
   validation_split: 
   
   test_path: 
