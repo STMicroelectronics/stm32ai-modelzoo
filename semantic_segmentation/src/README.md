@@ -142,6 +142,10 @@ dataset:
 The `name` attribute is mandatory. To date, a unique value is accepted: `pascal_voc`. This parameter is used in the data_loader in order to correctly construct each dataset expecting PASCAL VOC 2012 structure.
 In the future, it could be extended to other datasets type.
 
+**The official PASCAL VOC dataset contains 1,464 training images and masks, and 1,449 validation images and masks for semantic segmentation use cases. The segmentation masks that come in the official dataset are RGB masks. Please check the [link](https://github.com/kazuto1011/deeplab-pytorch/blob/master/data/datasets/voc12/README.md) to get augmented segmentation masks where the masks are formatted as images with pixel values as integers, where each integer corresponds to a different class label.**
+
+**This will give you about 10,582 training images. After downloading the set, please remember to use the [`trainaug.txt`](../datasets/VOC2012/ImageSets/Segmentation/trainaug.txt) file containing the IDs of the new training masks.**
+
 As already mentioned, to respect PASCAL VOC 2012 structure we need 3 paths for each set. As an exception, due to the specific structure of PASCAL VOC, the validation set only needs one parameter: the validation files path. 
 It will automatically fetch the specified images in the training path jpeg images directory and the corresponding masks in the training masks path.
 
@@ -154,7 +158,7 @@ the validation set. The `seed` attribute specifies the seed value to use for ran
 The 3 quantization path attributes are used to specify a dataset for the quantization process. If these attributes are not provided and a training set is available, the training set is used for the quantization. 
 However, training sets can be quite large and the quantization process can take a long time to run. To avoid this issue, you can set the `quantization_split` attribute to use only a random portion of the dataset for quantization.
 
-**Please ensure that the segmentation masks are formatted as images with pixel values as integers. Each integer should correspond to a different class label, effectively segmenting the image into regions based on the class they belong to.**
+
 
 </details></ul>
 <ul><details open><summary><a href="#2-4">2.4 Apply image preprocessing</a></summary><a id="2-4"></a>
