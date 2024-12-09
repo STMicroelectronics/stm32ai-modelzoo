@@ -1,39 +1,16 @@
 # Object detection STM32 model zoo
 
-## Directory Components:
-* [datasets](datasets/README.md) placeholder for the object detection datasets.
-* [deployment](deployment/README.md) contains the necessary files for the deployment service.
-* [pretrained_models ](pretrained_models/README.md) a collection of optimized pretrained models for different object
-  detection use cases.
-* [src](src/README.md) contains tools to train, evaluate, benchmark and quantize your model on your STM32 target.
+Models are stored depending on the way they have been trained :
+* `ST_pretrainedmodel_public_dataset` folder contains models trained by ST using public datasets
+* `ST_pretrainedmodel_custom_dataset` folder contains models trained by ST using custom datasets
+* `Public_pretrainedmodel_public_dataset` folder contains public models using public datasets
 
-## Quick & easy examples:
-The `operation_mode` top-level attribute specifies the operations or the service you want to execute. This may be single operation or a set of chained operations.
+## List of available models families:
+* [ssd mobilenet v2](./ssd_mobilenet_v2_fpnlite/README.md)
+* [st mobilenet v1](./st_ssd_mobilenet_v1/README.md)
+* [st yolo lc v1](./st_yolo_lc_v1/README.md)
+* [st yolo x](./st_yolo_x/README.md)
+* [tiny yolo v2](./tiny_yolo_v2/README.md)
+* [yolo v8n](./yolov8n/README.md)
+* yolo v11n : Coming soon !
 
-You can refer to readme links below that provide typical examples of operation modes, and tutorials on specific services:
-
-   - [training, chain_tqe, chain_tqeb](./src/training/README.md)
-   - [quantization, chain_eqe, chain_qb](./src/quantization/README.md)
-   - [evaluation, chain_eqeb](./src/evaluation/README.md)
-   - [benchmarking](./src/benchmarking/README.md)
-   - [prediction](./src/prediction/README.md)
-   - [deployment, chain_qd](./deployment/README.md)
-
-All .yaml configuration examples are located in [config_file_examples](./src/config_file_examples/) folder.
-
-The different values of the `operation_mode` attribute and the corresponding operations are described in the table below. In the names of the chain modes, 't' stands for training, 'e' for evaluation, 'q' for quantization, 'b' for benchmark and 'd' for deployment on an STM32 board.
-
-| operation_mode attribute | Operations |
-|:---------------------------|:-----------|
-| `training`| Train a model from the variety of object detection models in the model zoo **(BYOD)** or your own model with the same model type **(BYOM)** |
-| `evaluation` | Evaluate the accuracy of a float or quantized model on a test or validation dataset|
-| `quantization` | Quantize a float model |
-| `prediction`   | Predict the classes some images belong to using a float or quantized model |
-| `benchmarking` | Benchmark a float or quantized model on an STM32 board |
-| `deployment`   | Deploy a model on an STM32 board |
-| `chain_tqeb`  | Sequentially: training, quantization of trained model, evaluation of quantized model, benchmarking of quantized model |
-| `chain_tqe`    | Sequentially: training, quantization of trained model, evaluation of quantized model |
-| `chain_eqe`    | Sequentially: evaluation of a float model,  quantization, evaluation of the quantized model |
-| `chain_qb`     | Sequentially: quantization of a float model, benchmarking of quantized model |
-| `chain_eqeb`   | Sequentially: evaluation of a float model,  quantization, evaluation of quantized model, benchmarking of quantized model |
-| `chain_qd`     | Sequentially: quantization of a float model, deployment of quantized model |

@@ -1,0 +1,147 @@
+general:
+  project_name: tf_plants
+  model_path: null
+  logs_dir: logs
+  saved_models_dir: saved_models
+  global_seed: 127
+  gpu_memory_limit: null
+operation_mode: chain_tqe
+dataset:
+  name: plants
+  class_names:
+  - Apple___Apple_scab
+  - Apple___Black_rot
+  - Apple___Cedar_apple_rust
+  - Apple___healthy
+  - Background_without_leaves
+  - Blueberry___healthy
+  - Cherry___healthy
+  - Cherry___Powdery_mildew
+  - Corn___Cercospora_leaf_spot Gray_leaf_spot
+  - Corn___Common_rust
+  - Corn___healthy
+  - Corn___Northern_Leaf_Blight
+  - Grape___Black_rot
+  - Grape___Esca_(Black_Measles)
+  - Grape___healthy
+  - Grape___Leaf_blight_(Isariopsis_Leaf_Spot)
+  - Orange___Haunglongbing_(Citrus_greening)
+  - Peach___Bacterial_spot
+  - Peach___healthy
+  - Pepper,_bell___Bacterial_spot
+  - Pepper,_bell___healthy
+  - Potato___Early_blight
+  - Potato___healthy
+  - Potato___Late_blight
+  - Raspberry___healthy
+  - Soybean___healthy
+  - Squash___Powdery_mildew
+  - Strawberry___healthy
+  - Strawberry___Leaf_scorch
+  - Tomato___Bacterial_spot
+  - Tomato___Early_blight
+  - Tomato___healthy
+  - Tomato___Late_blight
+  - Tomato___Leaf_Mold
+  - Tomato___Septoria_leaf_spot
+  - Tomato___Spider_mites Two-spotted_spider_mite
+  - Tomato___Target_Spot
+  - Tomato___Tomato_mosaic_virus
+  - Tomato___Tomato_Yellow_Leaf_Curl_Virus
+  training_path: ../datasets/Plant_leave_diseases_dataset_without_augmentation
+  validation_path: null
+  validation_split: 0.2
+  test_path: null
+  quantization_path: null
+  quantization_split: null
+  seed: 127
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+data_augmentation:
+  random_contrast:
+    factor: 0.2
+  random_brightness:
+    factor: 0.25
+  random_flip:
+    mode: horizontal_and_vertical
+  random_translation:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.25
+    fill_mode: reflect
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: nearest
+    interpolation: nearest
+  random_shear:
+    factor: 0.0615
+    fill_mode: wrap
+    interpolation: nearest
+training:
+  model:
+    name: mobilenet
+    version: v1
+    alpha: 0.25
+    input_shape: (224, 224, 3)
+    pretrained_weights: None
+  dropout: 0.4
+  batch_size: 64
+  epochs: 500
+  optimizer:
+    Adam:
+      learning_rate: 0.001
+  callbacks:
+    LRWarmupCosineDecay:
+      initial_lr: 0.0001
+      warmup_steps: 30
+      max_lr: 0.01
+      hold_steps: 20
+      decay_steps: 300
+      end_lr: 1.0e-05
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: true
+      patience: 60
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+prediction:
+  test_files_path: null
+tools:
+  stedgeai:
+    version: 10.0.0
+    optimization: balanced
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+benchmarking:
+  board: STM32H747I-DISCO
+deployment:
+  c_project_path: ../../application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: SPI_CAMERA
+    output: USB_DISPLAY
+mlflow:
+  uri: ./experiments_outputs/mlruns
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -1,0 +1,34 @@
+general:
+   model_path: tiny_yolo_v2_416_int8.tflite 
+   model_type: tiny_yolo_v2
+   gpu_memory_limit: 24
+   num_threads_tflite: 40
+
+operation_mode: evaluation
+
+dataset:
+  class_names: [person]
+  test_path: /local/data/od_coco_2017_person/test
+
+
+preprocessing:
+  rescaling: { scale: 1/255, offset: 0 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.4
+  yolo_anchors: [0.9883,3.3606,2.1194,5.3759,3.0520,9.1336,5.5517,9.3066,9.7260,11.1422]
+  plot_metrics: True
+  max_detection_boxes: 100
+  
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

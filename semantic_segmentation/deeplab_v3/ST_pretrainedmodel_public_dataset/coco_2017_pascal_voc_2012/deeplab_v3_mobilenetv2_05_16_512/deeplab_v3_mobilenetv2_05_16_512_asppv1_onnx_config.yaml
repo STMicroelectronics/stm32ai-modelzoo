@@ -1,0 +1,70 @@
+general:
+  project_name: segmentation
+  model_type: deeplab_v3
+  model_path: ../deeplab_v3_mobilenetv2_05_16_512_fft.h5
+  logs_dir: logs
+  saved_models_dir: saved_models
+  gpu_memory_limit: 12
+  global_seed: 127
+  display_figures: false
+  num_threads_tflite: 8
+
+operation_mode: chain_eqeb
+
+dataset:
+  name: pascal_voc
+  class_names: ["background", "aeroplane", "bicycle", "bird", "boat", "bottle", "bus",
+                "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
+                "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
+
+  test_path: ../datasets/COCO2017_VOC2012/JPEGImages
+  test_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
+  test_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/val.txt
+
+  quantization_path: ../datasets/COCO2017_VOC2012/JPEGImages
+  quantization_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
+  quantization_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/quant_onnx.txt
+
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    aspect_ratio: fit
+    interpolation: bilinear
+  color_mode: rgb
+
+quantization:
+  quantizer: onnx_quantizer
+  quantization_type: PTQ
+  quantization_input_type: float
+  quantization_output_type: float
+  target_opset: 17
+  granularity: per_channel
+  extra_options: calib_moving_average
+  export_dir: quantized_models
+
+prediction:
+  test_files_path: ../datasets/VOC2012_test
+
+benchmarking:
+  board: STM32MP257F-EV1
+
+tools:
+  stedgeai:
+    version: 10.0.0
+    optimization: balanced
+    on_cloud: true
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
+
+deployment:
+  c_project_path: ../../application_code/semantic_segmentation/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32MP2
+    board: STM32MP257F-EV1
+
+mlflow:
+  uri: ./experiments_outputs/mlruns

@@ -1,0 +1,35 @@
+general:
+  project_name: coco_instance_seg
+  model_path: yolov8n_256_quant_pc_uf_seg_coco-st.tflite
+  model_type: yolo_v8_seg
+  display_figures: true
+
+operation_mode: prediction
+
+dataset:
+  name: COCO
+  classes_file_path : ../dataset/coco_classes.txt
+  class_names: 
+
+preprocessing:
+  rescaling:
+    scale: 1/255.0
+    offset: 0
+  resizing:
+    interpolation: bilinear
+    aspect_ratio: fit
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.6
+  IoU_eval_thresh: 0.4
+
+prediction:
+  test_files_path: ../datasets/coco/images
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

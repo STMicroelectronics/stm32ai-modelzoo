@@ -1,14 +1,11 @@
 # Audio event detection (AED) STM32 model zoo
 
+Models are stored depending on the way they have been trained :
+* `ST_pretrainedmodel_public_dataset` folder contains models trained by ST using public datasets
+* `ST_pretrainedmodel_custom_dataset` folder contains models trained by ST using custom datasets
+* `Public_pretrainedmodel_public_dataset` folder contains public models using public datasets
 
-## Directory components:
-* [datasets](datasets/README.md) placeholder for the audio event detection datasets.
-* [deployment](deployment/README.md) contains the necessary files to deploy models on an STM32 board
-* [pretrained_models](pretrained_models/README.md) a collection of optimized pretrained models on different audio datasets.
-* [src](src/README.md) contains tools to train, evaluate, benchmark and quantize your model on your STM32 target.
-
-## Tutorials and documentation: 
-* [Complete AED model zoo and configuration file documentation](src/README.md)
-* [A short tutorial on training a model using the model zoo](src/training/README.md)
-* [A short tutorial on quantizing a model using the model zoo](src/quantization/README.md)
-* [A short tutorial on deploying a model on an STM32 board](deployment/README.md)
+## List of available models families :
+* [miniresnet](./miniresnet/README.md)
+* [miniresnet v2](./miniresnetv2/README.md)
+* [yamnet](./yamnet/README.md)

@@ -1,0 +1,107 @@
+general:
+  project_name: COCO_2017_person_Demo
+  model_type: ssd_mobilenet_v2_fpnlite
+  model_path: 
+  logs_dir: logs
+  saved_models_dir: saved_models
+  gpu_memory_limit: 24
+  num_threads_tflite: 4
+  global_seed: 127
+
+operation_mode: chain_tqeb
+#choices=['training' , 'evaluation', 'chain_eqeb', 'deployment', 'quantization', 'benchmarking',
+#        'chain_tqeb','chain_tqe','chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+
+dataset:
+  name: COCO_2017_person
+  class_names: [ person ]
+  training_path: /local/data/od_coco_2017_person/train
+  validation_path: 
+  test_path: /local/data/od_coco_2017_person/test
+  quantization_path: /local/data/od_coco_2017_person/train
+  quantization_split: 0
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+data_augmentation:
+  random_flip:
+    mode: horizontal
+  random_crop:
+    crop_center_x: (0.25, 0.75)
+    crop_center_y: (0.25, 0.75)
+    crop_width: (0.6, 0.9)
+    crop_height: (0.6, 0.9)
+    change_rate: 0.9
+  random_contrast:
+    factor: 0.4
+  random_brightness:
+    factor: 0.3
+                
+training:
+  model:
+    alpha: 0.35
+    input_shape: (256, 256, 3)
+    pretrained_weights: imagenet
+  dropout:
+  batch_size: 64
+  epochs: 500
+  optimizer:
+    Adam:
+      learning_rate: 0.005
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_map
+      patience: 10
+      factor: 0.25
+    ModelCheckpoint:
+      monitor: val_map
+    EarlyStopping:
+      monitor: val_map
+      patience: 20
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.4
+  plot_metrics: False   # Plot precision versus recall curves
+  max_detection_boxes: 100
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  granularity: per_channel   # per_tensor
+  optimize: False   # can be True if per_tensor
+  export_dir: quantized_models
+
+benchmarking:
+  board: STM32H747I-DISCO
+
+tools:
+  stedgeai:
+    version: 10.0.0
+    optimization: balanced
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+deployment:
+  c_project_path: ../../application_code/object_detection/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -1,0 +1,125 @@
+general:
+  project_name: emnist
+  model_path:
+  logs_dir: logs
+  saved_models_dir: saved_models
+  global_seed: 127
+  gpu_memory_limit: 10
+
+operation_mode: chain_tbqeb
+#choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
+#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+
+dataset:
+  name: emnist
+  class_names: ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+  training_path: ../datasets/emnist/
+  validation_path:
+  validation_split: 0.2
+  test_path:
+  quantization_path:
+  quantization_split:
+  seed: 127
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: grayscale
+
+data_augmentation:
+  random_contrast:
+    factor: 0.05
+  random_brightness:
+    factor: 0.05
+#  random_flip:
+#    mode: horizontal
+  random_translation:
+    width_factor: 0.05
+    height_factor: 0.05
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.05
+    fill_mode: reflect
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.05
+    height_factor: 0.05
+    fill_mode: reflect
+    interpolation: nearest
+  random_shear:
+    factor: 0.0515
+    fill_mode: wrap
+    interpolation: nearest
+  random_gaussian_noise:
+    stddev: (0.0001, 0.005)
+
+training:
+  model:
+    name: stmnist
+    input_shape: (28, 28, 1)
+  dropout: 0.5
+  batch_size: 256
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.01
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      mode: max
+      factor: 0.5
+      patience: 40
+      min_lr: 1.0e-05
+#    LRWarmupCosineDecay:
+#      initial_lr: 0.0001
+#      warmup_steps: 100
+#      max_lr: 0.005
+#      hold_steps: 100
+#      decay_steps: 800
+#      end_lr: 5.0e-05
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: false
+      patience: 60
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+  
+prediction:
+  test_files_path:
+
+tools:
+  stedgeai:
+    version: 10.0.0
+    optimization: balanced
+    on_cloud: True
+    path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+  board: STM32H747I-DISCO
+
+deployment:
+  c_project_path: ../../application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: CAMERA_INTERFACE_DCMI
+    output: DISPLAY_INTERFACE_USB
+
+mlflow:
+  uri: ./experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

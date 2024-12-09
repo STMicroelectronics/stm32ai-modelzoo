@@ -1,0 +1,30 @@
+general:
+   model_path: ../../../model_zoo/pose_estimation/hand_landmarks/Public_pretrainedmodel_custom_dataset/custom_dataset_hands_21kpts/hand_landmarks_full_224_int8_pc.tflite
+   model_type: hand_spe
+
+operation_mode: prediction
+
+dataset:
+   keypoints: 21
+
+preprocessing:
+   rescaling:
+      scale: 1/255.
+      offset: 0
+   resizing:
+      interpolation: bilinear
+      aspect_ratio: fit
+   color_mode: rgb
+
+postprocessing:
+   kpts_conf_thresh: 0.15
+
+prediction:
+   test_files_path: ../datasets/hand_test_single_pose
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

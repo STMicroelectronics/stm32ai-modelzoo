@@ -1,0 +1,133 @@
+general:
+  project_name: my_project
+  model_path: 
+  model_type: st_yolo_lc_v1
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: false
+  gpu_memory_limit: 24
+  num_threads_tflite: 12
+  global_seed: 127
+
+operation_mode: chain_tqeb
+
+dataset:
+  name: COCO_2017_person
+  class_names: [person]
+  training_path: /local/data/od_coco_2017_person/train
+  validation_split: 0.1
+  test_path: /local/data/od_coco_2017_person/test
+  quantization_path: /local/data/od_coco_2017_person/train
+  quantization_split: 0.0004
+
+preprocessing:
+   rescaling:
+      scale: 1/255
+      offset: 0
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+data_augmentation:
+  random_periodic_resizing:
+    period: 20
+    image_sizes:
+    - (192
+    - 192)
+    - (224
+    - 224)
+    - (256
+    - 256)
+    - (288
+    - 288)
+    - (320
+    - 320)
+    - (352
+    - 352)
+    - (384
+    - 384)
+    - (416
+    - 416)
+    - (448
+    - 448)
+    - (480
+    - 480)
+    - (512
+    - 512)
+    - (544
+    - 544)
+    - (576
+    - 576)
+    - (608
+    - 608)
+  random_contrast:
+    factor: 0.4
+  random_brightness:
+    factor: 0.3
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.15
+    height_factor: 0.15
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.02
+    fill_mode: reflect
+    interpolation: nearest
+
+training:
+  model:
+    input_shape: (256,256,3)
+  dropout: null
+  batch_size: 64
+  epochs: 400
+  optimizer:
+    Adam:
+      learning_rate: 0.0025
+  callbacks:
+    LRWarmupCosineDecay:
+      initial_lr: 1.0e-05
+      warmup_steps: 20
+      max_lr: 0.00125
+      hold_steps: 20
+      decay_steps: 300
+      end_lr: 1.0e-06
+    EarlyStopping:
+      monitor: val_loss
+      patience: 100
+      restore_best_weights: true
+      verbose: 1
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.4
+  plot_metrics: false
+  max_detection_boxes: 100
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+tools:
+   stedgeai:
+      version: 10.0.0
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+   board: STM32H747I-DISCO
+
+mlflow:
+   uri: ./experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./experiments_outputs/period_20_256

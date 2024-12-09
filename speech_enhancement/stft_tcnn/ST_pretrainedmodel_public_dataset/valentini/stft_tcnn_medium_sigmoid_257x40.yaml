@@ -1,0 +1,178 @@
+general:
+  project_name: speech_enhancement_project
+  logs_dir: logs
+  saved_models_dir: saved_models 
+  gpu_memory_limit: 0.5 # Fraction of GPU's memory to use.
+  display_figures: True # Set to True to display figures. Figures are saved even if set to False.
+
+operation_mode: chain_tqe
+model:
+  model_type: STFTTCNN # For training
+  state_dict_path: # For training and evaluating torch models
+  onnx_path: # For quantization, evaluation, benchmarking and deployment only
+
+model_specific:
+  # Parameters specific to your model type, e.g. n_blocks, tcn_latent_dim for STFT-TCNN
+  n_blocks: 2
+  num_layers: 3
+  in_channels: 257
+  tcn_latent_dim: 512
+  init_dilation: 2
+  mask_activation: "sigmoid"
+
+dataset:
+  name: valentini # Or "custom"
+  root_folder: /local/datasets/Valentini # Root folder of dataset
+  n_speakers: 56 # For Valentini, 28 or 56 speaker dataset. Does nothing if name is "custom"
+  file_extension: '.wav' # Extension of audio files. Valentini dataset uses .wav
+
+  # For the following parameters, leave empty to include all samples.
+  # You can set them to a specific n° of samples (integer), 
+  # or a fraction (float) of their respective sets.
+
+  num_training_samples: # N° of samples or fraction of training set to include in training set
+  num_validation_samples: 100 # N° of samples or fraction of training set to include in validation set.
+  num_test_samples: # N° of samples or fraction of test set to include in test set
+  shuffle: True # If True, training dataset is shuffled each epoch
+  random_seed: 42 # Random seed used for sampling. If left empty, sampling is not seeded.
+
+  # The following parameters are to be used for custom datasets. 
+  # You can leave them empty if "name" is "valentini", and the default paths will be used.
+  clean_train_files_path:
+  clean_test_files_path:
+  noisy_train_files_path:
+  noisy_test_files_path:
+
+preprocessing:
+  pipeline_type: LibrosaSpecPipeline # Do not change if unsure.
+  peak_normalize: False
+  sample_rate: 16000
+  n_fft: 512
+  hop_length: 160
+  win_length: 400
+  window: hann
+  center: True
+  power: 1
+
+training:
+ device: cuda:0
+ epochs: 100
+
+ # Optimizer parameters
+ optimizer: Adam # Can use any torch optimizer
+ # Add additional arguments to be passed to the optimizer to this dict
+ optimizer_arguments: {lr: 0.001}
+
+ # Training loop parameters
+ loss: spec_mse # one of ["wave_mse", "wave_snr", "wave_sisnr"]
+ batching_strategy: pad # one of ["trim", "pad"]
+
+ # Dataloader parameters
+ num_dataloader_workers: 4 # Should divide batch_size
+ batch_size: 4 # Recommend keeping it low
+
+ # Reference metric used for early stopping, and saving the best model produced during training
+ reference_metric: pesq # One of 'train_loss', 'wave_mse', 'stoi', 'pesq', 'snr', 'si-snr'
+ 
+ # Early stopping parameter
+ early_stopping: True # True/False to enable/disable
+ early_stopping_patience: 50 # Number of epochs with no improvement in reference_metric before training stops.
+
+
+#  Regularization parameters
+#  Comment the following block to remove all regularization during training.
+ regularization:
+  weight_clipping_max:  # Leave empty to disable weight clipping
+  activation_regularization:  # Leave empty to disable activation regularization
+  act_reg_layer_types: [Conv1d, DepthwiseSeparableConv] # Type of layers to regularize
+  act_reg_threshold: 50.0 # Will not penalize activations below threshold. Leave empty to penalize all activations.
+  penalty_type: l2 # "l1" or "l2"
+
+ # Checkpointing and snapshotting parameters
+ save_every: 2 # Saves a checkpoint and snapshot every n epochs
+ snapshot_path:  # Set this to a previously saved training snapshot to resume training.
+ ckpt_path: ckpts/ # Path to checkpoints, appended to general.saved_model_dir
+ logs_filename: training_logs.csv # appended to general.logs_dir
+
+ # ONNX exporting parameters
+ opset_version: 17
+
+evaluation:
+  logs_path: eval_logs/ # Path to evaluation logs, appended to general.logs_dir
+  device: "cuda:0" # Only used when evaluating torch models.
+  # If evaluating models with a fixed sequence length axis length, set the following parameter
+  # to the length of the axis. E.g. if input shape is [1, 257, 20], set fixed_sequence_length to 20.
+  # If evaluating models with a dynamic sequence length axis, leave empty.
+  fixed_sequence_length: 
+
+  # NOTE: Params for ST AI runner will be here
+
+quantization:
+  # N° of samples or fraction of training set to include in quantization set.
+  # Leave empty to use the whole training set.
+  num_quantization_samples: 100
+  random_seed: 
+
+  # Use the following parameters if using a quantization set different from the training set.
+  # If left empty, the noisy files from the training dataset specified in the dataset section will be used.
+  noisy_quantization_files_path:
+
+  # STEDGEAI only accepts models with static input shapes. 
+  # The model zoo will output two models : one with dynamic and one with static input shape.
+  # E.g, if the dynamic input shape model has input shape[?, 257, ?] 
+  # The static shape model will have input shape [1, 257, 40] 
+  # if static_sequence_length is 40. 
+  static_sequence_length: 40 
+  static_axis_name: "seq_len"
+  
+  # The following parameters are passed directly to ONNXruntime's quantize_static function
+  per_channel: True # 
+  calibration_method: "MinMax" # Calibration method of ONNX quantizer
+  op_types_to_quantize: ["Add", "Conv", "Relu"] # Op types to quantize. Leave empty to quantize all defaults for the ONNX quantizer.
+  reduce_range: False
+  extra_options: {"CalibMovingAverage" : True} # Add extra quantizer options in this dict.
+
+tools:
+  stedgeai:
+    version: 10.0.0 # 10.0.0
+    optimization: balanced
+    on_cloud: False
+    path_to_stedgeai: C:/Users/<>/work/stedgeai_10_RC1/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0.24A14/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+  board: STM32N6570-DK
+
+deployment:
+  frames_per_patch: 30 # Number of frames per inference
+
+  # Number of lookahead and lookback frames.
+  # MAKE SURE YOUR MODEL HAS INPUT SHAPE (1, n_fft // 2 + 1, frames_per_path + 2*lookahead_frames)
+  # BEFORE DEPLOYING !!!!!!
+  lookahead_frames: 5 
+
+  # After denoising is applied, any patches with power less than
+  # output_silence_threshold dB get silenced completely.
+  # This also applies when disabling the denoiser using the button on the board.
+  # In dB. A higher number means a stricter filtering. -100 disables the filtering.
+  output_silence_threshold: -50
+  # Change this to the path on your machine.
+  # MUST be an absolute path due to CubeIDE limitations. Sorry.
+  c_project_path:  C:/Users/<>/work/model_zoo_services/application_code/audio/STM32N6/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32N6
+    board: STM32N6570-DK
+  build_conf : "N6 Audio Bare Metal" # this is the default configuration
+  # build_conf : "N6 Audio Thread X"
+  # build_conf : "N6 Audio Bare Metal Low Power"
+  # build_conf : "N6 Audio Thread X Low Power"
+
+mlflow:
+  uri: ./experiment_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./experiment_outputs/stfttcnn_56spk_pad_nopeak_sigmoid_nonorm
+  
