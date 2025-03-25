@@ -14,8 +14,8 @@ This is an optimized ST version of the well known yolo x, quantized in int8 form
 |-------------------------|-----------------|
 |  Framework              | TensorFlow Lite |
 |  Quantization           | int8            |
-|  Provenance             | TO DO  |
-|  Paper                  | TO DO |
+|  Provenance             |   |
+|  Paper                  |   |
 
 
 
@@ -29,7 +29,7 @@ For an image resolution of NxM and NC classes
 
 | Output Shape | Description |
 | ----- | ----------- |
-|  TO DO |
+|   |    |
 
 
 ## Recommended Platforms
@@ -59,6 +59,7 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.5_0.4_int8.tflite) | COCO-Person      | Int8     | 256x256x3  | STM32N6   |       971.62 | 0.0 | 2547.17 | 10.0.0  | 2.0.0 |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 320x320x3  | STM32N6   |     968.5 | 0.0 | 1028.08 | 10.0.0 | 2.0.0 |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 416x416x3  | STM32N6 | 2640.62 | 0.0 | 1027.89 | 10.0.0 | 2.0.0 |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | COCO-Person      | Int8     | 480x480x3  | STM32N6 | 2418.75 | 0.0 | 1383.56 | 10.0.0 | 2.0.0 |
 
 ### Reference **NPU**  inference time based on COCO Person dataset (see Accuracy for details on dataset)
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   | STM32Cube.AI version  |  STEdgeAI Core version |
@@ -69,6 +70,8 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 320x320x3  | STM32N6570-DK   |   NPU/MCU      |       11.59    |   86.29   |       10.0.0        |     2.0.0   |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 416x416x3  | 
 STM32N6570-DK   |   NPU/MCU      |    17.99  |    55.59   |       10.0.0        |     2.0.0   |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | COCO-Person      | Int8     | 480x480x3  | 
+STM32N6570-DK   |   NPU/MCU      |    32.4  |    30.8  |       10.0.0        |     2.0.0   |
 
 ### Reference **MCU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
@@ -94,7 +97,6 @@ STM32N6570-DK   |   NPU/MCU      |    17.99  |    55.59   |       10.0.0        
 
 ### AP on COCO Person dataset
 
-
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
 
 | Model | Format | Resolution |       AP       |
@@ -109,6 +111,9 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25.h5) | Float | 320x320x3   | 57.1 % |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | Int8 | 416x416x3   | 62.2 % |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25.h5) | Float | 416x416x3   | 62.5 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | Int8 | 480x480x3   |  67.9 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3.h5) | Float | 480x480x3   | 68.4 % |
+
 
 \* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
 

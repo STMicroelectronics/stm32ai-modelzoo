@@ -433,6 +433,14 @@
 		"visible": true
 	},
 	{
+		"name": "./object_detection/st_yolo_x/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite",
+		"description": "ST yolo X (derived from YoloX) trained on COCO 2017 (Person Detection) with 1 class, dm=1.0, wm=0.25, 3 anchors",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 Person",
+		"readme": "./object_detection/st_yolo_x/README.md",
+		"visible": true
+	},
+	{
 		"name": "./pose_estimation/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_heatmaps_192/movenet_lightning_heatmaps_192_int8_pc.tflite",
 		"description": "Movenet variant trained on COCO 2017 (Person) with 1 class",
 		"usecase": "pose_estimation",
