@@ -10,7 +10,7 @@ We recommend to use input size (8 x 8 x 2) but this network can support greater 
 
 The only input required to the model is the input shape and the number of outputs.
 
-In this folder you will find multiple copies of the CNN2D_ST_HandPosture model pretrained on a ST custom datasets - Please refer to th [stm32ai-modelzoo-services](https://github.com/STMicroelectronics/stm32ai-modelzoo-services) GitHub for more informations
+In this folder you will find multiple copies of the CNN2D_ST_HandPosture model pretrained on a ST custom datasets - Please refer to the [stm32ai-modelzoo-services](https://github.com/STMicroelectronics/stm32ai-modelzoo-services) GitHub for more informations
 
 ## Network information (for 8 hand postures)
 
