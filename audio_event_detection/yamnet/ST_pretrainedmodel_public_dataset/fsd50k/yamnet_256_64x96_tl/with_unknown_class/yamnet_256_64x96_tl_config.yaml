@@ -44,12 +44,12 @@ dataset_specific:
   # Currently only supports fsd50k.
   # These parameters only need to be filled out IF the dataset name is set to 'fsd50K'
   fsd50k:
-    csv_folder: ../datasets/FSD50K/FSD50K.ground_truth
-    dev_audio_folder: ../datasets/FSD50K/FSD50K.dev_audio
-    eval_audio_folder: ../datasets/FSD50K/FSD50K.eval_audio
+    csv_folder: ./datasets/FSD50K/FSD50K.ground_truth
+    dev_audio_folder: ./datasets/FSD50K/FSD50K.dev_audio
+    eval_audio_folder: ./datasets/FSD50K/FSD50K.eval_audio
     # Change this next line to the ontology path on your machine. 
     # Download the ontology at https://github.com/audioset/ontology
-    audioset_ontology_path: preprocessing/dataset_utils/fsd50k/audioset_ontology.json 
+    audioset_ontology_path: ./src/preprocessing/dataset_utils/fsd50k/audioset_ontology.json 
     only_keep_monolabel: True
 
 preprocessing:
@@ -157,7 +157,7 @@ benchmarking:
   board: B-U585I-IOT02A
   
 deployment:
-  c_project_path: ../../application_code/sensing_free_rtos
+  c_project_path: ../application_code/sensing_free_rtos
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -168,8 +168,8 @@ deployment:
 
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/whatever
+    dir: ./src/experiments_outputs/whatever

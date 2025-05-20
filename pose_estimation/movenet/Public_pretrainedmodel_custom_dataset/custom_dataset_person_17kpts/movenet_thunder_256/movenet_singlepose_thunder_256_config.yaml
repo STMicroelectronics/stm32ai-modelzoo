@@ -1,5 +1,5 @@
 general:
-   model_path: ../../../model_zoo/pose_estimation/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_thunder_256/movenet_singlepose_thunder_256_int8.tflite
+   model_path: ../../stm32ai-modelzoo/pose_estimation/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_thunder_256/movenet_singlepose_thunder_256_int8.tflite
    model_type: spe
    num_threads_tflite: 8
 
@@ -8,7 +8,7 @@ operation_mode: evaluation
 dataset:
    name: coco_pose
    keypoints: 17
-   test_path: ../datasets/coco_val_single_pose
+   test_path: ./datasets/coco_val_single_pose
 
 training:
    batch_size: 1
@@ -44,8 +44,8 @@ benchmarking:
    board: STM32H747I-DISCO
 
 mlflow:
-   uri: ./experiments_outputs/mlruns
+   uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

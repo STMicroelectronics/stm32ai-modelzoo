@@ -1,7 +1,7 @@
 general:
   project_name: segmentation
   model_type: deeplab_v3
-  model_path: ../deeplab_v3_mobilenetv2_05_16_512_fft.h5
+  model_path: ../../stm32ai-modelzoo/semantic_segmentation/deeplab_v3/ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplab_v3_mobilenetv2_05_16_512/deeplab_v3_mobilenetv2_05_16_512_asppv1.h5
   logs_dir: logs
   saved_models_dir: saved_models
   gpu_memory_limit: 12
@@ -17,13 +17,13 @@ dataset:
                 "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
 
-  test_path: ../datasets/COCO2017_VOC2012/JPEGImages
-  test_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
-  test_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/val.txt
+  test_path: ./datasets/COCO2017_VOC2012/JPEGImages
+  test_masks_path: ./datasets/COCO2017_VOC2012/SegmentationClassAug
+  test_files_path: ./datasets/COCO2017_VOC2012/ImageSets/Segmentation/val.txt
 
-  quantization_path: ../datasets/COCO2017_VOC2012/JPEGImages
-  quantization_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
-  quantization_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/quant_onnx.txt
+  quantization_path: ./datasets/COCO2017_VOC2012/JPEGImages
+  quantization_masks_path: ./datasets/COCO2017_VOC2012/SegmentationClassAug
+  quantization_files_path: ./datasets/COCO2017_VOC2012/ImageSets/Segmentation/quant_onnx.txt
 
 preprocessing:
   rescaling:
@@ -45,7 +45,7 @@ quantization:
   export_dir: quantized_models
 
 prediction:
-  test_files_path: ../datasets/VOC2012_test
+  test_files_path: ./datasets/VOC2012_test
 
 benchmarking:
   board: STM32MP257F-EV1
@@ -59,7 +59,7 @@ tools:
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
-  c_project_path: ../../application_code/semantic_segmentation/
+  c_project_path: ../application_code/semantic_segmentation/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -67,4 +67,4 @@ deployment:
     board: STM32MP257F-EV1
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns

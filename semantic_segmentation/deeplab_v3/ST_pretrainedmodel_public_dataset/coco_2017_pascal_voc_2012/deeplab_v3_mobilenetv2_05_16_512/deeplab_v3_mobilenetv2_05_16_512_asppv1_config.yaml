@@ -14,13 +14,13 @@ dataset:
                 "car", "cat", "chair", "cow", "dining table", "dog", "horse", "motorbike",
                 "person", "potted plant", "sheep", "sofa", "train", "tv/monitor"]
 
-  training_path: ../datasets/COCO2017_VOC2012/JPEGImages
-  training_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
-  training_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/trainaug.txt
+  training_path: ./datasets/COCO2017_VOC2012/JPEGImages
+  training_masks_path: ./datasets/COCO2017_VOC2012/SegmentationClassAug
+  training_files_path: ./datasets/COCO2017_VOC2012/ImageSets/Segmentation/trainaug.txt
 
-  validation_path: ../datasets/COCO2017_VOC2012/JPEGImages
-  validation_masks_path: ../datasets/COCO2017_VOC2012/SegmentationClassAug
-  validation_files_path: ../datasets/COCO2017_VOC2012/ImageSets/Segmentation/val.txt
+  validation_path: ./datasets/COCO2017_VOC2012/JPEGImages
+  validation_masks_path: ./datasets/COCO2017_VOC2012/SegmentationClassAug
+  validation_files_path: ./datasets/COCO2017_VOC2012/ImageSets/Segmentation/val.txt
   validation_split: 
   
   test_path: 
@@ -90,7 +90,7 @@ quantization:
   optimize: false
   export_dir: quantized_models
 prediction:
-  test_files_path: ../datasets/VOC2012_test_nano/
+  test_files_path: ./datasets/VOC2012_test_nano/
 benchmarking:
   board: STM32H747I-DISCO
 tools:
@@ -101,11 +101,11 @@ tools:
       path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
    path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
 deployment:
-  c_project_path: ../../application_code/semantic_segmentation/
+  c_project_path: ../application_code/semantic_segmentation/
   IDE: GCC
   verbosity: 1
   hardware_setup:
     serie: STM32H7
     board: STM32H747I-DISCO
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns

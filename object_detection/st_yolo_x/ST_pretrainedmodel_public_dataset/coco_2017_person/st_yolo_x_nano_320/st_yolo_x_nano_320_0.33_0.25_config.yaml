@@ -80,7 +80,7 @@ training:
 postprocessing:
   confidence_thresh: 0.001
   NMS_thresh: 0.5
-  IoU_eval_thresh: 0.4
+  IoU_eval_thresh: 0.5
   plot_metrics: false
   max_detection_boxes: 100
 
@@ -103,8 +103,8 @@ benchmarking:
    board: STM32H747I-DISCO
 
 mlflow:
-   uri: ./experiments_outputs/mlruns
+   uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/st_yolox_320_0.33_0.25
+      dir: ./src/experiments_outputs/st_yolox_320_0.33_0.25

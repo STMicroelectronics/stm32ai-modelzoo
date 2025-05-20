@@ -103,7 +103,7 @@ training:
 postprocessing:
   confidence_thresh: 0.001
   NMS_thresh: 0.5
-  IoU_eval_thresh: 0.4
+  IoU_eval_thresh: 0.5
   plot_metrics: false
   max_detection_boxes: 100
 
@@ -124,10 +124,21 @@ tools:
 
 benchmarking:
    board: STM32H747I-DISCO
+   
+deployment:
+  c_project_path: ../application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: CAMERA_INTERFACE_DCMI
+    output: DISPLAY_INTERFACE_USB
+
 
 mlflow:
-   uri: ./experiments_outputs/mlruns
+   uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/period_20_224
+      dir: ./src/experiments_outputs/period_20_224

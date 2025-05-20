@@ -5,7 +5,7 @@ general:
   display_figures: true
   global_seed: 127
   gpu_memory_limit: 36
-operation_mode: chain_tbqeb
+operation_mode: chain_tqeb
 dataset:
   name: plant-village
   class_names:
@@ -144,7 +144,7 @@ tools:
 benchmarking:
   board: STM32H747I-DISCO
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -153,7 +153,7 @@ deployment:
     input: CAMERA_INTERFACE_DCMI
     output: DISPLAY_INTERFACE_USB
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 hydra:
    run:
-      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

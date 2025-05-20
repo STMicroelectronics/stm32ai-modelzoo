@@ -1,6 +1,6 @@
 general:
   project_name: coco_instance_seg
-  model_path: yolov8n_256_quant_pc_uf_seg_coco-st.tflite
+  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_256_quant_pc_ii_seg_coco-st.tflite
   model_type: yolo_v8_seg
   display_figures: true
 
@@ -8,7 +8,7 @@ operation_mode: prediction
 
 dataset:
   name: COCO
-  classes_file_path : ../dataset/coco_classes.txt
+  classes_file_path : ../datasets/coco_classes.txt
   class_names: 
 
 preprocessing:
@@ -25,11 +25,11 @@ postprocessing:
   IoU_eval_thresh: 0.4
 
 prediction:
-  test_files_path: ../datasets/coco/images
+  test_files_path: ./datasets/coco/images
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -158,7 +158,7 @@ deployment:
   output_silence_threshold: -50
   # Change this to the path on your machine.
   # MUST be an absolute path due to CubeIDE limitations. Sorry.
-  c_project_path:  C:/Users/<>/work/model_zoo_services/application_code/audio/STM32N6/
+  c_project_path:  ../application_code/audio/STM32N6/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -170,9 +170,9 @@ deployment:
   # build_conf : "N6 Audio Thread X Low Power"
 
 mlflow:
-  uri: ./experiment_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiment_outputs/stfttcnn_56spk_pad_nopeak_sigmoid_nonorm
+    dir: ./src/experiments_outputs/stfttcnn_56spk_pad_nopeak_sigmoid_nonorm
   

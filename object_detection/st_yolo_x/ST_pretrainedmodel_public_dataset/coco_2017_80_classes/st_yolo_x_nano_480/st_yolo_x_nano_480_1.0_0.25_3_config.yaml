@@ -105,8 +105,8 @@ benchmarking:
    board: STM32N6570-DK
 
 mlflow:
-   uri: ./experiments_outputs/mlruns
+   uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/st_yolox_480_1.0_0.25_3anchors_fullcoco
+      dir: ./src/experiments_outputs/st_yolox_480_1.0_0.25_3anchors_fullcoco

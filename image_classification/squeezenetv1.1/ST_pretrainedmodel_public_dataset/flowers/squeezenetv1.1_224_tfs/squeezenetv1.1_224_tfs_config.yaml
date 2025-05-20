@@ -9,13 +9,13 @@ general:
 
 operation_mode: training
 #choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
-#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+#        'chain_tqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
 
 dataset:
   name: flowers
   class_names: [daisy, dandelion, roses, sunflowers, tulips]  # Mandatory for deployment, optional otherwise (class names will be 
                                                               # inferred automatically from the dataset).
-  training_path: ../datasets/flower_photos  # Mandatory
+  training_path: ./datasets/flower_photos  # Mandatory
   validation_path:        # Optional
   validation_split: 0.2   # Optional, default value is 0.2
   test_path:              # Optional
@@ -107,7 +107,7 @@ quantization:
 # The prediction section is optional unless you set operation_mode to "prediction".
 # If you do so, the attribute test_files_path is mandatory.
 prediction:
-  test_files_path: ../datasets/flower_photos/daisy
+  test_files_path: ./datasets/flower_photos/daisy
 
 tools:
   stedgeai:
@@ -121,7 +121,7 @@ benchmarking:
   board: STM32H747I-DISCO
 
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -131,8 +131,8 @@ deployment:
     output: DISPLAY_INTERFACE_USB
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

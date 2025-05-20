@@ -19,7 +19,11 @@ The performances on reference STM32 MCU, NPU and MPU are provided for float and 
 
 ## What's new in releases :
 </details>
-<details open><summary><b>3.0:</b></summary>
+<details open><summary><b>3.1:</b></summary>
+
+* Included additional models support (yolo_v11, st_yolo_x variants)
+</details>
+<details><summary><b>3.0:</b></summary>
 
 * Included additional models compatible with the [STM32N6570-DK](https://www.st.com/en/evaluation-tools/stm32n6570-dk) board.
 * Expanded models in all use cases.

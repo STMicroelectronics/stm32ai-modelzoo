@@ -137,19 +137,19 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
 
-| Model | Format | Resolution |       AP*       |
-|-------|--------|------------|----------------|
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8 | 192x192x3   | 40.7 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192.h5) | Float | 192x192x3   | 40.8 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8 | 224x224x3   | 51.1 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224.h5) | Float | 224x224x3   | 51.7 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8 | 256x256x3   | 58.3 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256.h5) | Float | 256x256x3   | 58.8 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8 | 416x416x3   | 61.9 % |
-| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416.h5) | Float | 416x416x3   | 62.6 % |
+| Model | Format | Resolution | AP* |
+|-------|--------|------------|-----|
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192_int8.tflite) | Int8 | 192x192x3 | 35.0 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_192/ssd_mobilenet_v2_fpnlite_035_192.h5) | Float | 192x192x3 | 35.2 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224_int8.tflite) | Int8 | 224x224x3 | 45.3 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_224/ssd_mobilenet_v2_fpnlite_035_224.h5) | Float | 224x224x3 | 45.5 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256_int8.tflite) | Int8 | 256x256x3 | 51.3 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_256/ssd_mobilenet_v2_fpnlite_035_256.h5) | Float | 256x256x3 | 51.8 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416_int8.tflite) | Int8 | 416x416x3 | 55.4 % |
+| [SSD Mobilenet v2 0.35 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_person/ssd_mobilenet_v2_fpnlite_035_416/ssd_mobilenet_v2_fpnlite_035_416.h5) | Float | 416x416x3 | 56.3 % |
 
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 
 ### AP on COCO 80 classes dataset
@@ -157,14 +157,14 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
 
-| Model | Format | Resolution |       AP*       |
-|-------|--------|------------|----------------|
-| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite) | Int8   | 256x256x3  | 32.2 % |
-| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256.h5) | Float   | 256x256x3  |  32.6 % |
-| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416_int8.tflite) | Int8   | 416x416x3  | 32.3 % |
-| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416.h5) | Float   | 416x416x3  |  34.8 % |
+| Model | Format | Resolution | mAP* |
+|-------|--------|------------|------|
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256_int8.tflite) | Int8 | 256x256x3 | 27.1 % |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_256/ssd_mobilenet_v2_fpnlite_100_256.h5) | Float | 256x256x3 | 29.2 % |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416_int8.tflite) | Int8 | 416x416x3 | 28.8 % |
+| [SSD Mobilenet v2 1.0 FPN-lite](ST_pretrainedmodel_public_dataset/coco_2017_80_classes/ssd_mobilenet_v2_fpnlite_100_416/ssd_mobilenet_v2_fpnlite_100_416.h5) | Float | 416x416x3 | 31.4 % |
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 ## Retraining and Integration in a simple example:
 

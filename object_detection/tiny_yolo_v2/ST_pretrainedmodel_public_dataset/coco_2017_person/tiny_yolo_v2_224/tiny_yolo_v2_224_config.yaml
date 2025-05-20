@@ -64,7 +64,7 @@ training:
 postprocessing:
   confidence_thresh: 0.001
   NMS_thresh: 0.5
-  IoU_eval_thresh: 0.4
+  IoU_eval_thresh: 0.5
   plot_metrics: False   # Plot precision versus recall curves. Default is False.
   max_detection_boxes: 100
 
@@ -89,7 +89,7 @@ tools:
   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
-  c_project_path: ../../application_code/object_detection/
+  c_project_path: ../application_code/object_detection/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -97,8 +97,8 @@ deployment:
     board: STM32H747I-DISCO
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

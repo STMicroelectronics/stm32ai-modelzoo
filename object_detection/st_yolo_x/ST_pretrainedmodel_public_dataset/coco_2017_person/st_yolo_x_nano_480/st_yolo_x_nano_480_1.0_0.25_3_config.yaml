@@ -82,7 +82,7 @@ postprocessing:
   yolo_anchors: [0.5, 0.5, 0.07, 0.25, 0.23, 0.7]
   confidence_thresh: 0.001
   NMS_thresh: 0.5
-  IoU_eval_thresh: 0.4
+  IoU_eval_thresh: 0.5
   plot_metrics: false
   max_detection_boxes: 100
 
@@ -105,8 +105,8 @@ benchmarking:
    board: STM32N6570-DK
 
 mlflow:
-   uri: ./experiments_outputs/mlruns
+   uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/st_yolox_480_1.0_0.25_3anchors
+      dir: ./src/experiments_outputs/st_yolox_480_1.0_0.25_3anchors

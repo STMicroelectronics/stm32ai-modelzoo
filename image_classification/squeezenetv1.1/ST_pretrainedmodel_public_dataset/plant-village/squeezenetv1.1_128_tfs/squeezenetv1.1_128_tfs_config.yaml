@@ -9,7 +9,7 @@ operation_mode: chain_tqe
 dataset:
   name: plantvillage
   class_names: [Apple_scab,Apple_black_rot,Apple_cedar_apple_rust,Apple_healthy,Background_without_leaves,Blueberry_healthy,Cherry_powdery_mildew,Cherry_healthy,Corn_gray_leaf_spot,Corn_common_rust,Corn_northern_leaf_blight,Corn_healthy,Grape_black_rot,Grape_black_measles,Grape_leaf_blight,Grape_healthy,Orange_haunglongbing,Peach_bacterial_spot,Peach_healthy,Pepper_bacterial_spot,Pepper_healthy,Potato_early_blight,Potato_healthy,Potato_late_blight,Raspberry_healthy,Soybean_healthy,Squash_powdery_mildew,Strawberry_healthy,Strawberry_leaf_scorch,Tomato_bacterial_spot,Tomato_early_blight,Tomato_healthy,Tomato_late_blight,Tomato_leaf_mold,Tomato_septoria_leaf_spot,Tomato_spider_mites_two-spotted_spider_mite,Tomato_target_spot,Tomato_mosaic_virus,Tomato_yellow_leaf_curl_virus]
-  training_path: ../datasets/Plant_leave_diseases_dataset_without_augmentation
+  training_path: ./datasets/Plant_leave_diseases_dataset_without_augmentation
   validation_path: null
   validation_split: 0.2
   test_path: null
@@ -90,7 +90,7 @@ tools:
 benchmarking:
   board: STM32H747I-DISCO
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -99,7 +99,7 @@ deployment:
     input: CAMERA_INTERFACE_DCMI
     output: DISPLAY_INTERFACE_USB
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 hydra:
    run:
-      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

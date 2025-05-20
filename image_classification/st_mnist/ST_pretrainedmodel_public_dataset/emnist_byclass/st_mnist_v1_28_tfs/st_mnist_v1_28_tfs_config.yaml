@@ -6,14 +6,14 @@ general:
   global_seed: 127
   gpu_memory_limit: 10
 
-operation_mode: chain_tbqeb
+operation_mode: chain_tqeb
 #choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
-#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+#        'chain_tqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
 
 dataset:
   name: emnist
   class_names: ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-  training_path: ../datasets/emnist/
+  training_path: ./datasets/emnist/
   validation_path:
   validation_split: 0.2
   test_path:
@@ -108,7 +108,7 @@ benchmarking:
   board: STM32H747I-DISCO
 
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -118,8 +118,8 @@ deployment:
     output: DISPLAY_INTERFACE_USB
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

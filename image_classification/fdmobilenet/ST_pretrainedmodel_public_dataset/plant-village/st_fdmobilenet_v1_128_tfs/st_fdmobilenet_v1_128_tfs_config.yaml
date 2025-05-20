@@ -8,7 +8,7 @@ general:
 
 operation_mode: chain_tqe
 #choices=['training' , 'evaluation', 'prediction', 'deployment', 'quantization', 'benchmarking',
-#        'chain_tbqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
+#        'chain_tqeb','chain_tqe',' chain_eqe','chain_qb','chain_eqeb','chain_qd ']
 
 dataset:
   name: plant
@@ -53,7 +53,7 @@ dataset:
   - Tomato___Tomato_mosaic_virus
   - Tomato___Tomato_Yellow_Leaf_Curl_Virus
 
-  training_path: ../datasets/Plant_leave_diseases_dataset_without_augmentation/
+  training_path: ./datasets/Plant_leave_diseases_dataset_without_augmentation/
   validation_path:
   validation_split: 0.2
   test_path:
@@ -164,7 +164,7 @@ benchmarking:
   board: STM32H747I-DISCO
 
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -174,8 +174,8 @@ deployment:
     output: USB_DISPLAY
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

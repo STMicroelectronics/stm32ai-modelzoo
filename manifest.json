@@ -217,30 +217,6 @@
 		"visible": false
 	},	
 	{
-		"name": "./image_classification/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/resnet_v1_8_32_tfs/resnet_v1_8_32_tfs_int8.tflite",
-		"description": "ST Hybrid ResNet 8 32 v1 trained from scratch on Cifar10 with 10 classes",
-		"usecase": "image_classification",
-		"dataset_used": "cifar10",
-		"readme": "./image_classification/resnetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v1_32_tfs/st_resnet_8_hybrid_v1_32_tfs.h5",
-		"description": "ST Hybrid ResNet 8 32 v2 trained from scratch on Cifar10 with 10 classes",
-		"usecase": "image_classification",
-		"dataset_used": "cifar10",
-		"readme": "./image_classification/resnetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/resnetv1/ST_pretrainedmodel_public_dataset/cifar10/st_resnet_8_hybrid_v2_32_tfs/st_resnet_8_hybrid_v2_32_tfs.h5",
-		"description": "ResNetv1 8 32 trained from scratch on Cifar10 with 10 classes",
-		"usecase": "image_classification",
-		"dataset_used": "cifar10",
-		"readme": "./image_classification/resnetv1/README.md",
-		"visible": true
-	},
-	{
 		"name": "./image_classification/resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet_v1_32_32_tfs/resnet_v1_32_32_tfs_int8.tflite",
 		"description": "ResNetv1 32 32 trained from scratch on Cifar100 with 100 classes",
 		"usecase": "image_classification",

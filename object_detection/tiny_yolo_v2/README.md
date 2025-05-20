@@ -111,24 +111,24 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 
 | Model | Format | Resolution |       AP       |
 |-------|--------|------------|----------------|
-| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_192/tiny_yolo_v2_192_int8.tflite) | Int8 | 192x192x3   | 33.7 % |
-| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_192/tiny_yolo_v2_192.h5) | Float | 192x192x3   | 34.5 % |
-| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_224/tiny_yolo_v2_224_int8.tflite) | Int8 | 224x224x3   | 37.3 % |
-| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_224/tiny_yolo_v2_224.h5) | Float | 224x224x3   | 38.4 % |
-| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_416/tiny_yolo_v2_416_int8.tflite) | Int8 | 416x416x3   | 50.7 % |
-| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_416/tiny_yolo_v2_416.h5) | Float | 416x416x3   | 51.5 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_192/tiny_yolo_v2_192_int8.tflite) | Int8 | 192x192x3   | 26.2 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_192/tiny_yolo_v2_192.h5) | Float | 192x192x3   | 27.5 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_224/tiny_yolo_v2_224_int8.tflite) | Int8 | 224x224x3   | 28.8 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_224/tiny_yolo_v2_224.h5) | Float | 224x224x3   | 30.9 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_416/tiny_yolo_v2_416_int8.tflite) | Int8 | 416x416x3   | 41.4 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_public_dataset/coco_2017_person/tiny_yolo_v2_416/tiny_yolo_v2_416.h5) | Float | 416x416x3   | 43.4 % |
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 ### AP on ST Person dataset
 This model has been trained using a STMicroelectronics proprietary dataset which is not provided as part of the STM32 model zoo. The ST person dataset has been built by aggregating several public datasets and by applying data augmentation on these public datasets. If users wish to retrain this model it has to be done using another dataset selected by the user.
 
 | Model | Format | Resolution |       AP       |
 |-------|--------|------------|----------------|
-| [tiny_yolo_v2](ST_pretrainedmodel_custom_dataset/st_person/tiny_yolo_v2_224/tiny_yolo_v2_224_int8.tflite) | Int8 | 224x224x3   |  34.0 % |
+| [tiny_yolo_v2](ST_pretrainedmodel_custom_dataset/st_person/tiny_yolo_v2_224/tiny_yolo_v2_224_int8.tflite) | Int8 | 224x224x3   |  28.5 % |
 
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 ## Retraining and Integration in a simple example:
 

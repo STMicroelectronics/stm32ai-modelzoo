@@ -1,5 +1,5 @@
 general:
-  model_path: yolov8n_256_quant_pc_uf_od_coco-person-st.tflite
+  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_256_quant_pc_uf_od_coco-person-st.tflite
   model_type: yolo_v8
   num_threads_tflite: 8
 
@@ -7,7 +7,7 @@ operation_mode: evaluation
 
 dataset:
   class_names: [person]
-  test_path: ../model_zoo_OD_coco2017_person/val
+  test_path: ./datasets/coco_2017_person/test
 
 
 preprocessing:
@@ -20,7 +20,7 @@ preprocessing:
 postprocessing:
   confidence_thresh: 0.001
   NMS_thresh: 0.5
-  IoU_eval_thresh: 0.4
+  IoU_eval_thresh: 0.5
   plot_metrics: True   # Plot precision versus recall curves. Default is False.
   max_detection_boxes: 100
   
@@ -36,8 +36,8 @@ benchmarking:
   board: STM32H747I-DISCO
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

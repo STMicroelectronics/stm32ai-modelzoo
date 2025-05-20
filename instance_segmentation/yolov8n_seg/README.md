@@ -38,16 +38,16 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB)| External RAM (KiB)| Weights Flash (KiB) | STM32Cube.AI version | STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [Yolov8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_256_quant_pc_uf_seg_coco-st.tflite)  | COCO | Int8 | 256x256x3 | STM32N6 |   2128 | 0.0 | 3425.39 | 10.0.0 | 2.0.0 
-| [Yolov8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_320_quant_pc_uf_seg_coco-st.tflite)  | COCO | Int8 | 320x320x3 | STM32N6 |   2564.06 | 0.0 | 3467.56 | 10.0.0 | 2.0.0 |
+| [Yolov8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_256_quant_pc_ii_seg_coco-st.tflite)  | COCO | Int8 | 256x256x3 | STM32N6 |   2128 | 0.0 | 3425.39 | 10.0.0 | 2.0.0 
+| [Yolov8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_320_quant_pc_ii_seg_coco-st.tflite)  | COCO | Int8 | 320x320x3 | STM32N6 |   2564.06 | 0.0 | 3467.56 | 10.0.0 | 2.0.0 |
 
 
 
 ### Reference **NPU**  inference time based on COCO Person dataset 
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   | STM32Cube.AI version  |  STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [YOLOv8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_256_quant_pc_uf_seg_coco-st.tflite) | COCO-Person      | Int8   | 256x256x3  | STM32N6570-DK   |   NPU/MCU      |     37.59         |   26.61      |       10.0.0        |     2.0.0   |
-| [YOLOv8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_320_quant_pc_uf_seg_coco-st.tflite) | COCO-Person     | Int8    | 320x320x3  | STM32N6570-DK   |   NPU/MCU      |       53.21      |     18.79     |       10.0.0        |     2.0.0   |
+| [YOLOv8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_256_quant_pc_ii_seg_coco-st.tflite) | COCO-Person      | Int8   | 256x256x3  | STM32N6570-DK   |   NPU/MCU      |     37.59         |   26.61      |       10.0.0        |     2.0.0   |
+| [YOLOv8n seg per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov8n_320_quant_pc_ii_seg_coco-st.tflite) | COCO-Person     | Int8    | 320x320x3  | STM32N6570-DK   |   NPU/MCU      |       53.21      |     18.79     |       10.0.0        |     2.0.0   |
 
 
 

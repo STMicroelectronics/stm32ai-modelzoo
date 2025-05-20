@@ -1,6 +1,6 @@
 general:
   project_name: imagenet
-  model_path: ../pretrained_models/mobilenetv2/Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224.h5
+  model_path: ../../stm32ai-modelzoo/image_classification/mobilenetv2/Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v2_1.0_224/mobilenet_v2_1.0_224.h5
   logs_dir: logs
   saved_models_dir: saved_models
   display_figures: false
@@ -12,7 +12,7 @@ operation_mode: chain_eqeb
 
 dataset:
   name: imagenet
-  class_names: 
+  classes_file_path: ../application_code/image_classification/STM32MP-LINUX/Resources/labels_imagenet_2012.txt
   test_path: "/local/datasets/ic_imagenet_2012/validation/"
   quantization_path: "/local/datasets/ic_imagenet_2012/quantization/"
 
@@ -43,8 +43,8 @@ tools:
 benchmarking:
    board: STM32H747I-DISCO
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

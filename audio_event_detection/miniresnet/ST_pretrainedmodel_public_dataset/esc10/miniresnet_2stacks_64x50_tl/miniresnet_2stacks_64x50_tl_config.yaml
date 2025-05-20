@@ -16,8 +16,8 @@ dataset:
   name: esc10
   class_names: ['dog', 'chainsaw', 'crackling_fire', 'helicopter', 'rain', 'crying_baby', 'clock_tick', 'sneezing', 'rooster', 'sea_waves']
   file_extension: '.wav'
-  training_audio_path: ..\datasets\ESC-50\audio # Mandatory
-  training_csv_path:   ..\datasets\ESC-50\meta\esc50.csv # Mandatory
+  training_audio_path: ./datasets/ESC-50/audio # Mandatory
+  training_csv_path:   ./datasets/ESC-50/meta/esc50.csv # Mandatory
 
   validation_audio_path: # Optional
   validation_csv_path: # Optional
@@ -146,7 +146,7 @@ benchmarking:
   board: B-U585I-IOT02A
   
 deployment:
-  c_project_path: ../../application_code/sensing_free_rtos
+  c_project_path: ../application_code/sensing_free_rtos
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -157,8 +157,8 @@ deployment:
 
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/miniresnet_2stack_esc10
+    dir: ./src/experiments_outputs/miniresnet_2stack_esc10

@@ -1,6 +1,6 @@
 general:
   project_name: imagenet
-  model_path: ../pretrained_models/efficientnetv2/Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B2_260/efficientnet_v2B2_260.h5
+  model_path: ../../stm32ai-modelzoo/image_classification/efficientnetv2/Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B2_260/efficientnet_v2B2_260.h5
   logs_dir: logs
   saved_models_dir: saved_models
   display_figures: false
@@ -44,9 +44,9 @@ benchmarking:
    board: STM32N6570-DK
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
 

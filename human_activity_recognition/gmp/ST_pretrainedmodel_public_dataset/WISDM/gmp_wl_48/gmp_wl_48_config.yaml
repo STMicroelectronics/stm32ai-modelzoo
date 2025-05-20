@@ -14,7 +14,7 @@ dataset:
   - Stationary
   - Stairs
   - Walking
-  training_path: ../datasets/WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt
+  training_path: ./datasets/WISDM_ar_v1.1/WISDM_ar_v1.1_raw.txt
   validation_path: null
   validation_split: 0.2
   test_path: null
@@ -57,14 +57,14 @@ tools:
 benchmarking:
   board: B-U585I-IOT02A
 deployment:
-  c_project_path: ../../application_code/sensing_thread_x/
+  c_project_path: ../application_code/sensing_thread_x/
   IDE: GCC
   verbosity: 1
   hardware_setup:
     serie: STM32U5
     board: B-U585I-IOT02A
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

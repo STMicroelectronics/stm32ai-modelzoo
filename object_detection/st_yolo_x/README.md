@@ -68,10 +68,8 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 256x256x3  | STM32N6570-DK   |   NPU/MCU      |   8.5  |   117.65  |       10.0.0        |     2.0.0   |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.5_0.4_int8.tflite) | COCO-Person      | Int8     | 256x256x3  | STM32N6570-DK   |   NPU/MCU      |     21.12     |    47.35    |       10.0.0        |     2.0.0   |
 | [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 320x320x3  | STM32N6570-DK   |   NPU/MCU      |       11.59    |   86.29   |       10.0.0        |     2.0.0   |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 416x416x3  | 
-STM32N6570-DK   |   NPU/MCU      |    17.99  |    55.59   |       10.0.0        |     2.0.0   |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | COCO-Person      | Int8     | 480x480x3  | 
-STM32N6570-DK   |   NPU/MCU      |    32.4  |    30.8  |       10.0.0        |     2.0.0   |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | COCO-Person      | Int8     | 416x416x3  | STM32N6570-DK   |   NPU/MCU      |    17.99  |    55.59   |       10.0.0        |     2.0.0   |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | COCO-Person      | Int8     | 480x480x3  | STM32N6570-DK   |   NPU/MCU      |    32.4  |    30.8  |       10.0.0        |     2.0.0   |
 
 ### Reference **MCU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
@@ -99,23 +97,23 @@ STM32N6570-DK   |   NPU/MCU      |    32.4  |    30.8  |       10.0.0        |  
 
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
 
-| Model | Format | Resolution |       AP       |
-|-------|--------|------------|----------------|
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_192/st_yolo_x_nano_192_0.33_0.25_int8.tflite) | Int8 | 192x192x3   |  45.1 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_192/st_yolo_x_nano_192_0.33_0.25.h5) | Float | 192x192x3   |  45.2 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.33_0.25_int8.tflite) | Int8 | 256x256x3   | 53.6 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.33_0.25.h5) | Float | 256x256x3   | 53.3 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.5_0.4_int8.tflite) | Int8 | 256x256x3   | 58.6 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.5_0.4.h5) | Float | 256x256x3   | 58.7 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25_int8.tflite) | Int8 | 320x320x3   | 57.1 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25.h5) | Float | 320x320x3   | 57.1 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | Int8 | 416x416x3   | 62.2 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25.h5) | Float | 416x416x3   | 62.5 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | Int8 | 480x480x3   |  67.9 % |
-| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3.h5) | Float | 480x480x3   | 68.4 % |
+| Model | Format | Resolution | Depth Multiplier | Width Multiplier | Anchors | AP |
+|-------|--------|------------|------------------|------------------|---------|----|
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_192/st_yolo_x_nano_192_0.33_0.25_int8.tflite) | Int8 | 192x192x3 | 0.33 | 0.25 | 1 | 36.1 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_192/st_yolo_x_nano_192_0.33_0.25.h5) | Float | 192x192x3 | 0.33 | 0.25 | 1 | 36.1 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.33_0.25_int8.tflite) | Int8 | 256x256x3 | 0.33 | 0.25 | 1 | 44.2 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.33_0.25.h5) | Float | 256x256x3 | 0.33 | 0.25 | 1 | 44.1 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.5_0.4_int8.tflite) | Int8 | 256x256x3 | 0.5 | 0.4 | 1 | 50.1 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_256/st_yolo_x_nano_256_0.5_0.4.h5) | Float | 256x256x3 | 0.5 | 0.4 | 1 | 50.0 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25_int8.tflite) | Int8 | 320x320x3 | 0.33 | 0.25 | 1 | 48.8 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_320/st_yolo_x_nano_320_0.33_0.25.h5) | Float | 320x320x3 | 0.33 | 0.25 | 1 | 48.5 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25_int8.tflite) | Int8 | 416x416x3 | 0.33 | 0.25 | 1 | 54.0 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_416/st_yolo_x_nano_416_0.33_0.25.h5) | Float | 416x416x3 | 0.33 | 0.25 | 1 | 54.5 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3_int8.tflite) | Int8 | 480x480x3 | 1.0 | 0.25 | 3 | 61.4 % |
+| [st_yolo_x_nano](ST_pretrainedmodel_public_dataset/coco_2017_person/st_yolo_x_nano_480/st_yolo_x_nano_480_1.0_0.25_3.h5) | Float | 480x480x3 | 1.0 | 0.25 | 3 | 62.1 % |
 
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 ## Retraining and Integration in a simple example:
 

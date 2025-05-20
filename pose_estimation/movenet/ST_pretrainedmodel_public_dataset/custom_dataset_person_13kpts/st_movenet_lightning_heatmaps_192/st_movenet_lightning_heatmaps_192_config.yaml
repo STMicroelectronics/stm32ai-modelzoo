@@ -1,5 +1,5 @@
 general:
-   model_path: ../../../model_zoo/pose_estimation/movenet/ST_pretrainedmodel_public_dataset/custom_dataset_person_13kpts/st_movenetheatmaps_192/st_movenet_lightning_heatmaps_192.h5
+   model_path: ../../stm32ai-modelzoo/pose_estimation/movenet/ST_pretrainedmodel_public_dataset/custom_dataset_person_13kpts/st_movenetheatmaps_192/st_movenet_lightning_heatmaps_192.h5
    model_type: heatmaps_spe
    num_threads_tflite: 8
 
@@ -8,8 +8,8 @@ operation_mode: chain_eqeb
 dataset:
    name: coco_pose
    keypoints: 13
-   test_path: ../datasets/coco_val_single_pose
-   quantization_path: ../datasets/coco_train_single_pose
+   test_path: ./datasets/coco_val_single_pose
+   quantization_path: ./datasets/coco_train_single_pose
    quantization_split: 0.3
 
 training:
@@ -50,8 +50,8 @@ benchmarking:
    board: STM32H747I-DISCO
 
 mlflow:
-   uri: ./experiments_outputs/mlruns
+   uri: ./src/experiments_outputs/mlruns
 
 hydra:
    run:
-      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -86,12 +86,12 @@ Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0]
 
 | Model | Format | Resolution |       AP*   |
 |-------|--------|------------|----------------|
-| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_192_quant_pc_uf_od_coco-person.tflite) | Int8   | 192x192x3  | 56.90 %  |
-| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_256_quant_pc_uf_od_coco-person.tflite) | Int8   | 256x256x3  | 62.60 %  |
-| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_320_quant_pc_uf_od_coco-person.tflite) | Int8   | 320x320x3  | 66.20 %  |
-| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_416_quant_pc_uf_od_coco-person.tflite) | Int8   | 416x416x3  | 68.90 %  |
+| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_192_quant_pc_uf_od_coco-person.tflite) | Int8   | 192x192x3  | 53.50 %  |
+| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_256_quant_pc_uf_od_coco-person.tflite) | Int8   | 256x256x3  | 58.40 %  |
+| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_320_quant_pc_uf_od_coco-person.tflite) | Int8   | 320x320x3  | 61.80 %  |
+| [YOLOv8n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_416_quant_pc_uf_od_coco-person.tflite) | Int8   | 416x416x3  | 64.80 %  |
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 ## Integration in a simple example and other services support:
 

@@ -1,5 +1,5 @@
 general:
-  model_path: yolov8n_256_quant_pc_uf_pose_coco-st.tflite
+  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolov8n_256_quant_pt_uf_pose_coco-st.tflite
   model_type: yolo_mpe
   num_threads_tflite: 8
 
@@ -41,8 +41,8 @@ benchmarking:
   board: STM32H747I-DISCO
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

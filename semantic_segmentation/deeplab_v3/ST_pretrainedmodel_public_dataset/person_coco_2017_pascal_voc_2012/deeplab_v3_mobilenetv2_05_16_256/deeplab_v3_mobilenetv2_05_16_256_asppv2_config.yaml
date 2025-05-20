@@ -13,12 +13,12 @@ dataset:
   class_names:
   - background
   - person
-  training_path: ../datasets/person_COCO2017_VOC2012/JPEGImages
-  training_masks_path: ../datasets/person_COCO2017_VOC2012/SegmentationClassAug
-  training_files_path: ../datasets/person_COCO2017_VOC2012/ImageSets/Segmentation/trainaug.txt
-  validation_path: ../datasets/person_COCO2017_VOC2012/JPEGImages
-  validation_masks_path: ../datasets/person_COCO2017_VOC2012/SegmentationClassAug
-  validation_files_path: ../datasets/person_COCO2017_VOC2012/ImageSets/Segmentation/val.txt
+  training_path: ./datasets/person_COCO2017_VOC2012/JPEGImages
+  training_masks_path: ./datasets/person_COCO2017_VOC2012/SegmentationClassAug
+  training_files_path: ./datasets/person_COCO2017_VOC2012/ImageSets/Segmentation/trainaug.txt
+  validation_path: ./datasets/person_COCO2017_VOC2012/JPEGImages
+  validation_masks_path: ./datasets/person_COCO2017_VOC2012/SegmentationClassAug
+  validation_files_path: ./datasets/person_COCO2017_VOC2012/ImageSets/Segmentation/val.txt
   quantization_split: 0.2
 preprocessing:
   rescaling:
@@ -79,7 +79,7 @@ quantization:
   extra_options: calib_moving_average
   export_dir: quantized_models
 prediction:
-  test_files_path: ../datasets/VOC2012_test
+  test_files_path: ./datasets/VOC2012_test
 benchmarking:
   board: STM32N6570-DK
 tools:
@@ -90,7 +90,7 @@ tools:
     path_to_stedgeai: C:/Users/<XXXXX>/STM32Cube/Repository/Packs/STMicroelectronics/X-CUBE-AI/<*.*.*>/Utilities/windows/stedgeai.exe
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -111,16 +111,16 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
 
-| Model | Format | Resolution |       AP*       |
-|-------|--------|------------|----------------|
-| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_192/st_ssd_mobilenet_v1_025_192_int8.tflite) | Int8 | 192x192x3   | 35.80 % |
-| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_192/st_ssd_mobilenet_v1_025_192.h5) | Float | 192x192x3   | 35.80 % |
-| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_224/st_ssd_mobilenet_v1_025_224_int8.tflite) | Int8 | 224x224x3   | 46.10 % |
-| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_224/st_ssd_mobilenet_v1_025_224.h5) | Float | 224x224x3   | 46.90 % |
-| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_256/st_ssd_mobilenet_v1_025_256_int8.tflite) | Int8 | 256x256x3   | 50.50 % |
-| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_256/st_ssd_mobilenet_v1_025_256.h5) | Float | 256x256x3   | 51 % |
+| Model | Format | Resolution | AP* |
+|-------|--------|------------|-----|
+| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_192/st_ssd_mobilenet_v1_025_192_int8.tflite) | Int8 | 192x192x3 | 31.5 % |
+| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_192/st_ssd_mobilenet_v1_025_192.h5) | Float | 192x192x3 | 31.5 % |
+| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_224/st_ssd_mobilenet_v1_025_224_int8.tflite) | Int8 | 224x224x3 | 39.7 % |
+| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_224/st_ssd_mobilenet_v1_025_224.h5) | Float | 224x224x3 | 40.2 % |
+| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_256/st_ssd_mobilenet_v1_025_256_int8.tflite) | Int8 | 256x256x3 | 43.8 % |
+| [ST SSD Mobilenet v1 0.25](ST_pretrainedmodel_public_dataset/coco_2017_person/st_ssd_mobilenet_v1_025_256/st_ssd_mobilenet_v1_025_256.h5) | Float | 256x256x3 | 44.2 % |
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 
 ## Retraining and Integration in a simple example:

@@ -112,16 +112,16 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 
 Dataset details: [link](https://cocodataset.org/#download) , License [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode) , Quotation[[1]](#1) , Number of classes: 80, Number of images: 118,287
 
-| Model | Format | Resolution |       AP       |
-|-------|--------|------------|----------------|
-| st_yolo_lc_v1 | Int8 | 192x192x3   | 39.0 % |
-| st_yolo_lc_v1 | Float | 192x192x3   | 39.2 % |
-| st_yolo_lc_v1 | Int8 | 224x224x3   | 42.94 % |
-| st_yolo_lc_v1 | Float | 224x224x3   | 41.7 % |
-| st_yolo_lc_v1 | Int8 | 256x256x3   | 43.8 % |
-| st_yolo_lc_v1 | Float | 256x256x3   | 44.7 % |
+| Model | Format | Resolution | AP |
+|-------|--------|------------|----|
+| st_yolo_lc_v1 | Int8 | 192x192x3 | 30.7 % |
+| st_yolo_lc_v1 | Float | 192x192x3 | 31.2 % |
+| st_yolo_lc_v1 | Int8 | 224x224x3 | 34.2 % |
+| st_yolo_lc_v1 | Float | 224x224x3 | 33.8 % |
+| st_yolo_lc_v1 | Int8 | 256x256x3 | 35.6 % |
+| st_yolo_lc_v1 | Float | 256x256x3 | 36.4 % |
 
-\* EVAL_IOU = 0.4, NMS_THRESH = 0.5, SCORE_THRESH =0.001
+\* EVAL_IOU = 0.5, NMS_THRESH = 0.5, SCORE_THRESH = 0.001, MAX_DETECTIONS = 100
 
 
 ## Retraining and Integration in a simple example:

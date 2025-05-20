@@ -112,7 +112,7 @@ dataset:
   - tiramisu
   - tuna_tartare
   - waffles
-  training_path: ../datasets/food-101/images
+  training_path: ./datasets/food-101/images
   validation_path: null
   validation_split: 0.2
   test_path: null
@@ -206,7 +206,7 @@ benchmarking:
   board: STM32H747I-DISCO
 
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -216,8 +216,8 @@ deployment:
     output: USB_DISPLAY
 
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -4,7 +4,7 @@ general:
   saved_models_dir: saved_models
   global_seed: 127
   gpu_memory_limit: 5
-operation_mode: ../datasets/flower_photos
+operation_mode: ./datasets/flower_photos
 dataset:
   name: flowers
   class_names:
@@ -13,7 +13,7 @@ dataset:
   - roses
   - sunflowers
   - tulips
-  training_path: ../datasets/flower_photos
+  training_path: ./datasets/flower_photos
   validation_path: null
   validation_split: 0.2
   test_path: null
@@ -79,7 +79,7 @@ quantization:
   quantization_output_type: float
   export_dir: quantized_models
 prediction:
-  test_files_path: ../datasets/flower_photos/daisy
+  test_files_path: ./datasets/flower_photos/daisy
 tools:
   stedgeai:
     version: 10.0.0
@@ -90,7 +90,7 @@ tools:
 benchmarking:
   board: STM32H747I-DISCO
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -99,7 +99,7 @@ deployment:
     input: CAMERA_INTERFACE_DCMI
     output: DISPLAY_INTERFACE_USB
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 hydra:
   run:
-    dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

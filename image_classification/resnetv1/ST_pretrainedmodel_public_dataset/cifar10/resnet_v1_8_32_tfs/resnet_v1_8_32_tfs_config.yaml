@@ -6,7 +6,7 @@ general:
   display_figures: true
   global_seed: 127
   gpu_memory_limit: 20
-operation_mode: chain_tbqeb
+operation_mode: chain_tqeb
 dataset:
   name: cifar10
   class_names:
@@ -20,7 +20,7 @@ dataset:
   - horse
   - ship
   - truck
-  training_path: ../datasets/cifar-10/cifar-10-batches-py/
+  training_path: ./datasets/cifar-10/cifar-10-batches-py/
   validation_path: null
   validation_split: null
   test_path: null
@@ -123,7 +123,7 @@ tools:
 benchmarking:
   board: STM32H747I-DISCO
 deployment:
-  c_project_path: ../../application_code/image_classification/
+  c_project_path: ../application_code/image_classification/
   IDE: GCC
   verbosity: 1
   hardware_setup:
@@ -132,7 +132,7 @@ deployment:
     input: CAMERA_INTERFACE_DCMI
     output: DISPLAY_INTERFACE_USB
 mlflow:
-  uri: ./experiments_outputs/mlruns
+  uri: ./src/experiments_outputs/mlruns
 hydra:
    run:
-      dir: ./experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
