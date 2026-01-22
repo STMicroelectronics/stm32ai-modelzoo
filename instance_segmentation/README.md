@@ -7,5 +7,5 @@ Models are stored depending on the way they have been trained :
 
 ## List of available models families depending on UC features:
 * [yolo v8 seg](./yolov8n_seg/README.md)
-* [yolo 11 seg](./yolo11n_seg/README.md)
+* [yolo 11 seg](./yolov11n_seg/README.md)
 

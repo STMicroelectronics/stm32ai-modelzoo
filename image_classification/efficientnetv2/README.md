@@ -5,13 +5,12 @@
 # Model description
 
 
-EfficientNet v2 family is one of the best topologies for image classification. It has been obtained through neural architecture search with a special care given to training time 
-and number of parameters reduction.
+EfficientNet v2 family is one of the best topologies for image classification. It has been obtained through neural architecture search with a special care given to training time and number of parameters reduction.
 
 This family of networks comprises various subtypes: B0 (224x224), B1 (240x240), B2 (260x260), B3 (300x300), S (384x384) ranked by depth and width increasing order.
 There are also M, L, XL variants but too large to be executed efficiently on STM32N6.
 
-All these networks are already available on https://www.tensorflow.org/api_docs/python/tf/keras/applications/ pre-trained on ImageNet.
+All these networks are already available on https://www.tensorflow.org/api_docs/python/tf/keras/applications/ pre-trained on imagenet.
 
 
 ## Network information
@@ -65,49 +64,73 @@ For an image resolution of NxM and P classes
 * Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
 * `fft` stands for "full fine-tuning", meaning that the full model weights were initialized from a transfer learning pre-trained model, and all the layers were unfrozen during the training.
 
-### Reference **NPU** memory footprint on food-101 and ImageNet dataset (see Accuracy for details on dataset)
-|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STM32Cube.AI version | STEdgeAI Core version |
-|----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------------|----------------------|-------------------------|
-| [efficientnet_v2B0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B0_224_fft/efficientnet_v2B0_224_fft_qdq_int8.onnx) | food-101      | Int8     | 224x224x3  | STM32N6   | 1834.44 |0.0| 7552.02             |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B1_240_fft/efficientnet_v2B1_240_fft_qdq_int8.onnx) | food-101      | Int8     | 240x240x3  | STM32N6   | 2589.97 |0.0| 8332.27             |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B2_260_fft/efficientnet_v2B2_260_fft_qdq_int8.onnx) | food-101      | Int8     | 260x260x3  | STM32N6   | 2629.56 |528.12| 10525.95            |       10.2.0        |     2.2.0   |
-| [efficientnet_v2S_384_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2S_384_fft/efficientnet_v2S_384_fft_qdq_int8.onnx) | food-101 | Int8     | 384x384x3  | STM32N6   | 2700 | 6912 | 24451.31            | 10.2.0 | 2.2.0 |
-| [efficientnet_v2B0_224 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B0_224/efficientnet_v2B0_224_qdq_int8.onnx) | ImageNet | Int8     | 224x224x3  | STM32N6   | 1834.44 | 0.0 | 8179.67             | 10.2.0 | 2.2.0 |
-| [efficientnet_v2B1_240 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B1_240/efficientnet_v2B1_240_qdq_int8.onnx) | ImageNet | Int8     | 240x240x3  | STM32N6   | 2589.97 | 0.0 | 9459.92             | 10.2.0 | 2.2.0 |
-| [efficientnet_v2B2_260 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B2_260/efficientnet_v2B2_260_qdq_int8.onnx) | ImageNet | Int8     | 260x260x3  | STM32N6   | 2629.56 | 528.12 | 11765.99           | 10.2.0 | 2.2.0 |
-| [efficientnet_v2S_384 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2S_384/efficientnet_v2S_384_qdq_int8.onnx) | ImageNet |       Int8     | 384x384x3  | STM32N6   | 2700 | 6912 | 25579.03           | 10.2.0 | 2.2.0 |
+### Reference **NPU** memory footprint on food101 and imagenet dataset (see Accuracy for details on dataset)
+|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
+|-----------|---------------|----------|------------|-----------|--------------------|--------------------|---------------------|-----------------------|
+| [efficientnetv2b0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_int8.onnx) | food101      | Int8     | 224x224x3  | STM32N6   | 1911.56 |0.0| 6839.39             |     3.0.0   |
+| [efficientnetv2b0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_w4_90.1%_w8_9.9%_a8_100%_acc_84.47.onnx) | food101      | Int8/Int4     | 224x224x3  | STM32N6   | 1911.56 |0.0| 4237.52             |     3.0.0   |
+| [efficientnetv2b1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_int8.onnx) | food101      | Int8     | 240x240x3  | STM32N6   | 2604.03 |0.0| 8089.27             |     3.0.0   |
+| [efficientnetv2b1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_w4_91.8%_w8_8.2%_a8_100%_acc_85.71.onnx) | food101      | Int8/Int4     | 240x240x3  | STM32N6   | 2604.03 |0.0| 4995.39             |     3.0.0   |
+| [efficientnetv2b2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_int8.onnx) | food101      | Int8     | 260x260x3  | STM32N6   | 2712.19 |528.12| 10328.52         |     3.0.0   |
+| [efficientnetv2b2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_w4_81.26%_w8_18.74%_a8_100%_acc_87.24.onnx) | food101      | Int8/Int4     | 260x260x3  | STM32N6   | 2712.19 |528.12| 6865.39         |     3.0.0   |
+| [efficientnetv2s_384_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_int8.onnx) | food101 | Int8     | 384x384x3  | STM32N6   | 2757 | 3456 | 24262.34            | 3.0.0 |
+| [efficientnetv2s_384_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_w4_95.95%_w8_4.05%_a8_100%_acc_89.87.onnx) | food101 | Int8/Int4     | 384x384x3  | STM32N6   | 2757 | 3456 | 14836.94            | 3.0.0 |
+| [efficientnetv2b0_224 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_int8.onnx) | imagenet | Int8     | 224x224x3  | STM32N6   | 1911.56 | 0.0 | 7967.05           | 3.0.0 |
+| [efficientnetv2b0_224 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_w4_65.43%_w8_34.57%_a8_100%_acc_73.38.onnx) | imagenet | Int8/Int4     | 224x224x3  | STM32N6   | 1911.56 | 0.0 | 5710.05           | 3.0.0 |
+| [efficientnetv2b1_240 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_int8.onnx) | imagenet | Int8     | 240x240x3  | STM32N6   | 2604.03 | 0.0 | 9216.92           | 3.0.0 |
+| [efficientnetv2b1_240 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_w4_73.1%_w8_26.9%_a8_100%_acc_73.92.onnx) | imagenet | Int8/Int4     | 240x240x3  | STM32N6   | 2604.03 | 0.0 | 6342.67           | 3.0.0 |
+| [efficientnetv2b2_260 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_int8.onnx) | imagenet | Int8     | 260x260x3  | STM32N6   | 2712.19 | 528.12 | 11568.55       | 3.0.0 |
+| [efficientnetv2b2_260 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_w4_67.53%_w8_32.47%_a8_100%_acc_74.71.onnx) | imagenet | Int8/Int4     | 260x260x3  | STM32N6   | 2712.19 | 528.12 | 8273.17       | 3.0.0 |
+| [efficientnetv2b3_300 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300_qdq_int8.onnx) | imagenet | Int8     | 300x300x3  | STM32N6   | 2574.47 | 1757.81 | 16510.05       | 3.0.0 |
+| [efficientnetv2b3_300 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300_qdq_w4_88.31%_w8_11.69%_a8_100%_acc_78.11.onnx) | imagenet | Int8/Int4     | 300x300x3  | STM32N6   | 2574.47 | 1757.81 | 10376.74       | 3.0.0 |
+| [efficientnetv2s_384 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_int8.onnx) | imagenet |       Int8     | 384x384x3  | STM32N6   | 2800 | 2592 | 25390            | 3.0.0 |
+| [efficientnetv2s_384 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_w4_95.63%_w8_4.37%_a8_100%_acc_82.25.onnx) | imagenet |       Int8/Int4     | 384x384x3  | STM32N6   | 2800 | 2592 | 15458.97            | 3.0.0 |
 
 
-### Reference **NPU**  inference time on food-101 and ImageNet dataset (see Accuracy for details on dataset)
-| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STM32Cube.AI version  |  STEdgeAI Core version |
-|--------|------------------|--------|-------------|------------------|------------------|---------------------|-----------|----------------------|-------------------------|
-| [efficientnet_v2B0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B0_224_fft/efficientnet_v2B0_224_fft_qdq_int8.onnx) | food-101      | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 52.05               | 19.21     |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B1_240_fft/efficientnet_v2B1_240_fft_qdq_int8.onnx) | food-101      | Int8     | 240x240x3  | STM32N6570-DK   |   NPU/MCU      | 70.91               | 14.1      |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B2_260_fft/efficientnet_v2B2_260_fft_qdq_int8.onnx) | food-101      | Int8     | 260x260x3  | STM32N6570-DK   |   NPU/MCU      | 142.62              | 7.01      |       10.2.0        |     2.2.0   |
-| [efficientnet_v2S_384_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2S_384_fft/efficientnet_v2S_384_fft_qdq_int8.onnx) | food-101      | Int8     | 384x384x3  | STM32N6570-DK   | NPU/MCU | 816.34              | 1.22      |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B0_224 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B0_224/efficientnet_v2B0_224_qdq_int8.onnx) | ImageNet      | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 55.27               | 18.09     |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B1_240 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B1_240/efficientnet_v2B1_240_qdq_int8.onnx) | ImageNet      | Int8     | 240x240x3  | STM32N6570-DK   |   NPU/MCU      | 74.48             | 13.34     |       10.2.0        |     2.2.0   |
-| [efficientnet_v2B2_260 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B2_260/efficientnet_v2B2_260_qdq_int8.onnx) | ImageNet      | Int8     | 260x260x3  | STM32N6570-DK   |   NPU/MCU      | 145.27             | 6.88      |       10.2.0        |     2.2.0   |
-| [efficientnet_v2S_384 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2S_384/efficientnet_v2S_384_qdq_int8.onnx) | ImageNet      | Int8     | 384x384x3  | STM32N6570-DK   |   NPU/MCU      | 785.01             | 1.27     |       10.2.0        |     2.2.0   |
 
-* The deployment of all the models listed in the table is supported, except for the efficientnet_v2S_384 model, for which support is coming soon.
+### Reference **NPU**  inference time on food101 and imagenet dataset (see Accuracy for details on dataset)
+| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
+|--------|------------------|--------|-------------|------------------|------------------|---------------------|-----------|------------------------|
+| [efficientnetv2b0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_int8.onnx) | food101      | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 62.48               | 16     |           3.0.0   |
+| [efficientnetv2b0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_w4_90.1%_w8_9.9%_a8_100%_acc_84.47.onnx) | food101      | Int8/Int4     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 57.05               | 17.53     |           3.0.0   |
+| [efficientnetv2b1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_int8.onnx) | food101      | Int8     | 240x240x3  | STM32N6570-DK   |   NPU/MCU      | 86.55               | 11.55      |        3.0.0   |
+| [efficientnetv2b1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_w4_91.8%_w8_8.2%_a8_100%_acc_85.71.onnx) | food101      | Int8/Int4     | 240x240x3  | STM32N6570-DK   |   NPU/MCU      | 80.5               | 12.42     |         3.0.0   |
+| [efficientnetv2b2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_int8.onnx) | food101      | Int8     | 260x260x3  | STM32N6570-DK   |   NPU/MCU      |     147.21          |   6.79    |        3.0.0   |
+| [efficientnetv2b2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_w4_81.26%_w8_18.74%_a8_100%_acc_87.24.onnx) | food101      | Int8/Int4     | 260x260x3  | STM32N6570-DK   |   NPU/MCU      | 140.38              | 7.12          |     3.0.0   |
+| [efficientnetv2s_384_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_int8.onnx) | food101      | Int8     | 384x384x3  | STM32N6570-DK   | NPU/MCU |      1089.83         | 0.92      |     3.0.0   |
+| [efficientnetv2s_384_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_w4_95.95%_w8_4.05%_a8_100%_acc_89.87.onnx) | food101      | Int8/Int4     | 384x384x3  | STM32N6570-DK   | NPU/MCU | 1078.35              | 0.93      |     3.0.0   |
+| [efficientnetv2b0_224 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_int8.onnx) | imagenet      | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      |  65.44              | 15.28     |     3.0.0   |
+| [efficientnetv2b0_224 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_w4_65.43%_w8_34.57%_a8_100%_acc_73.38.onnx) | imagenet      | Int8/Int4     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 59.54              | 16.80     |     3.0.0   |
+| [efficientnetv2b1_240 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_int8.onnx) | imagenet      | Int8     | 240x240x3  | STM32N6570-DK   |   NPU/MCU      | 89.71            | 11.15     |       3.0.0   |
+| [efficientnetv2b1_240 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_w4_73.1%_w8_26.9%_a8_100%_acc_73.92.onnx) | imagenet      | Int8/Int4     | 240x240x3  | STM32N6570-DK   |   NPU/MCU      | 83.2             |  12.02    |    3.0.0   |
+| [efficientnetv2b2_260 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_int8.onnx) | imagenet      | Int8     | 260x260x3  | STM32N6570-DK   |   NPU/MCU      |     150.04         |   6.66    |     3.0.0   |
+| [efficientnetv2b2_260 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_w4_67.53%_w8_32.47%_a8_100%_acc_74.71.onnx) | imagenet      | Int8/Int4     | 260x260x3  | STM32N6570-DK   |   NPU/MCU      |        141.94     |  7.05   |   3.0.0   |
+| [efficientnetv2b3_300 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300_qdq_int8.onnx) | imagenet      | Int8     | 300x300x3  | STM32N6570-DK   |   NPU/MCU      |        224.03     |   4.46   |     3.0.0   |
+| [efficientnetv2b3_300 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300_qdq_w4_88.31%_w8_11.69%_a8_100%_acc_78.11.onnx) | imagenet      | Int8/Int4     | 300x300x3  | STM32N6570-DK   |   NPU/MCU      |  219.31           |  4.56    |     3.0.0   |
+| [efficientnetv2s_384 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_int8.onnx) | imagenet      | Int8     | 384x384x3  | STM32N6570-DK   |   NPU/MCU      |     839.14         |  1.19    |     3.0.0   |
+| [efficientnetv2s_384 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_w4_95.63%_w8_4.37%_a8_100%_acc_82.25.onnx) | imagenet      | Int8/Int4     | 384x384x3  | STM32N6570-DK   |   NPU/MCU      |      826.23       |   1.21   |     3.0.0   |
+
 ### Accuracy with Food-101 dataset
 
 Dataset details: [link](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/), Quotation[[3]](#3)  , Number of classes: 101 , Number of images:  101 000
 
 | Model                                                                                                                                            | Format | Resolution | Top 1 Accuracy |
 |--------------------------------------------------------------------------------------------------------------------------------------------------|--------|-----------|----------------|
-| [efficientnet_v2B0_224_fft](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B0_224_fft/efficientnet_v2B0_224_fft.h5)                 | Float  | 224x224x3 | 81.35 %        |
-| [efficientnet_v2B0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B0_224_fft/efficientnet_v2B0_224_fft_qdq_int8.onnx) | Int8   | 224x224x3 | 81.1 %        |
-| [efficientnet_v2B1_240_fft](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B1_240_fft/efficientnet_v2B1_240_fft.h5)                 | Float  | 240x240x3 | 83.23 %        |
-| [efficientnet_v2B1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B1_240_fft/efficientnet_v2B1_240_fft_qdq_int8.onnx) | Int8   | 240x240x3 | 82.95 %        |
-| [efficientnet_v2B2_260_fft](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B2_260_fft/efficientnet_v2B2_260_fft.h5)                 | Float  | 260x260x3 | 84.35 %        |
-| [efficientnet_v2B2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2B2_260_fft/efficientnet_v2B2_260_fft_qdq_int8.onnx) | Int8   | 260x260x3 | 84.04 %        |
-| [efficientnet_v2S_384_fft](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2S_384_fft/efficientnet_v2S_384_fft.h5)                    | Float  | 384x384x3 | 88.16 %        |
-| [efficientnet_v2S_384_fft onnx](./ST_pretrainedmodel_public_dataset/food-101/efficientnet_v2S_384_fft/efficientnet_v2S_384_fft_qdq_int8.onnx)    | Int8   | 384x384x3 | 87.34 %        |
+| [efficientnetv2b0_224_fft](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft.keras)              | Float  | 224x224x3 | 86.59 %        |
+| [efficientnetv2b0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_int8.onnx) | Int8   | 224x224x3 | 85.98 %        |
+| [efficientnetv2b0_224_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_w4_90.1%_w8_9.9%_a8_100%_acc_84.47.onnx)| Int8/Int4 | 224x224x3 | 84.47 % |
+| [efficientnetv2b1_240_fft](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft.keras)              | Float  | 240x240x3 | 87.71 %        |
+| [efficientnetv2b1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_int8.onnx) | Int8   | 240x240x3 | 87.09 %        |
+| [efficientnetv2b1_240_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_w4_91.8%_w8_8.2%_a8_100%_acc_85.71.onnx) | Int8/Int4 | 240x240x3 | 85.71 % |
+| [efficientnetv2b2_260_fft](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft.keras)              | Float  | 260x260x3 | 88.67 %        |
+| [efficientnetv2b2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_int8.onnx) | Int8   | 260x260x3 | 88.44 %        |
+| [efficientnetv2b2_260_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_w4_81.26%_w8_18.74%_a8_100%_acc_87.24.onnx) | Int8/Int4 | 260x260x3 | 87.24 % |
+| [efficientnetv2s_384_fft](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft.keras)                 | Float  | 384x384x3 | 91.69 %        |
+| [efficientnetv2s_384_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_int8.onnx)    | Int8   | 384x384x3 | 91.34 %        |
+| [efficientnetv2s_384_fft onnx](./ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_w4_95.95%_w8_4.05%_a8_100%_acc_89.87.onnx) | Int8/Int4 | 384x384x3 | 89.87 % | 
 
 
-### Accuracy with ImageNet
+### Accuracy with imagenet
 
 Dataset details: [link](https://www.image-net.org), Quotation[[4]](#4).
 Number of classes: 1000.
@@ -116,14 +139,22 @@ For the sake of simplicity, the accuracy reported here was estimated on the 1000
 
 | Model                                                                                                                                    | Format | Resolution | Top 1 Accuracy |
 |------------------------------------------------------------------------------------------------------------------------------------------|--------|------------|----------------|
-| [efficientnet_v2B0_224](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B0_224/efficientnet_v2B0_224.h5)                 | Float  | 224x224x3  | 73.94 %        |
-| [efficientnet_v2B0_224 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B0_224/efficientnet_v2B0_224_qdq_int8.onnx) | Int8   | 224x224x3  | 72.21 %        |
-| [efficientnet_v2B1_240](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B1_240/efficientnet_v2B1_240.h5)                 | Float  | 240x240x3  | 76.14 %        |
-| [efficientnet_v2B1_240 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B1_240/efficientnet_v2B1_240_qdq_int8.onnx) | Int8   | 240x240x3  | 75.5 %        |
-| [efficientnet_v2B2_260](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B2_260/efficientnet_v2B2_260.h5)                 | Float  | 260x260x3  | 76.58 %        |
-| [efficientnet_v2B2_260 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2B2_260/efficientnet_v2B2_260_qdq_int8.onnx) | Int8   | 260x260x3  | 76.26 %        |
-| [efficientnet_v2S_384](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2S_384/efficientnet_v2S_384.h5)                    | Float  | 384x384x3  | 83.52 %        |
-| [efficientnet_v2S_384 onnx](./Public_pretrainedmodel_public_dataset/ImageNet/efficientnet_v2S_384/efficientnet_v2S_384_qdq_int8.onnx)    | Int8   | 384x384x3  | 83.07 %        |
+| [efficientnetv2b0_224](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224.keras)                 | Float  | 224x224x3  |   75.18 %      |
+| [efficientnetv2b0_224 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_int8.onnx)    | Int8   | 224x224x3  |   73.75 %      |
+| [efficientnetv2b0_224 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_w4_65.43%_w8_34.57%_a8_100%_acc_73.38.onnx) | Int8/Int4  | 224x224x3  |    73.38 %     |
+| [efficientnetv2b1_240](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240.keras)                 | Float  | 240x240x3  |   76.14 %      |
+| [efficientnetv2b1_240 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_int8.onnx)    | Int8   | 240x240x3  |   75.19 %      |
+| [efficientnetv2b1_240 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_w4_73.1%_w8_26.9%_a8_100%_acc_73.92.onnx)  | Int8/Int4   | 240x240x3  |    73.92 %   |
+| [efficientnetv2b2_260](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260.keras)                 | Float  | 260x260x3  |   76.58 %      |
+| [efficientnetv2b2_260 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_int8.onnx)    | Int8   | 260x260x3  |   76.14 %      |
+|[efficientnetv2b2_260 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_w4_67.53%_w8_32.47%_a8_100%_acc_74.71.onnx) | Int8/Int4   | 260x260x3  |   74.71 %    |
+| [efficientnetv2b3_300](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300.keras)                 | Float  | 300x300x3  |    79.18 %     |
+| [efficientnetv2b3_300 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300_qdq_int8.onnx)    | Int8   | 300x300x3  |    79.05 %     |
+| [efficientnetv2b3_300 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b3_300/efficientnetv2b3_300_qdq_w4_88.31%_w8_11.69%_a8_100%_acc_78.11.onnx) | Int8/Int4 | 300x300x3 |  78.11 %   |
+| [efficientnetv2s_384](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384.keras)                    | Float  | 384x384x3  |  83.52 %   |
+| [efficientnetv2s_384 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_int8.onnx)       | Int8   | 384x384x3  |    83.07 % |
+| [efficientnetv2s_384 onnx](./Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_w4_95.63%_w8_4.37%_a8_100%_acc_82.25.onnx)     | Int8/Int4   | 384x384x3  |   82.25 %    |
+
 
 
 ## Retraining and Integration in a simple example:
@@ -144,4 +175,4 @@ L. Bossard, M. Guillaumin, and L. Van Gool, "Food-101 -- Mining Discriminative C
 
 <a id="4">[4]</a>
 Olga Russakovsky*, Jia Deng*, Hao Su, Jonathan Krause, Sanjeev Satheesh, Sean Ma, Zhiheng Huang, Andrej Karpathy, Aditya Khosla, Michael Bernstein, Alexander C. Berg and Li Fei-Fei.
-(* = equal contribution) ImageNet Large Scale Visual Recognition Challenge.
+(* = equal contribution) imagenet Large Scale Visual Recognition Challenge.

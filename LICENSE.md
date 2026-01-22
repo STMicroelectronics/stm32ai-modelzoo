@@ -10,4 +10,8 @@ Software BOM for each use case:
 * [speech_enhancement](./speech_enhancement/LICENSE.md)
 * [hand_posture](./hand_posture/LICENSE.md)
 * [human_activity_recognition](./human_activity_recognition/LICENSE.md)
-
+* [arc_fault_detection](./arc_fault_detection/LICENSE.md)
+* [depth_estimation](./depth_estimation/LICENSE.md)
+* [neural_style_transfer](./neural_style_transfer/LICENSE.md)
+* [re_identification](./re_identification/LICENSE.md)
+* [face_detection](./face_detection/LICENSE.md)

@@ -1,0 +1,127 @@
+general:
+  project_name: tf_coco_person_presence_detection
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: true
+  global_seed: 127
+  gpu_memory_limit: 36
+
+operation_mode: chain_tqeb
+
+model:
+  model_name: mobilenetv2_a035
+  input_shape: (128, 128, 3)
+  pretrained: True
+
+dataset:
+  dataset_name: coco_person
+  class_names:
+  - person
+  - not-person
+  training_path: ./datasets/Person_detection_datasets
+  validation_path: null
+  validation_split: 0.2
+  test_path: null
+  quantization_path: null
+  quantization_split: null
+  check_image_files: false
+  seed: 127
+
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+data_augmentation:
+  random_contrast:
+    factor: 0.4
+    change_rate: 1.0
+  random_brightness:
+    factor: 0.05
+    change_rate: 1.0
+  random_rectangle_erasing:
+    nrec: (0, 6)
+    area: (0.0, 0.1)
+    wh_ratio: (0.25, 4.0)
+    fill_method: mosaic
+    mode: batch
+    change_rate: 0.025
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: wrap #reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.1
+    fill_mode: wrap #reflect
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.2
+    height_factor: 0.2
+    fill_mode: wrap #reflect
+    interpolation: nearest
+  random_shear:
+    factor: 0.05
+    fill_mode: wrap
+    interpolation: nearest
+
+training:
+  frozen_layers: None
+  dropout: 0.5
+  batch_size: 64
+  epochs: 800
+  optimizer:
+    Adam:
+      learning_rate: 0.0005
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_accuracy
+      mode: max
+      factor: 0.5
+      patience: 10
+      min_lr: 1.0e-06
+    EarlyStopping:
+      monitor: val_accuracy
+      mode: max
+      restore_best_weights: true
+      patience: 60
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: float
+  export_dir: quantized_models
+
+tools:
+  stedgeai:
+    optimization: balanced
+    on_cloud: True
+    path_to_stedgeai: C:/ST/STEdgeAI/<x.y>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+  board: STM32H747I-DISCO
+
+deployment:
+  c_project_path: ../application_code/image_classification/
+  IDE: GCC
+  verbosity: 1
+  hardware_setup:
+    serie: STM32H7
+    board: STM32H747I-DISCO
+    input: CAMERA_INTERFACE_DCMI
+    output: DISPLAY_INTERFACE_USB
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

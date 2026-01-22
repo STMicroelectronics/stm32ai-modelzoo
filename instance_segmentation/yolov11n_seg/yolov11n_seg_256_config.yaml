@@ -1,0 +1,34 @@
+general:
+  project_name: coco_instance_seg
+  display_figures: true
+
+model:
+  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/segmentation/yolov11n/yolov11n_256_quant_pc_ii_seg_coco80-st.tflite
+  model_type: yolov11n_seg
+
+operation_mode: prediction
+
+dataset:
+  dataset_name: coco_is
+  classes_file_path : ./datasets/coco_classes.txt
+  prediction_path: ./datasets/coco/images
+
+preprocessing:
+  rescaling:
+    scale: 1/255.0
+    offset: 0
+  resizing:
+    interpolation: bilinear
+    aspect_ratio: fit
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.5
+  IoU_eval_thresh: 0.5
+
+mlflow:
+  uri: ./src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

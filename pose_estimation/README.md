@@ -6,9 +6,9 @@ Models are stored depending on the way they have been trained :
 * `Public_pretrainedmodel_public_dataset` folder contains public models using public datasets
 
 ## List of available models families depending on UC features:
-* [hand landmarks](./hand_landmarks/README.md) : single pose estimation with 21 keypoints
-* [head landmarks](./head_landmarks/README.md) : single pose estimation with 468 and 478 keypoints
+* [hand landmarks](./handlandmarks/README.md) : single pose estimation with 21 keypoints
+* [head landmarks](./headlandmarks/README.md) : single pose estimation with 468 and 478 keypoints
 * [movenet](./movenet/README.md) : single pose estimation with 13 and 17 keypoints
 * [yolo v8 pose](./yolov8n_pose/README.md) : multi pose estimation with 17 keypoints
-* [yolo 11 pose](./yolo11n_pose/README.md) : multi pose estimation with 17 keypoints
+* [yolo 11 pose](./yolov11n_pose/README.md) : multi pose estimation with 17 keypoints
 

@@ -6,5 +6,5 @@ Models are stored depending on the way they have been trained :
 * `Public_pretrainedmodel_public_dataset` folder contains public models using public datasets
 
 ## List of available models families :
-* [st cnn 2D](./CNN2D_ST_HandPosture/README.md)
+* [st_cnn2d_handposture](./st_cnn2d_handposture/README.md)
 

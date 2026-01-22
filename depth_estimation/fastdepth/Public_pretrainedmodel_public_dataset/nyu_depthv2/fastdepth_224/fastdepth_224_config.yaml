@@ -1,0 +1,25 @@
+model:
+   model_path: ../../stm32ai-modelzoo/depth_estimation/fastdepth/Public_pretrainedmodel_public_dataset/nyu_depthv2/fastdepth_224/fastdepth_224_int8.tflite
+   model_type: fast_depth
+
+operation_mode: prediction
+
+dataset: 
+   dataset_name: nyu_depthv2
+   prediction_path: ./datasets/NYU_depth_v2/pred
+
+preprocessing:
+   rescaling:
+      scale: 1/255
+      offset: 0
+   resizing:
+      interpolation: bilinear
+      aspect_ratio: fit
+   color_mode: rgb
+
+mlflow:
+   uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

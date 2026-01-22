@@ -1,0 +1,113 @@
+general:
+  project_name: ReID_DeepSportradar
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: True
+  global_seed: 127
+  gpu_memory_limit: 16
+
+operation_mode: chain_tqeb 
+
+model:
+  model_name: mobilenetv2_a035
+  input_shape: (256, 128, 3)
+  pretrained: True
+
+dataset:
+  dataset_name: DeepSportradar
+  training_path: ./datasets/DeepSportradar-ReID/reid_training 
+  validation_split: 0.2
+  test_query_path: ./datasets/DeepSportradar-ReID/reid_test/query
+  test_gallery_path: ./datasets/DeepSportradar-ReID/reid_test/gallery
+  quantization_path: ./datasets/DeepSportradar-ReID/reid_training
+  quantization_split: 0.1
+  seed: 127
+
+preprocessing:
+  rescaling: 
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+data_augmentation:
+  random_contrast:
+    factor: 0.4
+  random_brightness:
+    factor: 0.2
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.25
+    height_factor: 0.25
+    fill_mode: wrap
+    interpolation: nearest
+  random_rotation:
+    factor: 0.125
+    fill_mode: wrap
+    interpolation: nearest
+  random_zoom:
+    width_factor: 0.2
+    height_factor: 0.2
+    fill_mode: wrap
+    interpolation: nearest
+  random_shear:
+    factor: 0.125
+    fill_mode: wrap
+    interpolation: nearest
+  random_rectangle_erasing:
+    'nrec': (0, 5)
+
+training:
+  frozen_layers: None
+  dropout: 0.35
+  batch_size: 128
+  epochs: 2000
+  optimizer:
+    Adam:
+      learning_rate: 0.0001
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_loss
+      mode: min
+      factor: 0.7
+      patience: 40
+      min_lr: 1.0e-05
+    EarlyStopping:
+      monitor: val_loss
+      mode: min
+      restore_best_weights: true
+      patience: 100
+  triplet_loss:
+    margin: 0.2  # Optional between [0, 1], default is 0.3
+    strategy: hard   #choices=['hard', 'semi_hard', 'simple'], default is 'hard'
+    distance_metric: cosine  # Optional, choices=['euclidean', 'cosine'], default is 'cosine'
+
+evaluation:
+  reid_distance_metric: cosine  # Optional, choices=['euclidean', 'cosine'], default is 'cosine'
+
+quantization:
+  quantizer: TFlite_converter
+  quantization_type: PTQ
+  quantization_input_type: uint8
+  quantization_output_type: int8
+  export_dir: quantized_models
+
+tools:
+   stedgeai:
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/ST/STEdgeAI/<x.y>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+   board: STM32N6570-DK
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

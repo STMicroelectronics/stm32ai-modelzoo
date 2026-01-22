@@ -1,0 +1,34 @@
+general:
+  display_figures: True
+
+model:
+  model_type: face_detect_front
+  model_path: ../../stm32ai-modelzoo/object_detection/face_detect_front/Public_pretrainedmodel_public_dataset/wider_face/blazeface_front_128_quant_pc_ff_od_wider_face.tflite
+
+operation_mode: prediction
+
+dataset:
+  dataset_name: coco
+  class_names: [ person ]
+  prediction_path: /local/data/od_st_person/pred/
+
+preprocessing:
+  rescaling: { scale: 1/255, offset: 0 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: bilinear
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.5
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  max_detection_boxes: 10
+  crop_stretch_percents: [0,40,0,40] #List of 4 floats (stretch_xmin%, stretch_ymin%, stretch_xmax%, stretch_ymax%) representing the stretch percentage for each coordinate.
+
+mlflow:
+  uri: ./src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

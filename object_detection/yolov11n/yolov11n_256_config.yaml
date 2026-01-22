@@ -1,0 +1,34 @@
+general:
+  display_figures: True
+  
+model:
+  model_type: yolov11n
+  model_path: https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolo11/yolo11n_256_quant_pc_uf_od_coco-person-st.tflite
+
+operation_mode: prediction
+
+dataset:
+  dataset_name: coco
+  format: tfs
+  class_names: [ person ]
+  prediction_path: images
+
+preprocessing:
+  rescaling: { scale: 1/255, offset: 0 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: bilinear
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.6
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.3
+  max_detection_boxes: 10
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

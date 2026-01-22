@@ -7,9 +7,9 @@ general:
 
 operation_mode: chain_tqe
 model:
-  model_type: STFTTCNN # For training
+  model_name: STFTTCNN # For training
   state_dict_path: # For training and evaluating torch models
-  onnx_path: # For quantization, evaluation, benchmarking and deployment only
+  model_path: # For quantization, evaluation, benchmarking and deployment only
 
 model_specific:
   # Parameters specific to your model type, e.g. n_blocks, tcn_latent_dim for STFT-TCNN
@@ -125,20 +125,21 @@ quantization:
   static_sequence_length: 40 
   static_axis_name: "seq_len"
   
-  # The following parameters are passed directly to ONNXruntime's quantize_static function
-  per_channel: True # 
-  calibration_method: "MinMax" # Calibration method of ONNX quantizer
-  op_types_to_quantize: ["Add", "Conv", "Relu"] # Op types to quantize. Leave empty to quantize all defaults for the ONNX quantizer.
+  # The following parameters are passed to ONNXruntime's quantize_static function
+  granularity: per_channel
   reduce_range: False
-  extra_options: {"CalibMovingAverage" : True} # Add extra quantizer options in this dict.
+  onnx_quant_parameters:
+    op_types_to_quantize: ["Add", "Conv", "Relu"] # Op types to quantize. Leave empty to quantize all defaults for the ONNX quantizer.
+    calibrate_method: "MinMax" # Calibration method of ONNX quantizer
+  onnx_extra_options: 
+    CalibMovingAverage: True   # Add extra quantizer options in this dict.
 
 tools:
   stedgeai:
-    version: 10.2.0 # 10.2.0
     optimization: balanced
     on_cloud: False
-    path_to_stedgeai: C:/Users/<>/work/stedgeai_10_RC1/Utilities/windows/stedgeai.exe
-  path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0.24A14/STM32CubeIDE/stm32cubeide.exe
+    path_to_stedgeai: C:/ST/STEdgeAI/<x.y>/Utilities/windows/stedgeai.exe
+  path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
 
 benchmarking:
   board: STM32N6570-DK
@@ -170,9 +171,9 @@ deployment:
   # build_conf : "N6 Audio Thread X Low Power"
 
 mlflow:
-  uri: ./src/experiments_outputs/mlruns
+  uri: ./pt/src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./src/experiments_outputs/stfttcnn_56spk_pad_nopeak_sigmoid_nonorm
+    dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
   

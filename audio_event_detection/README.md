@@ -6,6 +6,6 @@ Models are stored depending on the way they have been trained :
 * `Public_pretrainedmodel_public_dataset` folder contains public models using public datasets
 
 ## List of available models families :
-* [miniresnet](./miniresnet/README.md)
+* [miniresnet v1](./miniresnetv1/README.md)
 * [miniresnet v2](./miniresnetv2/README.md)
 * [yamnet](./yamnet/README.md)

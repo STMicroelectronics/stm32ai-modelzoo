@@ -1,0 +1,73 @@
+general:
+  project_name: null
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: false
+  gpu_memory_limit: 24
+  num_threads_tflite: 24
+  global_seed: 127
+
+operation_mode: quantization
+
+model:
+  model_type: st_yoloxn
+  model_path: ../../stm32ai-modelzoo/object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d100_w025_480/st_yoloxn_d100_w025_480.keras
+
+dataset:
+  dataset_name: coco
+  format: tfs
+  class_names:
+  - person
+  test_path: /local/data/od_coco_2017_person/test
+  quantization_path: /local/data/od_coco_2017_person/train
+  quantization_split: 0.001
+
+preprocessing:
+  rescaling:
+    scale: 1/255
+    offset: 0
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+quantization:
+  operating_mode: full_auto
+  quantizer: Onnx_quantizer
+  quantization_type: PTQ
+  target_opset: 21
+  granularity: per_channel
+  export_dir: quantized_models
+  quantization_input_type: uint8
+  quantization_output_type: float
+  onnx_quant_parameters:
+    weightType: Int8
+  onnx_extra_options:
+    WeightSymmetric: true
+    ActivationSymmetric: false
+    QuantizeBias: true
+    CalibMovingAverage: false
+    weights_tensor_override: null
+  iterative_quant_parameters:
+    accuracy_tolerance: 1.0
+
+postprocessing:
+  yolo_anchors:
+  - 0.5
+  - 0.5
+  - 0.07
+  - 0.25
+  - 0.23
+  - 0.7
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: false
+  max_detection_boxes: 100
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

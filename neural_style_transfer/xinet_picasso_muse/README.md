@@ -31,21 +31,21 @@ Xinet_picasso_muse is implemented initially in Pytorch and is quantized in int8 
 # Performances
 
 ## Metrics
-Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
+Measures are done with default STEdgeAI Core configuration with enabled input / output allocated option.
 
 
 ### Reference **NPU** memory footprint based on COCO dataset
 
-|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB)| External RAM (KiB)| Weights Flash (KiB) | STM32Cube.AI version | STEdgeAI Core version |
-|----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso | Int8 | 160x160x3 | STM32N6 |   2685.38 | 600.0 | 851.86 | 10.2.0 | 2.2.0
+|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB)| External RAM (KiB)| Weights Flash (KiB) | STEdgeAI Core version |
+|----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
+| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso | Int8 | 160x160x3 | STM32N6 |   2568.12 | 1200 | 851.86 | 3.0.0
 
 
 
 ### Reference **NPU**  inference time based on COCO Person dataset
-| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   | STM32Cube.AI version  |  STEdgeAI Core version |
-|--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso      | Int8   | 160x160x3  | STM32N6570-DK   |   NPU/MCU      |     61.96         |   16.13      |       10.2.0        |     2.2.0   |
+| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   |  STEdgeAI Core version |
+|--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
+| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso      | Int8   | 160x160x3  | STM32N6570-DK   |   NPU/MCU      |     93.83         |   10.65      |     3.0.0   |
 
 
 ## Retraining and Integration in a Simple Example

@@ -2,5 +2,5 @@
 
 | Component                            | License              | Copyright |
 |:---------                            |:-------              |:----------|
-| deeplab_v3/ST_pretrainedmodel_public_dataset  | [SLA0044](./deeplab_v3/ST_pretrainedmodel_public_dataset/LICENSE.md)               | STMicroelectronics  |
+| deeplabv3/ST_pretrainedmodel_public_dataset  | [SLA0044](./deeplabv3/ST_pretrainedmodel_public_dataset/LICENSE.md)               | STMicroelectronics  |
 

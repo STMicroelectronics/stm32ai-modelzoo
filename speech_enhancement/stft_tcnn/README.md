@@ -53,9 +53,9 @@ We also provide the original .yaml config file used to train the model. For deta
 Measures are done with default STEDGEAI configuration with enabled input / output allocated option.
 
 ### Reference **NPU** memory footprint
-|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STM32Cube.AI version | STEdgeAI Core version |
-|----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx)  | valentini     | Int8     | 257x40  | STM32N6   |     100.09    |   0.0              |    1599.39       |       10.2.0        |     2.2.0   |
+|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STEdgeAI Core version |
+|----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
+| [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx)  | valentini     | Int8     | 257x40  | STM32N6   |     100.09    |   0.0              |    1578.39       |     3.0.0   |
 
 ### Reference **NPU**  inference time
 
@@ -66,9 +66,9 @@ The figures listed in this table correspond to the version of ST Edge AI with th
 You can expect significant improvements once this issue is resolved.
 
 
-| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   | STM32Cube.AI version  |  STEdgeAI Core version |
-|--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [STFT-TCNN medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx) | valentini     | Int8     | 257x40  | STM32N6570-DK   |   NPU/MCU      |       52.09        |    19.19      |       10.2.0        |     2.2.0   |
+| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   |  STEdgeAI Core version |
+|--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|------------------------|
+| [STFT-TCNN medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx) | valentini     | Int8     | 257x40  | STM32N6570-DK   |   NPU/MCU      |       51.11       |    19.56      |     3.0.0   |
 
 
 ### Metrics on the Valentini dataset
@@ -83,7 +83,7 @@ We report five metrics :
 
 | Model | Format | Resolution | PESQ | STOI | SNR | SI-SNR | Waveform MSE |
 |-------|--------|------------|------|------|-----|--------|--------------|
-| [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257xsl_float.onnx) | float32 | 257x? | 2.480 | 0.931 | 18.190 | 18.104 | 1.136e-4 |
+| [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257xsl_float.onnx) | float32 | 257x? | 2.480 | 0.932 | 18.190 | 18.104 | 1.136e-4 |
 | [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257xsl_qdq_int8.onnx) | int8 | 257x? | 2.372 | 0.932 | 18.190 | 18.100 | 1.109e-4 |
 
 ### Limitations

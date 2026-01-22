@@ -7,4 +7,4 @@ Models are stored depending on the way they have been trained :
 * `Public_pretrainedmodel_public_dataset` folder contains public models using public datasets
 
 ## List of available models families depending on UC features:
-* [deeplabv3](./deeplab_v3/README.md) : a set a deeplab v3 variants
+* [deeplabv3](./deeplabv3/README.md) : a set a deeplab v3 variants

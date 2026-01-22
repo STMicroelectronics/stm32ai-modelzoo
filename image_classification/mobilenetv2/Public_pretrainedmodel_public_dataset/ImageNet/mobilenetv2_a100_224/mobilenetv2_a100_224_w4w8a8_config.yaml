@@ -1,0 +1,70 @@
+general:
+  project_name: null
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: false
+  global_seed: 123
+  gpu_memory_limit: 24
+
+model:
+  model_path: ../../stm32ai-modelzoo/image_classification/mobilenetv2/Public_pretrainedmodel_public_dataset/imagenet/mobilenetv2_a100_224/mobilenetv2_a100_224.keras
+
+operation_mode: quantization
+
+dataset:
+  dataset_name: imagenet
+  training_path: null
+  validation_path: null
+  validation_split: null
+  test_path: /local/datasets/ic_imagenet_2012/validation
+  quantization_path: /local/datasets/ic_imagenet_2012/quantization/
+  quantization_split: 0.01
+  check_image_files: false
+  seed: 2
+
+preprocessing:
+  rescaling:
+    scale: 1/127.5
+    offset: -1
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+quantization:
+  operating_mode: full_auto
+  quantizer: Onnx_quantizer
+  quantization_type: PTQ
+  target_opset: 21
+  granularity: per_channel
+  export_dir: quantized_models
+  quantization_input_type: uint8
+  quantization_output_type: float
+  onnx_quant_parameters:
+    weightType: Int8
+    activType: Int8
+  onnx_extra_options:
+    WeightSymmetric: true
+    ActivationSymmetric: false
+    QuantizeBias: true
+    CalibMovingAverage: false
+    weights_tensor_override: null
+  iterative_quant_parameters:
+    accuracy_tolerance: 1.5
+
+tools:
+   stedgeai:
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/ST/STEdgeAI/<x.y>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+   board: STM32H747I-DISCO
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

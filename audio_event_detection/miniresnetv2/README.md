@@ -30,8 +30,8 @@ Papers : [ResNet](https://arxiv.org/abs/1512.03385)
 | Network Information     |  Value          |
 |-------------------------|-----------------|
 |  Framework              | TensorFlow Lite |
-|  Params 1stack          | 125K            |
-|  Params 2stacks         | 440K            |
+|  Params 1 stack          | 125K            |
+|  Params 2 stacks         | 440K            |
 |  Quantization           | int8            |
 |  Provenance             | https://keras.io/api/applications/resnet/ |
 
@@ -53,7 +53,7 @@ It outputs embedding vectors of size 2048 for the 2 stacks version, and 3548 for
 
 ## Metrics
 
-* Measures are done with default STM32Cube.AI configuration with enabled input / output allocated option.
+* Measures are done with default STEdgeAI Core configuration with enabled input / output allocated option.
 
 * `tl` stands for "transfer learning", meaning that the model backbone weights were initialized from a pre-trained model, then only the last layer was unfrozen during the training.
 
@@ -61,19 +61,19 @@ It outputs embedding vectors of size 2048 for the 2 stacks version, and 3548 for
 ### Reference MCU memory footprint based on ESC-10 dataset
 
 
-| Model             | Format | Resolution | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)  | Total Flash (kB) | STM32Cube.AI version  |
+| Model             | Format | Resolution | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)  | Total Flash (kB) | STEdgeAI Core version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89               |   7.09       |   	123.98           |   60.56	9      | 66.98| 184.54 | 10.2.0                 |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89                |   	11.29        |   431.98           |   68.85      | 71.18 | 	500.83 | 10.2.0                 |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89        |   2.84       |   	123.98       |   42.76     | 62.73| 166.74 | 3.0.0   |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89      |   	4.59        |   431.98       |   49.22   | 64.48 | 	481.2 | 3.0.0  |
 
 
 ### Reference inference time based on ESC-10 dataset
 
 
-| Model             | Format | Resolution | Board            | Execution Engine |  Frequency   | Inference time (ms) | STM32Cube.AI version  |
+| Model             | Format | Resolution | Board            | Execution Engine |  Frequency   | Inference time (ms) | STEdgeAI Core version  |
 |-------------------|--------|------------|------------------|------------------|--------------|-------|-----------------------|
-| [miniresnet v2 1stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	187.21 | 10.2.0                |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 307.22 | 10.2.0                 |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	187.26 | 3.0.0                |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	307.34 | 3.0.0                 |
 
 
 ### Accuracy with ESC-10 dataset
@@ -84,10 +84,10 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl.h5) | float32 | 64x50x1 | 91.1% |
-| [miniresnet v2 1stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_1stacks_64x50_tl/miniresnetv2_1stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | 91.1% |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl.h5) | float32 | 64x50x1 | 92.4% |
-| [miniresnet v2 2stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_2stacks_64x50_tl/miniresnetv2_2stacks_64x50_tl_int8.tflite) | int8 | 64x50x1 | 92.6% |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl.keras) | float32 | 64x50x1 | 91.25% |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | 92.5% |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl.keras) | float32 | 64x50x1 | 93.75% |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | 93.75% |
 
 
 

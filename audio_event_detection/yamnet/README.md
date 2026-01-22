@@ -77,29 +77,29 @@ For Yamnet-1024
 * `tl` stands for "transfer learning", meaning that the model backbone weights were initialized from a pre-trained model, then only the last layer was unfrozen during the training.
 
 ### Reference **NPU** memory footprint based on ESC-10 dataset
-|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STM32Cube.AI version | STEdgeAI Core version |
-|----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite)  | esc-10 | Int8 | 64x96x1 | STM32N6 |                                                144 | 0.0 | 167.7 | 10.2.0 | 2.2.0 |
-| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_1024_64x96_tl/yamnet_1024_64x96_tl_qdq_int8.onnx) | esc-10 | Int8 | 64x96x1 | STM32N6 |                                       144 | 0.0 | 	3450.58 | 10.2.0 | 2.2.0 |
+|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
+|----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite)  | esc-10 | Int8 | 64x96x1 | STM32N6 |  144 | 0.0 | 137.33 | 3.0.0 |
+| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | esc-10 | Int8 | 64x96x1 | STM32N6 | 144 | 0.0 | 	3159.2 | 3.0.0 |
 
 ### Reference **NPU**  inference time  based on ESC-10 dataset
-| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   | STM32Cube.AI version  |  STEdgeAI Core version |
-|--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|----------------------|-------------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |              1.05      |   952.38           |       10.2.0        |     2.2.0   |
-| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_1024_64x96_tl/yamnet_1024_64x96_tl_qdq_int8.onnx) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |        9.88      |   101.21           |       10.2.0        |     2.2.0   |
+| Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   |  STEdgeAI Core version |
+|--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |              	0.93      |   1075.27  |     3.0.0   |
+| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |        9.12      |  109.64      |    3.0.0    |
 
 
 ### Reference **MCU** memory footprint based on ESC-10 dataset
-| Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) | STM32Cube.AI version  |
+| Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) | STEdgeAI Core version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A    | 109.57               |   7.61        |   135.91           |   56.67  | 117.18 | 192.58 | 10.2.0 |
-|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_1024_64x96_tl/yamnet_1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 144.0               |   	1.67        |   3450.58          |  252.48  | 145.67 | 3703.06 | 10.2.0 |
+|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A    | 	109.57               |   0.99        |   135.91           |   31.19  | 	110.56 | 167.1 | 3.0.0 |
+|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 144.0  |  1.77   |   3159.2    |  184.74  | 145.77 | 3343.94 | 3.0.0 |
 
 ### Reference inference time based on ESC-10 dataset
-| Model             | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time  | STM32Cube.AI version  |
+| Model             | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time  | STEdgeAI Core version  |
 |-------------------|--------|------------|------------------|------------------|--------------|-----------------|-----------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 279.62 ms | 10.2.0    
-|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_1024_64x96_tl/yamnet_1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 1 CPU + 1 NPU | 800MhZ/1000MhZ | 9.88 ms | 10.2.0
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 279.99 ms | 3.0.0    
+|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 1 CPU + 1 NPU | 800MhZ/1000MhZ | 9.12 ms | 3.0.0
 
 
 ### Accuracy with ESC-10 dataset
@@ -110,10 +110,10 @@ The reason this metric is used instead of patch-level accuracy is because patch-
 
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl.h5) | float32 | 64x96x1 | 94.9% |
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_256_64x96_tl/yamnet_256_64x96_tl_int8.tflite) | int8 | 64x96x1 | 94.9% |
-| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_1024_64x96_tl/yamnet_1024_64x96_tl.h5) | float32 | 64x96x1 | 100.0% |
-| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_1024_64x96_tl/yamnet_1024_64x96_tl_qdq_int8.onnx) | int8 | 64x96x1 | 100.0% |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl.keras) | float32 | 64x96x1 | 94.9% |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | int8 | 64x96x1 | 94.9% |
+| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl.keras) | float32 | 64x96x1 | 100.0% |
+| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | int8 | 64x96x1 | 100.0% |
 
 
 
@@ -131,10 +131,10 @@ However, contrary to what the numbers might suggest online performance on device
 Note that accuracy with unknown class is lower. This is normal
 | Model | Format | Resolution | Clip-level Accuracy |
 |-------|--------|------------|----------------|
-| [Yamnet 256 without unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/without_unknown_class/yamnet_256_64x96_tl.h5) | float32 | 64x96x1 | 86.0% |
-| [Yamnet 256 without unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/without_unknown_class/yamnet_256_64x96_tl_int8.tflite) | float32 | 64x96x1 | 87.0% |
-| [Yamnet 256 with unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/with_unknown_class/yamnet_256_64x96_tl.h5) | float32 | 64x96x1 | 73.0% |
-| [Yamnet 256 with unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_256_64x96_tl/with_unknown_class/yamnet_256_64x96_tl_int8.tflite) | int8 | 64x96x1 | 73.9% |
+| [Yamnet 256 without unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_e256_64x96_tl/without_unknown_class/yamnet_e256_64x96_tl.keras) | float32 | 64x96x1 | 86.0% |
+| [Yamnet 256 without unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_e256_64x96_tl/without_unknown_class/yamnet_e256_64x96_tl_int8.tflite) | float32 | 64x96x1 | 87.0% |
+| [Yamnet 256 with unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_e256_64x96_tl/with_unknown_class/yamnet_e256_64x96_tl.keras) | float32 | 64x96x1 | 73.0% |
+| [Yamnet 256 with unknown class](ST_pretrainedmodel_public_dataset/fsd50k/yamnet_e256_64x96_tl/with_unknown_class/yamnet_e256_64x96_tl_int8.tflite) | int8 | 64x96x1 | 73.9% |
 
 ## Retraining and Integration in a simple example:
 

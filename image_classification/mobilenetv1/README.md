@@ -64,73 +64,78 @@ For an image resolution of NxM and P classes
 - `tl` stands for "transfer learning", meaning that the model backbone weights were initialized from a pre-trained model, then only the last layer was unfrozen during the training.
 - `fft` stands for "full fine-tuning", meaning that the full model weights were initialized from a transfer learning pre-trained model, and all the layers were unfrozen during the training.
 
-### Reference **NPU** memory footprint on food-101 and ImageNet dataset (see Accuracy for details on dataset)
-|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STM32Cube.AI version | STEdgeAI Core version |
-|----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------|----------------------|-------------------------|
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | food-101      | Int8     | 224x224x3  | STM32N6   | 588 | 0.0 | 304.72        |       10.2.0        |     2.2.0   |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | food-101      | Int8     | 224x224x3  | STM32N6   | 588 | 0.0 | 992.67        |       10.2.0        |     2.2.0   |
-| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_1.0_224_fft/mobilenet_v1_1.0_224_fft_int8.tflite) | food-101      | Int8     | 224x224x3  | STM32N6   | 1568 | 0.0 | 3602.97       |       10.2.0        |     2.2.0   |
-| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224_int8.tflite) | ImageNet      | Int8     | 224x224x3  | STM32N6   | 588 | 0.0 | 533.38        |       10.2.0        |     2.2.0   |
-| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224_int8.tflite) | ImageNet      | Int8     | 224x224x3  | STM32N6   | 588 | 0.0 | 1446.06       |       10.2.0        |     2.2.0   |
-| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_1.0_224/mobilenet_v1_1.0_224_int8.tflite) | ImageNet      | Int8     | 224x224x3  | STM32N6   | 1568 | 0.0 | 4505.86      |       10.2.0        |     2.2.0   |
+### Reference **NPU** memory footprint on food101 and imagenet dataset (see Accuracy for details on dataset)
+|Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STEdgeAI Core version |
+|----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------|-------------------------|
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) | food101      | Int8     | 224x224x3  | STM32N6   | 392 |  0.0 | 240.88         |     3.0.0   |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | food101      | Int8     | 224x224x3  | STM32N6   | 588 | 0.0 | 864.99        |     3.0.0   |
+| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a100_224_fft/mobilenetv1_a100_224_fft_int8.tflite) | food101      | Int8     | 224x224x3  | STM32N6   | 1568 | 0.0 | 3347.59       |      3.0.0   |
+| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a025_224/mobilenetv1_a025_224_int8.tflite) | imagenet      | Int8     | 224x224x3  | STM32N6   | 392 | 0.0 | 469.53       |       3.0.0   |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_int8.tflite) | imagenet      | Int8     | 224x224x3  | STM32N6   | 588 | 0.0 | 1318.38       |     3.0.0   |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_qdq_w4_38.8%_w8_61.2%_a8_100%_acc_60.87.onnx) | imagenet      | Int8/Int4     | 224x224x3  | STM32N6   | 588 | 0.0 | 1067.95       |     3.0.0   |
+| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224_int8.tflite) | imagenet      | Int8     | 224x224x3  | STM32N6   | 1568 | 0.0 | 4250.49      |     3.0.0   |
 
-### Reference **NPU**  inference time on food-101 and ImageNet dataset (see Accuracy for details on dataset)
-
-
-| Model  | Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STM32Cube.AI version  |  STEdgeAI Core version |
-|--------|----------|--------|-------------|------------------|------------------|---------------------|-----------|----------------------|-------------------------|
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | food-101 | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 2.81                | 355.87    |       10.2.0        |     2.2.0   |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | food-101 | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 6.03                | 165.83    |       10.2.0        |     2.2.0   |
-| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_1.0_224_fft/mobilenet_v1_1.0_224_fft_int8.tflite) | food-101 | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 16.79               | 59.55     |       10.2.0        |     2.2.0   |
-| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224_int8.tflite) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 3.56               | 280.89    |       10.2.0        |     2.2.0   |
-| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224_int8.tflite) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 7.35               | 136.05    |       10.2.0        |     2.2.0   |
-| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_1.0_224/mobilenet_v1_1.0_224_int8.tflite) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 19.26             | 51.93     |       10.2.0        |     2.2.0   |
+### Reference **NPU**  inference time on food101 and imagenet dataset (see Accuracy for details on dataset)
 
 
-### Reference **MCU** memory footprint based on Flowers dataset and ImageNet dataset (see Accuracy for details on dataset)
-
-| Model       | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STM32Cube.AI version  |
-|--------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | Int8   | 224x224x3    | STM32H7 | 272.96 KiB     | 16.38 KiB      | 214.69 KiB    | 67.24 KiB  | 289.34 KiB   | 281.93 KiB  | 10.2.0  |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite)    | Int8   | 224x224x3    | STM32H7 | 449.58 KiB     | 16.38 KiB      | 812.61 KiB    | 80.61 KiB  | 465.96 KiB   | 893.22 KiB  | 10.2.0 |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft_int8.tflite)   | Int8   | 96x96x3    | STM32H7 | 66.96 KiB      | 16.33 KiB     | 214.69 KiB       | 67.19 KiB  | 83.29 KiB    | 281.88 KiB  | 10.2.0                 |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs_int8.tflite)   | Int8   | 96x96x1    | STM32H7 | 52.8 KiB      | 16.33 KiB     | 214.55 KiB    | 69.28 KiB  | 69.13 KiB | 283.83 KiB  | 10.2.0                 |
-| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224_int8.tflite) | Int8   | 224x224x3    | STM32H7 | 267.2 KiB     | 16.44 KiB      | 467.33 KiB    | 68.37 KiB  | 283.64 KiB   | 535.7 KiB  | 10.2.0  |
-| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224_int8.tflite)    | Int8   | 224x224x3    | STM32H7 | 404.28 KiB     | 16.44 KiB      | 1314 KiB    | 81.72 KiB  | 447.51 KiB   | 1395.72 KiB | 10.2.0 |
-| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_1.0_224/mobilenet_v1_1.0_224_int8.tflite)    | Int8   | 224x224x3    | STM32H7 | 1331.13 KiB     | 16.48 KiB      | 4157.09 KiB    | 108.46 KiB | 1347.61 KiB   | 4265.55 KiB  | 10.2.0 |
+| Model  | Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |   STEdgeAI Core version |
+|--------|----------|--------|-------------|------------------|------------------|---------------------|-----------|-------------------------|
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) | food101 | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 2.37                | 421.94    |      3.0.0   |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | food101 | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 5.38                |  185.87   |     3.0.0   |
+| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a100_224_fft/mobilenetv1_a100_224_fft_int8.tflite) | food101 | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 16.36               |   61.12   |      3.0.0   |
+| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a025_224/mobilenetv1_a025_224_int8.tflite) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 3.1               |  322.58    |      3.0.0   |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_int8.tflite) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 6.67               |  149.92  |     3.0.0   |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_qdq_w4_38.8%_w8_61.2%_a8_100%_acc_60.87.onnx) | Imagenet | Int8/Int4     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 5.95               |  168.07  |     3.0.0   |
+| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224_int8.tflite) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 18.81             |   53.16 |      3.0.0   |
 
 
-### Reference **MCU** inference time based on Flowers dataset and ImageNet dataset (see Accuracy for details on dataset)
+### Reference **MCU** memory footprint based on Flowers dataset and imagenet dataset (see Accuracy for details on dataset)
+
+| Model       | Dataset| Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash |  STEdgeAI Core version |
+|-------------|--------|--------|------------|---------|----------------|---------------|------------|-------------|-------------|-------------|------------------------|
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) |tf_flowers| Int8   | 224x224x3    | STM32H7 | 271.04 KiB     | 0.7 KiB      | 214.69 KiB    | 36.07 KiB  | 271.74 KiB   | 250.76 KiB  |      3.0.0   |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite)   | tf_flowers| Int8   | 224x224x3    | STM32H7 | 456.67 KiB     | 0.7 KiB      | 812.61 KiB    | 46.79 KiB  | 457.37 KiB   | 859.4 KiB  |      3.0.0   |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite)   | tf_flowers | Int8   | 96x96x3    | STM32H7 | 63.04 KiB      | 0.7 KiB     | 214.69 KiB       | 36.03 KiB  | 63.74 KiB    | 250.72 KiB  |      3.0.0   |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite)    | tf_flowers| Int8   | 96x96x1    | STM32H7 | 52.8 KiB      | 0.3 KiB     | 214.55 KiB    | 39.13 KiB  | 53.1 KiB | 253.68 KiB  |      3.0.0   |
+| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a025_224/mobilenetv1_a025_224_int8.tflite)  | Imagenet | Int8   | 224x224x3    | STM32H7 | 267.2 KiB     | 0.3 KiB      | 467.33 KiB    | 37.61 KiB  | 267.5 KiB   | 504.94 KiB  |      3.0.0   |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_int8.tflite)   | Imagenet | Int8   | 224x224x3    | STM32H7 | 431.07 KiB     | 0.3 KiB      | 1314 KiB    | 48.32 KiB  | 431.37 KiB   | 1362.32 KiB |      3.0.0   |
+| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224_int8.tflite)   | Imagenet | Int8   | 224x224x3    | STM32H7 | 899.78 KiB     | 0.3 KiB      | 4157.09 KiB    | 69.82 KiB | 900.08 KiB   | 4226.91 KiB  |      3.0.0   |
 
 
-| Model             | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) | STM32Cube.AI version  |
-|-------------------|--------|------------|------------------|------------------|-----------|---------------------|-----------------------|
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 166.9 ms            | 10.2.0                 |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 471.68 ms           | 10.2.0                 |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft_int8.tflite) | Int8   | 96x96x3    | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 30.63 ms            | 10.2.0                 |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1    | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 29.04 ms            | 10.2.0                 |
-| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224_int8.tflite) | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 170.37 ms           | 10.2.0                 |
-| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224_int8.tflite) | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 477.79 ms           | 10.2.0                 |
-| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_1.0_224/mobilenet_v1_1.0_224_int8.tflite) | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 1656.41 ms          | 10.2.0                 |
+### Reference **MCU** inference time based on Flowers dataset and imagenet dataset (see Accuracy for details on dataset)
+
+
+| Model      | Dataset       | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) | STEdgeAI Core version |
+|------------|------|--------|------------|------------------|------------------|-----------|---------------------|------------------------|
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) | tf_flowers | Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 176.26 ms            |     3.0.0   |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | tf_flowers | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 488.31 ms           |     3.0.0   |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite) | tf_flowers| Int8   | 96x96x3    | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 32.64 ms            |     3.0.0   |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite) | tf_flowers| Int8   | 96x96x1    | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 29.62 ms            |     3.0.0   |
+| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a025_224/mobilenetv1_a025_224_int8.tflite) | Imagenet| Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 180.87 ms           |     3.0.0   |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_int8.tflite) | Imagenet| Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 504.08 ms           |     3.0.0   |
+| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224_int8.tflite) | Imagenet| Int8   | 224x224x3   | STM32H747I-DISCO | 1 CPU            | 400 MHz   | 1651.05 ms          |     3.0.0   |
 
 
 ### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)
-| Model                 | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU  | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
-|-----------------------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|-------|-------|------|--------------------|-----------------------|
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite)  | Int8   | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 14.27  ms            | 7.54    | 92.46 | 0 | v6.1.0             | OpenVX                |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8   | 224x224x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 32.79  ms            | 3.83    | 96.17 | 0 | v6.1.0             | OpenVX                |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft_int8.tflite)  | Int8   | 96x96x3  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 3.81  ms            | 15.36    | 84.64 | 0 | v6.1.0             | OpenVX                |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1  |  per-channel**  | STM32MP257F-DK2   | NPU/GPU          | 800  MHz  | 3.66  ms            | 13.91    | 86.09 | 0 | v6.1.0             | OpenVX                |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite)  | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 33.91ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8   | 224x224x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 90.6 ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft_int8.tflite)  | Int8   | 96x96x3  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 6.32  ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1  |  per-channel  | STM32MP157F-DK2   | 2 CPU            | 800  MHz  | 5.83 ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-|[MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite)  | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 52.39 ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-|[MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8   | 224x224x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 144.47 ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-|[MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft_int8.tflite)  | Int8   | 96x96x3  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 9.31 ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
-|[MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1  |  per-channel  | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 9.37 ms            | NA  | NA    | 100    | v6.1.0             | TensorFlowLite 2.18.0 |
+
+| Model                 | Format | Resolution | Quantization  | Board             | Execution Engine | Frequency | Inference time (ms) | %NPU | %GPU  | %CPU | X-LINUX-AI version |       Framework       |
+|-----------------------|--------|------------|---------------|-------------------|------------------|-----------|---------------------|------|-------|------|--------------------|-----------------------|
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite)  | Int8   | 224x224x3  | per-channel** | STM32MP257F-DK2   | NPU/GPU          | 800 MHz   | 14.06               | 7.47 | 92.53 | 0    | v6.1.0             | OpenVX                |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | Int8   | 224x224x3  | per-channel** | STM32MP257F-DK2   | NPU/GPU          | 800 MHz   | 32.37               | 3.84 | 96.16 | 0    | v6.1.0             | OpenVX                |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite)  | Int8   | 96x96x3   | per-channel** | STM32MP257F-DK2   | NPU/GPU          | 800 MHz   | 3.62                | 18.33| 81.67 | 0    | v6.1.0             | OpenVX                |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1   | per-channel** | STM32MP257F-DK2   | NPU/GPU          | 800 MHz   | 3.72                | 14.97| 85.03 | 0    | v6.1.0             | OpenVX                |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite)  | Int8   | 224x224x3  | per-channel   | STM32MP157F-DK2   | 2 CPU            | 800 MHz   | 31.70               | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | Int8   | 224x224x3  | per-channel   | STM32MP157F-DK2   | 2 CPU            | 800 MHz   | 89.23               | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite)  | Int8   | 96x96x3   | per-channel   | STM32MP157F-DK2   | 2 CPU            | 800 MHz   | 5.99                | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1   | per-channel   | STM32MP157F-DK2   | 2 CPU            | 800 MHz   | 5.94                | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite)  | Int8   | 224x224x3  | per-channel   | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 49.86               | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | Int8   | 224x224x3  | per-channel   | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 142.62              | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite)  | Int8   | 96x96x3   | per-channel   | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 9.18                | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite) | Int8   | 96x96x1   | per-channel   | STM32MP135F-DK2   | 1 CPU            | 1000 MHz  | 9.24                | NA   | NA    | 100  | v6.1.0             | TensorFlowLite 2.18.0 |
 
 ** **To get the most out of MP25 NPU hardware acceleration, please use per-tensor quantization**
+
+** **Note:** On STM32MP2 devices, per-channel quantized models are internally converted to per-tensor quantization by the compiler using an entropy-based method. This may introduce a slight loss in accuracy compared to the original per-channel models.
 
 ### Accuracy with Flowers dataset
 
@@ -139,22 +144,14 @@ Dataset details: [link](http://download.tensorflow.org/example_images/flower_pho
 
 | Model | Format | Resolution | Top 1 Accuracy |
 |-------|--------|------------|----------------|
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_tfs/mobilenet_v1_0.25_224_tfs.h5) | Float | 224x224x3    | 88.83 % |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_tfs/mobilenet_v1_0.25_224_tfs_int8.tflite) | Int8 | 224x224x3    | 89.37 % |
-| [MobileNet v1 0.25 tl](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_tl/mobilenet_v1_0.25_224_tl.h5) | Float | 224x224x3    | 85.83 % |
-| [MobileNet v1 0.25 tl](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_tl/mobilenet_v1_0.25_224_tl_int8.tflite) | Int8 | 224x224x3    | 83.24 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft.h5) | Float | 224x224x3    | 93.05 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | Int8 | 224x224x3    | 92.1 % |
-| [MobileNet v1 0.5 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_tfs/mobilenet_v1_0.5_224_tfs.h5) | Float | 224x224x3    | 92.1 % |
-| [MobileNet v1 0.5 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_tfs/mobilenet_v1_0.5_224_tfs_int8.tflite) | Int8 | 224x224x3    | 91.55 % |
-| [MobileNet v1 0.5 tl](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_tl/mobilenet_v1_0.5_224_tl.h5) | Float | 224x224x3    | 88.56 % |
-| [MobileNet v1 0.5 tl](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_tl/mobilenet_v1_0.5_224_tl_int8.tflite) | Int8 | 224x224x3    | 87.74 % |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft.h5) | Float | 224x224x3    | 95.1 % |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8 | 224x224x3    | 94.41 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft.h5)      | Float  | 96x96x3      | 87.47 %   |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_fft/mobilenet_v1_0.25_96_fft_int8.tflite)   | Int8   | 96x96x3    | 87.06  % |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs.h5) | Float | 96x96x1 | 74.93 % |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/flowers/mobilenet_v1_0.25_96_grayscale_tfs/mobilenet_v1_0.25_96_grayscale_tfs_int8.tflite) | Int8 | 96x96x1 | 74.93 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft.keras) | Float | 224x224x3    | 93.05 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) | Int8 | 224x224x3    | 92.1 % |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft.keras) | Float | 224x224x3    | 95.1 % |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | Int8 | 224x224x3    | 94.41 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft.keras)      | Float  | 96x96x3      | 87.47 %   |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite)   | Int8   | 96x96x3    | 87.06  % |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs.keras) | Float | 96x96x1 | 74.93 % |
+| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite) | Int8 | 96x96x1 | 74.93 % |
 
 
 
@@ -165,18 +162,10 @@ Dataset details: [link](https://data.mendeley.com/datasets/tywbtsjrjv/1) , Licen
 
 | Model | Format | Resolution | Top 1 Accuracy |
 |-------|--------|------------|----------------|
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.25_224_tfs/mobilenet_v1_0.25_224_tfs.h5) | Float | 224x224x3    | 99.92 % |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.25_224_tfs/mobilenet_v1_0.25_224_tfs_int8.tflite) | Int8 | 224x224x3    | 99.92 % |
-| [MobileNet v1 0.25 tl](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.25_224_tl/mobilenet_v1_0.25_224_tl.h5) | Float | 224x224x3    | 85.38 % |
-| [MobileNet v1 0.25 tl](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.25_224_tl/mobilenet_v1_0.25_224_tl_int8.tflite) | Int8 | 224x224x3    | 83.7 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft.h5) | Float | 224x224x3    | 99.95 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | Int8 | 224x224x3    | 99.82 % |
-| [MobileNet v1 0.5 tfs](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.5_224_tfs/mobilenet_v1_0.5_224_tfs.h5) | Float | 224x224x3    | 99.9 % |
-| [MobileNet v1 0.5 tfs](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.5_224_tfs/mobilenet_v1_0.5_224_tfs_int8.tflite) | Int8 | 224x224x3    | 99.83 % |
-| [MobileNet v1 0.5 tl](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.5_224_tl/mobilenet_v1_0.5_224_tl.h5) | Float | 224x224x3    | 93.05 % |
-| [MobileNet v1 0.5 tl](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.5_224_tl/mobilenet_v1_0.5_224_tl_int8.tflite) | Int8 | 224x224x3    | 92.7 % |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft.h5) | Float | 224x224x3    | 99.94 % |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/plant-village/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8 | 224x224x3    | 99.85 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/plant_leaf_diseases/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft.keras) | Float | 224x224x3    | 99.95 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/plant_leaf_diseases/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) | Int8 | 224x224x3    | 99.82 % |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/plant_leaf_diseases/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft.keras) | Float | 224x224x3    | 99.94 % |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/plant_leaf_diseases/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | Int8 | 224x224x3    | 99.85 % |
 
 
 ### Accuracy with Food-101 dataset
@@ -186,23 +175,15 @@ Dataset details: [link](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-1
 
 | Model | Format | Resolution | Top 1 Accuracy |
 |-------|--------|------------|----------------|
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_tfs/mobilenet_v1_0.25_224_tfs.h5) | Float | 224x224x3    | 72.16 % |
-| [MobileNet v1 0.25 tfs](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_tfs/mobilenet_v1_0.25_224_tfs_int8.tflite) | Int8 | 224x224x3    | 71.13 % |
-| [MobileNet v1 0.25 tl](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_tl/mobilenet_v1_0.25_224_tl.h5) | Float | 224x224x3    | 43.21 % |
-| [MobileNet v1 0.25 tl](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_tl/mobilenet_v1_0.25_224_tl_int8.tflite) | Int8 | 224x224x3    | 39.89 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft.h5) | Float | 224x224x3    | 72.36 % |
-| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.25_224_fft/mobilenet_v1_0.25_224_fft_int8.tflite) | Int8 | 224x224x3    | 69.52 % |
-| [MobileNet v1 0.5 tfs](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_tfs/mobilenet_v1_0.5_224_tfs.h5) | Float | 224x224x3    | 76.97 % |
-| [MobileNet v1 0.5 tfs](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_tfs/mobilenet_v1_0.5_224_tfs_int8.tflite) | Int8 | 224x224x3    | 76.37 % |
-| [MobileNet v1 0.5 tl](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_tl/mobilenet_v1_0.5_224_tl.h5) | Float | 224x224x3    | 48.78 % |
-| [MobileNet v1 0.5 tl](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_tl/mobilenet_v1_0.5_224_tl_int8.tflite) | Int8 | 224x224x3    | 45.89 % |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft.h5) | Float | 224x224x3    | 76.72 % |
-| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_0.5_224_fft/mobilenet_v1_0.5_224_fft_int8.tflite) | Int8 | 224x224x3    | 74.82 % |
-| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_1.0_224_fft/mobilenet_v1_1.0_224_fft.h5) | Float | 224x224x3    | 80.38 % |
-| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food-101/mobilenet_v1_1.0_224_fft/mobilenet_v1_1.0_224_fft_int8.tflite) | Int8 | 224x224x3    | 79.43 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft.keras) | Float | 224x224x3    | 75.75 % |
+| [MobileNet v1 0.25 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite) | Int8 | 224x224x3    | 73.24 % |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft.keras) | Float | 224x224x3    | 82.06 % |
+| [MobileNet v1 0.5 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite) | Int8 | 224x224x3    | 80.64 % |
+| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a100_224_fft/mobilenetv1_a100_224_fft.keras) | Float | 224x224x3    | 84.57 % |
+| [MobileNet v1 1.0 fft](./ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a100_224_fft/mobilenetv1_a100_224_fft_int8.tflite) | Int8 | 224x224x3    | 83.07 % |
 
 
-### Accuracy with ImageNet dataset
+### Accuracy with imagenet dataset
 
 Dataset details: [link](https://www.image-net.org), Quotation[[4]](#4).
 Number of classes: 1000.
@@ -211,12 +192,13 @@ For the sake of simplicity, the accuracy reported here was estimated on the 5000
 
 |model    | Format | Resolution | Top 1 Accuracy |
 |---------|--------|------------|----------------|
-| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224.h5)                                | Float  | 224x224x3  | 48.96 %        |
-| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.25_224/mobilenet_v1_0.25_224_int8.tflite)                       | Int8   | 224x224x3  | 46.34 %        |
-| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224.h5)                                | Float  | 224x224x3  | 62.11 %       |
-| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_0.5_224/mobilenet_v1_0.5_224_int8.tflite)                       | Int8   | 224x224x3  | 59.92 %       |
-| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_1.0_224/mobilenet_v1_1.0_224.h5)                                | Float  | 224x224x3  | 69.52 %       |
-| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/ImageNet/mobilenet_v1_1.0_224/mobilenet_v1_1.0_224_int8.tflite)                       | Int8   | 224x224x3  | 68.64 %       |
+| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a025_224/mobilenetv1_a025_224.keras)                                | Float  | 224x224x3  | 50.5 %        |
+| [MobileNet v1 0.25](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a025_224/mobilenetv1_a025_224_int8.tflite)                       | Int8   | 224x224x3  | 47.94 %        |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224.keras)                                | Float  | 224x224x3  | 64.02 %       |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_int8.tflite)                       | Int8   | 224x224x3  | 62.25 %       |
+| [MobileNet v1 0.5](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a050_224/mobilenetv1_a050_224_qdq_w4_38.8%_w8_61.2%_a8_100%_acc_60.87.onnx) | Int8/Int4 | 224x224x3 | 60.87 %  |
+| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224.keras)                                | Float  | 224x224x3  | 70.92 %       |
+| [MobileNet v1 1.0](./Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224_int8.tflite)                       | Int8   | 224x224x3  | 69.64 %       |
 
 
 

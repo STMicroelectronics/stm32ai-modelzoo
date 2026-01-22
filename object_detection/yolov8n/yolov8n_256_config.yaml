@@ -1,13 +1,19 @@
 general:
-  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_256_quant_pc_uf_od_coco-person-st.tflite
-  model_type: yolo_v8
   num_threads_tflite: 8
+
+model:
+  model_type: yolov8n
+  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_256_quant_pc_uf_od_coco-person-st.tflite
+  #model_name: 
+  #input_shape: 
 
 operation_mode: evaluation
 
 dataset:
+  dataset_name: coco
+  format: tfs
   class_names: [person]
-  test_path: ./datasets/coco_2017_person/test
+  test_path: ./datasets/coco_2017_person/test  #../model_zoo_OD_coco2017_person/val
 
 
 preprocessing:
@@ -26,7 +32,6 @@ postprocessing:
   
 tools:
   stedgeai:
-    version: 10.2.0
     optimization: balanced
     on_cloud: True
     path_to_stedgeai: C:/ST/STEdgeAI/<x.y>/Utilities/windows/stedgeai.exe
@@ -36,8 +41,8 @@ benchmarking:
   board: STM32H747I-DISCO
 
 mlflow:
-  uri: ./src/experiments_outputs/mlruns
+  uri: ./tf/src/experiments_outputs/mlruns
 
 hydra:
   run:
-    dir: ./src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
