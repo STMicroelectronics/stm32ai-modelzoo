@@ -9,7 +9,6 @@ general:
 
 model:
   model_path: ../../stm32ai-modelzoo/arc_fault_detection/st_dense/ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_1channel_512/st_dense_freq_1channel_512.keras
-  input_shape: (1,512,1)
 
 operation_mode: chain_tqe
 #choices=['benchmarking', 'evaluation', 'training', 'quantization', 'prediction',
@@ -35,7 +34,7 @@ preprocessing:
   time_domain: False
 
 training:
-  resume_training_from:
+  initialize_parameters_from:
   batch_size: 256
   epochs: 40
   optimizer:

@@ -91,20 +91,6 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| Model | Format | Resolution | Top 1 Accuracy |
-|-------|--------|------------|----------------|
-| [st_resnetmicro_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224.onnx) | Float | 224×224×3 | 66.43 % |
-| [st_resnetmicro_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | 65.62 % |
-| [st_resnetmilli_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224.onnx) | Float | 224×224×3 | 71.10 % |
-| [st_resnetmilli_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | 70.45 % |
-| [st_resnetnano_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224.onnx) | Float | 224×224×3 | 59.32 % |
-| [st_resnetnano_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | 58.25 % |
-| [st_resnetpico_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224.onnx) | Float | 224×224×3 | 49.42 % |
-| [st_resnetpico_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | 46.98 % |
-| [st_resnettiny_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224.onnx) | Float | 224×224×3 | 72.07 % |
-| [st_resnettiny_actrelu_pt](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | 71.40 % |
-
-
 Dataset details: [link](https://www.image-net.org)
 Number of classes: 1000.
 To perform the quantization, we calibrated the activations with a random subset of the training set.

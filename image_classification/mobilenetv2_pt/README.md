@@ -93,27 +93,10 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| model | Format | Resolution | Top 1 Accuracy |
-| --- | --- | --- | --- |
-| [mobilenetv2_a025_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a025_pt_224/mobilenetv2_a025_pt_224.onnx) | Float | 224x224x3 | 52.29 % |
-| [mobilenetv2_a025_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a025_pt_224/mobilenetv2_a025_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 51.51 % |
-| [mobilenetv2_a050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a050_pt_224/mobilenetv2_a050_pt_224.onnx) | Float | 224x224x3 | 66.20 % |
-| [mobilenetv2_a050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a050_pt_224/mobilenetv2_a050_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 65.31 % |
-| [mobilenetv2_a075_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a075_pt_224/mobilenetv2_a075_pt_224.onnx) | Float | 224x224x3 | 70.78 % |
-| [mobilenetv2_a075_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a075_pt_224/mobilenetv2_a075_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 70.33 % |
-| [mobilenetv2_a100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a100_pt_224/mobilenetv2_a100_pt_224.onnx) | Float | 224x224x3 | 73.17 % |
-| [mobilenetv2_a100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_a100_pt_224/mobilenetv2_a100_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 72.76 % |
-| [mobilenetv2_w035_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_w035_pt_224/mobilenetv2_w035_pt_224.onnx) | Float | 224x224x3 | 61.02 % |
-| [mobilenetv2_w035_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2_w035_pt_224/mobilenetv2_w035_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 60.09 % |
-| [mobilenetv2b_a025_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a025_pt_224/mobilenetv2b_a025_pt_224.onnx) | Float | 224x224x3 | 53.53 % |
-| [mobilenetv2b_a025_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a025_pt_224/mobilenetv2b_a025_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 52.55 % |
-| [mobilenetv2b_a050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a050_pt_224/mobilenetv2b_a050_pt_224.onnx) | Float | 224x224x3 | 66.30 % |
-| [mobilenetv2b_a050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a050_pt_224/mobilenetv2b_a050_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 65.67 % |
-| [mobilenetv2b_a075_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a075_pt_224/mobilenetv2b_a075_pt_224.onnx) | Float | 224x224x3 | 70.41 % |
-| [mobilenetv2b_a075_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a075_pt_224/mobilenetv2b_a075_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 70.20 % |
-| [mobilenetv2b_a100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a100_pt_224/mobilenetv2b_a100_pt_224.onnx) | Float | 224x224x3 | 73.33 % |
-| [mobilenetv2b_a100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/mobilenetv2b_a100_pt_224/mobilenetv2b_a100_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 72.89 % |
-
+Dataset details: [link](https://www.image-net.org)
+Number of classes: 1000.
+To perform the quantization, we calibrated the activations with a random subset of the training set.
+For the sake of simplicity, the accuracy reported here was estimated on the 50000 labelled images of the validation set.
 
 | model | Format | Resolution | Top 1 Accuracy |
 | --- | --- | --- | --- |

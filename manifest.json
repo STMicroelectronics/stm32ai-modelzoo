@@ -1,455 +1,31 @@
 [
 	{
-		"name": "./image_classification/efficientnet/ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_128_tfs/st_efficientnetlcv1_128_tfs_qdq_int8.onnx",
-		"description": "ST Efficientnet low complexity 128 trained from scratch on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/efficientnet/README.md",
+		"name": "./arc_fault_detection/st_conv/ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_4channels_512/st_conv_time_4channels_512_int8.tflite",
+		"description": "st_conv model is a compact per‑channel CNN for arc fault detection (normal vs arc). Trained on ST proprietary AFD test bench dataset",
+		"usecase": "arc_fault_detection",
+		"dataset_used": "afd_test_bench_dataset",
+		"readme": "./arc_fault_detection/st_conv/README.md",
 		"visible": true
 	},
 	{
-		"name": "./image_classification/efficientnet/ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_int8.onnx",
-		"description": "ST Efficientnet 224 low complexity trained from scratch on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/efficientnet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/efficientnetv2/ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_int8.onnx",
-		"description": "Efficientnet v2 on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/efficientnetv2/ST_pretrainedmodel_public_dataset/food101/efficientnetv2b1_240_fft/efficientnetv2b1_240_fft_qdq_int8.onnx",
-		"description": "Efficientnet v2 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": true
-	},	
-	{
-		"name": "./image_classification/efficientnetv2/ST_pretrainedmodel_public_dataset/food101/efficientnetv2b2_260_fft/efficientnetv2b2_260_fft_qdq_int8.onnx",
-		"description": "Efficientnet v2 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/efficientnetv2/ST_pretrainedmodel_public_dataset/food101/efficientnetv2s_384_fft/efficientnetv2s_384_fft_qdq_int8.onnx",
-		"description": "Efficientnet v2 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": true
-	},	
-	{
-		"name": "./image_classification/efficientnetv2/Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b0_224/efficientnetv2b0_224_qdq_int8.onnx",
-		"description": "Efficientnet v2 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": false
-	},
-	{
-		"name": "./image_classification/efficientnetv2/Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b1_240/efficientnetv2b1_240_qdq_int8.onnx",
-		"description": "Efficientnet v2 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": false
-	},	
-	{
-		"name": "./image_classification/efficientnetv2/Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2b2_260/efficientnetv2b2_260_qdq_int8.onnx",
-		"description": "Efficientnet v2 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": false
-	},
-	{
-		"name": "./image_classification/efficientnetv2/Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_int8.onnx",
-		"description": "Efficientnet v2 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/efficientnetv2/README.md",
-		"visible": false
-	},	
-	{
-		"name": "./image_classification/fdmobilenet/ST_pretrainedmodel_public_dataset/food101/fdmobilenet_a025_128_tfs/fdmobilenet_a025_128_tfs_int8.tflite",
-		"description": "FdMobileNet 0.25 128 trained from scratch on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/fdmobilenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/fdmobilenet/ST_pretrainedmodel_public_dataset/food101/fdmobilenet_a025_224_tfs/fdmobilenet_a025_224_tfs_int8.tflite",
-		"description": "FdMobileNet 0.25 224 trained from scratch on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/fdmobilenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/fdmobilenet/ST_pretrainedmodel_public_dataset/food101/st_fdmobilenetv1_128_tfs/st_fdmobilenetv1_128_tfs_int8.tflite",
-		"description": "ST FdMobileNet 128 trained from scratch on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/fdmobilenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/fdmobilenet/ST_pretrainedmodel_public_dataset/food101/st_fdmobilenetv1_224_tfs/st_fdmobilenetv1_224_tfs_int8.tflite",
-		"description": "ST FdMobileNet 224 trained from scratch on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/fdmobilenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/stmnist/ST_pretrainedmodel_public_dataset/emnist_byclass/st_mnistv1_28_tfs/st_mnistv1_28_tfs_int8.tflite",
-		"description": "ST MNIST trained from scratch on EMNIST-Byclass with 36 classes",
-		"usecase": "image_classification",
-		"dataset_used": "emnist_byclass",
-		"readme": "./image_classification/stmnist/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv1/ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_fft/mobilenetv1_a025_96_fft_int8.tflite",
-		"description": "MobileNetv1 0.25 96 trained with full fine tuning on tf_flowers dataset with 5 classes",
-		"usecase": "image_classification",
-		"dataset_used": "tf_flowers",
-		"readme": "./image_classification/mobilenetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv1/ST_pretrainedmodel_public_dataset/tf_flowers/mobilenetv1_a025_96_grayscale_tfs/mobilenetv1_a025_96_grayscale_tfs_int8.tflite",
-		"description": "MobileNetv1 0.25 96 grayscale trained from scratch on tf_flowers dataset with 5 classes",
-		"usecase": "image_classification",
-		"dataset_used": "tf_flowers",
-		"readme": "./image_classification/mobilenetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv1/ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a025_224_fft/mobilenetv1_a025_224_fft_int8.tflite",
-		"description": "MobileNetv1 0.25 224 trained with full fine tuning on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/mobilenetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv1/ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a050_224_fft/mobilenetv1_a050_224_fft_int8.tflite",
-		"description": "MobileNetv1 0.5 224 trained with full fine tuning on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/mobilenetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv1/ST_pretrainedmodel_public_dataset/food101/mobilenetv1_a100_224_fft/mobilenetv1_a100_224_fft_int8.tflite",
-		"description": "MobileNetv1 1.0 224 trained with full fine tuning on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/mobilenetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv1/Public_pretrainedmodel_public_dataset/imagenet/mobilenetv1_a100_224/mobilenetv1_a100_224_int8.tflite",
-		"description": "MobileNetv1 1.0 224 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/mobilenetv1/README.md",
-		"visible": false
-	},
-	{
-		"name": "./image_classification/mobilenetv2/ST_pretrainedmodel_public_dataset/person/mobilenetv2_a035_128_fft/mobilenetv2_a035_128_fft_int8.tflite",
-		"description": "MobileNetv2 0.35 128 trained with full fine tuning on Person (derived from COCO-2014) with 2 classes",
-		"usecase": "image_classification",
-		"dataset_used": "person",
-		"readme": "./image_classification/mobilenetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv2/ST_pretrainedmodel_public_dataset/food101/mobilenetv2_a035_128_fft/mobilenetv2_a035_128_fft_int8.tflite",
-		"description": "MobileNetv2 0.35 128 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/mobilenetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv2/ST_pretrainedmodel_public_dataset/food101/mobilenetv2_a035_224_fft/mobilenetv2_a035_224_fft_int8.tflite",
-		"description": "MobileNetv2 0.35 224 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/mobilenetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv2/ST_pretrainedmodel_public_dataset/food101/mobilenetv2_a100_224_fft/mobilenetv2_a100_224_fft_int8.tflite",
-		"description": "MobileNetv2 1.0 224 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/mobilenetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/mobilenetv2/Public_pretrainedmodel_public_dataset/imagenet/mobilenetv2_a100_224/mobilenetv2_a100_224_int8.tflite",
-		"description": "MobileNetv2 1.0 224 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/mobilenetv2/README.md",
-		"visible": false
-	},	
-	{
-		"name": "./image_classification/mobilenetv2/Public_pretrainedmodel_public_dataset/imagenet/mobilenetv2_a140_224/mobilenetv2_a140_224_int8.tflite",
-		"description": "MobileNetv2 1.4 224 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/mobilenetv2/README.md",
-		"visible": false
-	},	
-	{
-		"name": "./image_classification/resnetv1/ST_pretrainedmodel_public_dataset/cifar100/resnet32_32_tfs/resnet32_32_tfs_int8.tflite",
-		"description": "ResNetv1 32 32 trained from scratch on Cifar100 with 100 classes",
-		"usecase": "image_classification",
-		"dataset_used": "cifar100",
-		"readme": "./image_classification/resnetv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/squeezenetv1.1/ST_pretrainedmodel_public_dataset/food101/squeezenetv1.1_128_tfs/squeezenetv1.1_128_tfs_int8.tflite",
-		"description": "SqueezeNetv1.1 128 trained from scratch on food101  dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/squeezenetv1.1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/squeezenetv1.1/ST_pretrainedmodel_public_dataset/food101/squeezenetv1.1_224_tfs/squeezenetv1.1_224_tfs_int8.tflite",
-		"description": "SqueezeNetv1.1 224 trained from scratch on food101  dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/squeezenetv1.1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./image_classification/resnet50v2/ST_pretrainedmodel_public_dataset/food101/resnet50v2_224_fft/resnet50v2_224_fft_int8.tflite",
-		"description": "ResNet50v2 224 fine-tuned on food101 dataset with 101 classes, 1000 images per class",
-		"usecase": "image_classification",
-		"dataset_used": "food101",
-		"readme": "./image_classification/resnet50v2/README.md",
-		"visible": true
-	},	
-	{
-		"name": "./image_classification/resnet50v2/Public_pretrainedmodel_public_dataset/imagenet/resnet50v2_224/resnet50v2_224_int8.tflite",
-		"description": "ResNet50v2 224 pre-trained on imagenet dataset with 1000 classes",
-		"usecase": "image_classification",
-		"dataset_used": "imagenet",
-		"readme": "./image_classification/resnet50v2/README.md",
-		"visible": false
-		},
-	{
-		"name": "./object_detection/yolov2t/ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite",
-		"description": "tiny yolo v2 224 trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/yolov2t/README.md",
-		"visible": false
-	},
-	{
-		"name": "./object_detection/yolov2t/ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite",
-		"description": "tiny yolo v2 416 trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/yolov2t/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/yolov2t/ST_pretrainedmodel_custom_dataset/st_person/yolov2t_224/yolov2t_224_int8.tflite",
-		"description": "tiny yolo v2 224 trained on internal ST Person (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "ST Person",
-		"readme": "./object_detection/yolov2t/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_192/st_yololcv1_192_int8.tflite",
-		"description": "ST yolo low complexity v1 192 (derived from tiny yolo v2) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yololcv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_224/st_yololcv1_224_int8.tflite",
-		"description": "ST yolo low complexity v1 224 (derived from tiny yolo v2) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yololcv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_256/st_yololcv1_256_int8.tflite",
-		"description": "ST yolo low complexity v1 256 (derived from tiny yolo v2) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yololcv1/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_192/st_yoloxn_d033_w025_192_int8.tflite",
-		"description": "ST yolo X (derived from yoloxn) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yoloxn/README.md",
-		"visible": true
-	},	
-	{
-		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_256/st_yoloxn_d033_w025_256_int8.tflite",
-		"description": "ST yolo X (derived from yoloxn) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yoloxn/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_320/st_yoloxn_d033_w025_320_int8.tflite",
-		"description": "ST yolo X (derived from yoloxn) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yoloxn/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_416/st_yoloxn_d033_w025_416_int8.tflite",
-		"description": "ST yolo X (derived from yoloxn) trained on COCO 2017 (Person Detection) with 1 class",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yoloxn/README.md",
-		"visible": true
-	},
-	{
-		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d100_w025_480/st_yoloxn_d100_w025_480_int8.tflite",
-		"description": "ST yolo X (derived from yoloxn) trained on COCO 2017 (Person Detection) with 1 class, dm=1.0, wm=0.25, 3 anchors",
-		"usecase": "object_detection",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./object_detection/st_yoloxn/README.md",
-		"visible": true
-	},
-	{
-		"name": "./pose_estimation/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_a100_heatmaps_192/movenet_lightning_a100_heatmaps_192_int8.tflite",
-		"description": "Movenet variant trained on COCO 2017 (Person) with 1 class",
-		"usecase": "pose_estimation",
-		"dataset_used": "Custom COCO 2017 Person",
-		"readme": "./pose_estimation/movenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./pose_estimation/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_a100_heatmaps_224/movenet_lightning_a100_heatmaps_224_int8.tflite",
-		"description": "Movenet variant trained on COCO 2017 (Person) with 1 class",
-		"usecase": "pose_estimation",
-		"dataset_used": "Custom COCO 2017 Person",
-		"readme": "./pose_estimation/movenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./pose_estimation/movenet/Public_pretrainedmodel_custom_dataset/custom_dataset_person_17kpts/movenet_lightning_a100_heatmaps_256/movenet_lightning_a100_heatmaps_256_int8.tflite",
-		"description": "Movenet variant trained on COCO 2017 (Person) with 1 class",
-		"usecase": "pose_estimation",
-		"dataset_used": "Custom COCO 2017 Person",
-		"readme": "./pose_estimation/movenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./pose_estimation/movenet/ST_pretrainedmodel_public_dataset/custom_dataset_person_13kpts/st_movenet_lightning_a100_heatmaps_192/st_movenet_lightning_a100_heatmaps_192_int8.tflite",
-		"description": "Movenet variant trained on COCO 2017 (Person) with 1 class",
-		"usecase": "pose_estimation",
-		"dataset_used": "COCO 2017 Person",
-		"readme": "./pose_estimation/movenet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./semantic_segmentation/deeplabv3/ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/deeplabv3_mnv2_a050_s16_asppv2_256/deeplabv3_mnv2_a050_s16_asppv2_256_qdq_int8.onnx",
-		"description": "Deeplabv3 variant trained on fused coco 2017 and pascal voc 2012 dataset with person",
-		"usecase": "semantic_segmentation",
-		"dataset_used": "person_coco_2017_pascal_voc_2012",
-		"readme": "./semantic_segmentation/deeplabv3/README.md",
-		"visible": true
-	},	
-	{
-		"name": "./semantic_segmentation/deeplabv3/ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/deeplabv3_mnv2_a050_s16_asppv2_320/deeplabv3_mnv2_a050_s16_asppv2_320_qdq_int8.onnx",
-		"description": "Deeplabv3 variant trained on fused coco 2017 and pascal voc 2012 dataset with person",
-		"usecase": "semantic_segmentation",
-		"dataset_used": "person_coco_2017_pascal_voc_2012",
-		"readme": "./semantic_segmentation/deeplabv3/README.md",
-		"visible": true
-	},
-	{
-		"name": "./semantic_segmentation/deeplabv3/ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/deeplabv3_mnv2_a050_s16_asppv2_416/deeplabv3_mnv2_a050_s16_asppv2_416_qdq_int8.onnx",
-		"description": "Deeplabv3 variant trained on fused coco 2017 and pascal voc 2012 dataset with person",
-		"usecase": "semantic_segmentation",
-		"dataset_used": "person_coco_2017_pascal_voc_2012",
-		"readme": "./semantic_segmentation/deeplabv3/README.md",
-		"visible": true
-	},
-	{
-		"name": "./semantic_segmentation/deeplabv3/ST_pretrainedmodel_public_dataset/coco_2017_pascal_voc_2012/deeplabv3_mnv2_a050_s16_asppv1_512/deeplabv3_mnv2_a050_s16_asppv1_512_qdq_int8.onnx",
-		"description": "Deeplabv3 variant trained on fused coco 2017 and pascal voc 2012 dataset on 20 classes",
-		"usecase": "semantic_segmentation",
-		"dataset_used": "coco_2017_pascal_voc_2012",
-		"readme": "./semantic_segmentation/deeplabv3/README.md",
+		"name": "./arc_fault_detection/st_dense/ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_8channels_512/st_dense_freq_8channels_512_int8.tflite",
+		"description": " st_dense model is a lightweight fully connected neural network designed for arc fault detection (normal vs arc). Trained on ST proprietary AFD test bench dataset",
+		"usecase": "arc_fault_detection",
+		"dataset_used": "afd_test_bench_dataset",
+		"readme": "./arc_fault_detection/st_dense/README.md",
 		"visible": true
 	},
 	{
 		"name": "./audio_event_detection/miniresnetv1/ST_pretrainedmodel_public_dataset/esc10/miniresnetv1_s1_64x50_tl/miniresnetv1_s1_64x50_tl_int8.tflite",
-		"description": "MiniResNet 1 stacks 64x50 trained on ESC-10 with 10 classes",
+		"description": "MiniResNet v1 trained on ESC-10 with 10 classes and input mel-spectrogram size 64x50",
 		"usecase": "audio_event_detection",
 		"dataset_used": "esc10",
 		"readme": "./audio_event_detection/miniresnet/README.md",
 		"visible": true
 	},
 	{
-		"name": "./audio_event_detection/miniresnetv1/ST_pretrainedmodel_public_dataset/esc10/miniresnetv1_s2_64x50_tl/miniresnetv1_s2_64x50_tl_int8.tflite",
-		"description": "MiniResNet 2 stacks 64x50 trained on ESC-10 with 10 classes",
-		"usecase": "audio_event_detection",
-		"dataset_used": "esc10",
-		"readme": "./audio_event_detection/miniresnet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./audio_event_detection/miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite",
-		"description": "MiniResNetv2 1 stacks 64x50 trained on ESC-10 with 10 classes",
-		"usecase": "audio_event_detection",
-		"dataset_used": "esc10",
-		"readme": "./audio_event_detection/miniresnetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./audio_event_detection/miniresnetv2/ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite",
-		"description": "MiniResNetv2 2 stacks 64x50 trained on ESC-10 with 10 classes",
-		"usecase": "audio_event_detection",
-		"dataset_used": "esc10",
-		"readme": "./audio_event_detection/miniresnetv2/README.md",
-		"visible": true
-	},
-	{
-		"name": "./audio_event_detection/yamnet/ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite",
-		"description": "Yamnet 256 64x96 trained on ESC-10 with 10 classes",
-		"usecase": "audio_event_detection",
-		"dataset_used": "esc10",
-		"readme": "./audio_event_detection/yamnet/README.md",
-		"visible": true
-	},
-	{
-		"name": "./audio_event_detection/yamnet/ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_int8.tflite",
-		"description": "Yamnet 1024 64x96 trained on ESC-10 with 10 classes",
+		"name": "./audio_event_detection/yamnet/ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx",
+		"description": "Yamnet trained on ESC-10 with 10 classes, embedding size 1024 and input mel-spectrogram size 64x96",
 		"usecase": "audio_event_detection",
 		"dataset_used": "esc10",
 		"readme": "./audio_event_detection/yamnet/README.md",
@@ -457,55 +33,47 @@
 	},
 	{
 		"name": "./audio_event_detection/yamnet/ST_pretrainedmodel_public_dataset/fsd50k/yamnet_e256_64x96_tl/without_unknown_class/yamnet_e256_64x96_tl_int8.tflite",
-		"description": "Yamnet 256 64x96 trained on FSD50K with 5 classes",
+		"description": "Yamnet trained on FSD50K with 5 classes, embedding size 256 and input mel-spectrogram size 64x96, without unknown class",
 		"usecase": "audio_event_detection",
 		"dataset_used": "fsd50k",
 		"readme": "./audio_event_detection/yamnet/README.md",
 		"visible": true
 	},
 	{
-		"name": "./audio_event_detection/yamnet/ST_pretrainedmodel_public_dataset/fsd50k/yamnet_e256_64x96_tl/with_unknown_class/yamnet_e256_64x96_tl_int8.tflite",
-		"description": "Yamnet 256 64x96 trained on FSD50K with 5 classes, with an additional 'unknown' class",
-		"usecase": "audio_event_detection",
-		"dataset_used": "fsd50k",
-		"readme": "./audio_event_detection/yamnet/README.md",
+		"name": "./depth_estimation/fastdepth/Public_pretrainedmodel_public_dataset/nyu_depthv2/fastdepth_224/fastdepth_224_int8.tflite",
+		"description": "FastDepth model trained on NYU Depth v2 dataset (input 224x224 rgb image)",
+		"usecase": "depth_estimation",
+		"dataset_used": "nyu_depthv2",
+		"readme": "./depth_estimation/fastdepth/README.md",
 		"visible": true
 	},
 	{
-		"name": "./human_activity_recognition/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_24/gmp_wl_24.keras",
-		"description": "GMP 24x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/gmp/README.md",
+		"name": "./depth_estimation/fastdepth/Public_pretrainedmodel_public_dataset/nyu_depthv2/fastdepth_320/fastdepth_320_int8.tflite",
+		"description": "FastDepth model trained on NYU Depth v2 dataset (input 320x320 rgb image)",
+		"usecase": "depth_estimation",
+		"dataset_used": "nyu_depthv2",
+		"readme": "./depth_estimation/fastdepth/README.md",
 		"visible": true
 	},
 	{
-		"name": "./human_activity_recognition/gmp/ST_pretrainedmodel_public_dataset/WISDM/gmp_wl_48/gmp_wl_48.keras",
-		"description": "GMP 48x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/gmp/README.md",
+		"name": "./face_detection/yunet/Public_pretrainedmodel_public_dataset/widerface/yunetn_320/yunetn_320_qdq_int8.onnx",
+		"description": "YuNet model trained on WiderFace dataset (input size 320x320 rgb image)",
+		"usecase": "face_detection",
+		"dataset_used": "widerface",
+		"readme": "./face_detection/yunet/README.md",
 		"visible": true
 	},
 	{
-		"name": "./human_activity_recognition/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_24/ign_wl_24.keras",
-		"description": "IGN 24x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/ign/README.md",
-		"visible": true
-	},
-	{
-		"name": "./human_activity_recognition/ign/ST_pretrainedmodel_public_dataset/WISDM/ign_wl_48/ign_wl_48.keras",
-		"description": "IGN 48x3 trained on WISDM with 4 classes",
-		"usecase": "human_activity_recognition",
-		"dataset_used": "WISDM",
-		"readme": "./human_activity_recognition/ign/README.md",
+		"name": "./face_detection/facedetect_front/Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128/blazeface_front_128_int8.tflite",
+		"description": "BlazeFace front model trained on WiderFace dataset (input size 128x128 rgb image)",
+		"usecase": "face_detection",
+		"dataset_used": "widerface",
+		"readme": "./face_detection/facedetect_front/README.md",
 		"visible": true
 	},
 	{
 	"name": "./hand_posture/st_cnn2d_handposture/ST_pretrainedmodel_custom_dataset/ST_VL53L5CX_handposture_dataset/st_cnn2d_handposture_8classes/st_cnn2d_handposture_8classes.keras",
-	"description": "st_cnn2d_handposture 8 postures trained on ST_VL53L5CX_handposture_dataset with 8 classes",
+	"description": "st_cnn2d_handposture_postures model trained on ST_VL53L5CX_handposture_dataset with 8 classes",
 	"usecase": "hand_posture",
 	"dataset_used": "ST_VL53L5CX_handposture_dataset",
 	"readme": "./hand_posture/st_cnn2d_handposture/README.md",
@@ -513,10 +81,234 @@
 	},
 	{
 	"name": "./hand_posture/st_cnn2d_handposture/ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/st_cnn2d_handposture_8classes/st_cnn2d_handposture_8classes.keras",
-	"description": "st_cnn2d_handposture 8 postures trained on ST_VL53L8CX_handposture_dataset with 8 classes",
+	"description": "st_cnn2d_handposture_postures model trained on ST_VL53L8CX_handposture_dataset with 8 classes",
 	"usecase": "hand_posture",
 	"dataset_used": "ST_VL53L8CX_handposture_dataset",
 	"readme": "./hand_posture/st_cnn2d_handposture/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/st_gmp/ST_pretrainedmodel_public_dataset/WISDM/st_gmp_wl_48/st_gmp_wl_48.keras",
+		"description": "GMP model trained on WISDM with 4 classes and 48x3 input shape (accelerometer data with 48 time steps and 3 axes)",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "WISDM",
+		"readme": "./human_activity_recognition/st_gmp/README.md",
+		"visible": true
+	},
+	{
+		"name": "./human_activity_recognition/st_ign/ST_pretrainedmodel_custom_dataset/mobility_v1/st_ign_wl_48/st_ign_wl_48.keras",
+		"description": "IGN model trained on mobility_v1 (an ST proprietary dataset) with 4 classes and 48x3 input shape (accelerometer data with 48 time steps and 3 axes)",
+		"usecase": "human_activity_recognition",
+		"dataset_used": "mobility_v1",
+		"readme": "./human_activity_recognition/st_ign/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/efficientnet/ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_128_tfs/st_efficientnetlcv1_128_tfs_qdq_int8.onnx",
+		"description": "ST Efficientnet low complexity model trained from scratch on food101 dataset with 101 classes, 1000 images per class (input 128x128 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "food101",
+		"readme": "./image_classification/efficientnet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/efficientnetv2/ST_pretrainedmodel_public_dataset/food101/efficientnetv2b0_224_fft/efficientnetv2b0_224_fft_qdq_int8.onnx",
+		"description": "Efficientnet v2 model trained on food101 dataset with 101 classes, 1000 images per class (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "food101",
+		"readme": "./image_classification/efficientnetv2/README.md",
+		"visible": true
+	},	
+	{
+		"name": "./image_classification/efficientnetv2/Public_pretrainedmodel_public_dataset/imagenet/efficientnetv2s_384/efficientnetv2s_384_qdq_int8.onnx",
+		"description": "Efficientnet v2 pre-trained on imagenet dataset with 1000 classes (input 384x384 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "imagenet",
+		"readme": "./image_classification/efficientnetv2/README.md",
+		"visible": false
+	},	
+	{
+		"name": "./image_classification/fdmobilenet_pt/Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224_qdq_int8.onnx",
+		"description": "FdMobileNet 0.25 pre-trained on imagenet dataset with 1000 classes",
+		"usecase": "image_classification",
+		"dataset_used": "imagenet",
+		"readme": "./image_classification/fdmobilenet_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/mobilenet_pt/Public_pretrainedmodel_public_dataset/Imagenet/mobilenet_a050_pt_224/mobilenet_a050_pt_224_qdq_int8.onnx",
+		"description": "MobileNet 0.5 pre-trained model on imagenet dataset with 1000 classes (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "imagenet",
+		"readme": "./image_classification/mobilenet_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/squeezenet_pt/Public_pretrainedmodel_public_dataset/Imagenet/squeezenetv10_pt_224/squeezenetv10_pt_224_qdq_int8.onnx",
+		"description": "SqueezeNet v1.0 model trained on imagenet dataset with 1000 classes, (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "imagenet",
+		"readme": "./image_classification/squeezenet_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/squeezenetv11/ST_pretrainedmodel_public_dataset/food101/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite",
+		"description": "SqueezeNet v1.1 trained from scratch on food101 dataset with 101 classes, 1000 images per class (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "food101",
+		"readme": "./image_classification/squeezenetv11/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/mobilenetv2/ST_pretrainedmodel_public_dataset/food101/mobilenetv2_a100_224_fft/mobilenetv2_a100_224_fft_qdq_w4_30.91%_w8_69.09%_a8_100%_acc_80.06.onnx",
+		"description": "ST MobileNetV2 100 trained from scratch on food101 dataset with 101 classes, 1000 images per class, quantized with mixed precision (w4 30.91%, w8 69.09%, a8 100%) with accuracy 80.06% (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "food101",
+		"readme": "./image_classification/mobilenetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/preresnet18_pt/Public_pretrainedmodel_public_dataset/Imagenet/preresnet18_a025_pt_224/preresnet18_a025_pt_224_qdq_int8.onnx",
+		"description": "PreResNet18 model pre-trained on imagenet dataset with 1000 classes (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "imagenet",
+		"readme": "./image_classification/preresnet18_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./image_classification/shufflenetv2_pt/Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224_qdq_int8.onnx",
+		"description": "ShuffleNetV2 b_x1.0 model pre-trained on imagenet dataset with 1000 classes (input 224x224 rgb image)",
+		"usecase": "image_classification",
+		"dataset_used": "imagenet",
+		"readme": "./image_classification/shufflenetv2_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./neural_style_transfer/xinet_picasso_muse/Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite",
+		"description": "Xinet Picasso Muse model trained on COCO 2017 (80 Classes) with Picasso style (input 160x160 rgb image)",
+		"usecase": "neural_style_transfer",
+		"dataset_used": "COCO 2017 80 classes",
+		"readme": "./neural_style_transfer/xinet_picasso_muse/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/ssd_mobilenetv1_pt/Public_pretrainedmodel_public_dataset/coco/ssd_mobilenetv1_pt_coco_300/ssd_mobilenetv1_pt_coco_300_qdq_int8.onnx",
+		"description": "SSD MobileNetV1 model trained on COCO dataset with 80 classes (input 300x300 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO",
+		"readme": "./object_detection/ssd_mobilenetv1_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/yolov2t/ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite",
+		"description": "tiny yolo v2 model trained on COCO 2017 (Person Detection) with 1 class (input 416x416 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 Person",
+		"readme": "./object_detection/yolov2t/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_80_classes/st_yoloxn_d100_w025_480/st_yoloxn_d100_w025_480_qdq_int8.onnx",
+		"description": "ST yoloxn (derived from yoloxn) trained on COCO 2017 (80 Classes) (input 480x480 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 80 classes",
+		"readme": "./object_detection/st_yoloxn/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_416/st_yoloxn_d033_w025_416_qdq_int8.onnx",
+		"description": "ST yoloxn (derived from yoloxn) trained on COCO 2017 (Person Detection) with 1 class (input 416x416 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 Person",
+		"readme": "./object_detection/st_yoloxn/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/st_yolodv2milli_pt/ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_192/st_yolodv2milli_actrelu_pt_coco_192_qdq_int8.onnx",
+		"description": "ST yolodv2milli model trained on COCO 2017 (80 Classes) (input 192x192 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 80 classes",
+		"readme": "./object_detection/st_yolodv2milli_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_224/st_yololcv1_224_qdq_int8.onnx",
+		"description": "ST yololcv1 model trained on COCO 2017 (Person Detection) with 1 class (input 224x224 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 Person",
+		"readme": "./object_detection/st_yololcv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_224/st_yololcv1_224_qdq_w4_50.53%_w8_49.47%_a8_100%_map_34.99.onnx",
+		"description": "ST yololcv1 model trained on COCO 2017 (Person Detection) with 1 class (input 224x224 rgb image). Quantized with mixed precision (w4 50.53%, w8 49.47%, a8 100%) with mAP 34.99%",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 Person",
+		"readme": "./object_detection/st_yololcv1/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/ssdlite_mobilenetv3small_pt/Public_pretrainedmodel_public_dataset/coco/ssdlite_mobilenetv3small_pt_coco_300/ssdlite_mobilenetv3small_pt_coco_300_qdq_int8.onnx",
+		"description": "SSDLite MobileNetV3Small model trained on COCO dataset with 80 classes (input 300x300 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 80 classes",
+		"readme": "./object_detection/ssdlite_mobilenetv3small_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/ssdlite_mobilenetv3small_pt/Public_pretrainedmodel_public_dataset/voc/ssdlite_mobilenetv3small_pt_voc_300/ssdlite_mobilenetv3small_pt_voc_300_qdq_int8.onnx",
+		"description": "SSDLite MobileNetV3Small model trained on VOC dataset with 20 classes (input 300x300 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "VOC 2012 20 classes",
+		"readme": "./object_detection/ssdlite_mobilenetv3small_pt/README.md",
+		"visible": true
+	},
+	{
+		"name": "./object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_416/st_yoloxn_d033_w025_416_int8.tflite",
+		"description": "ST yolo X (derived from yoloxn) model trained on COCO 2017 (Person Detection) with 1 class (input 416x416 rgb image)",
+		"usecase": "object_detection",
+		"dataset_used": "COCO 2017 Person",
+		"readme": "./object_detection/st_yoloxn/README.md",
+		"visible": true
+	},
+	{
+		"name": "./pose_estimation/movenet/ST_pretrainedmodel_custom_dataset/custom_coco_person_17kpts/st_movenet_lightning_a100_heatmaps_256/st_movenet_lightning_a100_heatmaps_256_int8.tflite",
+		"description": "Movenet variant trained on COCO 2017 (Person) with 1 class with 17 key points (input 256x256 rgb image)",
+		"usecase": "pose_estimation",
+		"dataset_used": "Custom COCO 2017 Person",
+		"readme": "./pose_estimation/movenet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./re_identification/mobilenetv2/ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite",
+		"description": "MobileNetV2 variant trained on DeepSportradar dataset (input 256x128 rgb image)",
+		"usecase": "re_identification",
+		"dataset_used": "DeepSportradar",
+		"readme": "./re_identification/mobilenetv2/README.md",
+		"visible": true
+	},
+	{
+		"name": "./re_identification/osnet/ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite",
+		"description": "OSNet variant trained on DeepSportradar dataset (input 256x128 rgb image)",
+		"usecase": "re_identification",
+		"dataset_used": "DeepSportradar",
+		"readme": "./re_identification/osnet/README.md",
+		"visible": true
+	},
+	{
+		"name": "./semantic_segmentation/deeplabv3/ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_256/st_deeplabv3_mnv2_a050_s16_asppv2_256_qdq_int8.onnx",
+		"description": "Deeplabv3 variant trained on fused coco 2017 and pascal voc 2012 dataset with person (input 256x256 rgb image)",
+		"usecase": "semantic_segmentation",
+		"dataset_used": "person_coco_2017_pascal_voc_2012",
+		"readme": "./semantic_segmentation/deeplabv3/README.md",
+		"visible": true
+	},	
+	{
+		"name": "./semantic_segmentation/deeplabv3/ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_320/st_deeplabv3_mnv2_a050_s16_asppv2_320_qdq_int8.onnx",
+		"description": "Deeplabv3 variant trained on fused coco 2017 and pascal voc 2012 dataset with person (input 320x320 rgb image)",
+		"usecase": "semantic_segmentation",
+		"dataset_used": "person_coco_2017_pascal_voc_2012",
+		"readme": "./semantic_segmentation/deeplabv3/README.md",
 		"visible": true
 	},
 	{
@@ -525,30 +317,6 @@
 		"usecase": "speech_enhancement",
 		"dataset_used": "Valentini",
 		"readme": "./speech_enhancement/stft_tcnn/README.md",
-		"visible": true
-	},
-	{
-		"name": "./depth_estimation/fastdepth/Public_pretrainedmodel_public_dataset/nyu_depth_v2/fastdepth_224/fastdepth_224_int8.tflite",
-		"description": "FastDepth 224x224 int8 model trained on NYU Depth v2 dataset",
-		"usecase": "depth_estimation",
-		"dataset_used": "nyu_depth_v2",
-		"readme": "./depth_estimation/fastdepth/README.md",
-		"visible": true
-	},
-	{
-		"name": "./depth_estimation/fastdepth/Public_pretrainedmodel_public_dataset/nyu_depth_v2/fastdepth_256/fastdepth_256_int8.tflite",
-		"description": "FastDepth 256x256 int8 model trained on NYU Depth v2 dataset",
-		"usecase": "depth_estimation",
-		"dataset_used": "nyu_depth_v2",
-		"readme": "./depth_estimation/fastdepth/README.md",
-		"visible": true
-	},
-	{
-		"name": "./depth_estimation/fastdepth/Public_pretrainedmodel_public_dataset/nyu_depth_v2/fastdepth_320/fastdepth_320_int8.tflite",
-		"description": "FastDepth 320x320 int8 model trained on NYU Depth v2 dataset",
-		"usecase": "depth_estimation",
-		"dataset_used": "nyu_depth_v2",
-		"readme": "./depth_estimation/fastdepth/README.md",
 		"visible": true
 	}
 ]

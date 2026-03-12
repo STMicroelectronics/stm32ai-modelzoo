@@ -81,16 +81,6 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| Model | Format | Resolution | Top 1 Accuracy |
-| --- | --- | --- | --- |
-| [dla46c_pt](./Public_pretrainedmodel_public_dataset/Imagenet/dla46c_pt_224/dla46c_pt_224.onnx) | Float | 224x224x3 | 65.03 % |
-| [dla46c_pt](./Public_pretrainedmodel_public_dataset/Imagenet/dla46c_pt_224/dla46c_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 64.43 % |
-| [dla46xc_pt](./Public_pretrainedmodel_public_dataset/Imagenet/dla46xc_pt_224/dla46xc_pt_224.onnx) | Float | 224x224x3 | 66.50 % |
-| [dla46xc_pt](./Public_pretrainedmodel_public_dataset/Imagenet/dla46xc_pt_224/dla46xc_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 66.06 % |
-| [dla60xc_pt](./Public_pretrainedmodel_public_dataset/Imagenet/dla60xc_pt_224/dla60xc_pt_224.onnx) | Float | 224x224x3 | 68.30 % |
-| [dla60xc_pt](./Public_pretrainedmodel_public_dataset/Imagenet/dla60xc_pt_224/dla60xc_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 67.73 % |
-
-
 Dataset details: [link](https://www.image-net.org)
 Number of classes: 1000.
 To perform the quantization, we calibrated the activations with a random subset of the training set.

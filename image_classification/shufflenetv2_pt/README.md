@@ -81,17 +81,10 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| Model | Format | Resolution | Top 1 Accuracy |
-| --- | --- | --- | --- |
-| [shufflenetv2_x050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x050_pt_224/shufflenetv2_x050_pt_224.onnx) | Float | 224x224x3 | 60.63 % |
-| [shufflenetv2_x050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x050_pt_224/shufflenetv2_x050_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 59.69 % |
-| [shufflenetv2_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x100_pt_224/shufflenetv2_x100_pt_224.onnx) | Float | 224x224x3 | 69.29 % |
-| [shufflenetv2_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x100_pt_224/shufflenetv2_x100_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 68.65 % |
-| [shufflenetv2b_x050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x050_pt_224/shufflenetv2b_x050_pt_224.onnx) | Float | 224x224x3 | 60.90 % |
-| [shufflenetv2b_x050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x050_pt_224/shufflenetv2b_x050_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 59.62 % |
-| [shufflenetv2b_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224.onnx) | Float | 224x224x3 | 70.40 % |
-| [shufflenetv2b_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 69.59 % |
-
+Dataset details: [link](https://www.image-net.org)
+Number of classes: 1000.
+To perform the quantization, we calibrated the activations with a random subset of the training set.
+For the sake of simplicity, the accuracy reported here was estimated on the 50000 labelled images of the validation set.
 
 | Model | Format | Resolution | Top 1 Accuracy |
 | --- | --- | --- | --- |

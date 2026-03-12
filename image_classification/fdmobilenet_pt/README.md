@@ -79,15 +79,10 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| Model | Format | Resolution | Top 1 Accuracy |
-| --- | --- | --- | --- |
-| [fdmobilenet_a025_pt](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224.onnx) | Float | 224x224x3 | 45.37 % |
-| [fdmobilenet_a025_pt](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 29.73 % |
-| [fdmobilenet_a050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a050_pt_224/fdmobilenet_a050_pt_224.onnx) | Float | 224x224x3 | 58.04 % |
-| [fdmobilenet_a050_pt](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a050_pt_224/fdmobilenet_a050_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 41.58 % |
-| [fdmobilenet_a075_pt](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a075_pt_224/fdmobilenet_a075_pt_224.onnx) | Float | 224x224x3 | 62.10 % |
-| [fdmobilenet_a075_pt](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a075_pt_224/fdmobilenet_a075_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 60.29 % |
-
+Dataset details: [link](https://www.image-net.org)
+Number of classes: 1000.
+To perform the quantization, we calibrated the activations with a random subset of the training set.
+For the sake of simplicity, the accuracy reported here was estimated on the 50000 labelled images of the validation set.
 
 | Model | Format | Resolution | Top 1 Accuracy |
 | --- | --- | --- | --- |

@@ -85,21 +85,10 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| Model | Format | Resolution | Top 1 Accuracy |
-| --- | --- | --- | --- |
-| [sqnxt23_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x100_pt_224/sqnxt23_x100_pt_224.onnx) | Float | 224x224x3 | 58.18 % |
-| [sqnxt23_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x100_pt_224/sqnxt23_x100_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 57.86 % |
-| [sqnxt23_x150_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x150_pt_224/sqnxt23_x150_pt_224.onnx) | Float | 224x224x3 | 66.17 % |
-| [sqnxt23_x150_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x150_pt_224/sqnxt23_x150_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 65.48 % |
-| [sqnxt23_x200_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x200_pt_224/sqnxt23_x200_pt_224.onnx) | Float | 224x224x3 | 70.56 % |
-| [sqnxt23_x200_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x200_pt_224/sqnxt23_x200_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 70.25 % |
-| [sqnxt23v5_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x100_pt_224/sqnxt23v5_x100_pt_224.onnx) | Float | 224x224x3 | 59.85 % |
-| [sqnxt23v5_x100_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x100_pt_224/sqnxt23v5_x100_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 59.57 % |
-| [sqnxt23v5_x150_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x150_pt_224/sqnxt23v5_x150_pt_224.onnx) | Float | 224x224x3 | 67.32 % |
-| [sqnxt23v5_x150_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x150_pt_224/sqnxt23v5_x150_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 66.78 % |
-| [sqnxt23v5_x200_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x200_pt_224/sqnxt23v5_x200_pt_224.onnx) | Float | 224x224x3 | 71.42 % |
-| [sqnxt23v5_x200_pt](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x200_pt_224/sqnxt23v5_x200_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 71.02 % |
-
+Dataset details: [link](https://www.image-net.org)
+Number of classes: 1000.
+To perform the quantization, we calibrated the activations with a random subset of the training set.
+For the sake of simplicity, the accuracy reported here was estimated on the 50000 labelled images of the validation set.
 
 | Model | Format | Resolution | Top 1 Accuracy |
 | --- | --- | --- | --- |

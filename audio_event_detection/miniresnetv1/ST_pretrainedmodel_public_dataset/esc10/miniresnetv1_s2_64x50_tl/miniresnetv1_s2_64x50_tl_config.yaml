@@ -93,8 +93,7 @@ training:
   dropout: 0
   batch_size: 16
   epochs: 25
-  resume_training_from: # Optional, use to resume a training from a previous experiment.
-                        # Example: experiments_outputs/2023_10_26_18_36_09/saved_models/last_augmented_model.h5 
+  resume_training: # Optional, use to resume a training from a previous experiment.
   optimizer:
     Adam:
       learning_rate: 0.001

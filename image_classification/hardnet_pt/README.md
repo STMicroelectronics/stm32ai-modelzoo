@@ -76,12 +76,6 @@ For an image resolution of NxM and P classes
 
 ### Accuracy with Imagenet dataset
 
-| Model | Format | Resolution | Top 1 Accuracy |
-| --- | --- | --- | --- |
-| [hardnet39ds_pt](./Public_pretrainedmodel_public_dataset/Imagenet/hardnet39ds_pt_224/hardnet39ds_pt_224.onnx) | Float | 224x224x3 | 74.38 % |
-| [hardnet39ds_pt](./Public_pretrainedmodel_public_dataset/Imagenet/hardnet39ds_pt_224/hardnet39ds_pt_224_qdq_int8.onnx) | Int8 | 224x224x3 | 73.61 % |
-
-
 Dataset details: [link](https://www.image-net.org)
 Number of classes: 1000.
 To perform the quantization, we calibrated the activations with a random subset of the training set.

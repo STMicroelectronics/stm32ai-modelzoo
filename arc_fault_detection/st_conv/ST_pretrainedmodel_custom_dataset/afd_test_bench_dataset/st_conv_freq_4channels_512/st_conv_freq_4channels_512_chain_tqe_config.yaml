@@ -9,8 +9,7 @@ general:
 
 model:
   model_path: ../../stm32ai-modelzoo/arc_fault_detection/st_conv/ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_4channels_512/st_conv_freq_4channels_512.keras
-  input_shape: (4,512,1)
-
+  
 operation_mode: chain_tqe
 #choices=['benchmarking', 'evaluation', 'training', 'quantization', 'prediction',
 #        'chain_tb','chain_tbqeb','chain_tqe','chain_eqe','chain_qb','chain_eqeb']
@@ -35,7 +34,7 @@ preprocessing:
   time_domain: False
 
 training:
-  resume_training_from:
+  initialize_parameters_from:
   batch_size: 256
   epochs: 40
   optimizer:

@@ -82,7 +82,7 @@ data_augmentation:
     change_rate: 1.0
 
 training:
-  resume_training_from: null
+  resume_training: False
   dropout: 0.15
   batch_size: 64
   epochs: 3000
