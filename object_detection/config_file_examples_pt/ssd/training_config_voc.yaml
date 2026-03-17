@@ -1,0 +1,78 @@
+operation_mode: training
+
+general:
+  saved_models_dir: ssd_mobilenetv1_pt           
+  global_seed: 42
+
+model:
+  framework: 'torch' 
+  model_type : ssd
+  # model_name options for SSD model 
+  # ['ssd_mobilenetv1_pt', 'ssdlite_mobilenetv1_pt', 'ssd_mobilenetv2_pt', 'ssdlite_mobilenetv2_pt', 'ssdlite_mobilenetv3small_pt', 'ssdlite_mobilenetv3large_pt']
+  model_name: "ssdlite_mobilenetv3small_pt"
+  width_mult: 1.0
+  pretrained: True
+  pretrained_dataset : voc
+  input_shape: [3, 300, 300]
+  num_classes: 20
+  
+dataset:
+  format : voc
+  dataset_name: voc
+  class_names: [
+            'aeroplane', 'bicycle', 'bird', 'boat',
+            'bottle', 'bus', 'car', 'cat', 'chair',
+            'cow', 'diningtable', 'dog', 'horse',
+            'motorbike', 'person', 'pottedplant',
+            'sheep', 'sofa', 'train', 'tvmonitor']
+  num_workers: 4
+  training_path : "" # not used
+  train_images_path : ./datasets/VOCdevkit/VOC2012/JPEGImages # image folder (image files)
+  train_annotations_path: ./datasets/VOCdevkit/VOC2012/Annotations # annotation folder *.xml files
+  train_split :  ./datasets/VOCdevkit/VOC2012/ImageSets/Main/trainval.txt # list of images (names) as in pascal voc
+  val_images_path : ./datasets/VOCdevkit/VOC2007/JPEGImages/
+  val_annotations_path: ./datasets/VOCdevkit/VOC2007/Annotations/  
+  val_split : ./datasets/VOCdevkit/VOC2007/ImageSets/Main/test.txt
+
+training:
+  trainer_name : ssd
+  batch_size: 32
+  epochs: 300
+  validation_epochs: 2
+  print_interval : 20
+  base_net_lr: null             
+  extra_layers_lr: null
+  gamma: 0.1
+  scheduler: "cosine"  
+  t_max: 200
+  optimizer: 
+    SGD:
+      learning_rate: 0.01 
+      momentum: 0.9
+      weight_decay: 0.0005
+
+# ---------------- preprocessing Configuration ---------------- #
+preprocessing: 
+  mean :  [127, 127, 127]
+  std : 128.0
+  rescaling:
+    scale  : 1
+    offset : 0 
+  resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+  color_mode: rgb
+
+# ---------------- postprocessing Configuration ---------------- #
+postprocessing: # 
+  confidence_thresh: 0.01
+  NMS_thresh: 0.50
+  IoU_eval_thresh: 0.5 
+  max_detection_boxes: 100
+
+mlflow:
+  uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

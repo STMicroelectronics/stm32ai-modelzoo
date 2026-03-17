@@ -1,0 +1,82 @@
+general:
+  project_name: my_project
+  saved_models_dir: saved_models
+  gpu_memory_limit: 16
+  global_seed: 127
+
+operation_mode: chain_tqe
+
+model: 
+  model_path: ../../stm32ai-modelzoo/object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_224/st_yololcv1_224.h5
+  model_type: st_yololcv1
+  input_shape: (224,224,3)
+   
+
+
+dataset:
+  format: pascal_voc
+  dataset_name: pascal_voc    
+  class_names: [ aeroplane,bicycle,bird,boat,bottle,bus,car,cat,chair,cow,diningtable,dog,horse,motorbike,person,pottedplant,sheep,sofa,train,tvmonitor ]
+  training_path: ./datasets/Pascal_VOC_2012/train/
+  validation_path: ./datasets/Pascal_VOC_2012/valid/
+  validation_split: 
+  test_path:
+  quantization_path: 
+  quantization_split: 
+
+preprocessing:
+  rescaling:
+    scale: 1/255
+    offset: 0
+  resizing:
+    interpolation: nearest
+    aspect_ratio: fit
+  color_mode: rgb
+
+data_augmentation:
+  random_contrast:
+    factor: 0.4
+  random_brightness:
+    factor: 0.3
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.1
+    height_factor: 0.1
+  random_rotation:
+    factor: 0.05
+
+training:
+  batch_size: 64
+  epochs: 1000
+  optimizer:
+    Adam:
+      learning_rate: 0.001
+  callbacks:
+    ReduceLROnPlateau:
+      monitor: val_loss
+      patience: 20
+    EarlyStopping:
+      monitor: val_loss
+      patience: 40
+      
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 100
+
+quantization:
+   quantizer: TFlite_converter
+   quantization_type: PTQ
+   quantization_input_type: uint8
+   quantization_output_type: float
+   export_dir: quantized_models
+
+mlflow:
+   uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

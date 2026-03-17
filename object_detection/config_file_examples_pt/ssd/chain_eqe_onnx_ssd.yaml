@@ -1,0 +1,58 @@
+operation_mode: chain_eqe
+
+model:
+  framework: torch
+  input_shape: [3, 300, 300]
+  model_type : ssd
+  model_path: ssdlite_mobilenetv2_pt_300.onnx
+
+dataset:
+  format : 'voc'
+  dataset_name: "voc"
+  num_workers: 0
+  class_names: ('aeroplane', 'bicycle', 'bird', 'boat','bottle', 'bus', 'car', 'cat', 'chair','cow', 'diningtable', 'dog', 'horse','motorbike', 'person', 'pottedplant','sheep', 'sofa', 'train', 'tvmonitor')
+  training_path : ""
+  train_images_path : ./datasets/VOCdevkit/VOC2012/JPEGImages
+  train_annotations_path: ./datasets/VOCdevkit/VOC2012/Annotations
+  train_split : ./datasets/VOCdevkit/VOC2012/ImageSets/Main/val.txt
+  val_images_path : ./datasets/VOCdevkit/VOC2012/JPEGImages
+  val_annotations_path: ./datasets/VOCdevkit/VOC2012/Annotations  
+  val_split : ./datasets/VOCdevkit/VOC2012/ImageSets/Main/val.txt
+  test_images_path : ./datasets/VOCdevkit/VOC2012/JPEGImages
+  test_annotations_path: ./datasets/VOCdevkit/VOC2012/Annotations
+  test_split : ./datasets/VOCdevkit/VOC2012/ImageSets/Main/val.txt
+  quantization_split: 0.01
+
+preprocessing: 
+  mean :  [127, 127, 127]
+  std : 128.0
+  rescaling:
+    scale  : 1
+    offset : 0 
+  resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: False #True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 100
+
+quantization:
+  quantizer: onnx_quantizer
+  target_opset: 17
+  granularity: per_channel #per_channel
+  quantization_type: PTQ
+  quantization_input_type: float 
+  quantization_output_type: float
+  export_dir: quantized_models
+
+mlflow:
+   uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

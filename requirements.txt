@@ -1,0 +1,46 @@
+# Python 3.11+ required
+
+
+# Deep Learning Frameworks
+tensorflow==2.15.1
+tf_keras==2.15.1
+keras==2.15.0
+torch==2.10.0
+torchvision==0.25.0
+
+# Ultralytics YOLOv8
+ultralytics==8.4.21
+ultralytics-thop==2.0.18
+
+# ONNX Tools
+onnx==1.15.0
+onnxruntime==1.18.1
+onnx2tf==1.28.8
+onnx_graphsurgeon==0.5.8
+onnxslim==0.1.87
+sng4onnx==2.0.1
+
+# TFLite
+ai-edge-litert==1.3.0
+
+# Configuration
+hydra-core==1.3.2
+omegaconf==2.3.0
+munch==4.0.0
+
+# Data Processing
+numpy==1.26.4
+opencv-python==4.13.0.92
+pillow==12.1.1
+scipy==1.17.1
+matplotlib==3.10.8
+
+# Utilities
+tqdm==4.67.3
+psutil==7.2.2
+PyYAML==6.0.3
+protobuf==3.20.3
+h5py==3.16.0
+
+# Network
+requests==2.32.5

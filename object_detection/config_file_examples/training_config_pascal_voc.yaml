@@ -1,0 +1,96 @@
+general:
+  project_name: st_yoloxn_d033_w025_256
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: false
+  gpu_memory_limit: 16 #24
+  num_threads_tflite: 12
+  global_seed: 127
+
+operation_mode: training
+
+model: 
+  model_type: st_yoloxn
+  model_name: st_yoloxn_d033_w025
+  input_shape: (256,256,3)
+
+dataset:
+  format: pascal_voc
+  class_names: [person]
+  dataset_name: pascal_voc
+  exclude_unlabeled: true
+  download_data: false
+  max_detections: 20
+  data_dir: ./datasets/pascal_voc/tmp/
+  train_images_path: /local/datasets/VOC0712/JPEGImages/
+  train_xml_dir: /local/datasets/VOC0712/Annotations #!!!
+  training_path: ./datasets/pascal_voc/tmp/train
+  validation_split: 0.1
+  test_path: ./datasets/pascal_voc/tmp/test
+
+preprocessing:
+  rescaling:
+    scale: 1/255
+    offset: 0
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+data_augmentation:
+  random_contrast:
+    factor: 0.4
+  random_brightness:
+    factor: 0.3
+  random_flip:
+    mode: horizontal
+  random_translation:
+    width_factor: 0.15
+    height_factor: 0.15
+    fill_mode: reflect
+    interpolation: nearest
+  random_rotation:
+    factor: 0.02
+    fill_mode: reflect
+    interpolation: nearest
+  random_crop:
+    crop_center_x: (0.25, 0.75)
+    crop_center_y: (0.25, 0.75)
+    crop_width: (0.6, 0.9)
+    crop_height: (0.6, 0.9)
+    change_rate: 0.9
+
+training:
+  dropout: null
+  batch_size: 64
+  epochs: 400
+  optimizer:
+    Adam:
+      learning_rate: 0.0025
+  callbacks:
+    LRWarmupCosineDecay:
+      initial_lr: 1.0e-05
+      warmup_steps: 20
+      max_lr: 0.00125
+      hold_steps: 20
+      decay_steps: 300
+      end_lr: 1.0e-06
+    EarlyStopping:
+      monitor: val_loss
+      patience: 60
+      restore_best_weights: true
+      verbose: 1
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: false
+  max_detection_boxes: 100
+
+mlflow:
+   uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

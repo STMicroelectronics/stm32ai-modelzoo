@@ -1,0 +1,37 @@
+general:
+  display_figures: True
+  operation_mode: prediction
+
+operation_mode: prediction
+
+model:
+  model_path: face_detection_front_128_ff_quant.tflite
+  model_type: face_detect_front
+
+dataset:
+  format: tfs
+  dataset_name: coco
+  class_names: [ person ]
+  prediction_path: images
+
+preprocessing:
+  rescaling: { scale: 1/255, offset: 0 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: bilinear
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.5
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 10
+  crop_stretch_percents: [0,40,0,40] #List of 4 floats (stretch_xmin%, stretch_ymin%, stretch_xmax%, stretch_ymax%) representing the stretch percentage for each coordinate.
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

@@ -1,0 +1,14 @@
+model:
+    name: yolov8n_256
+    uc: od_coco
+    model_path: ../yolov8n_saved_model
+    input_shape: [256, 256, 3]
+quantization:
+    fake: False
+    quantization_type: per_tensor
+    quantization_input_type: uint8
+    quantization_output_type: int8
+    calib_dataset_path: ../datasets/coco8/images/val
+    export_path: ./quantized_models
+pre_processing:
+  rescaling: {scale : 255, offset : 0}

@@ -1,0 +1,66 @@
+general:
+  logs_dir: logs
+  saved_models_dir: saved_models
+  display_figures: False
+  gpu_memory_limit: 24
+
+model:
+  model_type: st_yoloxn
+  model_path: ../../stm32ai-modelzoo/object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_192/st_yoloxn_d033_w025_192.keras
+
+operation_mode: quantization
+
+dataset:
+  dataset_name: coco
+  format: tfs
+  class_names: [person]
+  quantization_path: /local/data/od_coco_2017_person/train
+
+preprocessing:
+  rescaling:
+    scale: 1/255
+    offset: 0
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+quantization:
+  operating_mode: inspection
+  quantizer: Onnx_quantizer
+  quantization_type: PTQ
+  target_opset: 21
+  granularity: per_channel
+  export_dir: quantized_models
+  quantization_input_type: uint8
+  quantization_output_type: float
+  onnx_quant_parameters:
+    weightType: Int4  # Int4, UInt4, Int8, UInt8, Int16, UInt16
+    activType: Int8   # Int4, UInt4, Int8, UInt8, Int16, UInt16
+    calibrate_method: MinMax # MinMax or Entropy
+    op_types_to_quantize: #['Conv'] for example or keep empty
+    nodes_to_quantize: #['Conv__229'] onnx layer names or keep empty, not compatible with weights_tensor_override
+    nodes_to_exclude: #['Conv__237'] onnx layer names or keep empty
+  onnx_extra_options:
+    WeightSymmetric: true
+    ActivationSymmetric: false
+    QuantizeBias: true
+    CalibMovingAverage: true
+    weights_tensor_override: 
+    activations_tensor_override:                                
+  iterative_quant_parameters:
+    inspection_split: 0.9
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: false
+  max_detection_boxes: 100
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

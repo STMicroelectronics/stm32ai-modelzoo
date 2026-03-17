@@ -1,0 +1,43 @@
+operation_mode: deployment
+
+model:
+   model_type: st_yololcv1
+   model_path: ../../stm32ai-modelzoo/object_detection/st_yololcv1/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yololcv1_256/st_yololcv1_256_int8.tflite
+   input_shape: (256,256,3)
+   
+dataset:
+   class_names: [person]
+
+preprocessing:
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+postprocessing:
+   confidence_thresh: 0.5
+   NMS_thresh: 0.5
+   IoU_eval_thresh: 0.5
+   max_detection_boxes: 10
+
+tools:
+   stedgeai:
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/ST/STEdgeAI/3.0/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
+
+deployment:
+   c_project_path: ../application_code/object_detection/STM32H7/
+   IDE: GCC
+   verbosity: 1
+   hardware_setup:
+      serie: STM32H7
+      board: STM32H747I-DISCO
+
+mlflow:
+   uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

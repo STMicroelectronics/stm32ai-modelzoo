@@ -1,0 +1,58 @@
+operation_mode: prediction
+
+# ---------------- General Configuration ---------------- #
+general:  
+  saved_models_dir: 'st_yolodv2milli_actrelu_pt' # sub-dir, concat with output_dir
+  logger: 'tensorboard'
+  global_seed: 42
+
+# ---------------- Model Configuration ---------------- #
+model:
+  framework: 'torch' 
+  model_type : st_yolod # this config is for yolod model family 
+  # following are supported models 
+  # ['st_yolodv2milli_actrelu_pt', 'st_yolodv2tiny_actrelu_pt']
+  model_name: st_yolodv2milli_actrelu_pt 
+  pretrained: True
+  pretrained_dataset: coco # this yaml is for coco style annotation only 
+  input_shape: [3, 640, 640]  # (channel, height, width)
+  pretrained_input_shape : [3, 640, 640]
+  num_classes: 80 # number of classes 
+
+# ---------------- Dataset Configuration ---------------- #
+dataset:
+  format : coco 
+  dataset_name : coco
+  class_names: ["person","bicycle","car","motorcycle","airplane","bus","train","truck","boat","traffic light","fire hydrant","stop sign","parking meter","bench","bird","cat","dog","horse","sheep","cow","elephant","bear","zebra","giraffe","backpack","umbrella","handbag","tie","suitcase","frisbee","skis","snowboard","sports ball","kite","baseball bat","baseball glove","skateboard","surfboard","tennis racket","bottle","wine glass","cup","fork","knife","spoon","bowl","banana","apple","sandwich","orange","broccoli","carrot","hot dog","pizza","donut","cake","chair","couch","potted plant","bed","dining table","toilet","tv","laptop","mouse","remote","keyboard","cell phone","microwave","oven","toaster","sink","refrigerator","book","clock","vase","scissors","teddy bear","hair drier","toothbrush"]
+  seed: 123
+  num_workers: 4  # Set worker to 4  training process costs a lot of memory, reduce this value.
+  multiscale_range: 5  # Actual multiscale ranges: [640 - 5 * 32, 640 + 5 * 32]. To disable multiscale training, set the value to 0.
+  random_size: [10, 20] # You can uncomment this line to specify a multiscale range
+  prediction_path: ./datasets/coco/val2017
+
+# ---------------- preprocessing Configuration ---------------- #
+preprocessing: 
+  rescaling:
+    scale  : 1 # not used for yolod
+    offset : 0 # not used for yolod
+  mean : [127,127,127]  # not used for yolod
+  std : 128.0 # not used for yolod
+  resizing:
+      aspect_ratio: fit # not used for yolod
+      interpolation: nearest # not used for yolod
+  color_mode: rgb
+
+# ---------------- postrocessing Configuration ---------------- #
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: False #True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 100
+
+mlflow:
+  uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

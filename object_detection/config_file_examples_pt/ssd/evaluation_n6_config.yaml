@@ -1,0 +1,64 @@
+operation_mode: evaluation
+
+model:
+  framework: 'torch' 
+  model_type : ssd
+  model_path: ../../stm32ai-modelzoo/object_detection/ssd_mobilenetv1_pt/ST_pretrainedmodel_public_dataset/coco_person/ssd_mobilenetv1_pt_coco_person_300/ssd_mobilenetv1_pt_coco_person_300_qdq_int8.onnx 
+  # model_name options for SSD model 
+   # ['ssd_mobilenetv1_pt', 'ssdlite_mobilenetv1_pt', 'ssd_mobilenetv2_pt', 'ssdlite_mobilenetv2_pt', 'ssdlite_mobilenetv3small_pt', 'ssdlite_mobilenetv3large_pt']
+  model_name: "ssd_mobilenetv1_pt"
+  width_mult: 1.0
+  pretrained: True
+  pretrained_dataset : coco_person
+  input_shape: [3, 300, 300]
+  num_classes: 1
+
+# ---------------- Evaluation Configuration ---------------- #
+evaluation:
+  profile: profile_O3
+  input_type: uint8     # int8 / uint8 / float32
+  output_type: int8     # int8 / uint8 / float32
+  input_chpos: chlast   # chlast / chfirst
+  output_chpos: chfirst  # chlast / chfirst
+  target: host  # host, stedgeai_host, stedgeai_n6
+
+# ---------------- Dataset Configuration ---------------- #
+dataset:
+  format : coco
+  dataset_name: coco
+  class_names: ["person"]
+  num_workers: 0
+  training_path : ""
+  test_annotations_path: ./datasets/coco/annotations/instances_val2017_person.json 
+  test_images_path : ./datasets/coco/val2017
+
+# ---------------- preprocessing Configuration ---------------- #
+preprocessing: 
+  mean :  [127, 127, 127]
+  std : 128.0
+  rescaling:
+    scale  : 1
+    offset : 0 
+  resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+  color_mode: rgb
+
+# ---------------- postprocessing Configuration ---------------- #
+postprocessing: # 
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5 
+  plot_metrics: False
+  max_detection_boxes: 100
+
+tools:
+   stedgeai:
+      path_to_stedgeai: C:/ST/STEdgeAI/3.0/Utilities/windows/stedgeai.exe
+
+mlflow:
+  uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

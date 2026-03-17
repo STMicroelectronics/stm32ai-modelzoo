@@ -1,0 +1,45 @@
+operation_mode: chain_eqe
+
+model:
+   model_type: st_yoloxn
+   model_path: ../../stm32ai-modelzoo/object_detection/st_yoloxn/ST_pretrainedmodel_public_dataset/coco_2017_person/st_yoloxn_d033_w025_192/st_yoloxn_d033_w025_192.keras
+
+dataset:
+  dataset_name: coco
+  format: tfs
+  class_names: [person]
+  test_path: ./datasets/coco_2017_person/test
+  quantization_path: ./datasets/coco_2017_person/train
+  quantization_split: 0.01
+
+preprocessing:
+   rescaling:
+      scale: 1/255
+      offset: 0
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: False #True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 100
+
+quantization:
+  quantizer: onnx_quantizer
+  target_opset: 17
+  granularity: per_channel #per_channel
+  quantization_type: PTQ
+  quantization_input_type: float 
+  quantization_output_type: float
+  export_dir: quantized_models
+
+mlflow:
+   uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

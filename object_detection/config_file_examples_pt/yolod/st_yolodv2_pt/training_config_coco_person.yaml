@@ -1,0 +1,97 @@
+operation_mode: training
+
+# ---------------- General Configuration ---------------- #
+general:  
+  saved_models_dir: 'st_yolodv2milli_actrelu_pt' # sub-dir, concat with output_dir
+  logger: 'tensorboard'
+  global_seed: 42
+
+# ---------------- Model Configuration ---------------- #
+model:
+  framework: 'torch' 
+  model_type : st_yolod # this config is for yolod model family 
+  # following are supported models 
+  # ['st_yolodv2milli_actrelu_pt', 'st_yolodv2tiny_actrelu_pt']
+  model_name: st_yolodv2milli_actrelu_pt 
+  pretrained: True
+  # dataset name coco_person is for pretrained dataset coco_person
+  pretrained_dataset: coco # this yaml is for coco style annotation only 
+  input_shape: [3, 640, 640]  # (channel, height, width)
+  pretrained_input_shape : [3, 640, 640]
+  num_classes: 1 # number of classes 
+
+# ---------------- Dataset Configuration ---------------- #
+dataset:
+  format : coco # coco for 'coco_person' and 'coco'
+  dataset_name : coco # coco for 'coco_person' and 'coco'
+  class_names: ["person"]
+  seed: 123
+  num_workers: 4  # Set worker to 4  training process costs a lot of memory, reduce this value.
+  multiscale_range: 5  # Actual multiscale ranges: [640 - 5 * 32, 640 + 5 * 32]. To disable multiscale training, set the value to 0.
+  random_size: [10, 20] # You can uncomment this line to specify a multiscale range
+  training_path : " " # leave empty 
+  train_images_path : ./datasets/coco/train2017
+  # make sure that only one class is present in this json (person)
+  train_annotations_path: ./datasets/coco/annotations/instances_train2017_person.json  # Name of annotation file for training
+  val_images_path : ./datasets/coco/val2017
+  val_annotations_path: ./datasets/coco/annotations/instances_val2017_person.json  # Name of annotation file for evaluation, 
+  
+  mosaic_prob: 0.5  # Probability of applying mosaic augmentation
+  mixup_prob: 1.0  # Probability of applying mixup augmentation
+  hsv_prob: 1.0  # Probability of applying HSV augmentation
+  flip_prob: 0.5  # Probability of applying flip augmentation
+  degrees: 10.0  # Rotation angle range, for example, if set to 2, the true range is (-2, 2)
+  translate: 0.1  # Translate range, for example, if set to 0.1, the true range is (-0.1, 0.1)
+  mosaic_scale: (0.5, 1.5)  # Scale range for mosaic augmentation
+  enable_mixup: False  # Apply mixup augmentation or not
+  mixup_scale: (0.5, 1.5)  # Scale range for mixup augmentation
+  shear: 2.0  # Shear angle range, for example, if set to 2, the true range is (-2, 2)
+
+
+# ---------------- Training Configuration ---------------- #
+training:
+  trainer_name : 'yolod' # ['yolod' trainer supported only]
+  batch_size: 64
+  warmup_epochs: 1 # epoch number used for warmup
+  epochs: 300 # max training epoch
+  scheduler: "yoloxwarmcos"  # Name of LRScheduler
+  no_aug_epochs: 15 # Last #epoch to close augmentation like mosaic
+  ema: True  # Apply EMA during training
+  print_interval: 1  # Log period in iterations. For example, if set to 1, user could see log every iteration.
+  eval_interval: 1  # Evaluation period in epochs. For example, if set to 1, model will be evaluated after every epoch.
+  save_history_ckpt: True  # Save history checkpoint or not. If set to False, YOLOD will only save the latest and best checkpoint.
+  optimizer: 
+    SGD:
+      learning_rate: 0.01 
+      momentum: 0.9  # Momentum of optimizer
+      warmup_lr: 0.0  # minimum learning rate during warmup
+      min_lr_ratio: 0.05  # Minimum learning rate ratio
+      weight_decay: 5e-4  # Weight decay of optimizer
+  resume_training_from: '' # 
+  start_epoch: 0
+  fp16: True
+
+# ---------------- preprocessing Configuration ---------------- #
+preprocessing: 
+  rescaling:
+    scale  : 1 # not used for yolod
+    offset : 0 # not used for yolod
+  mean : [127,127,127]  # not used for yolod
+  std : 128.0 # not used for yolod
+  resizing:
+      aspect_ratio: fit # not used for yolod
+      interpolation: nearest # not used for yolod
+  color_mode: rgb
+
+# ---------------- postprocessing Configuration ---------------- #
+postprocessing: #
+  confidence_thresh: 0.01
+  NMS_thresh: 0.65
+  IoU_eval_thresh: 0.5 
+
+mlflow:
+  uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

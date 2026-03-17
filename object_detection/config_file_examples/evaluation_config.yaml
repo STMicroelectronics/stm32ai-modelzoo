@@ -1,0 +1,38 @@
+operation_mode: evaluation
+
+model:
+   model_path: ../../stm32ai-modelzoo/object_detection/yolov2t/ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_192/yolov2t_192.keras
+   model_type: yolov2t
+   
+dataset:
+  format: tfs
+  dataset_name: coco
+  class_names: [person]
+  test_path: ./datasets/od_coco_2017_person/test
+  validation_path: ./datasets/od_coco_2017_person/validation
+
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.001
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 100
+
+tools:
+   stedgeai:
+      path_to_stedgeai: C:/ST/STEdgeAI/2.2/Utilities/windows/stedgeai.exe
+
+mlflow:
+   uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

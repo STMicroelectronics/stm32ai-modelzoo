@@ -1,0 +1,44 @@
+operation_mode: prediction
+
+model:
+   model_path:  https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolov8n_256_quant_pc_uf_od_coco-person-st.tflite
+   model_type: yolov8n
+   
+dataset:
+  format: tfs
+  dataset_name: coco
+  class_names: [ person ]
+  prediction_path: ./datasets/coco_2017_person/predict
+
+preprocessing:
+  rescaling: { scale: 1/127.5, offset: -1 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.5
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 10
+
+prediction:
+  profile: profile_O3
+  input_type: uint8     # int8 / uint8 / float32
+  output_type: float32     # int8 / uint8 / float32
+  input_chpos: chlast   # chlast / chfirst
+  output_chpos: chlast  # chlast / chfirst
+  target: stedgeai_n6 # host, stedgeai_host, stedgeai_n6
+
+tools:
+   stedgeai:
+      path_to_stedgeai: C:/ST/STEdgeAI/3.0/Utilities/windows/stedgeai.exe
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

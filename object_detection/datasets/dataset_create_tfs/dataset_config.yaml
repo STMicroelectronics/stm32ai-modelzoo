@@ -1,0 +1,13 @@
+dataset:
+  dataset_name: Pascal_VOC_2007
+  training_path: ../<dataset_name>/train
+  validation_path: ../<dataset_name>/val
+  test_path: ../<dataset_name>/test
+
+settings:
+  max_detections: 20
+  exclude_unlabeled_images: True # If set to False, images without ground truths will be included in the dataset.
+  
+hydra:
+  run:
+    dir: outputs/${now:%Y_%m_%d_%H_%M_%S}

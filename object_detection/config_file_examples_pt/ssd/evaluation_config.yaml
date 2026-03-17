@@ -1,0 +1,54 @@
+operation_mode: evaluation
+
+model:
+  framework: 'torch' 
+  model_type : ssd
+  # model_name options for SSD model 
+   # ['ssd_mobilenetv1_pt', 'ssdlite_mobilenetv1_pt', 'ssd_mobilenetv2_pt', 'ssdlite_mobilenetv2_pt', 'ssdlite_mobilenetv3small_pt', 'ssdlite_mobilenetv3large_pt']
+  model_name: "ssd_mobilenetv1_pt"
+  width_mult: 1.0
+  pretrained: True
+  pretrained_dataset : "voc"
+  input_shape: [3, 300, 300]
+  num_classes: 20
+  
+dataset:
+  format : 'voc'
+  dataset_name: "voc"
+  class_names: [
+            'aeroplane', 'bicycle', 'bird', 'boat',
+            'bottle', 'bus', 'car', 'cat', 'chair',
+            'cow', 'diningtable', 'dog', 'horse',
+            'motorbike', 'person', 'pottedplant',
+            'sheep', 'sofa', 'train', 'tvmonitor']
+  num_workers: 4
+  training_path : ""
+  test_images_path : ./datasets/VOCdevkit/VOC2007/JPEGImages/
+  test_annotations_path: ./datasets/VOCdevkit/VOC2007/Annotations/
+  test_split : ./datasets/VOCdevkit/VOC2007/ImageSets/Main/test.txt
+
+# ---------------- preprocessing Configuration ---------------- #
+preprocessing: 
+  mean :  [127, 127, 127]
+  std : 128.0
+  rescaling:
+    scale  : 1
+    offset : 0 
+  resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+  color_mode: rgb
+
+# ---------------- postprocessing Configuration ---------------- #
+postprocessing: # 
+  confidence_thresh: 0.01
+  NMS_thresh: 0.50
+  IoU_eval_thresh: 0.5 
+  max_detection_boxes: 100
+
+mlflow:
+  uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}

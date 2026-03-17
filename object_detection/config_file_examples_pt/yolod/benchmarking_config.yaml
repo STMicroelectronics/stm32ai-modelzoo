@@ -1,0 +1,34 @@
+operation_mode:  benchmarking
+
+model: 
+   framework: torch
+   model_type: st_yolod
+   model_path: #path to onnx model
+
+dataset:
+  format : 'voc'
+  dataset_name: "voc"
+
+preprocessing:
+   rescaling: { scale: 1/127.5, offset: -1 }
+   resizing:
+      aspect_ratio: fit
+      interpolation: nearest
+   color_mode: rgb
+
+tools:
+   stedgeai:
+      optimization: balanced
+      on_cloud: True
+      path_to_stedgeai: C:/ST/STEdgeAI/<x.y>/Utilities/windows/stedgeai.exe
+   path_to_cubeIDE: C:/ST/STM32CubeIDE_<*.*.*>/STM32CubeIDE/stm32cubeide.exe
+
+benchmarking:
+   board: STM32N6570-DK
+
+mlflow:
+   uri: ./pt/src/experiments_outputs/mlruns
+
+hydra:
+   run:
+      dir: ./pt/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
