@@ -1,0 +1,22 @@
+//
+//   Copyright (c) 2021,2023 STMicroelectronics.
+//   All rights reserved.
+//   This software is licensed under terms that can be found in the LICENSE file in
+//   the root directory of this software component.
+//   If no LICENSE file comes with this software, it is provided AS-IS.
+//
+
+reqMsg.name max_size:64
+
+logMsg.str max_size:128
+
+// v3.0
+aiModelInfoMsg.name max_size:64
+aiModelInfoMsg.signature max_size:64
+aiModelInfoMsg.compile_datetime max_size:64
+// v3.1
+aiModelInfoMsg.runtime_desc max_size:64
+
+aiTensorDescMsg.name max_size:64
+aiOperatorMsg.name max_size:64
+

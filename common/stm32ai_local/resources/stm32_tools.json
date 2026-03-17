@@ -1,0 +1,5 @@
+{
+    "version" : "1.0",
+    "gnu-arm-embedded": "arm-none-eabi-gcc",
+    "stm32-cube-programmer": "STM32_Programmer_CLI"
+}

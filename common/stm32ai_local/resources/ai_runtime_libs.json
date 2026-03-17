@@ -1,0 +1,69 @@
+{
+    "version" : "1.0",
+    "host_os": {  /* Output of sys.platform */
+        "win32": "windows",
+        "msys": "windows",
+        "cygwin": "windows",
+        "linux": "linux",
+        "linux2": "linux",
+        "darwin": "mac"
+    },
+    "x-cube-ai": {
+        "inc_lib": "Middlewares/ST/AI/Inc/",
+        "lib_extension" : {
+            "gcc" : "*_GCC.a",
+            "keil" : "*_Keil.lib",
+            "iar" : "*_IAR.a"
+        },
+        "executable" : ["{root_dir}", "Utilities", "{host_os}", "stm32ai"],
+        "python_path": ["{root_dir}", "scripts", "ai_runner"],
+        "gcc": [
+            {
+                "series" : ["stm32h7"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/STM32H7/",
+                "core_flags": "-mthumb -mcpu=cortex-m7 -mfpu=fpv5-d16 -mtune=cortex-m7 -mfloat-abi=hard"
+            },
+            {
+                "series" : ["stm32f7"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/ARMCortexM7/",
+                "core_flags": "-mthumb -mcpu=cortex-m7 -mfpu=fpv5-sp-d16 -mtune=cortex-m7 -mfloat-abi=hard"
+            },
+            {
+                "series" : ["stm32f4", "stm32l4", "stm32g4", "stm32f3"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/ARMCortexM4/",
+                "core_flags": "-mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mtune=cortex-m4 -mfloat-abi=hard"
+            },
+            {
+                "series" : ["stm32u5", "stm32l5"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/ARMCortexM33/",
+                "core_flags": "-mthumb -mcpu=cortex-m33 -mfpu=fpv5-sp-d16 -mtune=cortex-m33 -mfloat-abi=hard"
+            },
+            {
+                "series" : ["stm32n6"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/ARMCortexM55/",
+                "neuralart_dir":  "Middlewares/ST/AI/Npu/ll_aton",
+                "core_flags": ""
+            },
+            {
+                "series" : ["stm32f0"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/ARMCortexM0/",
+                "core_flags": "-mthumb -mcpu=cortex-m0 -mtune=cortex-m0 -mfloat-abi=soft"
+            },
+            {
+                "series" : ["stm32l0", "stm32g0", "stm32c0"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/ARMCortexM0+/",
+                "core_flags": "-mthumb -mcpu=cortex-m0plus -mtune=cortex-m0plus -mfloat-abi=soft"
+            },
+            {
+                "series" : ["stm32wl"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/STM32WL/",
+                "core_flags": "-mthumb -mcpu=cortex-m4 -mtune=cortex-m4 -mfloat-abi=soft"
+            },
+            {
+                "series" : ["stm32mp157c", "stm32mp1"],
+                "lib_dir":  "Middlewares/ST/AI/Lib/GCC/STM32MP1/",
+                "core_flags": "-mthumb -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mtune=cortex-m4 -mfloat-abi=hard"
+            }
+        ]
+    }
+}

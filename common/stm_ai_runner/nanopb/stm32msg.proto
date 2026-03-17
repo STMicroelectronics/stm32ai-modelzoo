@@ -1,0 +1,351 @@
+//
+//   Copyright (c) 2021 STMicroelectronics.
+//   All rights reserved.
+//   This software is licensed under terms that can be found in the LICENSE file in
+//   the root directory of this software component.
+//   If no LICENSE file comes with this software, it is provided AS-IS.
+//
+
+// STM32 msg defintions - v3.1
+//
+// https://developers.google.com/protocol-buffers/docs/proto
+//
+
+// history
+//  1.0 - Initial version (float only)
+//  2.0 - Add Qmn support (capability to handle uint8_t... buffers)
+//  2.1 - Add Integer support (extend aiBufferShapeMsg definition
+//        for scale/zeropoint parameters)
+//  2.2 - Add enum to support node with multiple ouputs (EnumLayerType)
+//        Add field to provide address of the buffer (aiBufferShapeMsg)
+//        Add field to indicate the type of the AI runtime
+//        Complete AI RT id with ARM tools id.
+//
+//  3.0 - Refactoring Msg definition (no compatible with the previous version)
+//        add ATON RT support, simplify exchanged strcuture...
+//  3.1 - Adding support/definition for Perf counters (exp)
+//  3.2 - Adding DISCONNECT cmd + IN/OUT packet
+
+syntax = "proto2";
+
+enum EnumVersion {
+    // option allow_alias = true;
+	P_VERSION_MAJOR = 3;
+	P_VERSION_MINOR = 2;
+}
+
+// IO Low level interface definition (packet mode)
+enum EnumLowLevelIO { // HOST point of view definition
+    option allow_alias = true;
+	IO_HEADER_EOM_FLAG = 128;  // End-of-message flag (1 << 7)
+	IO_HEADER_SIZE_MSK = 32767;
+	IO_IN_PACKET_SIZE = 32;
+	IO_OUT_PACKET_SIZE = 32;
+	IO_IN_PACKET_SIZE_LARGE = 4094;
+	IO_OUT_PACKET_SIZE_LARGE = 4094;
+	IO_OUT_SYNC = 170;         // Byte sync for SW control flow (READ mode) - 0xAA	
+}
+
+// rtid field (32b) - EnumAiRuntime | EnumAiApiRuntime << AI_RT_API_POS | EnumTools << AI_TOOLS_POS
+//   0..7	  EnumAiRuntime
+//   8..15    EnumAiApiRuntime (AI_RT_API_POS = 8)
+//   16..23   EnumTools        (AI_TOOLS_POS = 16)
+//   24..31   reserved
+
+// AI Runtime - RT ID 8b: 0..255
+enum EnumAiRuntime {
+	AI_RT_STM_AI = 1;        // STM.AI/X-CUBE-AI runtime
+	AI_RT_TFLM = 2;          // TensorFlow for microcontrollers runtime
+	AI_RT_TVM = 3;           // TVM runtime
+	AI_RT_ATONN = 4;         // ATONN runtime
+	AI_RT_GLOW = 5;          // GLOW runtime
+	AI_RT_STM_AI_RELOC = 6;  // STM.AI/X-CUBE-AI runtime with RELOC model
+}
+
+// AI API Runtime - API variant - 8b - or-ed value
+enum EnumAiApiRuntime {
+	AI_RT_API_NONE = 0;      // Not specified, default or legacy API
+	AI_RT_API_ST_AI = 1;     // ST_AI API (AI AFFINITY)
+	AI_RT_API_LITE = 2;      // Lite API
+	AI_RT_API_RELOC = 4;     // Reloc API
+
+	AI_RT_API_POS = 8;      // pos in the aiModelInfoMsg.rtid and syncMsg.rtid field
+}
+
+// ARM Tools - Tools ID: 0..255
+enum EnumTools {
+	AI_GCC = 1;       // GCC-base toolchain
+	AI_IAR = 2;       // IAR Embedded Workbench for Arm toolchain
+	AI_MDK_5 = 3;     // Keil MDK-ARM Compiler v5.x (AC5) toolchain
+	AI_MDK_6 = 4;     // Keil MDK-ARM Compiler v6.x (AC6) toolchain / based on LLVM and Clang technology
+	AI_HTC = 5;       // HIGHTEC tool-chain
+	AI_GHS = 6;       // Green Hills Software, for all Arm 7, 9, Cortex-M, Cortex-R, Cortex-A
+
+	AI_TOOLS_POS = 16;      // pos in the aiModelInfoMsg.rtid and syncMsg.rtid field
+}
+
+// RT/FW Capability definition
+enum EnumCapability {
+	// option allow_alias = true;
+	CAP_OBSERVER = 1;
+	CAP_RELOC = 2;
+	CAP_READ_WRITE = 8;
+	CAP_RANDOM = 16;
+	CAP_FILTERING = 32;
+	CAP_USBC = 64;
+	CAP_SELF_TEST = 128 ;  // (1 << 7);
+}
+
+// Command ID definition
+enum EnumCmd {
+	CMD_SYNC = 0;
+	CMD_SYS_INFO = 1;
+	CMD_DISCONNECT = 2;
+	
+	CMD_NETWORK_INFO = 10;
+	CMD_NETWORK_RUN = 11;
+	CMD_NETWORK_REPORT = 12;
+
+	CMD_MEMORY_READ = 20;
+	CMD_MEMORY_WRITE = 21;
+	CMD_MEMORY_CHECKSUM = 22;
+
+	CMD_SET_FILTER = 30;
+
+	CMD_TEST = 100;	
+	CMD_TEST_UNSUPPORTED = 200;
+}
+
+// State definition
+enum EnumState {
+	S_IDLE = 0;
+	S_WAITING = 1;
+	S_PROCESSING = 2;
+	S_DONE = 3;
+	S_ERROR = 4;
+}
+
+// Error definition
+enum EnumError {
+	E_NONE = 0;
+	E_INVALID_SIZE = 1;
+	E_INVALID_FORMAT = 2;
+	E_INVALID_STATE = 3;
+	E_INVALID_PARAM = 4;
+	E_INVALID_SHAPE = 5;
+	E_INVALID_CMD = 6;
+	E_INVALID_UNINITIALIZED = 7;
+	E_MEM_OVERFLOW = 8;
+	E_GENERIC = 10;
+}
+
+// Perf counter format/source  (counter_type = format << EnumCounterFormat.COUNTER_FMT_POS | type)
+enum EnumCounterFormat {
+	COUNTER_FMT_64B = 0;         // 0 << 0  - 64b value stored as 2x32b (default)
+	COUNTER_FMT_32B = 1;         // 1 << 1  - 32b value
+
+	COUNTER_FMT_MASK = 65535;    // 0xFFFF  - mask value
+	COUNTER_FMT_POS = 16;        // pos in the aiOperatorMsg.counter_type field
+}
+
+// Perf counter type  
+enum EnumCounterType {
+	COUNTER_TYPE_CPU = 0;        // MCU cycles (default)
+
+	COUNTER_TYPE_MASK = 65535;   // 0xFFFF  - mask value
+}
+
+// CMD_NETWORK_RUN parameter definition
+enum EnumRunParam {
+	P_RUN_MODE_IO_ONLY = 1;              // default - model IO only
+	P_RUN_MODE_PER_LAYER = 2;            // with the meta/profiling info of the intermediate tensors (payload/data are not uploaded)
+	P_RUN_MODE_PER_LAYER_WITH_DATA = 4;  // PER_LAYER with intermediate tensor payload/data
+	P_RUN_MODE_PERF = 8;                 // No payload/data are exchanged (including the IO) with the host
+
+	P_RUN_MODE_MASK = 15;                // mask of the mode field
+
+	P_RUN_CONF_DEBUG = 256;              // enable debug/log          
+	P_RUN_CONF_CONST_VALUE = 512;        // input tensors are filled with a simple value
+	P_RUN_CONF_DIRECT_WRITE = 1024;      // payload for the input are written directly in memory (FVP env.)
+	P_RUN_CONF_DIRECT_READ = 2048;       // payload for the output are read directly from memory (FVP env.)
+}
+
+// Shape format definition
+//  max size: 8b, part of the aiTensorDescMsg::n_dims field
+//       b3..b0:  type definition 0..7
+//       b7..b4:  ored-bit
+enum EnumShapeFmt {
+	F_SHAPE_FMT_UND = 0;            // equivalent to F_SHAPE_FMT_RAW
+	F_SHAPE_FMT_BCWH = 1;   		// default STM.AI format
+	F_SHAPE_FMT_BHWC = 2;
+	F_SHAPE_FMT_BCHW = 3;   		// ONNX format used by ATONN RT (debug info)
+	F_SHAPE_FMT_ST_AI = 4;  		// ST.AI definition
+
+	F_SHAPE_FMT_RAW = 5;            // shape is provided as-is (normal order)
+
+	F_SHAPE_FMT_CHANNEL_FIRST = 16; //  sub-definition of ST.AI
+	F_SHAPE_FMT_CHANNEL_LAST = 32;  //  sub-definition of ST.AI
+	F_SHAPE_FMT_HAS_BATCH = 64;     //  sub-definition of ST.AI
+
+	F_SHAPE_FMT_POS = 24;           // pos in the aiTensorDescMsg.n_dims field
+}
+
+// Request/cmd message (HOST -> STM32)
+message reqMsg {
+	required uint32  reqid = 1;
+	required EnumCmd cmd = 2 [default = CMD_SYS_INFO];
+	required uint32  param = 3;
+	required string  name = 4;
+	required uint32  opt = 5;	
+}
+
+// Tensor data format type definition - v3.0
+enum EnumDataFmtType {
+	DATA_FMT_TYPE_NONE = 0;          // undefined (none)
+	DATA_FMT_TYPE_FLOAT = 1;         // float type
+	DATA_FMT_TYPE_INTEGER = 2;       // integer type (signed or unsigned)
+	DATA_FMT_TYPE_BOOL = 3;          // boolean type
+	DATA_FMT_TYPE_FXP = 15;          // FXP ATONN type
+}
+
+// Tensor type definition - v3.0
+enum EnumTensorFlag {
+	TENSOR_FLAG_NONE = 0;            // undefined
+	TENSOR_FLAG_INPUT = 1;           // 1 << 0: input type (io model)
+	TENSOR_FLAG_OUTPUT = 2;          // 1 << 1: output type (io model)
+	TENSOR_FLAG_INTERNAL = 4;        // 1 << 2: feature/internal type
+	TENSOR_FLAG_MEMPOOL = 8;         // 1 << 3: mempool type
+	TENSOR_FLAG_LAST = 256;          // 1 << 8: property: last tensor (internal or output)
+	TENSOR_FLAG_NO_DATA = 512;       // 1 << 9: property: data are not provided
+	TENSOR_FLAG_IN_MEMPOOL = 1024;   // 1 << 10: property: associated data is allocated in a mem-pool
+}
+
+// Tensor description message (STM32 -> HOST) - v3.0
+message aiTensorDescMsg {
+	required string name = 1;                      // name of the tensor (max size 64)
+	required uint32 format = 2 [default = 0];      // based on the X-CUBE-AI format descriptor
+	required uint32 size = 3 [default = 0];        // nb of element (including the padding)
+	required uint32 n_dims = 4 [default = 1];      // shape format: b31..b24: format (F_SHAPE_FMT_xx), b23..b0: shape cardinality
+	repeated uint32 dims = 5;                      // shape tuple array
+	required float  scale = 6 [default = 0.0];     // scale is defined else 0.0
+	required int32  zeropoint = 7 [default = 0];   // zero-point/offset value
+	required uint32 addr = 8 [default = 0];        // absolute/fixed address in target domain
+	required uint32 flags = 9 [default = 0];       // or-ed EnumTensorFlag
+}
+
+// Tensor data type definition - v3.0
+enum EnumDataType {
+	DATA_TYPE_NONE = 0;           // "normal"/default data type
+	DATA_TYPE_FILTER = 1;         // filter payload
+	DATA_TYPE_MD5 = 2;            // md5 payload
+
+	DATA_TYPE_POS = 24;
+}
+
+// Memory/data chunk message & sub message (HOST -> STM32 & STM32 -> HOST) - v3.0
+message aiDataMsg {
+	required uint32 type = 1  [default = 0];    // b31..b24: extra flag (DATA_TYPE_xx), b23..b0: type of data (CMD/RT dependent)
+	required uint32 size = 2;                   // size in bytes
+	required uint32 addr = 3  [default = 0];    // absolute/fixed address in target domain
+	required bytes datas = 4;                   // data/payload
+}
+
+// Tensor type definition - v3.0
+enum EnumOperatorFlag {
+	OPERATOR_FLAG_NONE = 0;                     // model
+	OPERATOR_FLAG_INTERNAL = 1;                 // internal
+	OPERATOR_FLAG_LAST = 2;                     // last op
+	OPERATOR_FLAG_WITHOUT_TENSOR = 4;           // operator w/o tensors
+
+	OPERATOR_FLAG_POS = 24;
+}
+
+// Sub RESP message (STM32 to HOST) - v3.0
+message aiOperatorMsg {
+	required string name = 1;                  // name of the operator (max size 64)
+	required uint32 type = 2;                  // b31..b24: extra flag (OPERATOR_FLAG_xx), b23..b0: type of layer (CMD/RT dependent)
+	required uint32 id = 3;                    // layer id (CMD/RT dependent)
+	required float duration = 4;               // execution time (unity: ms)
+	required uint32 counter_type = 5;          // counter type/format (CMD/RT dependent) : format << EnumCounterFormat.COUNTER_FMT_POS | type
+	repeated uint32 counters = 6;              // list of counter (CMD/RT dependent)
+	required int32 stack_used = 7;		       // bytes of current stack usage
+	required int32 heap_used = 8;		       // bytes of current heap usage
+}
+
+// Sub RESP message (STM32 to HOST) - v3.0
+message aiTensorMsg {
+	required aiTensorDescMsg desc = 1;
+	required aiDataMsg data = 2;
+}
+
+// Sub RESP message (STM32 -> HOST) - v3.0
+message aiModelInfoMsg {
+	required string name = 1;                  // c-name of the model (max size 64 Bytes)
+	required uint32 rtid = 2;                  // associated RT (EnumAiRuntime | EnumAiApiRuntime << AI_RT_API_POS | EnumTools << AI_TOOLS_POS)
+	required string signature = 3;             // signature of the model (max size 64)
+	required string compile_datetime = 4;      // compile time (max size 64)
+	required uint32 runtime_version = 5;       // RT/lib version ( major << 24 | minor << 16 | sub/patch << 8 )
+	required uint32 tool_version = 6;          // tool version ( major << 24 | minor << 16 | sub/patch << 8 )
+	required uint64 n_macc = 7;                // model complexity exprimed in equivalent macc
+	required uint32 n_nodes = 8;               // number of c-operators
+	required uint32 n_inputs = 10;             // number of inputs
+	repeated aiTensorDescMsg inputs = 11;      // description of the inputs
+	required uint32 n_outputs = 12;            // number of the ouputs
+	repeated aiTensorDescMsg outputs = 13;     // description of the ouputs
+	required uint32 n_activations = 14;        // number of RW memory segments
+	repeated aiTensorDescMsg activations = 15; // description of the RW memory segments
+	required uint32 n_params = 16;             // number of RO memory segments
+	repeated aiTensorDescMsg params = 17;      // description of the RO memory segments
+	
+	required string runtime_desc = 20;         // short description of the used runtime lib (max 64 Bytes)
+	required float n_install_time = 21;        // network install time (ms)
+	required float n_init_time = 22;           // network init time (ms)
+
+}
+
+// Sub RESP message (STM32 to HOST)
+message syncMsg {
+	required uint32 version = 1;               // Msg i/f version - EnumVersion
+	required uint32 capability = 4;            // or-ed EnumCapability
+	required uint32 rtid = 5;                  // EnumAiRuntime | EnumAiApiRuntime << AI_RT_API_POS | EnumTools << AI_TOOLS_POS
+}
+
+// Sub RESP message (STM32 to HOST)
+message sysinfoMsg {
+	required uint32 devid = 1;                 // device ID  (device dependent) 
+	required uint32 sclock = 2;                // main clock frequency (MCU frequency)
+	required uint32 hclock = 3;                // secondary clock frequency (System bus frequency)
+	required uint32 cache = 4;                 // device dependent
+	required uint32 com_param = 5;             // packet size
+	repeated uint32 extra = 6;                 // device dependent
+}
+
+// Ack message and Sub RESP message (HOST to STM32 & STM32 to HOST)
+message ackMsg {
+	required uint32 param = 1;                 // returned value (cmd dependent)
+	required EnumError error = 2;              // error value
+}
+
+// Sub RESP message (STM32 to HOST)
+message logMsg {
+	required uint32 level = 1;                 // trace lvl
+	required string str = 2;                   // msg, string (max 128 bytes)
+}
+
+// RESP message (STM32 to HOST)
+message respMsg {
+	required uint32 reqid = 1;
+	required EnumState state = 2;
+	oneof payload {
+		syncMsg sync = 10;
+		sysinfoMsg sinfo = 11;
+		ackMsg ack = 12;
+		logMsg log = 13;
+
+		aiDataMsg data = 15;               // v3.0
+		aiOperatorMsg op = 16;             // v3.0
+		aiTensorMsg tensor = 17;           // v3.0
+
+		aiModelInfoMsg minfo = 22;         // v3.0
+	}
+}
