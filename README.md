@@ -2,13 +2,19 @@
 
 End-to-end YOLOv8-based object detection project for STM32N6 microcontrollers. This project automates the process of quantizing YOLOv8 models to INT8 format, converting them to TFLite, and deploying them to STM32N6 boards.
 
+
 ## Features
 
 - **YOLOv8 Model Export**: Convert PyTorch models to ONNX, TFLite, and SavedModel formats
 - **INT8 Quantization**: Reduce model size and increase inference speed with Post-Training Quantization (PTQ)
 - **STM32N6 Deployment**: Deploy quantized models to STM32N6 microcontrollers
 - **Pipeline Automation**: Run all steps with a single script
+
+> [!WARNING]
+> Before running the pipeline, make sure a valid payment card is linked and ready in your deployment account.
+
 - **Configuration-Based**: Easy configuration with YAML files
+
 
 ## Installation
 
@@ -19,6 +25,7 @@ End-to-end YOLOv8-based object detection project for STM32N6 microcontrollers. T
 | **Python 3.11+** | Project requires Python 3.11 or higher |
 | **STM32CubeIDE** | Required for compiling and flashing STM32N6 projects. [Download](https://www.st.com/en/development-tools/stm32cubeide.html) |
 | **ST Edge AI** | Required for model conversion and optimization. [Download](https://www.st.com/en/development-tools/stedgeai-core.html) |
+
 
 ### 1. Create Virtual Environment
 
@@ -39,14 +46,14 @@ pip install -r requirements.txt
 
 ### Installed Packages (requirements.txt)
 
-| Category | Packages |
-|----------|----------|
-| Deep Learning | tensorflow==2.15.1, torch==2.10.0, keras==2.15.0 |
-| YOLOv8 | ultralytics==8.4.21 |
-| ONNX Tools | onnx==1.15.0, onnx2tf==1.28.8, onnxruntime==1.18.1 |
-| TFLite | ai-edge-litert==1.3.0 |
-| Config | hydra-core==1.3.2, omegaconf==2.3.0 |
-| Data | numpy==1.26.4, opencv-python==4.13.0.92 |
+| Package | Version |
+---------|---------|
+| tensorflow | 2.15.1 |
+| tf_keras | 2.15.1 |
+| onnx | 1.15.0 |
+| onnxruntime | 1.18.1 |
+
+
 
 ## Running
 
