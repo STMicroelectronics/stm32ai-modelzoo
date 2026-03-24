@@ -92,7 +92,7 @@ def step3_deployment():
         print_error(f"Dizin bulunamadı: {od_dir}")
         return False
     
-    command = "python stm32ai_main.py --config-path ./config_file_examples/ --config-name deployment_n6_st_yoloxn_config.yaml"
+    command = "python stm32ai_main.py --config-path ./config_file_examples/ --config-name deployment_n6_yolov8_config.yaml"
     return run_command(command, cwd=od_dir, description="Deployment")
 
 def main():
