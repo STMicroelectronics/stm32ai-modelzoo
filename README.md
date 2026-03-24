@@ -9,10 +9,6 @@ End-to-end YOLOv8-based object detection project for STM32N6 microcontrollers. T
 - **INT8 Quantization**: Reduce model size and increase inference speed with Post-Training Quantization (PTQ)
 - **STM32N6 Deployment**: Deploy quantized models to STM32N6 microcontrollers
 - **Pipeline Automation**: Run all steps with a single script
-
-> [!WARNING]
-> Before running the pipeline, make sure a valid payment card is linked and ready in your deployment account.
-
 - **Configuration-Based**: Easy configuration with YAML files
 
 
@@ -30,7 +26,7 @@ End-to-end YOLOv8-based object detection project for STM32N6 microcontrollers. T
 ### 1. Create Virtual Environment
 
 ```bash
-cd st-objectdetection
+cd stm32ai-n6-yolov8-objectdetection
 python3.11 -m venv .venv
 source .venv/bin/activate  # Linux/macOS
 # or
@@ -59,10 +55,16 @@ pip install -r requirements.txt
 
 ### Option 1: Run All Steps with Pipeline (Recommended)
 
+> [!WARNING]
+>
+> Before running the pipeline:
+> - STM32N6 board must be connected and ready for deployment
+> - STM32CubeIDE and ST Edge AI paths must be configured in the system
+
+
 Run all steps (export, quantization, deployment) with a single command:
 
 ```bash
-cd st-objectdetection
 python pipeline.py
 ```
 
@@ -82,7 +84,6 @@ The pipeline runs the following steps sequentially:
 Convert the PyTorch model to TFLite INT8 format:
 
 ```bash
-cd st-objectdetection
 yolo export model=yolov8n.pt format=tflite imgsz=256 int8=True
 ```
 
@@ -123,8 +124,8 @@ quantization:
 #### Step 3: STM32N6 Deployment
 
 ```bash
-cd object_detection
-python stm32ai_main.py --config-path ./config_file_examples/ --config-name deployment_n6_st_yoloxn_config.yaml
+cd ../object_detection
+python stm32ai_main.py --config-path ./config_file_examples/ --config-name deployment_n6_yolov8_config.yaml
 ```
 
 After deployment is complete:
