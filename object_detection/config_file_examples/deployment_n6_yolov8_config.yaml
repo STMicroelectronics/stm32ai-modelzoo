@@ -1,7 +1,7 @@
 operation_mode: deployment
 
 model:
-  model_path: ../yolov8_quantization/quantized_models/yolov8n_256_quant_pt_ui_od_coco-tensorint.tflite
+  model_path: ../yolov8_quantization/quantized_models/yolov8n_256_quant_pt_ui_od_coco.tflite
   model_type: yolov8n
   
 dataset:
