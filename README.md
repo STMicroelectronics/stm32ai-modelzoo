@@ -135,32 +135,52 @@ After deployment is complete:
 ## Project Structure
 
 ```
-st-objectdetection/
-├── pipeline.py                # Main script that runs all steps
-├── requirements.txt           # Python dependencies
-├── yolov8n.pt                 # Original YOLOv8n PyTorch model
-├── yolov8n.onnx               # Model in ONNX format
-├── yolov8n_saved_model/       # TensorFlow SavedModel format
-├── datasets/                  # Training and calibration datasets
+stm32ai-n6-yolov8-objectdetection/
+├── pipeline.py                  # Main script that runs all steps
+├── requirements.txt             # Python dependencies
+├── README.md                    # Project documentation
+├── LICENSE.md                   # License information
+├── SECURITY.md                  # Security policy
 │
-├── object_detection/          # STM32 Model Zoo - Object Detection module
-│   ├── stm32ai_main.py        # Main deployment script
-│   ├── config_file_examples/  # Example configuration files
-│   ├── tf/                    # TensorFlow tools
-│   ├── pt/                    # PyTorch tools
-│   └── docs/                  # Documentation
+├── api/                         # API module
+│   ├── api.py                   # API implementation
+│   └── README.md                # API documentation
 │
-├── yolov8_quantization/       # YOLOv8 INT8 quantization tools
-│   ├── tflite_quant.py        # TFLite quantization script
-│   ├── user_config_quant.yaml # Quantization configuration
-│   ├── quantized_models/      # Quantized models (output)
-│   └── outputs/               # Quantization outputs
+├── common/                      # Shared utilities and tools
+│   ├── benchmarking/            # Benchmarking tools
+│   ├── compression/             # Model compression utilities
+│   ├── data_augmentation/       # Data augmentation tools
+│   ├── deployment/              # Deployment utilities
+│   ├── evaluation/              # Model evaluation tools
+│   ├── model_utils/             # Model utilities
+│   ├── onnx_utils/              # ONNX conversion utilities
+│   ├── optimization/            # Optimization tools
+│   ├── prediction/              # Prediction utilities
+│   ├── quantization/            # Quantization tools
+│   ├── stm32ai_dc/              # STM32AI Developer Cloud
+│   ├── stm32ai_local/           # STM32AI Local tools
+│   ├── stm_ai_runner/           # STM AI runner
+│   ├── training/                # Training utilities
+│   └── utils/                   # General utilities
 │
-└── STM32N6/                   # STM32N6 deployment projects
-    ├── Application/           # Application code
-    ├── Model/                 # Model files
-    ├── Binary/                # Compiled binary files
-    └── Doc/                   # Documentation
+├── object_detection/            # STM32 Model Zoo - Object Detection module
+│   ├── stm32ai_main.py          # Main deployment script
+│   ├── user_config.yaml         # TensorFlow configuration
+│   ├── user_config_pt.yaml      # PyTorch configuration
+│   ├── README.md                # Module documentation
+│   ├── config_file_examples/    # TensorFlow example configs
+│   ├── config_file_examples_pt/ # PyTorch example configs
+│   ├── datasets/                # Datasets for training/validation
+│   ├── docs/                    # Documentation
+│   ├── pt/                      # PyTorch tools
+│   └── tf/                      # TensorFlow tools
+│
+└── yolov8_quantization/         # YOLOv8 INT8 quantization tools
+    ├── tflite_quant.py          # TFLite quantization script
+    ├── user_config_quant.yaml   # Quantization configuration
+    ├── README.md                # Quantization documentation
+    ├── quantized_models/        # Quantized models (output)
+    └── outputs/                 # Quantization outputs
 ```
 
 ## License
