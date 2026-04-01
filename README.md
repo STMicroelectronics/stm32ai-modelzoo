@@ -12,6 +12,20 @@ End-to-end YOLOv8-based object detection project for STM32N6 microcontrollers. T
 - **Configuration-Based**: Easy configuration with YAML files
 
 
+## Hardware Prerequisites
+
+Before starting, ensure you have the following hardware ready:
+
+| Hardware | Details |
+|----------|---------|
+| **STM32N6570-DK** or **NUCLEO-N657X0-Q** | Target development board |
+| **Camera module** | MB1854 (IMX335, included with DK), STEVAL-55G1MBI, or STEVAL-66GYMAI1 |
+| **USB-C to USB-C cable** | Required for STLINK connection — USB-A to USB-C may not provide sufficient power |
+
+> For full hardware setup instructions, boot mode configuration, debug console setup, and hardware troubleshooting, see [HARDWARE_GUIDE.md](HARDWARE_GUIDE.md).
+
+---
+
 ## Installation
 
 ### Requirements
@@ -132,6 +146,9 @@ After deployment is complete:
 1. Open the `STM32N6/` folder with STM32CubeIDE
 2. Build the project
 3. Flash the binary to the STM32N6 board
+4. Switch the board to **Boot from Flash** mode and power cycle
+
+> For boot switch/jumper positions and board connection details, see [HARDWARE_GUIDE.md](HARDWARE_GUIDE.md).
 
 ## Project Structure
 

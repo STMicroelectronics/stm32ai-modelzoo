@@ -1,39 +1,77 @@
 operation_mode: deployment
 
 model:
+  # [EDIT] Path to the quantized .tflite or .onnx model.
+  # Default points to the output of yolov8_quantization/tflite_quant.py.
+  # If you ran quantization with a different name or input size, update this path.
+  # Example for a 416x416 per-channel model: ../yolov8_quantization/quantized_models/yolov8n_416_quant_pc_uf_od_coco.tflite
   model_path: ../yolov8_quantization/quantized_models/yolov8n_256_quant_pt_ui_od_coco.tflite
+
+  # [EDIT] Model architecture type. Options: yolov8n, yolov8s, yolov8m, yolov11n, st_yoloxn, ...
   model_type: yolov8n
-  
+
 dataset:
+  # [EDIT] List the class names your model was trained on, in the same order as the training labels.
+  # COCO 80-class example: [person, bicycle, car, motorcycle, airplane, bus, train, truck, boat, ...]
+  # For a single-class model just leave one entry, e.g. [person]
   class_names: [person]
 
 preprocessing:
   resizing:
+    # aspect_ratio: "crop" keeps original ratio by cropping. "fit" stretches to fill.
     aspect_ratio: crop
     interpolation: nearest
+  # [EDIT] Match this to how your model was trained. Usually "rgb" for YOLOv8/Ultralytics models.
   color_mode: rgb
 
 postprocessing:
+  # Detections below this score are discarded. Lower = more detections, more false positives.
   confidence_thresh: 0.5
+  # Non-maximum suppression threshold. Lower = fewer overlapping boxes kept.
   NMS_thresh: 0.5
   IoU_eval_thresh: 0.5
   max_detection_boxes: 10
 
 tools:
   stedgeai:
+    # optimization options: "balanced" | "time" (faster inference) | "ram" (lower memory)
     optimization: balanced
+
+    # [EDIT] on_cloud: True uses ST Developer Cloud (no local STEdgeAI install needed, requires account).
+    #         on_cloud: False uses a local STEdgeAI installation — set path_to_stedgeai below.
     on_cloud: False
+
+    # [EDIT] Path to your local stedgeai executable. Only used when on_cloud is False.
+    # Update the version number to match your installation (e.g. 3.0, 3.1 ...).
+    # Windows example: C:/ST/STEdgeAI/3.0/Utilities/windows/stedgeai.exe
+    # Linux example:   /opt/st/STEdgeAI/3.0/Utilities/linux/stedgeai
     path_to_stedgeai: C:/ST/STEdgeAI/3.0/Utilities/windows/stedgeai.exe
+
+  # [EDIT] Path to your STM32CubeIDE executable. Update the version number to match your install.
+  # Windows example: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
+  # Linux example:   /opt/st/stm32cubeide_1.17.0/stm32cubeide
   path_to_cubeIDE: C:/ST/STM32CubeIDE_1.17.0/STM32CubeIDE/stm32cubeide.exe
 
 deployment:
+  # [EDIT] Path to the STM32N6 application C project.
+  # This submodule must be initialized first: git submodule update --init application_code/object_detection/STM32N6
   c_project_path: ../application_code/object_detection/STM32N6/
+
   IDE: GCC
-  verbosity: 1
+  verbosity: 1  # 0 = silent, 1 = show build/flash messages
+
   hardware_setup:
     serie: STM32N6
+
+    # [EDIT] Set to the board you are using:
+    #   STM32N6570-DK       → Discovery kit
+    #   NUCLEO-N657X0-Q     → Nucleo board
     board: STM32N6570-DK
-    output: "UVCL" # default image output interface; "UVCL" (USB display) or "SPI" (X-NUCLEO-GFX01M2). Used only with NUCLEO-N657X0-Q
+
+    # [EDIT] Display output interface. Only relevant for NUCLEO-N657X0-Q.
+    #   "UVCL" → USB/UVC host (connect a monitor via USB-C)
+    #   "SPI"  → X-NUCLEO-GFX01M2 display shield
+    output: "UVCL"
 
 mlflow:
    uri: ./tf/src/experiments_outputs/mlruns
