@@ -57,32 +57,32 @@ Measures are done with default STEdgeAI Core configuration with enabled input / 
 ### Reference **NPU** memory footprint based on COCO dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|-------------------|-------------------|--------------------|-----------------------|
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_192/st_yolodv2milli_actrelu_pt_coco_192_qdq_int8.onnx) | COCO | Int8 | 192x192x3 | STM32N6 | 1008.00 | 0 | 3170.29 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_320/st_yolodv2milli_actrelu_pt_coco_320_qdq_int8.onnx) | COCO | Int8 | 320x320x3 | STM32N6 | 2744.48 | 800.00 | 3182.67 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_640/st_yolodv2milli_actrelu_pt_coco_640_qdq_int8.onnx) | COCO | Int8 | 640x640x3 | STM32N6 | 2768.00 | 9600.00 | 3189.38 | 3.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_192/st_yolodv2milli_actrelu_pt_coco_192_qdq_int8.onnx) | COCO | Int8 | 192x192x3 | STM32N6 | 1008.00 | 0 | 3170.29 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_320/st_yolodv2milli_actrelu_pt_coco_320_qdq_int8.onnx) | COCO | Int8 | 320x320x3 | STM32N6 | 2718.88 | 800.00 | 3182.67 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_640/st_yolodv2milli_actrelu_pt_coco_640_qdq_int8.onnx) | COCO | Int8 | 640x640x3 | STM32N6 | 2768.00 | 9600.00 | 3189.38 | 4.0.0 |
 
 * 640x640 coco checkpoints are provided primarily for finetuning purposes as these checkpoints are trained on large dataset at higher resolution. Models with 640 resolution is not suitable for deployment.
 
 ### Reference **NPU** inference time based on COCO dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|------------|-------|------------------|--------------------|-----------|-----------------------|
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_192/st_yolodv2milli_actrelu_pt_coco_192_qdq_int8.onnx) | COCO | Int8 | 192x192x3 | STM32N6570-DK | NPU/MCU | 18.78 | 53.25 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_320/st_yolodv2milli_actrelu_pt_coco_320_qdq_int8.onnx) | COCO | Int8 | 320x320x3 | STM32N6570-DK | NPU/MCU | 70.57 | 14.17 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_640/st_yolodv2milli_actrelu_pt_coco_640_qdq_int8.onnx) | COCO | Int8 | 640x640x3 | STM32N6570-DK | NPU/MCU | 3417.54 | 0.29 | 3.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_192/st_yolodv2milli_actrelu_pt_coco_192_qdq_int8.onnx) | COCO | Int8 | 192x192x3 | STM32N6570-DK | NPU/MCU | 17.34 | 57.6 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_320/st_yolodv2milli_actrelu_pt_coco_320_qdq_int8.onnx) | COCO | Int8 | 320x320x3 | STM32N6570-DK | NPU/MCU | 67.18 | 14.9 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco/st_yolodv2milli_actrelu_pt_coco_640/st_yolodv2milli_actrelu_pt_coco_640_qdq_int8.onnx) | COCO | Int8 | 640x640x3 | STM32N6570-DK | NPU/MCU | 3241.57 | 0.31 | 4.0.0 |
 
 ### Reference **NPU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|-------------------|-------------------|--------------------|-----------------------|
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_192/st_yolodv2milli_actrelu_pt_coco_person_192_qdq_int8.onnx) | COCO-Person | Int8 | 192x192x3 | STM32N6 | 1008.00 | 0 | 3155.48 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_256/st_yolodv2milli_actrelu_pt_coco_person_256_qdq_int8.onnx) | COCO-Person | Int8 | 256x256x3 | STM32N6 | 2320.00 | 0 | 3164.48 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_320/st_yolodv2milli_actrelu_pt_coco_person_320_qdq_int8.onnx) | COCO-Person | Int8 | 320x320x3 | STM32N6 | 2743.88 | 800.00 | 3167.85 | 3.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_192/st_yolodv2milli_actrelu_pt_coco_person_192_qdq_int8.onnx) | COCO-Person | Int8 | 192x192x3 | STM32N6 | 1008.00 | 0 | 3155.48 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_256/st_yolodv2milli_actrelu_pt_coco_person_256_qdq_int8.onnx) | COCO-Person | Int8 | 256x256x3 | STM32N6 | 2320.00 | 0 | 3164.48 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_320/st_yolodv2milli_actrelu_pt_coco_person_320_qdq_int8.onnx) | COCO-Person | Int8 | 320x320x3 | STM32N6 | 2743.88 | 800.00 | 3167.85 | 4.0.0 |
 
 ### Reference **NPU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|------------|-------|------------------|--------------------|-----------|-----------------------|
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_192/st_yolodv2milli_actrelu_pt_coco_person_192_qdq_int8.onnx) | COCO-Person | Int8 | 192x192x3 | STM32N6570-DK | NPU/MCU | 17.90 | 55.87 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_256/st_yolodv2milli_actrelu_pt_coco_person_256_qdq_int8.onnx) | COCO-Person | Int8 | 256x256x3 | STM32N6570-DK | NPU/MCU | 28.36 | 35.26 | 3.0.0 |
-| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_320/st_yolodv2milli_actrelu_pt_coco_person_320_qdq_int8.onnx) | COCO-Person | Int8 | 320x320x3 | STM32N6570-DK | NPU/MCU | 68.54 | 14.59 | 3.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_192/st_yolodv2milli_actrelu_pt_coco_person_192_qdq_int8.onnx) | COCO-Person | Int8 | 192x192x3 | STM32N6570-DK | NPU/MCU | 16.51 | 60.5 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_256/st_yolodv2milli_actrelu_pt_coco_person_256_qdq_int8.onnx) | COCO-Person | Int8 | 256x256x3 | STM32N6570-DK | NPU/MCU | 26.08 | 38.3 | 4.0.0 |
+| [st_yolodv2milli_pt](./ST_pretrainedmodel_public_dataset/coco_person/st_yolodv2milli_actrelu_pt_coco_person_320/st_yolodv2milli_actrelu_pt_coco_person_320_qdq_int8.onnx) | COCO-Person | Int8 | 320x320x3 | STM32N6570-DK | NPU/MCU | 65.12 | 15.3 | 4.0.0 |
 
 
 

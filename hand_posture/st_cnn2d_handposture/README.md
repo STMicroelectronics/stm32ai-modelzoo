@@ -56,7 +56,7 @@ Measures are done with default STEdge AI Dev Cloud configuration with enabled in
 
 | Model                                                                                                                                                    | Format | Input Shape  | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)   | Total Flash (KiB) | STEdge AI Core version  |
 |:--------------------------------------------------------------------------------------------------------------------------------------------------------:|:------:|:-----------:|:-------:|:--------------:|:-----------:|:-------------:|:----------:|:-----------:|:-----------:|:---------------------:|
-| [st_cnn2d_handposture](./ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/st_cnn2d_handposture_8classes/st_cnn2d_handposture_8classes.keras) | FLOAT32   | 8 x 8 x 2    | STM32F4 | 1.63     | 0.28       | 10.75    | 6.16       |  1.91    | 16.19  | 3.0.0                 |
+| [st_cnn2d_handposture](./ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/st_cnn2d_handposture_8classes/st_cnn2d_handposture_8classes.keras) | FLOAT32   | 8 x 8 x 2    | STM32F4 | 1.63     | 0.28       | 10.75    | 6.16       |  1.91    | 16.19  | 4.0.0                 |
 
 
 ### Reference inference time based on ST_VL53LxCX_handposture_dataset (see Accuracy for details on dataset)
@@ -64,7 +64,7 @@ Measures are done with default STEdge AI Dev Cloud configuration with enabled in
 
 | Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) | STEdge AI Core version  |
 |:-----------------:|:------:|:----------:|:----------------:|:-------------:|:-------------------:|:---------------------:|
-| [st_cnn2d_handposture](./ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/st_cnn2d_handposture_8classes/st_cnn2d_handposture_8classes.keras) | FLOAT32   | 8 x 8 x 2    | STM32F401 | 84 MHz       |    1.46  ms       | 3.0.0                 |
+| [st_cnn2d_handposture](./ST_pretrainedmodel_custom_dataset/ST_VL53L8CX_handposture_dataset/st_cnn2d_handposture_8classes/st_cnn2d_handposture_8classes.keras) | FLOAT32   | 8 x 8 x 2    | STM32F401 | 84 MHz       |    1.46  ms       | 4.0.0                 |
 
 ### Accuracy with ST_VL53LxCX_handposture_dataset
 

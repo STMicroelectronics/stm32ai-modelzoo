@@ -55,7 +55,7 @@ Measures are done with default STEDGEAI configuration with enabled input / outpu
 ### Reference **NPU** memory footprint
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx)  | valentini     | Int8     | 257x40  | STM32N6   |     100.09    |   0.0              |    1578.39       |     3.0.0   |
+| [STFT-TCNN Medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx)  | valentini     | Int8     | 257x40  | STM32N6   |     100.09    |   0.0              |    1578.39       |     4.0.0   |
 
 ### Reference **NPU**  inference time
 
@@ -68,7 +68,7 @@ You can expect significant improvements once this issue is resolved.
 
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   |  STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|------------------------|
-| [STFT-TCNN medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx) | valentini     | Int8     | 257x40  | STM32N6570-DK   |   NPU/MCU      |       51.11       |    19.56      |     3.0.0   |
+| [STFT-TCNN medium](ST_pretrainedmodel_public_dataset/valentini/stft_tcnn_medium_sigmoid_257x40_qdq_int8.onnx) | valentini     | Int8     | 257x40  | STM32N6570-DK   |   NPU/MCU      |       51.01       |    19.60      |     4.0.0   |
 
 
 ### Metrics on the Valentini dataset

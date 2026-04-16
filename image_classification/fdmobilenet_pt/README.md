@@ -63,18 +63,18 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [fdmobilenet_a025_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 294 | 0 | 377.03 | 3.0.0 |
-| [fdmobilenet_a050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a050_pt_224/fdmobilenet_a050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 343 | 0 | 973.39 | 3.0.0 |
-| [fdmobilenet_a075_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a075_pt_224/fdmobilenet_a075_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 441 | 0 | 1813.66 | 3.0.0 |
+| [fdmobilenet_a025_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 294 | 0 | 377.03 | 4.0.0 |
+| [fdmobilenet_a050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a050_pt_224/fdmobilenet_a050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 343 | 0 | 973.39 | 4.0.0 |
+| [fdmobilenet_a075_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a075_pt_224/fdmobilenet_a075_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 441 | 0 | 1813.66 | 4.0.0 |
 
 
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset  | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|--------|------------|-------|-----------------|-------------------|---------------------|
-| [fdmobilenet_a025_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 1.88 | 531.91 | 3.0.0  |
-| [fdmobilenet_a050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a050_pt_224/fdmobilenet_a050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 4.07 | 245.70 | 3.0.0  |
-| [fdmobilenet_a075_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a075_pt_224/fdmobilenet_a075_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 6.83 | 146.41 | 3.0.0  |
+| [fdmobilenet_a025_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a025_pt_224/fdmobilenet_a025_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 1.88 | 531.91 | 4.0.0  |
+| [fdmobilenet_a050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a050_pt_224/fdmobilenet_a050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 4.07 | 245.70 | 4.0.0  |
+| [fdmobilenet_a075_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/fdmobilenet_a075_pt_224/fdmobilenet_a075_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 6.83 | 146.41 | 4.0.0  |
 
 
 ### Accuracy with Imagenet dataset

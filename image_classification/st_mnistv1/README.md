@@ -60,7 +60,7 @@ For an image resolution of 28x28 and 36 classes : 10 integers (from 0-9) and 26 
 
 | Model             | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STEdgeAI Core version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [ST MNIST Byclass v1 tfs](./ST_pretrainedmodel_public_dataset/emnist_byclass/st_mnistv1_28_tfs/st_mnistv1_28_tfs_int8.tflite) | Int8   | 28x28x1    | STM32H7 | 17.21 KiB     | 0.3 KiB     | 10.08 KiB    | 27.99 KiB  | 17.51 KiB   | 38.07 KiB   | 3.0.0                 |
+| [ST MNIST Byclass v1 tfs](./ST_pretrainedmodel_public_dataset/emnist_byclass/st_mnistv1_28_tfs/st_mnistv1_28_tfs_int8.tflite) | Int8   | 28x28x1    | STM32H7 | 17.21 KiB     | 0.3 KiB     | 10.08 KiB    | 27.99 KiB  | 17.51 KiB   | 38.07 KiB   | 4.0.0                 |
 
 
 ### Reference **MCU** inference time based on EMNIST-Byclass dataset (see Accuracy for details on dataset)
@@ -68,7 +68,7 @@ For an image resolution of 28x28 and 36 classes : 10 integers (from 0-9) and 26 
 
 | Model             | Format | Resolution | Board            |   Frequency   | Inference time (ms) | STEdgeAI Core version  |
 |-------------------|--------|------------|------------------|---------------|---------------------|-----------------------|
-| [ST MNIST Byclass v1 tfs](./ST_pretrainedmodel_public_dataset/emnist_byclass/st_mnistv1_28_tfs/st_mnistv1_28_tfs_int8.tflite) | Int8   | 28x28x1    | STM32H747I-DISCO | 400 MHz       | 3.48 ms             | 3.0.0                 |
+| [ST MNIST Byclass v1 tfs](./ST_pretrainedmodel_public_dataset/emnist_byclass/st_mnistv1_28_tfs/st_mnistv1_28_tfs_int8.tflite) | Int8   | 28x28x1    | STM32H747I-DISCO | 400 MHz       | 3.43 ms             | 4.0.0                 |
 
 
 ### Reference **MPU** inference time based on EMNIST-Byclass dataset (see Accuracy for details on dataset)

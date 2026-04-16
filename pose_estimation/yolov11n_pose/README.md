@@ -59,15 +59,15 @@ https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/
 ### Reference **NPU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_256_quant_pc_uf_pose_coco-st.tflite)  | COCO-Person      | Int8     | 256x256x3  | STM32N6   |   740.25      |      0.0          |    2818.16                 |     3.0.0   |
-| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_320_quant_pc_uf_pose_coco-st.tflite)  | COCO-Person      | Int8     | 320x320x3  | STM32N6   |   1840.85     |      0.0          |    2851.33                 |     3.0.0   |
+| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_256_quant_pc_uf_pose_coco-st.tflite)  | COCO-Person      | Int8     | 256x256x3  | STM32N6   |   740.25      |      0.0          |    2818.16                 |     4.0.0   |
+| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_320_quant_pc_uf_pose_coco-st.tflite)  | COCO-Person      | Int8     | 320x320x3  | STM32N6   |   1840.85     |      0.0          |    2851.33                 |     4.0.0   |
 
 
 ### Reference **NPU**  inference time based on COCO Person dataset (see Accuracy for details on dataset)
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec     |  STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_256_quant_pc_uf_pose_coco-st.tflite) | COCO-Person      | Int8     | 256x256x3  | STM32N6570-DK   |   NPU/MCU      |   34.32             |     29.14                |     3.0.0   |
-| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_320_quant_pc_uf_pose_coco-st.tflite) | COCO-Person      | Int8     | 320x320x3  | STM32N6570-DK   |   NPU/MCU      |   56.15             |     17.81                |     3.0.0   |
+| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_256_quant_pc_uf_pose_coco-st.tflite) | COCO-Person      | Int8     | 256x256x3  | STM32N6570-DK   |   NPU/MCU      |   34.32             |     29.14                |     4.0.0   |
+| [YOLOv11n pose per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/pose_estimation/yolo11/yolo11n_320_quant_pc_uf_pose_coco-st.tflite) | COCO-Person      | Int8     | 320x320x3  | STM32N6570-DK   |   NPU/MCU      |   56.15             |     17.81                |     4.0.0   |
 
 
 ## Integration in a simple example and other services support:

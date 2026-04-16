@@ -76,28 +76,28 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on DeepSportradar dataset (see Accuracy for details on dataset)
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash |  STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------|-------------------------|
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 480 | 0.0 | 553.58      |     3.0.0   |
-| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 1440  | 0.0 | 2786.52     |     3.0.0   |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 480 | 0.0 | 553.58      |     4.0.0   |
+| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 1440  | 0.0 | 2786.52     |     4.0.0   |
 
 
 ### Reference **NPU**  inference time on DeepSportradar dataset (see Accuracy for details on dataset)
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-----------| -----------------------|
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 4.15                 | 241       | 3.0.0                  |
-| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 13.37                | 74.8        | 3.0.0                  |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 3.67                 | 272       | 4.0.0                  |
+| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 14.33                | 69.8        | 4.0.0                  |
 
 
 ### Reference **MCU** memory footprint based on DeepSportradar dataset (see Accuracy for details on dataset)
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash |  STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------|-------------------------|
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 461.32 | 0.0 | 400.59      |     3.0.0   |
-| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 398.25   | 804.38 | 2205.06      |     3.0.0   |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 461.32 | 0.0 | 400.59      |     4.0.0   |
+| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 398.25   | 804.38 | 2205.06      |     4.0.0   |
 
 ### Reference **MCU** inference time on DeepSportradar dataset (see Accuracy for details on dataset)
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-----------| -----------------------|
-| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          | 190.3               | 5.3      |   3.0.0                |
-| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          |  729.45              | 1.37       |  3.0.0                |
+| [MobileNet v2 0.35 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a035_256_128_fft/mobilenetv2_a035_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          | 190.3               | 5.3      |   4.0.0                |
+| [MobileNet v2 1.0 fft](./ST_pretrainedmodel_public_dataset/DeepSportradar/mobilenetv2_a100_256_128_fft/mobilenetv2_a100_256_128_fft_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          |  729.45              | 1.37       |  4.0.0                |
 
 
 

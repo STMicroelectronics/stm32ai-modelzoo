@@ -63,18 +63,18 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [dla46xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46xc_pt_224/dla46xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2361 | 6272 | 1036.41 | 3.0.0 |
-| [dla46c_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46c_pt_224/dla46c_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2361 | 6272 | 1266.66 | 3.0.0 |
-| [dla60xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla60xc_pt_224/dla60xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2361 | 6272 | 1278.52 | 3.0.0 |
+| [dla46xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46xc_pt_224/dla46xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2361 | 6272 | 1036.41 | 4.0.0 |
+| [dla46c_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46c_pt_224/dla46c_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2361 | 6272 | 1266.66 | 4.0.0 |
+| [dla60xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla60xc_pt_224/dla60xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2361 | 6272 | 1278.52 | 4.0.0 |
 
 
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset  | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|--------|------------|-------|-----------------|-------------------|---------------------|
-| [dla46c_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46c_pt_224/dla46c_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 184.23 | 5.43 | 3.0.0  |
-| [dla46xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46xc_pt_224/dla46xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 186.36 | 5.37 | 3.0.0  |
-| [dla60xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla60xc_pt_224/dla60xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 187.54 | 5.33 | 3.0.0  |
+| [dla46c_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46c_pt_224/dla46c_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 184.23 | 5.43 | 4.0.0  |
+| [dla46xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla46xc_pt_224/dla46xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 186.36 | 5.37 | 4.0.0  |
+| [dla60xc_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/dla60xc_pt_224/dla60xc_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 187.54 | 5.33 | 4.0.0  |
 
 
 

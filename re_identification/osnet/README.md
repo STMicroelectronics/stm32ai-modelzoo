@@ -70,28 +70,28 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on DeepSportradar dataset (see Accuracy for details on dataset)
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash |  STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------|-------------------------|
-| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 480 | 0 | 404.94      |     3.0.0   |
-| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 1440 | 0 | 2375.33     |     3.0.0   |
+| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 928 | 0 | 158.27      |     4.0.0   |
+| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32N6   | 2624 | 2048 | 1967.58     |     4.0.0   |
 
 
 ### Reference **NPU**  inference time on DeepSportradar dataset (see Accuracy for details on dataset)
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-----------| -----------------------|
-| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 3.53                 | 283.3       |    3.0.0                  |
-| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 13.44                | 74.4        |   3.0.0                  |
+| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 7.22                 | 138.5       |    4.0.0                  |
+| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32N6570-DK       | NPU/MCU              | 71.29                | 14.0        |   4.0.0                  |
 
 
 ### Reference **MCU** memory footprint based on DeepSportradar dataset (see Accuracy for details on dataset)
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|---------------|-------------------------|
-| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 331.45 | 0 | 139.52      |     3.0.0   |
-| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 396.01   | 1024.0 | 1892.75      |     3.0.0   |
+| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 331.45 | 0 | 139.52      |     4.0.0   |
+| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8     | 256x128x3  | STM32H7   | 396.01   | 1024.0 | 1892.75      |     4.0.0   |
 
 ### Reference **MCU** inference time on DeepSportradar dataset (see Accuracy for details on dataset)
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-----------| -----------------------|
-| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          | 495.13               | 2.02      |  3.0.0                |
-| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          |  3894.82              | 0.26       |   3.0.0                |
+| [OSNet 0.25 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a025_256_128_tfs/osnet_a025_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          | 495.13               | 2.02      |  4.0.0                |
+| [OSNet 1.0 tfs](./ST_pretrainedmodel_public_dataset/DeepSportradar/osnet_a100_256_128_tfs/osnet_a100_256_128_tfs_int8.tflite) | DeepSportradar      | Int8   | 256x128x3  | STM32H747I-DISCO    | 1 CPU          |  3894.82              | 0.26       |   4.0.0                |
 
 
 ### Performance with DeepSportradar ReID dataset

@@ -59,33 +59,33 @@ Measures are done with default STM32Cube.AI configuration with enabled input / o
 ### Reference **NPU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 | Model                                                                                                            | Dataset     | Format   | Resolution   | Series   |   Internal RAM (KiB) |   External RAM (KiB) |   Weights Flash (KiB) | STEdgeAI Core version   |
 |------------------------------------------------------------------------------------------------------------------|-------------|----------|--------------|----------|----------------------|----------------------|-----------------------|-------------------------|
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | COCO-Person | Int8     | 224x224x3    | STM32N6  |               343    |                    0 |               10568.87 | 3.0.0                   |
-| [yolov2t](ST_pretrainedmodel_custom_dataset/st_person/yolov2t_224/yolov2t_224_int8.tflite)        | ST-Person   | Int8     | 224x224x3    | STM32N6  |               343    |                    0 |               10856.87 | 3.0.0                   |
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | COCO-Person | Int8     | 416x416x3    | STM32N6  |              1690    |                    0 |               10884.56 | 3.0.0                   |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | COCO-Person | Int8     | 224x224x3    | STM32N6  |               343    |                    0 |               10568.87 | 4.0.0                   |
+| [yolov2t](ST_pretrainedmodel_custom_dataset/st_person/yolov2t_224/yolov2t_224_int8.tflite)        | ST-Person   | Int8     | 224x224x3    | STM32N6  |               343    |                    0 |               10856.87 | 4.0.0                   |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | COCO-Person | Int8     | 416x416x3    | STM32N6  |              1690    |                    0 |               10884.56 | 4.0.0                   |
 
 ### Reference **NPU**  inference time based on COCO Person dataset (see Accuracy for details on dataset)
 | Model                                                                                                            | Dataset     | Format   | Resolution   | Board         | Execution Engine   |   Inference time (ms) |   Inf / sec | STEdgeAI Core version   |
 |------------------------------------------------------------------------------------------------------------------|-------------|----------|--------------|---------------|--------------------|-----------------------|-------------|-------------------------|
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | COCO-Person | Int8     | 224x224x3    | STM32N6570-DK | NPU/MCU            |                 30.68 |       32.59 | 3.0.0                   |
-| [yolov2t](ST_pretrainedmodel_custom_dataset/st_person/yolov2t_224/yolov2t_224_int8.tflite)        | ST-Person   | Int8     | 224x224x3    | STM32N6570-DK | NPU/MCU            |                 30.38 |       32.65 | 3.0.0                   |
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | COCO-Person | Int8     | 416x416x3    | STM32N6570-DK | NPU/MCU            |                 50.26 |       19.80 | 3.0.0                   |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | COCO-Person | Int8     | 224x224x3    | STM32N6570-DK | NPU/MCU            |                 30.68 |       32.59 | 4.0.0                   |
+| [yolov2t](ST_pretrainedmodel_custom_dataset/st_person/yolov2t_224/yolov2t_224_int8.tflite)        | ST-Person   | Int8     | 224x224x3    | STM32N6570-DK | NPU/MCU            |                 30.38 |       32.65 | 4.0.0                   |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | COCO-Person | Int8     | 416x416x3    | STM32N6570-DK | NPU/MCU            |                 50.26 |       19.80 | 4.0.0                   |
 
 ### Reference **MCU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 
 | Model                                                                                                            | Format   | Resolution   | Series   | Activation RAM   | Runtime RAM   | Weights Flash   | Code Flash   | Total RAM   | Total Flash   | STEdgeAI Core version   |
 |------------------------------------------------------------------------------------------------------------------|----------|--------------|----------|------------------|---------------|-----------------|--------------|-------------|---------------|------------------------|
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_192/yolov2t_192_int8.tflite) | Int8     | 192x192x3    | STM32H7  | 220.6 KiB        | 7.98 KiB      | 10775.98 KiB    | 55.85 KiB    | 228.58 KiB  | 10816.05 KiB  | 3.0.0                 |
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | Int8     | 224x224x3    | STM32H7  | 249.35           | 7.98 KiB      | 10775.98        | 55.24        | 253.93      | 10816.05      | 3.0.0                 |
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | Int8     | 416x416x3    | STM32H7  | 1263.07          | 8.03 KiB      | 10775.98        | 55.29        | 1271.10     | 10816.05      | 3.0.0                 |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_192/yolov2t_192_int8.tflite) | Int8     | 192x192x3    | STM32H7  | 220.6 KiB        | 7.98 KiB      | 10775.98 KiB    | 55.85 KiB    | 228.58 KiB  | 10816.05 KiB  | 4.0.0                 |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | Int8     | 224x224x3    | STM32H7  | 249.35           | 7.98 KiB      | 10775.98        | 55.24        | 253.93      | 10816.05      | 4.0.0                 |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | Int8     | 416x416x3    | STM32H7  | 1263.07          | 8.03 KiB      | 10775.98        | 55.29        | 1271.10     | 10816.05      | 4.0.0                 |
 
 ### Reference **MCU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
 
 
 | Model                                                                                                            | Format   | Resolution   | Board            | Execution Engine   | Frequency   | Inference time (ms)   | STEdgeAI Core version   |
 |------------------------------------------------------------------------------------------------------------------|----------|--------------|------------------|--------------------|-------------|-----------------------|------------------------|
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_192/yolov2t_192_int8.tflite) | Int8     | 192x192x3    | STM32H747I-DISCO | 1 CPU              | 400 MHz     | 3006.3 ms             | 3.0.0                 |
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | Int8     | 224x224x3    | STM32H747I-DISCO | 1 CPU              | 400 MHz     | 2557.88               | 3.0.0                 |
-| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | Int8     | 416x416x3    | STM32H747I-DISCO | 1 CPU              | 400 MHz     | 10154.33              | 3.0.0                 |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_192/yolov2t_192_int8.tflite) | Int8     | 192x192x3    | STM32H747I-DISCO | 1 CPU              | 400 MHz     | 3006.3 ms             | 4.0.0                 |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_224/yolov2t_224_int8.tflite) | Int8     | 224x224x3    | STM32H747I-DISCO | 1 CPU              | 400 MHz     | 2550.46               | 4.0.0                 |
+| [yolov2t](ST_pretrainedmodel_public_dataset/coco_2017_person/yolov2t_416/yolov2t_416_int8.tflite) | Int8     | 416x416x3    | STM32H747I-DISCO | 1 CPU              | 400 MHz     | 10123.1              | 4.0.0                 |
 
 ### Reference **MPU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
 

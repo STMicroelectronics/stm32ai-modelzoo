@@ -27,6 +27,7 @@ Models are stored depending on the way they have been trained:
 - *[YOLOv2t](./yolov2t/README.md)*
 - *[YOLOv8n](./yolov8n/README.md)*
 - *[YOLOv11n](./yolov11n/README.md)*
+- *[YOLO26n](./yolo26n/README.md)*
 
 
 ### Face Detection Models

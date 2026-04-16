@@ -57,32 +57,32 @@ Measures are done with default STEdgeAI Core configuration with enabled input / 
 ### Reference **NPU** memory footprint based on COCO dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|-------------------|-------------------|--------------------|-----------------------|
-| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/coco/ssdlite_mobilenetv2_pt_coco_300/ssdlite_mobilenetv2_pt_coco_300_qdq_int8.onnx) | COCO | Int8 | 300x300x3 | STM32N6 | 2408.59 | 2109.38 | 5121.38 | 3.0.0 |
+| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/coco/ssdlite_mobilenetv2_pt_coco_300/ssdlite_mobilenetv2_pt_coco_300_qdq_int8.onnx) | COCO | Int8 | 300x300x3 | STM32N6 | 2408.59 | 2109.38 | 5121.38 | 4.0.0 |
 
 ### Reference **NPU** inference time based on COCO dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|------------|-------|------------------|--------------------|-----------|-----------------------|
-| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/coco/ssdlite_mobilenetv2_pt_coco_300/ssdlite_mobilenetv2_pt_coco_300_qdq_int8.onnx) | COCO | Int8 | 300x300x3 | STM32N6570-DK | NPU/MCU | 121.02 | 8.27 | 3.0.0 |
+| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/coco/ssdlite_mobilenetv2_pt_coco_300/ssdlite_mobilenetv2_pt_coco_300_qdq_int8.onnx) | COCO | Int8 | 300x300x3 | STM32N6570-DK | NPU/MCU | 121.02 | 8.27 | 4.0.0 |
 
 ### Reference **NPU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|-------------------|-------------------|--------------------|-----------------------|
-| [ssdlite_mobilenetv2_pt](./ST_pretrainedmodel_public_dataset/coco_person/ssdlite_mobilenetv2_pt_coco_person_300/ssdlite_mobilenetv2_pt_coco_person_300_qdq_int8.onnx) | COCO-Person | Int8 | 300x300x3 | STM32N6 | 2374.34 | 2109.38 | 3758.63 | 3.0.0 |
+| [ssdlite_mobilenetv2_pt](./ST_pretrainedmodel_public_dataset/coco_person/ssdlite_mobilenetv2_pt_coco_person_300/ssdlite_mobilenetv2_pt_coco_person_300_qdq_int8.onnx) | COCO-Person | Int8 | 300x300x3 | STM32N6 | 2374.34 | 2109.38 | 3758.63 | 4.0.0 |
 
 ### Reference **NPU** inference time based on COCO Person dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|------------|-------|------------------|--------------------|-----------|-----------------------|
-| [ssdlite_mobilenetv2_pt](./ST_pretrainedmodel_public_dataset/coco_person/ssdlite_mobilenetv2_pt_coco_person_300/ssdlite_mobilenetv2_pt_coco_person_300_qdq_int8.onnx) | COCO-Person | Int8 | 300x300x3 | STM32N6570-DK | NPU/MCU | 117.25 | 8.53 | 3.0.0 |
+| [ssdlite_mobilenetv2_pt](./ST_pretrainedmodel_public_dataset/coco_person/ssdlite_mobilenetv2_pt_coco_person_300/ssdlite_mobilenetv2_pt_coco_person_300_qdq_int8.onnx) | COCO-Person | Int8 | 300x300x3 | STM32N6570-DK | NPU/MCU | 117.25 | 8.53 | 4.0.0 |
 
 ### Reference **NPU** memory footprint based on VOC dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|-------------------|-------------------|--------------------|-----------------------|
-| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/voc/ssdlite_mobilenetv2_pt_voc_300/ssdlite_mobilenetv2_pt_voc_300_qdq_int8.onnx) | VOC | Int8 | 300x300x3 | STM32N6 | 2374.81 | 2109.38 | 4086.38 | 3.0.0 |
+| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/voc/ssdlite_mobilenetv2_pt_voc_300/ssdlite_mobilenetv2_pt_voc_300_qdq_int8.onnx) | VOC | Int8 | 300x300x3 | STM32N6 | 2374.81 | 2109.38 | 4086.38 | 4.0.0 |
 
 ### Reference **NPU** inference time based on VOC dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|------------|-------|------------------|--------------------|-----------|-----------------------|
-| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/voc/ssdlite_mobilenetv2_pt_voc_300/ssdlite_mobilenetv2_pt_voc_300_qdq_int8.onnx) | VOC | Int8 | 300x300x3 | STM32N6570-DK | NPU/MCU | 118.10 | 8.47 | 3.0.0 |
+| [ssdlite_mobilenetv2_pt](./Public_pretrainedmodel_public_dataset/voc/ssdlite_mobilenetv2_pt_voc_300/ssdlite_mobilenetv2_pt_voc_300_qdq_int8.onnx) | VOC | Int8 | 300x300x3 | STM32N6570-DK | NPU/MCU | 118.10 | 8.47 | 4.0.0 |
 
 
 

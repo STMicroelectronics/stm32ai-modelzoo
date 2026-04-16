@@ -55,6 +55,8 @@ It outputs embedding vectors of size 2048 for the 2 stacks version, and 3548 for
 
 * Measures are done with default STEdgeAI Core configuration with enabled input / output allocated option.
 
+* For NUCLEO-U3C5ZI-Q footprints and inference time with HSP enabled, the amount of BRAM allocated to HSP is 4096 bytes.
+
 * `tl` stands for "transfer learning", meaning that the model backbone weights were initialized from a pre-trained model, then only the last layer was unfrozen during the training.
 
 
@@ -63,8 +65,12 @@ It outputs embedding vectors of size 2048 for the 2 stacks version, and 3548 for
 
 | Model             | Format | Resolution | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)  | Total Flash (kB) | STEdgeAI Core version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89        |   2.84       |   	123.98       |   42.76     | 62.73| 166.74 | 3.0.0   |
-| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89      |   	4.59        |   431.98       |   49.22   | 64.48 | 	481.2 | 3.0.0  |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89        |   2.84       |   	123.98       |   42.76     | 62.73| 166.74 | 4.0.0   |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A    | 59.89      |   	4.59        |   431.98       |   49.22   | 64.48 | 	481.2 | 4.0.0  |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (with HSP)| 60.62 | 3.05 | 123.98 | 25.92 | 63.67 | 149.9 | 4.0.0 |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (With HSP) | 59.22 | 4.81 | 431.98 | 32.24 | 64.03 | 464.22 | 4.0.0 |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (Without HSP) | 73.32 | 2.84 | 123.98 | 42.89 | 76.16 | 166.87 | 4.0.0 |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (Without HSP) | 73.32 | 4.6 | 431.98 | 49.41 | 77.92 | 481.39 | 4.0.0 |
 
 
 ### Reference inference time based on ESC-10 dataset
@@ -72,8 +78,12 @@ It outputs embedding vectors of size 2048 for the 2 stacks version, and 3548 for
 
 | Model             | Format | Resolution | Board            | Execution Engine |  Frequency   | Inference time (ms) | STEdgeAI Core version  |
 |-------------------|--------|------------|------------------|------------------|--------------|-------|-----------------------|
-| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	187.26 | 3.0.0                |
-| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	307.34 | 3.0.0                 |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	187.26 | 4.0.0                |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | B-U585I-IOT02A |  1 CPU | 160 | 	307.34 | 4.0.0                 |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (With HSP) | 1 CPU + HSP | 96 MHz | 124.85 | 4.0.0 |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (With HSP) | 1 CPU + HSP | 96 MHz | 178.39 | 4.0.0 |
+| [miniresnet v2 1 stack ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s1_64x50_tl/miniresnetv2_s1_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (Without HSP) | 1 CPU | 96 MHz | 313.34 | 4.0.0 |
+| [miniresnet v2 2 stacks ](ST_pretrainedmodel_public_dataset/esc10/miniresnetv2_s2_64x50_tl/miniresnetv2_s2_64x50_tl_int8.tflite) | int8 | 64x50x1 | NUCLEO-U3C5ZI-Q (Without HSP) | 1 CPU | 96 MHz | 512.64 | 4.0.0 |
 
 
 ### Accuracy with ESC-10 dataset

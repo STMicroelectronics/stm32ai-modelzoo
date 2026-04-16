@@ -98,9 +98,12 @@ dataset:
   - teddy bear
   - hair drier
   - toothbrush
-  training_path: /local/data/od_coco_2017/train
-  validation_path: /local/data/od_coco_2017/test
-  test_path: /local/data/od_coco_2017/test
+  train_images_path: /local/data/od_coco_2017/train
+  train_annotations_path: /local/data/od_coco_2017/train
+  val_images_path: /local/data/od_coco_2017/test
+  val_annotations_path: /local/data/od_coco_2017/test
+  test_images_path: /local/data/od_coco_2017/test
+  test_annotations_path: /local/data/od_coco_2017/test
   quantization_path: /local/data/od_coco_2017/train
   quantization_split: 0.001 #0.0005
 

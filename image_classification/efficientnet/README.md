@@ -65,31 +65,31 @@ For an image resolution of NxM and P classes :
 ### Reference **NPU** memory footprint on food101 dataset (see Accuracy for details on dataset)
 |Model      |  Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |----------|--------|-------------|------------------|------------------|---------------------|----------------------|-------------------------|
-| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_128_tfs/st_efficientnetlcv1_128_tfs_qdq_int8.onnx) |  Int8     | 128x128x3  | STM32N6   | 176 | 0 | 540.28              | 3.0.0 |
-|  [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_int8.onnx)  | Int8     | 224x224x3  | STM32N6   | 588.02 | 0 | 550.39           | 3.0.0 |
-|  [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_w4_26.1%_w8_73.9%_a8_100%_acc_73.12.onnx)  | Int8/Int4     | 224x224x3  | STM32N6   | 588.02 | 0 | 481.49          | 3.0.0 |
+| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_128_tfs/st_efficientnetlcv1_128_tfs_qdq_int8.onnx) |  Int8     | 128x128x3  | STM32N6   | 288 | 0 | 559.59              | 4.0.0 |
+|  [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_int8.onnx)  | Int8     | 224x224x3  | STM32N6   | 833.05 | 0 | 550.39           | 4.0.0 |
+|  [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_w4_26.1%_w8_73.9%_a8_100%_acc_73.12.onnx)  | Int8/Int4     | 224x224x3  | STM32N6   | 833.05 | 0 | 481.49          | 4.0.0 |
 
 ### Reference **NPU**  inference time on food101 dataset (see Accuracy for details on dataset)
 | Model  |  Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|--------|-------------|------------------|------------------|---------------------|-----------|--------------------------|
-| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_128_tfs/st_efficientnetlcv1_128_tfs_qdq_int8.onnx)|  Int8 |  128x128x3  | STM32N6570-DK   |   NPU/MCU      | 7.12                | 140.45    |     3.0.0   |
-| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_int8.onnx) |  Int8     |  224x224x3 | STM32N6570-DK   |   NPU/MCU      | 17.31               | 57.77     |     3.0.0   |
-| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_w4_26.1%_w8_73.9%_a8_100%_acc_73.12.onnx) |  Int8/Int4     |  224x224x3 | STM32N6570-DK   |   NPU/MCU      | 17.22               | 58.07     |     3.0.0   |
+| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_128_tfs/st_efficientnetlcv1_128_tfs_qdq_int8.onnx)|  Int8 |  128x128x3  | STM32N6570-DK   |   NPU/MCU      | 3.58                | 279.3    |     4.0.0   |
+| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_int8.onnx) |  Int8     |  224x224x3 | STM32N6570-DK   |   NPU/MCU      | 7.04               | 142.0     |     4.0.0   |
+| [ST EfficientNet LC v1 tfs](ST_pretrainedmodel_public_dataset/food101/st_efficientnetlcv1_224_tfs/st_efficientnetlcv1_224_tfs_qdq_w4_26.1%_w8_73.9%_a8_100%_acc_73.12.onnx) |  Int8/Int4     |  224x224x3 | STM32N6570-DK   |   NPU/MCU      | 6.96               | 143.6     |     4.0.0   |
 
 ### Reference **MCU** memory footprints based on Flowers dataset (see Accuracy for details on dataset)
 | Model                     | Format | Resolution   | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM  | Total Flash | STEdgeAI Core version |
 |---------------------------|--------|--------------|---------|----------------|-------------|---------------|------------|------------|-------------|-----------------------|
-| ST EfficientNet LC v1 tfs | Int8   | 224x224x3    | STM32H7 | 466.01 KiB     | 15.6 KiB    | 505.29 KiB    | 100.99 KiB  | 481.61 KiB | 606.28 KiB | 3.0.0                 |
-| ST EfficientNet LC v1 tfs | Int8   | 128x128x3    | STM32H7 | 181.01 KiB     | 15.6 KiB    | 505.29 KiB    | 100.62 KiB | 196.61 KiB | 605.91 KiB  | 3.0.0                 |
+| ST EfficientNet LC v1 tfs | Int8   | 224x224x3    | STM32H7 | 466.01 KiB     | 15.6 KiB    | 505.29 KiB    | 100.99 KiB  | 481.61 KiB | 606.28 KiB | 4.0.0                 |
+| ST EfficientNet LC v1 tfs | Int8   | 128x128x3    | STM32H7 | 181.01 KiB     | 15.6 KiB    | 505.29 KiB    | 100.62 KiB | 196.61 KiB | 605.91 KiB  | 4.0.0                 |
 
 
 ### Reference **MCU** inference time based on Flowers dataset (see Accuracy for details on dataset)
 | Model                     | Format | Resolution | Board             | Execution Engine | Frequency | Inference time (ms) | STEdgeAI Core version |
 |---------------------------|--------|------------|-------------------|------------------|-----------|---------------------|-----------------------|
-| ST EfficientNet LC v1 tfs | Int8   | 224x224x3  | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 459.99 ms           | 3.0.0                 |
-| ST EfficientNet LC v1 tfs | Int8   | 128x128x3  | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 155.22 ms           | 3.0.0                 |
-| ST EfficientNet LC v1 tfs | Int8   | 224x224x3  | STM32F769I-DISCO  | 1 CPU            | 216 MHz   | 871.7 ms            | 3.0.0                 |
-| ST EfficientNet LC v1 tfs | Int8   | 128x128x3  | STM32F769I-DISCO  | 1 CPU            | 216 MHz   | 259.5 ms            | 3.0.0                 |
+| ST EfficientNet LC v1 tfs | Int8   | 224x224x3  | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 459.99 ms           | 4.0.0                 |
+| ST EfficientNet LC v1 tfs | Int8   | 128x128x3  | STM32H747I-DISCO  | 1 CPU            | 400 MHz   | 155.22 ms           | 4.0.0                 |
+| ST EfficientNet LC v1 tfs | Int8   | 224x224x3  | STM32F769I-DISCO  | 1 CPU            | 216 MHz   | 871.7 ms            | 4.0.0                 |
+| ST EfficientNet LC v1 tfs | Int8   | 128x128x3  | STM32F769I-DISCO  | 1 CPU            | 216 MHz   | 259.5 ms            | 4.0.0                 |
 
 
 ### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)

@@ -48,15 +48,15 @@ BlazeFace is known for its fast inference and accuracy, making it suitable for a
 
 Performance metrics are measured using default STM32Cube.AI configurations with input/output allocated buffers.
 
-| Model                | Dataset       | Format | Resolution | Series  | Internal RAM (KB) | External RAM (KB) | Weights Flash (KB) | STM32Cube.AI version | STEdgeAI Core version |
-|----------------------|---------------|--------|------------|---------|-------------------|-------------------|--------------------|----------------------|-----------------------|
-| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128_quant_pc_ff_od_widerface.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3 | STM32N6 | 528               | 0              | 150.97            | 10.2.0               | 2.2.0                 |
+| Model                | Dataset       | Format | Resolution | Series  | Internal RAM (KB) | External RAM (KB) | Weights Flash (KB) | STEdgeAI Core version |
+|----------------------|---------------|--------|------------|---------|-------------------|--------------------|----------------------|-----------------------|
+| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128_quant_pc_ff_od_widerface.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3 | STM32N6 | 528               | 0              | 150.97            | 4.0.0                 |
 
 ### Reference **NPU** inference time (example)
 
-| Model                | Dataset       | Format | Resolution | Board          | Execution Engine | Inference time (ms) | Inf / sec | STM32Cube.AI version | STEdgeAI Core version |
-|----------------------|---------------|--------|------------|----------------|------------------|---------------------|-----------|----------------------|-----------------------|
-| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128_quant_pc_ff_od_widerface.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3 | STM32N6570-DK | NPU/MCU          | 5.09                 | 196.3       | 10.2.0               | 2.2.0                 |
+| Model                | Dataset       | Format | Resolution | Board          | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
+|----------------------|---------------|--------|------------|----------------|------------------|---------------------|-----------|-----------------------|
+| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128_quant_pc_ff_od_widerface.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3 | STM32N6570-DK | NPU/MCU          | 5.09                 | 196.3       |  4.0.0                 |
 
 
 ## Integration and support

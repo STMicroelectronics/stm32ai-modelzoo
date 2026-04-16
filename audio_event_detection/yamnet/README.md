@@ -74,32 +74,40 @@ For Yamnet-1024
 
 * Measures are done with default STEDGEAI configuration with enabled input / output allocated option.
 
+* For NUCLEO-U3C5ZI-Q footprints and inference time with HSP enabled, the amount of BRAM allocated to HSP is 4096 bytes.
+
 * `tl` stands for "transfer learning", meaning that the model backbone weights were initialized from a pre-trained model, then only the last layer was unfrozen during the training.
 
 ### Reference **NPU** memory footprint based on ESC-10 dataset
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite)  | esc-10 | Int8 | 64x96x1 | STM32N6 |  144 | 0.0 | 137.33 | 3.0.0 |
-| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | esc-10 | Int8 | 64x96x1 | STM32N6 | 144 | 0.0 | 	3159.2 | 3.0.0 |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite)  | esc-10 | Int8 | 64x96x1 | STM32N6 |  144 | 0.0 | 137.33 | 4.0.0 |
+| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | esc-10 | Int8 | 64x96x1 | STM32N6 | 144 | 0.0 | 	3159.2 | 4.0.0 |
 
 ### Reference **NPU**  inference time  based on ESC-10 dataset
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   |  STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |              	0.93      |   1075.27  |     3.0.0   |
-| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |        9.12      |  109.64      |    3.0.0    |
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |              	0.93      |   1075.27  |     4.0.0   |
+| [Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | esc-10      | Int8     | 64x96x1  | STM32N6570-DK   |   NPU/MCU      |        9.12      |  109.64      |    4.0.0    |
 
 
 ### Reference **MCU** memory footprint based on ESC-10 dataset
 | Model             | Format | Resolution | Series  | Activation RAM (kB) | Runtime RAM (kB) | Weights Flash (kB) | Code Flash (kB) | Total RAM (kB)  | Total Flash (kB) | STEdgeAI Core version  |
 |-------------------|--------|------------|---------|----------------|-------------|---------------|------------|-------------|-------------|-----------------------|
-|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A    | 	109.57               |   0.99        |   135.91           |   31.19  | 	110.56 | 167.1 | 3.0.0 |
-|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 144.0  |  1.77   |   3159.2    |  184.74  | 145.77 | 3343.94 | 3.0.0 |
+|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A    | 	109.57               |   0.99        |   135.91           |   31.19  | 	110.56 | 167.1 | 4.0.0 |
+|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | NUCLEO-U3C5ZI-Q (with HSP) | 100.63 | 0.99 | 135.91 | 17.77 | 101.62 | 153.68 | 4.0.0 |
+|[Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | NUCLEO-U3C5ZI-Q (Without HSP) | 123.77 | 0.99 | 135.91 | 31.22 | 124.76 | 167.13 | 4.0.0 |
+|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 144.0  |  1.77   |   3159.2    |  184.74  | 145.77 | 3343.94 | 4.0.0 |
+
 
 ### Reference inference time based on ESC-10 dataset
 | Model             | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time  | STEdgeAI Core version  |
 |-------------------|--------|------------|------------------|------------------|--------------|-----------------|-----------------------|
-| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 279.99 ms | 3.0.0    
-|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 1 CPU + 1 NPU | 800MhZ/1000MhZ | 9.12 ms | 3.0.0
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | B-U585I-IOT02A | 1 CPU | 160 MHz | 279.99 ms | 4.0.0  
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | NUCLEO-U3C5ZI-Q (With HSP) | 1 CPU + HSP | 96 MHz | 131.53 ms | 4.0.0 |  
+| [Yamnet 256](ST_pretrainedmodel_public_dataset/esc10/yamnet_e256_64x96_tl/yamnet_e256_64x96_tl_int8.tflite) | Int8 | 64x96x1 | NUCLEO-U3C5ZI-Q (Without HSP) | 1 CPU | 96 MHz | 471.67 ms | 4.0.0 |
+|[Yamnet 1024](ST_pretrainedmodel_public_dataset/esc10/yamnet_e1024_64x96_tl/yamnet_e1024_64x96_tl_qdq_int8.onnx) | Int8 | 64x96x1 | STM32N6 | 1 CPU + 1 NPU | 800MhZ/1000MhZ | 9.12 ms | 4.0.0
+
 
 
 ### Accuracy with ESC-10 dataset

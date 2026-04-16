@@ -64,13 +64,13 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [proxylessnas_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/proxylessnas_pt_224/proxylessnas_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1372 | 0 | 4233.20 | 3.0.0 |
+| [proxylessnas_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/proxylessnas_pt_224/proxylessnas_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1372 | 0 | 4233.20 | 4.0.0 |
 
 
 ### Reference **NPU**  inference time on food101 and imagenet dataset (see Accuracy for details on dataset)
 | Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [proxylessnas_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/proxylessnas_pt_224/proxylessnas_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 27.65 | 36.17 | 3.0.0  |
+| [proxylessnas_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/proxylessnas_pt_224/proxylessnas_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 27.65 | 36.17 | 4.0.0  |
 
 
 ### Accuracy with Imagenet dataset

@@ -52,16 +52,16 @@ The model expects frequency-domain inputs of shape (1, 512, 1) or (8, 512, 1) an
 
 | Model | Format | Resolution | Series | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB) | Total Flash (KiB) | STEdgeAI Core version |
 |-------|--------|------------|--------|----------------------|-------------------|---------------------|------------------|-----------------|-------------------|----------------------|
-| [st_dense_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_1channel_512/st_dense_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 2.0 | 1.3 | 8.24 | 8.04 | 3.3 | 16.28 | 3.0.0 |
-| [st_dense_freq_8channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_8channels_512/st_dense_freq_8channels_512_int8.tflite) | int8 | 8x512x1 | B-U585I-IOT02A | 16 | 0 | 8.24 | 9.91 | 16 | 18.15 | 3.0.0 |
+| [st_dense_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_1channel_512/st_dense_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 2.0 | 1.3 | 8.24 | 8.04 | 3.3 | 16.28 | 4.0.0 |
+| [st_dense_freq_8channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_8channels_512/st_dense_freq_8channels_512_int8.tflite) | int8 | 8x512x1 | B-U585I-IOT02A | 16 | 0 | 8.24 | 9.91 | 16 | 18.15 | 4.0.0 |
 
 
 ### Reference inference time based on afd_test_bench dataset
 
 | Model | Format | Resolution | Board | Execution Engine | Frequency | Inference time (ms) | STEdgeAI Core version |
 |-------|--------|------------|-------|------------------|-----------|---------------------|----------------------|
-| [st_dense_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_1channel_512/st_dense_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 0.26 | 3.0.0 |
-| [st_dense_freq_8channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_8channels_512/st_dense_freq_8channels_512_int8.tflite) | int8 | 8x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 1.87 | 3.0.0 |
+| [st_dense_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_1channel_512/st_dense_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 0.26 | 4.0.0 |
+| [st_dense_freq_8channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_dense_freq_8channels_512/st_dense_freq_8channels_512_int8.tflite) | int8 | 8x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 1.87 | 4.0.0 |
 
 
 ### Accuracy with afd_test_bench dataset

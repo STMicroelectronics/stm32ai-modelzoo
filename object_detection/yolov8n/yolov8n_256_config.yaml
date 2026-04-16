@@ -13,7 +13,8 @@ dataset:
   dataset_name: coco
   format: tfs
   class_names: [person]
-  test_path: ./datasets/coco_2017_person/test  #../model_zoo_OD_coco2017_person/val
+  test_images_path: ./datasets/coco_2017_person/test
+  test_annotations_path: ./datasets/coco_2017_person/test  #../model_zoo_OD_coco2017_person/val
 
 
 preprocessing:

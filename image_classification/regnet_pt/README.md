@@ -63,12 +63,12 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [regnetx002_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/regnetx002_pt_224/regnetx002_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1192.84 | 0 | 2606.72 | 3.0.0 |
+| [regnetx002_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/regnetx002_pt_224/regnetx002_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1192.84 | 0 | 2606.72 | 4.0.0 |
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 | Model  | Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |   STEdgeAI Core version |
 |--------|----------|--------|-------------|------------------|------------------|---------------------|-----------|-------------------------|
-| [regnetx002_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/regnetx002_pt_224/regnetx002_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 9.96 | 100.40 | 3.0.0  |
+| [regnetx002_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/regnetx002_pt_224/regnetx002_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 9.96 | 100.40 | 4.0.0  |
 
 ### Accuracy with Imagenet dataset
 

@@ -61,21 +61,21 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on food101 dataset (see Accuracy for details on dataset)
 |Model      |  Format   | Resolution | Series    | Internal RAM | External RAM | Weights Flash | STEdgeAI Core version |
 |----------|--------|-------------|------------------|------------------|---------------------|---------------|-------------------------|
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite)  |  Int8     | 128x128x3  | STM32N6   | 240.25 | 0.0 | 753.38        |     3.0.0   |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite)  | Int8     | 224x224x3  | STM32N6   | 803.52 | 0.0 | 753.38        |     3.0.0   |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite)  |  Int8     | 128x128x3  | STM32N6   | 240.25 | 0.0 | 753.38        |     4.0.0   |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite)  | Int8     | 224x224x3  | STM32N6   | 803.52 | 0.0 | 753.38        |     4.0.0   |
 
 ### Reference **NPU**  inference time on food101 dataset (see Accuracy for details on dataset)
 | Model  |  Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|--------|-------------|------------------|------------------|---------------------|-----------|-------------------------|
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite) |  Int8     | 128x128x3  | STM32N6570-DK   |   NPU/MCU      | 3.82                | 261.78     |     3.0.0   |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite)  |  Int8     |  224x224x3  | STM32N6570-DK   |   NPU/MCU      | 7.97                 | 125.47    |     3.0.0   |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite) |  Int8     | 128x128x3  | STM32N6570-DK   |   NPU/MCU      | 3.82                | 261.78     |     4.0.0   |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/food101/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite)  |  Int8     |  224x224x3  | STM32N6570-DK   |   NPU/MCU      | 7.97                 | 125.47    |     4.0.0   |
 
 
 ### Reference **MCU** memory footprint based on Flowers dataset (see Accuracy for details on dataset)
 | Model                                                                                                                               | Format | Resolution | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STEdgeAI Core version  |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|---------|----------------|-------------|--------------|------------|-------------|-------------|-----------------------|
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 271.84 KiB     | 3.72 KiB   | 716.71 KiB   | 45.79 KiB  | 275.56 KiB  | 762.5 KiB  | 3.0.0                 |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 829.09 KiB     | 3.72 KiB   | 716.71 KiB   | 45.85 KiB   | 832.81  KiB | 762.56 KiB  | 3.0.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H7 | 271.84 KiB     | 3.72 KiB   | 716.71 KiB   | 45.79 KiB  | 275.56 KiB  | 762.5 KiB  | 4.0.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite)  | Int8   | 224x224x3    | STM32H7 | 829.09 KiB     | 3.72 KiB   | 716.71 KiB   | 45.85 KiB   | 832.81  KiB | 762.56 KiB  | 4.0.0                 |
 
 
 ### Reference **MCU** inference time based on Flowers dataset (see Accuracy for details on dataset)
@@ -83,8 +83,8 @@ For an image resolution of NxM and P classes
 
 | Model                                                                                                                               | Format | Resolution | Board            | Execution Engine | Frequency | Inference time (ms) | STEdgeAI Core version  |
 |-------------------------------------------------------------------------------------------------------------------------------------|--------|------------|------------------|---------------|-----------|---------------------|-----------------------|
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 218.97 ms           | 3.0.0                 |
-| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 704.22 ms           | 3.0.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_128_tfs/squeezenetv11_128_tfs_int8.tflite) | Int8   | 128x128x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 216.13 ms           | 4.0.0                 |
+| [SqueezeNet v1.1 tfs ](./ST_pretrainedmodel_public_dataset/tf_flowers/squeezenetv11_224_tfs/squeezenetv11_224_tfs_int8.tflite) | Int8   | 224x224x3    | STM32H747I-DISCO | 1 CPU | 400 MHz   | 693.96 ms           | 4.0.0                 |
 
 
 ### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)

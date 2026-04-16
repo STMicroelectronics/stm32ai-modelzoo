@@ -38,14 +38,14 @@ Measures are done with default STEdgeAI Core configuration with enabled input / 
 
 |Model      | Dataset       | Format   | Resolution | Series    | Internal RAM (KiB)| External RAM (KiB)| Weights Flash (KiB) | STEdgeAI Core version |
 |----------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso | Int8 | 160x160x3 | STM32N6 |   2568.12 | 1200 | 851.86 | 3.0.0
+| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso | Int8 | 160x160x3 | STM32N6 |   2568.12 | 1200 | 851.86 | 4.0.0
 
 
 
 ### Reference **NPU**  inference time based on COCO Person dataset
 | Model  | Dataset          | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec   |  STEdgeAI Core version |
 |--------|------------------|--------|-------------|------------------|------------------|---------------------|-------|-------------------------|
-| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso      | Int8   | 160x160x3  | STM32N6570-DK   |   NPU/MCU      |     93.83         |   10.65      |     3.0.0   |
+| [Xinet picasso muse](./Public_pretrainedmodel_public_dataset/coco_2017_80_classes_picasso/xinet_a75_picasso_muse_160/xinet_a75_picasso_muse_160_nomp.tflite)  | COCO/Picasso      | Int8   | 160x160x3  | STM32N6570-DK   |   NPU/MCU      |     93.96         |   10.6      |     4.0.0   |
 
 
 ## Retraining and Integration in a Simple Example

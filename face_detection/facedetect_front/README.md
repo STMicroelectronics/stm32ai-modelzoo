@@ -50,13 +50,13 @@ Performance metrics are measured using default STM32Cube.AI configurations with 
 
 | Model                                                                                                                                      | Dataset              | Format | Resolution | Series  | Internal RAM (KB) | External RAM (KB) | Weights Flash (KB) |STEdgeAI Core version |
 |--------------------------------------------------------------------------------------------------------------------------------------------|----------------------|--------|------------|---------|-------------------|-------------------|--------------------|----------------------|
-| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128/blazeface_front_128_int8.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3  | STM32N6 | 528               | 0                 | 106.13             |3.0.0                 |
+| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128/blazeface_front_128_int8.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3  | STM32N6 | 528               | 0                 | 106.13             |4.0.0                 |
 
 ### Reference **NPU** inference time (example)
 
 | Model                                                                                                                                      | Dataset              | Format | Resolution | Board         | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |--------------------------------------------------------------------------------------------------------------------------------------------|----------------------|--------|------------|---------------|------------------|---------------------|-----------|-----------------------|
-| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128/blazeface_front_128_int8.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3  | STM32N6570-DK | NPU/MCU          | 4.48                | 223.21     | 3.0.0                |
+| [BlazeFace Front 128x128 per channel](Public_pretrainedmodel_public_dataset/widerface/blazeface_front_128/blazeface_front_128_int8.tflite) | WIDER FACE (frontal) | Int8   | 128x128x3  | STM32N6570-DK | NPU/MCU          | 4.48                | 223.21     | 4.0.0                |
 
 
 ## Integration and support

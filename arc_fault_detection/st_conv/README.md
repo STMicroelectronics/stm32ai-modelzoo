@@ -56,20 +56,20 @@ The models expect inputs of shape (1, 512, 1) or (4, 512, 1) and output per-chan
 
 | Model | Format | Resolution | Series | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB) | Total Flash (KiB) | STEdgeAI Core version |
 |-------|--------|------------|--------|----------------------|-------------------|---------------------|------------------|-----------------|-------------------|----------------------|
-| [st_conv_time_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_1channel_512/st_conv_time_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 9.17 | 1.3 | 49.23 | 14.85 | 10.47 | 64.08 | 3.0.0 |
-| [st_conv_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_1channel_512/st_conv_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 9.17 | 1.3 | 49.23 | 14.86 | 10.47 | 64.09 | 3.0.0 |
-| [st_conv_time_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_4channels_512/st_conv_time_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 24.17 | 0 | 49.23 | 16.74 | 24.17 | 65.97 | 3.0.0 |
-| [st_conv_freq_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_4channels_512/st_conv_freq_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 24.17 | 0 | 49.23 | 16.74 | 24.17 | 65.97 | 3.0.0 |
+| [st_conv_time_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_1channel_512/st_conv_time_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 9.17 | 1.3 | 49.23 | 14.85 | 10.47 | 64.08 | 4.0.0 |
+| [st_conv_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_1channel_512/st_conv_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 9.17 | 1.3 | 49.23 | 14.86 | 10.47 | 64.09 | 4.0.0 |
+| [st_conv_time_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_4channels_512/st_conv_time_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 24.17 | 0 | 49.23 | 16.74 | 24.17 | 65.97 | 4.0.0 |
+| [st_conv_freq_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_4channels_512/st_conv_freq_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 24.17 | 0 | 49.23 | 16.74 | 24.17 | 65.97 | 4.0.0 |
 
 
 ### Reference inference time based on afd_test_bench dataset
 
 | Model | Format | Resolution | Board | Execution Engine | Frequency | Inference time (ms) | STEdgeAI Core version |
 |-------|--------|------------|-------|------------------|-----------|---------------------|----------------------|
-| [st_conv_time_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_1channel_512/st_conv_time_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 8.92 | 3.0.0 |
-| [st_conv_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_1channel_512/st_conv_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 8.91 | 3.0.0 |
-| [st_conv_time_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_4channels_512/st_conv_time_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 40.07 | 3.0.0 |
-| [st_conv_freq_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_4channels_512/st_conv_freq_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 40.09 | 3.0.0 |
+| [st_conv_time_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_1channel_512/st_conv_time_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 8.92 | 4.0.0 |
+| [st_conv_freq_1channel_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_1channel_512/st_conv_freq_1channel_512_int8.tflite) | int8 | 1x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 8.91 | 4.0.0 |
+| [st_conv_time_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_time_4channels_512/st_conv_time_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 40.07 | 4.0.0 |
+| [st_conv_freq_4channels_512](ST_pretrainedmodel_custom_dataset/afd_test_bench_dataset/st_conv_freq_4channels_512/st_conv_freq_4channels_512_int8.tflite) | int8 | 4x512x1 | B-U585I-IOT02A | 1 CPU | 160 | 40.09 | 4.0.0 |
 
 
 ### Accuracy with afd_test_bench dataset

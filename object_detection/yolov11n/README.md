@@ -59,12 +59,12 @@ https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/
 ### Reference **NPU** memory footprint based on COCO Person dataset (see Accuracy for details on dataset)
 | Model                                                                                                                                                                                           | Dataset     | Format   | Resolution   | Series   |   Internal RAM |   External RAM |   Weights Flash | STEdgeAI Core version   |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|----------|--------------|----------|----------------|----------------|-----------------|-------------------------|
-| [YOLO11n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolo11/yolo11n_256_quant_pc_uf_od_coco-person-st.tflite) | COCO-Person | Int8     | 256x256x3    | STM32N6  |         656 |              0 |         2535.83 | 3.0.0                   |
+| [YOLO11n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolo11/yolo11n_256_quant_pc_uf_od_coco-person-st.tflite) | COCO-Person | Int8     | 256x256x3    | STM32N6  |         656 |              0 |         2535.83 | 4.0.0                   |
 
 ### Reference **NPU**  inference time based on COCO Person dataset (see Accuracy for details on dataset)
 | Model                                                                                                                                                                                           | Dataset     | Format   | Resolution   | Board         | Execution Engine   |   Inference time (ms) |   Inf / sec | STEdgeAI Core version   |
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|----------|--------------|---------------|--------------------|-----------------------|-------------|-------------------------|
-| [YOLO11n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolo11/yolo11n_256_quant_pc_uf_od_coco-person-st.tflite) | COCO-Person | Int8     | 256x256x3    | STM32N6570-DK | NPU/MCU            |                 26.37 |       36.50 | 3.0.0                   |
+| [YOLO11n per channel](https://github.com/stm32-hotspot/ultralytics/blob/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolo11/yolo11n_256_quant_pc_uf_od_coco-person-st.tflite) | COCO-Person | Int8     | 256x256x3    | STM32N6570-DK | NPU/MCU            |                 26.39 |       36.5 | 4.0.0                   |
 
 ### AP on COCO Person dataset
 

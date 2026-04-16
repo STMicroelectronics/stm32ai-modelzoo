@@ -63,12 +63,12 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [mnasnet_d050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/mnasnet_d050_pt_224/mnasnet_d050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 612.5 | 0 | 2319.53 | 3.0.0 |
+| [mnasnet_d050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/mnasnet_d050_pt_224/mnasnet_d050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 612.5 | 0 | 2319.53 | 4.0.0 |
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 | Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [mnasnet_d050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/mnasnet_d050_pt_224/mnasnet_d050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 11.21 | 89.21 | 3.0.0  |
+| [mnasnet_d050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/mnasnet_d050_pt_224/mnasnet_d050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 11.21 | 89.21 | 4.0.0  |
 
 
 

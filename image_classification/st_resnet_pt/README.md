@@ -63,30 +63,23 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [st_resnetpico_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 784 | 0 | 607.27 | 3.0.0 |
-| [st_resnetnano_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 759.5 | 0 | 992.04 | 3.0.0 |
-| [st_resnetmicro_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 882 | 0 | 1534.12 | 3.0.0 |
-| [st_resnetmilli_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1421 | 0 | 3059.81 | 3.0.0 |
-| [st_resnettiny_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2205 | 0 | 4060.57 | 3.0.0 |
+| [st_resnetpico_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 784 | 0 | 607.27 | 4.0.0 |
+| [st_resnetnano_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 759.5 | 0 | 992.04 | 4.0.0 |
+| [st_resnetmicro_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 882 | 0 | 1534.12 | 4.0.0 |
+| [st_resnetmilli_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1421 | 0 | 3059.81 | 4.0.0 |
+| [st_resnettiny_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2205 | 0 | 4060.57 | 4.0.0 |
 
 
 ### Reference **NPU**  inference time on  imagenet dataset (see Accuracy for details on dataset)
 
 | Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [st_resnetpico_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 7.54 | 132.63 | 3.0.0  |
-| [st_resnetnano_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 9.46 | 105.71 | 3.0.0  |
-| [st_resnetmicro_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 13.83 | 72.31 | 3.0.0  |
-| [st_resnetmilli_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 17.59 | 56.85 | 3.0.0  |
-| [st_resnettiny_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 24.10 | 41.49 | 3.0.0  |
+| [st_resnetpico_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 7.54 | 132.63 | 4.0.0  |
+| [st_resnetnano_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 9.46 | 105.71 | 4.0.0  |
+| [st_resnetmicro_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 13.83 | 72.31 | 4.0.0  |
+| [st_resnetmilli_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 17.59 | 56.85 | 4.0.0  |
+| [st_resnettiny_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 24.10 | 41.49 | 4.0.0  |
 
-| Model  |  Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec | STM32Cube.AI version  |  STEdgeAI Core version |
-|--------|--------|-------------|------------------|------------------|---------------------|-----------|----------------------|-------------------------|
-| [st_resnetpico_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetpico_actrelu_pt_224/st_resnetpico_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 7.54 | 132.63 | 10.2.0 | 2.2.0 |
-| [st_resnetnano_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetnano_actrelu_pt_224/st_resnetnano_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 9.46 | 105.71 | 10.2.0 | 2.2.0 |
-| [st_resnetmicro_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmicro_actrelu_pt_224/st_resnetmicro_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 13.83 | 72.31 | 10.2.0 | 2.2.0 |
-| [st_resnetmilli_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnetmilli_actrelu_pt_224/st_resnetmilli_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 17.59 | 56.85 | 10.2.0 | 2.2.0 |
-| [st_resnettiny_actrelu_pt_224](./ST_pretrainedmodel_public_dataset/Imagenet/st_resnettiny_actrelu_pt_224/st_resnettiny_actrelu_pt_224_qdq_int8.onnx) | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 24.10 | 41.49 | 10.2.0 | 2.2.0 |
 
 
 ### Accuracy with Imagenet dataset

@@ -63,17 +63,13 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [semnasnet100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/semnasnet100_pt_224/semnasnet100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2058 | 0 | 4133.38 | 3.0.0 |
+| [semnasnet100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/semnasnet100_pt_224/semnasnet100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2058 | 0 | 4133.38 | 4.0.0 |
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 
 | Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [semnasnet100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/semnasnet100_pt_224/semnasnet100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 37.63 | 26.57 | 3.0.0  |
-
-| Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
-|--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [semnasnet100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/semnasnet100_pt_224/semnasnet100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 37.63 | 26.57 | 3.0.0  |
+| [semnasnet100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/semnasnet100_pt_224/semnasnet100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 22.97 | 26.57 | 4.0.0  |
 
 
 ### Accuracy with Imagenet dataset

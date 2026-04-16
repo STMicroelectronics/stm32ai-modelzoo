@@ -63,9 +63,9 @@ Measures are done with default STEdgeAI Core version configuration with enabled 
 
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------------|--------------------|---------------------|----------------------|
- [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_256/st_deeplabv3_mnv2_a050_s16_asppv2_256_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 256x256x3 | STM32N6 | 1869.88 | 0.0    | 882.33  | 3.0.0 |
-| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_320/st_deeplabv3_mnv2_a050_s16_asppv2_320_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 320x320x3 | STM32N6 | 2421    | 0.0    | 893.3   | 3.0.0 |
-| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_416/st_deeplabv3_mnv2_a050_s16_asppv2_416_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 416x416x3 | STM32N6 | 2802.28 | 2028.0 | 894.14  | 3.0.0 |
+ [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_256/st_deeplabv3_mnv2_a050_s16_asppv2_256_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 256x256x3 | STM32N6 | 1869.88 | 0.0    | 882.33  | 4.0.0 |
+| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_320/st_deeplabv3_mnv2_a050_s16_asppv2_320_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 320x320x3 | STM32N6 | 2421    | 0.0    | 893.3   | 4.0.0 |
+| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_416/st_deeplabv3_mnv2_a050_s16_asppv2_416_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 416x416x3 | STM32N6 | 2802.28 | 2028.0 | 894.14  | 4.0.0 |
 
 
 
@@ -74,9 +74,9 @@ Measures are done with default STEdgeAI Core version configuration with enabled 
 
 | Model | Dataset | Format | Resolution | Board | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |-------|---------|--------|------------|-------|------------------|---------------------|-----------|----------------------
- [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_256/st_deeplabv3_mnv2_a050_s16_asppv2_256_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 256x256x3 | STM32N6570-DK | NPU/MCU | 26.62 | 37.55 | 3.0.0 |
-| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_320/st_deeplabv3_mnv2_a050_s16_asppv2_320_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 320x320x3 | STM32N6570-DK | NPU/MCU | 40.83 | 24.49 | 3.0.0 |
-| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_416/st_deeplabv3_mnv2_a050_s16_asppv2_416_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 416x416x3 | STM32N6570-DK | NPU/MCU | 227.02 | 4.41 | 3.0.0 |
+ [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_256/st_deeplabv3_mnv2_a050_s16_asppv2_256_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 256x256x3 | STM32N6570-DK | NPU/MCU | 26.58 | 37.62 | 4.0.0 |
+| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_320/st_deeplabv3_mnv2_a050_s16_asppv2_320_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 320x320x3 | STM32N6570-DK | NPU/MCU | 40.86 | 24.47 | 4.0.0 |
+| [DeepLabv3 MobileNetv2 ASPPv2](./ST_pretrainedmodel_public_dataset/person_coco_2017_pascal_voc_2012/st_deeplabv3_mnv2_a050_s16_asppv2_416/st_deeplabv3_mnv2_a050_s16_asppv2_416_qdq_int8.onnx) | person COCO 2017 + PASCAL VOC 2012 | Int8 | 416x416x3 | STM32N6570-DK | NPU/MCU | 227.55 | 4.39 | 4.0.0 |
 
 
 

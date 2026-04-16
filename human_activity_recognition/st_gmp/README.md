@@ -48,7 +48,7 @@ For a frame of resolution of (wl x 3) and P classes
 
 ## Metrics
 
-Measures are done with default STEdge AI Dev Cloud version 3.0.0 and for target board B-U585I-IOT02A. In addition the configuration were enabled input / output allocated option and `balanced` as optimization choice.
+Measures are done with default STEdge AI Dev Cloud version 4.0.0 and for target board B-U585I-IOT02A. In addition the configuration were enabled input / output allocated option and `balanced` as optimization choice.
 
 The inference time is reported is calculated on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
 
@@ -58,8 +58,8 @@ The inference time is reported is calculated on STM32 board **B-U585I-IOT02A** r
 
 | Model                                                                        | Format | Input Shape | Target Board  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)   | Total Flash (KiB) | Inference Time (ms) | STEdge AI Core version  |
 |:----------------------------------------------------------------------------:|:------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:-----------------:|:-----------------:|:---------------------:|:---------------------:|
-| [st_gpm_wl_24](ST_pretrainedmodel_public_dataset/WISDM/st_gmp_wl_24/st_gmp_wl_24.keras)  | FLOAT32| 24 x 3 x 1  | B-U585I-IOT02A | 4.25          | 0.28              | 5.70                | 6.08            |  4.53             | 11.78             | 4.29      | 3.0.0     |
-| [st_gmp_wl_48](ST_pretrainedmodel_public_dataset/WISDM/st_gmp_wl_48/st_gmp_wl_48.keras)  | FLOAT32| 48 x 3 x 1  | B-U585I-IOT02A | 8.83          | 0.28              | 5.70                | 6.08            |  9.11            | 11.78             | 8.83     | 3.0.0     |
+| [st_gpm_wl_24](ST_pretrainedmodel_public_dataset/WISDM/st_gmp_wl_24/st_gmp_wl_24.keras)  | FLOAT32| 24 x 3 x 1  | B-U585I-IOT02A | 4.25          | 0.28              | 5.70                | 6.08            |  4.53             | 11.78             | 4.29      | 4.0.0     |
+| [st_gmp_wl_48](ST_pretrainedmodel_public_dataset/WISDM/st_gmp_wl_48/st_gmp_wl_48.keras)  | FLOAT32| 48 x 3 x 1  | B-U585I-IOT02A | 8.83          | 0.28              | 5.70                | 6.08            |  9.11            | 11.78             | 8.83     | 4.0.0     |
 
 
 

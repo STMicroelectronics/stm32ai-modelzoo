@@ -27,10 +27,20 @@ Performance metrics on reference STM32 MCU, NPU, and MPU are provided for both f
 
 ## What's new in releases :
 
-<details open><summary><b>4.0:</b></summary>
+<details open><summary><b>4.1:</b></summary>
+
+* Support of **STEdgeAI Core v4.0.0**.
+* Updated **Audio Event Detection (AED)** to support deployment on **STM32U3**.
+* Added support for the **YOLO26** model.
+* Multiple bug fixes and overall quality improvements.
+
+</details>
+
+<details><summary><b>4.0:</b></summary>
+
 
 * Major PyTorch support for Image Classification (IC) and Object Detection (OD)
-* Support of **STEdgeAI Core v3.0.0**
+* Support of **STEdgeAI Core v4.0.0**
 * New training and evaluation scripts for PyTorch models
 * Expanded model selection and improved documentation
 * Unified workflow for TensorFlow and PyTorch

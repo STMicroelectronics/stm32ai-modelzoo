@@ -63,14 +63,14 @@ For an image resolution of NxM and P classes
 
 | Model    | Format | Resolution  | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM | Total Flash | STEdgeAI Core version  |
 |----------|--------|-------------|---------|----------------|-------------|---------------|------------|-----------|-------------|------------------------|
-| [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet8_32_tfs/resnet8_32_tfs_int8.tflite)                      | Int8   | 32x32x3     | STM32H7 | 62.51 KiB      | 1.26 KiB    | 76.9 KiB      | 36.08 KiB  | 63.77 KiB | 112.98 KiB  | 3.0.0                 |
+| [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet8_32_tfs/resnet8_32_tfs_int8.tflite)                      | Int8   | 32x32x3     | STM32H7 | 62.51 KiB      | 1.26 KiB    | 76.9 KiB      | 36.08 KiB  | 63.77 KiB | 112.98 KiB  | 4.0.0                 |
 
 
 ### Reference **MCU** inference time based on Cifar 10 dataset (see Accuracy for details on dataset)
 
 | Model                            | Format | Resolution  | Board            | Execution Engine | Frequency    | Inference time (ms) | STEdgeAI Core version  |
 |----------------------------------|--------|-------------|------------------|------------------|--------------|---------------------|------------------------|
-| [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet8_32_tfs/resnet8_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 28.71 ms            | 3.0.0                 |
+| [ResNet v1 8 tfs](./ST_pretrainedmodel_public_dataset/cifar10/resnet8_32_tfs/resnet8_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 28.5 ms            | 4.0.0                 |
 
 
 ### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)
@@ -90,14 +90,14 @@ For an image resolution of NxM and P classes
 
 | Model     | Format | Resolution  | Series  | Activation RAM | Runtime RAM | Weights Flash | Code Flash | Total RAM   | Total Flash | STEdgeAI Core version  |
 |-----------|--------|-------------|---------|----------------|-------------|---------------|------------|-------------|-------------|------------------------|
-| [ResNet v1 32 tfs](./ST_pretrainedmodel_public_dataset/cifar100/resnet32_32_tfs/resnet32_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32H7 | 45.41 KiB      | 24.98 KiB   | 464.38 KiB    | 78.65 KiB  | 70.39 KiB   | 543.03 KiB  | 3.0.0 |
+| [ResNet v1 32 tfs](./ST_pretrainedmodel_public_dataset/cifar100/resnet32_32_tfs/resnet32_32_tfs_int8.tflite) | Int8   | 32x32x3     | STM32H7 | 45.41 KiB      | 24.98 KiB   | 464.38 KiB    | 78.65 KiB  | 70.39 KiB   | 543.03 KiB  | 4.0.0 |
 
 
 ### Reference **MCU** inference time based on Cifar 100 dataset (see Accuracy for details on dataset)
 
 | Model   | Format | Resolution | Board            | Execution Engine | Frequency    | Inference time (ms) | STEdgeAI Core version  |
 |---------|--------|------------|------------------|------------------|--------------|---------------------|------------------------|
-| [ResNet v1 32 tfs](./ST_pretrainedmodel_public_dataset/cifar100/resnet32_32_tfs/resnet32_32_tfs_int8.tflite) | Int8   | 32x32x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 177.7 ms            |3.0.0 |
+| [ResNet v1 32 tfs](./ST_pretrainedmodel_public_dataset/cifar100/resnet32_32_tfs/resnet32_32_tfs_int8.tflite) | Int8   | 32x32x3    | STM32H747I-DISCO | 1 CPU            | 400 MHz      | 177.7 ms            |4.0.0 |
 
 
 ### Reference **MPU** inference time based on Flowers dataset (see Accuracy for details on dataset)

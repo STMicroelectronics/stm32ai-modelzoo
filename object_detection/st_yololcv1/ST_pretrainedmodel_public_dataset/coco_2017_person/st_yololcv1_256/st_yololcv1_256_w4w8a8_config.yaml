@@ -18,7 +18,8 @@ dataset:
   format: tfs
   class_names:
   - person
-  test_path: /local/data/od_coco_2017_person/test
+  test_images_path: /local/data/od_coco_2017_person/test
+  test_annotations_path: /local/data/od_coco_2017_person/test
   quantization_path: /local/data/od_coco_2017_person/train
   quantization_split: 0.001
 

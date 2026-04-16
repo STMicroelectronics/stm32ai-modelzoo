@@ -56,13 +56,13 @@ Performance metrics are measured using default STM32Cube.AI configurations with 
 
 | Model                                                                                                | Dataset    | Format | Resolution | Series  | Internal RAM (KB) | External RAM (KB) | Weights Flash (KB) | STEdgeAI Core version |
 |------------------------------------------------------------------------------------------------------|------------|--------|------------|---------|-------------------|-------------------|--------------------|-----------------------|
-| [yunet 320x320](Public_pretrainedmodel_public_dataset/widerface/yunetn_320/yunetn_320_qdq_int8.onnx) | WIDER FACE | Int8   | 3x320x320  | STM32N6 | 1130.49           | 0                 | 92.31              | 3.0.0                 |
+| [yunet 320x320](Public_pretrainedmodel_public_dataset/widerface/yunetn_320/yunetn_320_qdq_int8.onnx) | WIDER FACE | Int8   | 3x320x320  | STM32N6 | 1130.49           | 0                 | 92.31              | 4.0.0                 |
 
 ### Reference **NPU** inference time (example)
 
 | Model                                                                                                | Dataset    | Format | Resolution | Board         | Execution Engine | Inference time (ms) | Inf / sec | STEdgeAI Core version |
 |------------------------------------------------------------------------------------------------------|------------|--------|------------|---------------|------------------|---------------------|-----------|-----------------------|
-| [yunet 320x320](Public_pretrainedmodel_public_dataset/widerface/yunetn_320/yunetn_320_qdq_int8.onnx) | WIDER FACE | Int8   | 3x320x320  | STM32N6570-DK | NPU/MCU          | 6.74                | 147.36    | 3.0.0                 |
+| [yunet 320x320](Public_pretrainedmodel_public_dataset/widerface/yunetn_320/yunetn_320_qdq_int8.onnx) | WIDER FACE | Int8   | 3x320x320  | STM32N6570-DK | NPU/MCU          | 6.84                | 146.19    | 4.0.0                 |
 
 
 ## Integration and support

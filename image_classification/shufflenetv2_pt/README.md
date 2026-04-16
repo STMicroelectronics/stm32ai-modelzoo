@@ -63,20 +63,20 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [shufflenetv2_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x050_pt_224/shufflenetv2_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 441 | 0 | 1369.07 | 3.0.0 |
-| [shufflenetv2b_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x050_pt_224/shufflenetv2b_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 441 | 0 | 1369.07 | 3.0.0 |
-| [shufflenetv2_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x100_pt_224/shufflenetv2_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 459.38 | 0 | 2262.45 | 3.0.0 |
-| [shufflenetv2b_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 459.38 | 0 | 2263.57 | 3.0.0 |
+| [shufflenetv2_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x050_pt_224/shufflenetv2_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 441 | 0 | 1369.07 | 4.0.0 |
+| [shufflenetv2b_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x050_pt_224/shufflenetv2b_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 441 | 0 | 1369.07 | 4.0.0 |
+| [shufflenetv2_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x100_pt_224/shufflenetv2_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 459.38 | 0 | 2262.45 | 4.0.0 |
+| [shufflenetv2b_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 459.38 | 0 | 2263.57 | 4.0.0 |
 
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 
 | Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [shufflenetv2_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x050_pt_224/shufflenetv2_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 8.35 | 119.76 | 3.0.0  |
-| [shufflenetv2_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x100_pt_224/shufflenetv2_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 32.43 | 30.84 | 3.0.0  |
-| [shufflenetv2b_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x050_pt_224/shufflenetv2b_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 8.39 | 119.19 | 3.0.0  |
-| [shufflenetv2b_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 32.65 | 30.63 | 3.0.0  |
+| [shufflenetv2_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x050_pt_224/shufflenetv2_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 8.35 | 119.76 | 4.0.0  |
+| [shufflenetv2_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2_x100_pt_224/shufflenetv2_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 32.43 | 30.84 | 4.0.0  |
+| [shufflenetv2b_x050_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x050_pt_224/shufflenetv2b_x050_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 8.39 | 119.19 | 4.0.0  |
+| [shufflenetv2b_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/shufflenetv2b_x100_pt_224/shufflenetv2b_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 32.65 | 30.63 | 4.0.0  |
 
 
 ### Accuracy with Imagenet dataset

@@ -48,7 +48,7 @@ For an input resolution of wl x 3 x 1 and P classes
 
 ## Metrics
 
-Measures are done with [STEdge AI Dev Cloud version](https://stm32ai-cs.st.com/home) 3.0.0 with enabled input/output allocated options and balanced optimization. The inference time is reported is calculated using **STEdge AI version 3.0.0**, on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
+Measures are done with [STEdge AI Dev Cloud version](https://stm32ai-cs.st.com/home) 4.0.0 with enabled input/output allocated options and balanced optimization. The inference time is reported is calculated using **STEdge AI version 4.0.0**, on STM32 board **B-U585I-IOT02A** running at Frequency of **160 MHz**.
 
 
 Reference memory footprint and inference times for IGN models are given in the table below. The accuracies are provided in the sections after for two datasets.
@@ -56,8 +56,8 @@ Reference memory footprint and inference times for IGN models are given in the t
 
 | Model                                                                                     |   Format  | Input Shape | Series  | Activation RAM (KiB) | Runtime RAM (KiB) | Weights Flash (KiB) | Code Flash (KiB) | Total RAM (KiB)| Total Flash (KiB) | Inference Time (msec) | STEdge AI Core version  |
 |:-----------------------------------------------------------------------------------------:|:---------:|:-----------:|:-------:|:--------------------:|:-----------------:|:-------------------:|:----------------:|:--------------:|:-----------------:|:---------------------:|:---------------------:|
-| [st_ign_wl_24](./ST_pretrainedmodel_public_dataset/WISDM/st_ign_wl_24/st_ign_wl_24.keras) | FLOAT32   | 24 x 3 x 1  | STM32U5 | 2.88                 | 0.28              | 11.97               | 6.15            |  3.16          | 18.12            |   1.99                | 3.0.0                |
-| [st_ign_wl_48](./ST_pretrainedmodel_public_dataset/WISDM/st_ign_wl_48/st_ign_wl_48.keras) | FLOAT32   | 48 x 3 x 1  | STM32U5 | 9.91                 | 0.28              | 38.97               | 6.16            |  10.19         | 45.13            |   7.23                | 3.0.0                |
+| [st_ign_wl_24](./ST_pretrainedmodel_public_dataset/WISDM/st_ign_wl_24/st_ign_wl_24.keras) | FLOAT32   | 24 x 3 x 1  | STM32U5 | 2.88                 | 0.28              | 11.97               | 6.15            |  3.16          | 18.12            |   1.99                | 4.0.0                |
+| [st_ign_wl_48](./ST_pretrainedmodel_public_dataset/WISDM/st_ign_wl_48/st_ign_wl_48.keras) | FLOAT32   | 48 x 3 x 1  | STM32U5 | 9.91                 | 0.28              | 38.97               | 6.16            |  10.19         | 45.13            |   7.23                | 4.0.0                |
 
 
 

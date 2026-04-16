@@ -21,9 +21,12 @@ dataset:
   dataset_name: custom_dataset
   class_names: [person] 
   format: tfs
-  training_path: /local/data/od_st_person/train
-  validation_path: /local/data/od_st_person/test
-  test_path: /local/data/od_st_person/test
+  train_images_path: /local/data/od_st_person/train
+  train_annotations_path: /local/data/od_st_person/train
+  val_images_path: /local/data/od_st_person/test
+  val_annotations_path: /local/data/od_st_person/test
+  test_images_path: /local/data/od_st_person/test
+  test_annotations_path: /local/data/od_st_person/test
   quantization_path: /local/data/od_st_person/train
   quantization_split: 0.001
 

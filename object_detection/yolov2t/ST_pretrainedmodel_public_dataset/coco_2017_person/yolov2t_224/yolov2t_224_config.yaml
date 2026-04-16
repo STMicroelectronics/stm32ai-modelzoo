@@ -20,10 +20,11 @@ dataset:
   dataset_name: coco
   class_names: [person] 
   format: tfs 
-  training_path: /local/data/od_coco_2017_person/train
-  validation_path: 
+  train_images_path: /local/data/od_coco_2017_person/train
+  train_annotations_path: /local/data/od_coco_2017_person/train
   validation_split: 0.1 
-  test_path: /local/data/od_coco_2017_person/test
+  test_images_path: /local/data/od_coco_2017_person/test
+  test_annotations_path: /local/data/od_coco_2017_person/test
   quantization_path: /local/data/od_coco_2017_person/train
   quantization_split: 0.001
 

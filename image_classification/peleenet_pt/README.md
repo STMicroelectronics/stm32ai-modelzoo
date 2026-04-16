@@ -65,7 +65,7 @@ For an image resolution of NxM and P classes
 
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [peleenet_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/peleenet_pt_224/peleenet_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1421 | 0 | 2751.06 | 3.0.0 |
+| [peleenet_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/peleenet_pt_224/peleenet_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 1421 | 0 | 2751.06 | 4.0.0 |
 
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
@@ -73,7 +73,7 @@ For an image resolution of NxM and P classes
 
 | Model  | Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |   STEdgeAI Core version |
 |--------|----------|--------|-------------|------------------|------------------|---------------------|-----------|-------------------------|
-| [peleenet_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/peleenet_pt_224/peleenet_pt_224_qdq_int8.onnx) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 18.01                | 55.52    |      3.0.0   |
+| [peleenet_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/peleenet_pt_224/peleenet_pt_224_qdq_int8.onnx) | Imagenet | Int8     | 224x224x3  | STM32N6570-DK   |   NPU/MCU      | 18.01                | 55.52    |      4.0.0   |
 
 
 ### Accuracy with Imagenet dataset

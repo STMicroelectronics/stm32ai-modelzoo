@@ -64,23 +64,23 @@ For an image resolution of NxM and P classes
 ### Reference **NPU** memory footprint on Imagenet dataset (see Accuracy for details on dataset)
 | Model | Dataset | Format | Resolution | Series | Internal RAM (KiB) | External RAM (KiB) | Weights Flash (KiB) | STEdgeAI Core version |
 |-------|---------|--------|------------|--------|--------------|--------------|---------------|----------------------|
-| [sqnxt23_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x100_pt_224/sqnxt23_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2086.45 | 3025 | 693.67 | 3.0.0 |
-| [sqnxt23_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x150_pt_224/sqnxt23_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2087.48 | 6806.25 | 1453.99 | 3.0.0 |
-| [sqnxt23_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x200_pt_224/sqnxt23_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2275.52 | 9075 | 2493.33 | 3.0.0 |
-| [sqnxt23v5_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x150_pt_224/sqnxt23v5_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2087.48 | 6806.25 | 1879.24 | 3.0.0 |
-| [sqnxt23v5_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x200_pt_224/sqnxt23v5_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2275.52 | 9075 | 3249.45 | 3.0.0 |
+| [sqnxt23_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x100_pt_224/sqnxt23_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2086.45 | 3025 | 693.67 | 4.0.0 |
+| [sqnxt23_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x150_pt_224/sqnxt23_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2087.48 | 6806.25 | 1453.99 | 4.0.0 |
+| [sqnxt23_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x200_pt_224/sqnxt23_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2275.52 | 9075 | 2493.33 | 4.0.0 |
+| [sqnxt23v5_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x150_pt_224/sqnxt23v5_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2087.48 | 6806.25 | 1879.24 | 4.0.0 |
+| [sqnxt23v5_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x200_pt_224/sqnxt23v5_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6 | 2275.52 | 9075 | 3249.45 | 4.0.0 |
 
 
 ### Reference **NPU**  inference time on Imagenet dataset (see Accuracy for details on dataset)
 
 | Model  |  Dataset  | Format | Resolution  | Board            | Execution Engine | Inference time (ms) | Inf / sec |  STEdgeAI Core version |
 |--------|---------|--------|--------|-------------|------------------|------------------|---------------------|-------------------------|
-| [sqnxt23_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x100_pt_224/sqnxt23_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 87.07 | 11.49 | 3.0.0  |
-| [sqnxt23_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x150_pt_224/sqnxt23_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 127.46 | 7.85 | 3.0.0  |
-| [sqnxt23_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x200_pt_224/sqnxt23_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 182.12 | 5.49 | 3.0.0  |
-| [sqnxt23v5_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x100_pt_224/sqnxt23v5_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 86.37 | 11.58 | 3.0.0  |
-| [sqnxt23v5_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x150_pt_224/sqnxt23v5_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 126.91 | 7.88 | 3.0.0  |
-| [sqnxt23v5_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x200_pt_224/sqnxt23v5_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 181.01 | 5.52 | 3.0.0  |
+| [sqnxt23_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x100_pt_224/sqnxt23_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 87.07 | 11.49 | 4.0.0  |
+| [sqnxt23_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x150_pt_224/sqnxt23_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 127.46 | 7.85 | 4.0.0  |
+| [sqnxt23_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23_x200_pt_224/sqnxt23_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 182.12 | 5.49 | 4.0.0  |
+| [sqnxt23v5_x100_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x100_pt_224/sqnxt23v5_x100_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 86.37 | 11.58 | 4.0.0  |
+| [sqnxt23v5_x150_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x150_pt_224/sqnxt23v5_x150_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 126.91 | 7.88 | 4.0.0  |
+| [sqnxt23v5_x200_pt_224](./Public_pretrainedmodel_public_dataset/Imagenet/sqnxt23v5_x200_pt_224/sqnxt23v5_x200_pt_224_qdq_int8.onnx) | Imagenet | Int8 | 224×224×3 | STM32N6570-DK | NPU/MCU | 181.01 | 5.52 | 4.0.0  |
 
 
 ### Accuracy with Imagenet dataset

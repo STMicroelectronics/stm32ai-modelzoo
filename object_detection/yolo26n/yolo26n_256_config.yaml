@@ -1,0 +1,33 @@
+operation_mode: prediction
+
+model:
+  model_type: yolo26n
+  model_path: https://github.com/stm32-hotspot/ultralytics/raw/refs/heads/main/examples/YOLOv8-STEdgeAI/stedgeai_models/object_detection/yolo26/yolo26_256_qdq_int8_od_coco-person-st.onnx
+
+dataset:
+  format: tfs
+  dataset_name: coco
+  class_names: [ person ]
+  prediction_path: ./datasets/coco_2017_person/predict
+
+preprocessing:
+  rescaling: { scale: 1/255, offset: 0 }
+  resizing:
+    aspect_ratio: fit
+    interpolation: nearest
+  color_mode: rgb
+
+postprocessing:
+  confidence_thresh: 0.5
+  NMS_thresh: 0.5
+  IoU_eval_thresh: 0.5
+  plot_metrics: True   # Plot precision versus recall curves. Default is False.
+  max_detection_boxes: 10
+
+
+mlflow:
+  uri: ./tf/src/experiments_outputs/mlruns
+
+hydra:
+  run:
+    dir: ./tf/src/experiments_outputs/${now:%Y_%m_%d_%H_%M_%S}
