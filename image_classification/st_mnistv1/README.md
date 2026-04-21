@@ -44,7 +44,7 @@ For an image resolution of 28x28 and 36 classes : 10 integers (from 0-9) and 26 
 | STM32H7  |[x]|[x]|
 | STM32MP1 |[x]|[]|
 | STM32MP2 |[x]|[]|
-| STM32N6  |[x]|[]|
+| STM32N6  |[]|[]|
 
 
 # Performances
